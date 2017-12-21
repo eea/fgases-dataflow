@@ -1,0 +1,560 @@
+'
+' From Access 97 Developer's Handbook
+' by Litwin, Getz and Gilbert. (Sybex)
+' Copyright 1997. All Rights Reserved.
+'
+Option Compare Database
+Option Explicit
+Global Const ahtOFN_HIDEREADONLY = &H4
+Global Const ahtOFN_FOLDERSONLY = &H1
+
+
+#If Win64 And VBA7 Then
+    Type tagOPENFILENAME
+    
+    
+     lStructSize As Long
+         hwndOwner As LongPtr
+         hInstance As LongPtr
+         strFilter As String
+         strCustomFilter As String
+         nMaxCustFilter As Long
+         nFilterIndex As Long
+         strFile As String
+         nMaxFile As Long
+         strFileTitle As String
+         nMaxFileTitle As Long
+         strInitialDir As String
+         strTitle As String
+         flags As Long
+         nFileOffset As Integer
+         nFileExtension As Integer
+         strDefExt As String
+         lCustData As Long
+         lpfnHook As LongPtr
+         lpTemplateName As String
+         
+        
+  
+    End Type
+    
+    Private Type BROWSEINFO
+      hOwner As LongPtr
+      pidlRoot As Long
+      pszDisplayName As String
+      lpszTitle As String
+      ulFlags As Long
+      lpfn As LongPtr
+      lParam As LongPtr
+      iImage As Long
+    End Type
+    Private Declare PtrSafe Function SHGetPathFromIDList Lib "shell32.dll" Alias _
+                "SHGetPathFromIDListA" (ByVal pidl As Long, _
+                ByVal pszPath As String) As Long
+
+     Private Declare PtrSafe Function SHBrowseForFolder Lib "shell32.dll" Alias _
+                "SHBrowseForFolderA" (lpBrowseInfo As BROWSEINFO) _
+                As Long
+
+    Declare PtrSafe Function adh_apiGetOpenFileName Lib "comdlg32.dll" _
+       Alias "GetOpenFileNameA" (OFN As tagOPENFILENAME) As Boolean
+
+    Declare PtrSafe Function adh_apiGetSaveFileName Lib "comdlg32.dll" _
+      Alias "GetSaveFileNameA" (OFN As tagOPENFILENAME) As Boolean
+
+    Declare PtrSafe Function CommDlgExtendedError Lib "comdlg32.dll" () As Long
+    
+    
+    Declare PtrSafe Function aht_apiGetOpenFileName Lib "comdlg32.dll" _
+        Alias "GetOpenFileNameA" (OFN As tagOPENFILENAME) As Boolean
+    
+    Declare PtrSafe Function aht_apiGetSaveFileName Lib "comdlg32.dll" _
+        Alias "GetSaveFileNameA" (OFN As tagOPENFILENAME) As Boolean
+#Else
+
+    Type tagOPENFILENAME
+         lStructSize As Long
+         hwndOwner As Long
+         hInstance As Long
+         strFilter As String
+         strCustomFilter As String
+         nMaxCustFilter As Long
+         nFilterIndex As Long
+         strFile As String
+         nMaxFile As Long
+         strFileTitle As String
+         nMaxFileTitle As Long
+         strInitialDir As String
+         strTitle As String
+         flags As Long
+         nFileOffset As Integer
+         nFileExtension As Integer
+         strDefExt As String
+         lCustData As Long
+         lpfnHook As Long
+         lpTemplateName As String
+    End Type
+
+    Private Type BROWSEINFO
+      hOwner As Long
+      pidlRoot As Long
+      pszDisplayName As String
+      lpszTitle As String
+      ulFlags As Long
+      lpfn As Long
+      lParam As Long
+      iImage As Long
+    End Type
+    Private Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias _
+                "SHGetPathFromIDListA" (ByVal pidl As Long, _
+                ByVal pszPath As String) As Long
+                
+    Private Declare Function SHBrowseForFolder Lib "shell32.dll" Alias _
+                "SHBrowseForFolderA" (lpBrowseInfo As BROWSEINFO) _
+                As Long
+    
+    Declare Function adh_apiGetOpenFileName Lib "comdlg32.dll" _
+     Alias "GetOpenFileNameA" (OFN As tagOPENFILENAME) As Boolean
+    Declare Function adh_apiGetSaveFileName Lib "comdlg32.dll" _
+     Alias "GetSaveFileNameA" (OFN As tagOPENFILENAME) As Boolean
+
+    Declare Function CommDlgExtendedError Lib "comdlg32.dll" () As Long
+    
+    
+    Declare Function aht_apiGetOpenFileName Lib "comdlg32.dll" _
+        Alias "GetOpenFileNameA" (OFN As tagOPENFILENAME) As Boolean
+    
+    Declare Function aht_apiGetSaveFileName Lib "comdlg32.dll" _
+        Alias "GetSaveFileNameA" (OFN As tagOPENFILENAME) As Boolean
+#End If
+
+
+    
+Public Const adhOFN_READONLY = &H1
+Public Const adhOFN_OVERWRITEPROMPT = &H2
+Public Const adhOFN_HIDEREADONLY = &H4
+Public Const adhOFN_NOCHANGEDIR = &H8
+Public Const adhOFN_SHOWHELP = &H10
+Public Const adhOFN_NOVALIDATE = &H100
+Public Const adhOFN_ALLOWMULTISELECT = &H200
+Public Const adhOFN_EXTENSIONDIFFERENT = &H400
+Public Const adhOFN_PATHMUSTEXIST = &H800
+Public Const adhOFN_FILEMUSTEXIST = &H1000
+Public Const adhOFN_CREATEPROMPT = &H2000
+Public Const adhOFN_SHAREAWARE = &H4000
+Public Const adhOFN_NOREADONLYRETURN = &H8000
+Public Const adhOFN_NOTESTFILECREATE = &H10000
+Public Const adhOFN_NONETWORKBUTTON = &H20000
+Public Const adhOFN_NOLONGNAMES = &H40000
+Public Const adhOFN_EXPLORER = &H80000
+Public Const adhOFN_NODEREFERENCELINKS = &H100000
+Public Const adhOFN_LONGNAMES = &H200000
+
+Function adhCommonFileOpenSave( _
+ Optional ByRef flags As Variant, _
+ Optional ByVal InitialDir As Variant, _
+ Optional ByVal Filter As Variant, _
+ Optional ByVal FilterIndex As Variant, _
+ Optional ByVal DefaultExt As Variant, _
+ Optional ByVal fileName As Variant, _
+ Optional ByVal DialogTitle As Variant, _
+ Optional ByVal OpenFile As Variant) As Variant
+
+    ' This is the entry point you'll use to call the common
+    ' file open/save dialog. The parameters are listed
+    ' below, and all are optional.
+    '
+    ' From Access 97 Developer's Handbook
+    ' by Litwin, Getz and Gilbert. (Sybex)
+    ' Copyright 1997. All Rights Reserved.
+    '
+    ' In:
+    '    Flags: one or more of the adhOFN_* constants, OR'd together.
+    '    InitialDir: the directory in which to first look
+    '    Filter: a set of file filters, set up by calling
+    '            AddFilterItem.  See examples.
+    '    FilterIndex: 1-based integer indicating which filter
+    '            set to use, by default (1 if unspecified)
+    '    DefaultExt: Extension to use if the user doesn't enter one.
+    '            Only useful on file saves.
+    '    FileName: Default value for the file name text box.
+    '    DialogTitle: Title for the dialog.
+    '    OpenFile: Boolean(True=Open File/False=Save As)
+    ' Out:
+    '    Return Value: Either Null or the selected filename
+
+    Dim OFN As tagOPENFILENAME
+    Dim strFileName As String
+    Dim strFileTitle As String
+    Dim fResult As Boolean
+
+    ' Give the dialog a caption title.
+    If IsMissing(InitialDir) Then InitialDir = ""
+    If IsMissing(Filter) Then Filter = ""
+    If IsMissing(FilterIndex) Then FilterIndex = 1
+    If IsMissing(flags) Then flags = 0&
+    If IsMissing(DefaultExt) Then DefaultExt = ""
+    If IsMissing(fileName) Then fileName = ""
+    If IsMissing(DialogTitle) Then DialogTitle = ""
+    If IsMissing(OpenFile) Then OpenFile = True
+
+    ' Allocate string space for the returned strings.
+    strFileName = Left(fileName & String(256, 0), 256)
+    strFileTitle = String(256, 0)
+
+    ' Set up the data structure before you call the function
+    With OFN
+#If Win64 And VBA7 Then
+        .lStructSize = LenB(OFN)
+#Else
+        .lStructSize = Len(OFN)
+#End If
+        .hwndOwner = Application.hWndAccessApp
+        .strFilter = Filter
+        .nFilterIndex = FilterIndex
+        .strFile = strFileName
+        .nMaxFile = Len(strFileName)
+        .strFileTitle = strFileTitle
+        .nMaxFileTitle = Len(strFileTitle)
+        .strTitle = DialogTitle
+        .flags = flags
+        .strDefExt = DefaultExt
+        .strInitialDir = CurDir
+
+        ' Didn't think most people would want to deal with
+        ' these options.
+        .hInstance = 0
+        .strCustomFilter = String(255, 0)
+        .nMaxCustFilter = 255
+        .lpfnHook = 0
+    End With
+
+    ' This will pass the desired data structure to the
+    ' Windows API, which will in turn it uses to display
+    ' the Open/Save As Dialog.
+
+    If OpenFile Then
+        fResult = adh_apiGetOpenFileName(OFN)
+    Else
+        fResult = adh_apiGetSaveFileName(OFN)
+    End If
+
+    ' The function call filled in the strFileTitle member
+    ' of the structure. You'll have to write special code
+    ' to retrieve that if you're interested.
+
+    If fResult Then
+        ' You might care to check the Flags member of the
+        ' structure to get information about the chosen file.
+        ' In this example, if you bothered to pass in a
+        ' value for Flags, we'll fill it in with the outgoing
+        ' Flags value.
+        If Not IsMissing(flags) Then flags = OFN.flags
+        adhCommonFileOpenSave = adhTrimNull(OFN.strFile)
+    Else
+        adhCommonFileOpenSave = Null
+    End If
+End Function
+
+Function adhAddFilterItem(strFilter As String, _
+ strDescription As String, Optional varItem As Variant) As String
+
+    ' Tack a new chunk onto the file filter.
+    ' That is, take the old value, stick onto it the description,
+    ' (like "Databases"), a null character, the skeleton
+    ' (like "*.mdb;*.mda") and a final null character.
+    '
+    ' From Access 97 Developer's Handbook
+    ' by Litwin, Getz and Gilbert. (Sybex)
+    ' Copyright 1997. All Rights Reserved.
+    '
+    ' In:
+    '       strFilter: existing file filter
+    '       strDescription: new filter description
+    '       varItem: new filter
+    ' Out:
+    '       Return value: new file filter
+    
+    If IsMissing(varItem) Then varItem = "*.*"
+    adhAddFilterItem = strFilter & _
+     strDescription & vbNullChar & _
+     varItem & vbNullChar
+     
+End Function
+
+Function adhTrimNull(ByVal strItem As String) As String
+
+    ' Trims the Null from a string returned by an API call
+    '
+    ' From Access 97 Developer's Handbook
+    ' by Litwin, Getz and Gilbert. (Sybex)
+    ' Copyright 1997. All Rights Reserved.
+    '
+    ' In:
+    '       strItem: string that contains null terminator
+    ' Out:
+    '       Return value: same string without null terminator
+    
+    Dim intPos As Integer
+    
+    intPos = InStr(strItem, vbNullChar)
+    If intPos > 0 Then
+        adhTrimNull = Left(strItem, intPos - 1)
+    Else
+        adhTrimNull = strItem
+    End If
+    
+End Function
+
+Public Function CheckTrailingSlash(ByVal strPath As String) As String
+    Dim iPos As Integer
+    Dim iLen As Integer
+    
+    CheckTrailingSlash = strPath
+    iPos = InStrRev(strPath, "\")
+    iLen = Len(strPath)
+    If Not iPos = iLen Then
+        CheckTrailingSlash = strPath & "\"
+    End If
+End Function
+
+Function ahtCommonFileOpenSave( _
+            Optional ByRef flags As Variant, _
+            Optional ByVal InitialDir As Variant, _
+            Optional ByVal Filter As Variant, _
+            Optional ByVal FilterIndex As Variant, _
+            Optional ByVal DefaultExt As Variant, _
+            Optional ByVal fileName As Variant, _
+            Optional ByVal DialogTitle As Variant, _
+            Optional ByVal hwnd As Variant, _
+            Optional ByVal OpenFile As Variant) As Variant
+' This is the entry point you'll use to call the common
+' file open/save dialog. The parameters are listed
+' below, and all are optional.
+'
+' In:
+' Flags: one or more of the ahtOFN_* constants, OR'd together.
+' InitialDir: the directory in which to first look
+' Filter: a set of file filters, set up by calling
+' AddFilterItem. See examples.
+' FilterIndex: 1-based integer indicating which filter
+' set to use, by default (1 if unspecified)
+' DefaultExt: Extension to use if the user doesn't enter one.
+' Only useful on file saves.
+' FileName: Default value for the file name text box.
+' DialogTitle: Title for the dialog.
+' hWnd: parent window handle
+' OpenFile: Boolean(True=Open File/False=Save As)
+' Out:
+' Return Value: Either Null or the selected filename
+Dim OFN As tagOPENFILENAME
+Dim strFileName As String
+Dim strFileTitle As String
+Dim fResult As Boolean
+    ' Give the dialog a caption title.
+    If IsMissing(InitialDir) Then InitialDir = CurDir
+    If IsMissing(Filter) Then Filter = ""
+    If IsMissing(FilterIndex) Then FilterIndex = 1
+    If IsMissing(flags) Then flags = 0&
+    If IsMissing(DefaultExt) Then DefaultExt = ""
+    If IsMissing(fileName) Then fileName = ""
+    If IsMissing(DialogTitle) Then DialogTitle = ""
+    If IsMissing(hwnd) Then hwnd = Application.hWndAccessApp
+    If IsMissing(OpenFile) Then OpenFile = True
+    ' Allocate string space for the returned strings.
+    strFileName = Left(fileName & String(256, 0), 256)
+    strFileTitle = String(256, 0)
+    ' Set up the data structure before you call the function
+    With OFN
+#If Win64 And VBA7 Then
+        .lStructSize = LenB(OFN)
+#Else
+        .lStructSize = Len(OFN)
+#End If
+        .hwndOwner = hwnd
+        .strFilter = Filter
+        .nFilterIndex = FilterIndex
+        .strFile = strFileName
+        .nMaxFile = Len(strFileName)
+        .strFileTitle = strFileTitle
+        .nMaxFileTitle = Len(strFileTitle)
+        .strTitle = DialogTitle
+        .flags = flags
+        .strDefExt = DefaultExt
+        .strInitialDir = InitialDir
+        ' Didn't think most people would want to deal with
+        ' these options.
+        .hInstance = 0
+        '.strCustomFilter = ""
+        '.nMaxCustFilter = 0
+        .lpfnHook = 0
+        'New for NT 4.0
+        .strCustomFilter = String(255, 0)
+        .nMaxCustFilter = 255
+    End With
+    ' This will pass the desired data structure to the
+    ' Windows API, which will in turn it uses to display
+    ' the Open/Save As Dialog.
+    If OpenFile Then
+        fResult = aht_apiGetOpenFileName(OFN)
+    Else
+        fResult = aht_apiGetSaveFileName(OFN)
+    End If
+
+    ' The function call filled in the strFileTitle member
+    ' of the structure. You'll have to write special code
+    ' to retrieve that if you're interested.
+    If fResult Then
+        ' You might care to check the Flags member of the
+        ' structure to get information about the chosen file.
+        ' In this example, if you bothered to pass in a
+        ' value for Flags, we'll fill it in with the outgoing
+        ' Flags value.
+        If Not IsMissing(flags) Then flags = OFN.flags
+        ahtCommonFileOpenSave = TrimNull(OFN.strFile)
+    Else
+        ahtCommonFileOpenSave = vbNullString
+    End If
+End Function
+
+Function ahtAddFilterItem(strFilter As String, _
+    strDescription As String, Optional varItem As Variant) As String
+' Tack a new chunk onto the file filter.
+' That is, take the old value, stick onto it the description,
+' (like "Databases"), a null character, the skeleton
+' (like "*.mdb;*.mda") and a final null character.
+
+    If IsMissing(varItem) Then varItem = "*.*"
+    ahtAddFilterItem = strFilter & _
+                strDescription & vbNullChar & _
+                varItem & vbNullChar
+End Function
+
+Private Function TrimNull(ByVal strItem As String) As String
+Dim intPos As Integer
+    intPos = InStr(strItem, vbNullChar)
+    If intPos > 0 Then
+        TrimNull = Left(strItem, intPos - 1)
+    Else
+        TrimNull = strItem
+    End If
+End Function
+
+Public Function GetMdbFileName() As String
+    Dim strFilter As String
+    Dim strInputFileName As String
+    'MsgBox UCase(strType) & " Files (*." & strType & ")" & vbNewLine & """*." & strType & """"
+    strFilter = ahtAddFilterItem(strFilter, "Microsoft Access (*.mdb, *.accdb)", "*.mdb;*.accdb")
+    'strFilter = ahtAddFilterItem(strFilter, UCase(strType) & " Files (*." & strType & ")", """*." & strType & """")
+    'strFilter = ahtAddFilterItem(strFilter, "bmp Files (*.bmp)", "*.bmp")
+    strFilter = ahtAddFilterItem(strFilter, "All Files (*.*)", "*.*")
+
+    strInputFileName = ahtCommonFileOpenSave( _
+                            Filter:=strFilter, _
+                            OpenFile:=True, _
+                            DialogTitle:="Choose mdb or accdb file...", _
+                            flags:=ahtOFN_HIDEREADONLY)
+
+    GetMdbFileName = strInputFileName
+End Function
+
+Public Function GetXmlFileName() As String
+    Dim strFilter As String
+    Dim strInputFileName As String
+    'MsgBox UCase(strType) & " Files (*." & strType & ")" & vbNewLine & """*." & strType & """"
+    strFilter = ahtAddFilterItem(strFilter, "Xml Files (*.xml)", "*.xml")
+    'strFilter = ahtAddFilterItem(strFilter, UCase(strType) & " Files (*." & strType & ")", """*." & strType & """")
+    'strFilter = ahtAddFilterItem(strFilter, "bmp Files (*.bmp)", "*.bmp")
+    strFilter = ahtAddFilterItem(strFilter, "all Files (*.*)", "*.*")
+
+    strInputFileName = ahtCommonFileOpenSave( _
+                            Filter:=strFilter, _
+                            OpenFile:=True, _
+                            DialogTitle:="Choose an Xml file...", _
+                            flags:=ahtOFN_HIDEREADONLY)
+
+    GetXmlFileName = strInputFileName
+'    If Len(strInputFileName) > 0 Then
+'        ' Do something with the selected file
+'    Else
+'        'No file chosen, or user canceled
+'    End If
+    
+End Function
+
+
+'This code was originally written by Terry Kreft.
+'It is not to be altered or distributed,
+'except as part of an application.
+'You are free to use it in any application,
+'provided the copyright notice is left unchanged.
+'
+'Code courtesy of
+'Terry Kreft
+
+Public Function GetFolderName() As String
+    Dim strFilter As String
+    Dim strInputFolderName  As String
+    Dim x As Long, bi As BROWSEINFO, dwIList As Long
+    Dim szPath As String, wPos As Integer
+
+    With bi
+        .hOwner = hWndAccessApp
+        .lpszTitle = "Choose a folder..."
+        .ulFlags = ahtOFN_FOLDERSONLY
+    End With
+    
+    dwIList = SHBrowseForFolder(bi)
+    szPath = Space$(512)
+    x = SHGetPathFromIDList(ByVal dwIList, ByVal szPath)
+    
+    If x Then
+        wPos = InStr(szPath, Chr(0))
+        GetFolderName = Left$(szPath, wPos - 1)
+    Else
+        GetFolderName = vbNullString
+    End If
+
+    'strFilter = ahtAddFilterItem(strFilter, "Folders only", "*.qwerty")
+    'strFilter = ahtAddFilterItem(strFilter, "bmp Files (*.bmp)", "*.bmp")
+    'strFilter = ahtAddFilterItem(strFilter, "all Files (*.*)", "*.*")
+
+
+'Filter:=strFilter,
+'    strInputFolderName = ahtCommonFileOpenSave( _
+'                            OpenFile:=False, _
+'                            DialogTitle:="Choose a folder...", _
+'                            Flags:=ahtOFN_FOLDERSONLY)
+
+   ' GetFolderName = strInputFolderName
+'    If Len(strInputFileName) > 0 Then
+'        ' Do something with the selected file
+'    Else
+'        'No file chosen, or user canceled
+'    End If
+    'GetFolderName
+End Function
+
+Public Function GetSqlOrTxtFileName() As String
+    Dim strFilter As String
+    Dim strInputFileName As String
+    'MsgBox UCase(strType) & " Files (*." & strType & ")" & vbNewLine & """*." & strType & """"
+    'strFilter = ahtAddFilterItem(strFilter, UCase(strType) & " Files (*." & strType & ")", """*." & strType & """")
+    strFilter = ahtAddFilterItem(strFilter, "SQL Files (*.sql)", "*.sql")
+    strFilter = ahtAddFilterItem(strFilter, "Text Files (*.txt)", "*.txt")
+    strFilter = ahtAddFilterItem(strFilter, "all Files (*.*)", "*.*")
+
+    strInputFileName = ahtCommonFileOpenSave( _
+                            Filter:=strFilter, _
+                            OpenFile:=True, _
+                            DialogTitle:="Choose SQL file...", _
+                            flags:=ahtOFN_HIDEREADONLY)
+
+    GetSqlOrTxtFileName = strInputFileName
+'    If Len(strInputFileName) > 0 Then
+'        ' Do something with the selected file
+'    Else
+'        'No file chosen, or user canceled
+'    End If
+    
+End Function

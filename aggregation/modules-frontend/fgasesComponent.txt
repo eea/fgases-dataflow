@@ -1,0 +1,33 @@
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+Dim id As Long
+Dim group As Long
+Dim sortkey As Long
+
+Public Property Get getId() As Long
+    getId = id
+End Property
+Public Property Let setId(pId As Long)
+    id = pId
+End Property
+
+Public Property Get getGroup() As Long
+    getGroup = group
+End Property
+
+Public Property Let setGroup(pGroup As Long)
+    group = pGroup
+End Property
+
+Public Property Get getSortKey() As Long
+    getSortKey = sortkey
+End Property
+
+Public Property Let setSortKey(pSortKey As Long)
+    sortkey = pSortKey
+End Property

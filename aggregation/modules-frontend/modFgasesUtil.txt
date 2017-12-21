@@ -1,0 +1,10 @@
+Option Compare Database
+Option Explicit
+
+Public Function isDisabled(portal_status As String)
+    If (portal_status <> "VALID") Then
+        isDisabled = True
+    Else
+        isDisabled = False
+    End If
+End Function

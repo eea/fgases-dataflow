@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FGasesReporting>
+  <F4_S9_IssuedAuthQuata>
+    <tr_09C>
+      <Code>09C</Code>
+      <Amount>10000000</Amount>
+    </tr_09C>
+    <Verified>true</Verified>
+    <SupportingDocuments>
+      <Document>
+        <Url>http://mock.eionet.europa.eu</Url>
+        <title>testfile</title>
+      </Document>
+    </SupportingDocuments>
+  </F4_S9_IssuedAuthQuata>
+</FGasesReporting>

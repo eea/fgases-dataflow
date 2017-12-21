@@ -1,0 +1,139 @@
+<!-- html subform [ng-form="Sheet6"] -->
+<div name="Sheet6Section7" ng-if="instance.FGasesReporting.GeneralReportData.Activities['FU']">
+    <h2><span translate="sheet6.section7-heading"></span></h2>
+    <p><span translate="sheet6.section7-info1"></span></p>
+    <p><span translate="sheet6.section7-info2"></span></p>
+    <p><span translate="sheet6.section7-info3"></span></p>
+    <table class="table table-hover table-bordered fixed-table">
+        <colgroup>
+            <col class="fixed-width-gas-transaction"/>
+            <col class="fixed-width-gas-amount" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" />
+        </colgroup>
+        <tr>
+            <th class="fixed-width-gas-transaction"><span translate="common.sheet-transactions-header"></span></th>
+            <th ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <div align="center" ng-switch="reportedGas.IsCustomComposition">
+                    <span ng-switch-when="true">{{'common.mixture' | translate}} ({{reportedGas.Name}})</span>
+                    <span ng-switch-default>{{reportedGas.Name}}</span>
+                </div>
+            </th>
+        </tr>
+        <tr>
+            <th></th>
+            <th ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <div align="center"><span translate="common.unit"></span></div>
+            </th>
+        </tr>
+        <tr>
+            <td id="tr_07A"><span class="transaction-code">7A : </span><span translate="sheet6.tr-07a-desc"></span></td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input name="tr07a"
+                       ng-model="instance.FGasesReporting.F6_FUDest.Gas[$index].tr_07A.Amount"
+                       ng-change="doCalculationTotalForRow('F6_FUDest', 'tr_07A');"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div> <!-- end of div name="Sheet6Section7" -->
+
+<div name="Sheet6Section8" ng-if="instance.FGasesReporting.GeneralReportData.Activities['D']">
+    <h2><span translate="sheet6.section8-heading"></span></h2>
+    <p><span translate="sheet6.section8-info1"></span></p>
+    <p><span translate="sheet6.section8-info2"></span></p>
+    <p><span translate="sheet6.section8-info3"></span></p>
+    <p><span translate="sheet6.section8-info4"></span></p>
+    <table class="table table-hover table-bordered fixed-table">
+        <colgroup>
+            <col class="fixed-width-gas-transaction"/>
+            <col class="fixed-width-gas-amount" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" />
+        </colgroup>
+        <tr>
+            <th class="fixed-width-gas-transaction"><span translate="common.sheet-transactions-header"></span></th>
+            <th ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <div align="center" ng-switch="reportedGas.IsCustomComposition">
+                    <span ng-switch-when="true">{{'common.mixture' | translate}} ({{reportedGas.Name}})</span>
+                    <span ng-switch-default>{{reportedGas.Name}}</span>
+                </div>
+            </th>
+        </tr>
+        <tr>
+            <th></th>
+            <th ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <div align="center"><span translate="common.unit"></span></div>
+            </th>
+        </tr>
+        <tr>
+            <td><span class="transaction-code">8A : </span><span translate="sheet6.tr-08a-desc"></span></td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08A.Amount"
+                       ng-change="doCalculationForFields($index, 'tr_08D');
+                                  doCalculationTotalForRow('F6_FUDest', 'tr_08D');"/>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="transaction-code">8B : </span><span translate="sheet6.tr-08b-desc"></span></td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08B.Amount"
+                       ng-change="doCalculationForFields($index, 'tr_08D');
+                                  doCalculationTotalForRow('F6_FUDest', 'tr_08D');"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="transaction-code">8C : </span>
+                <span class="glyphicon glyphicon-info-sign row-tooltip" tooltip-placement="right" tooltip="{{'sheet6.tr-08c-tooltip' | translate}}"></span>
+                <span translate="sheet6.tr-08c-desc"></span>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08C.Amount"
+                       ng-change="doCalculationForFields($index, 'tr_08D');
+                                  doCalculationTotalForRow('F6_FUDest', 'tr_08D');"/>
+                <div align="left" ng-show="instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08C.Amount">
+                    <button ng-controller="ModalController" tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
+                            ng-click="open('lg', 'CommentAddEditModal.html', 'CommentAddEditModalInstanceController', instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08C);"
+                            class="glyphicon glyphicon-comment" ></button>
+                    <span ng-if="instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08C.Comment"
+                          tooltip="{{instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08C.Comment}}">
+                        {{instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08C.Comment | limitTo:commentLimit}} ...
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td id="tr_08D">
+                <span class="transaction-code">8D : </span>
+                <span translate="sheet6.tr-08d-desc"></span>
+                <div><span class="formula" translate="sheet6.tr-08d-formula"></span></div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                {{instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08D.Amount}}
+            </td>
+        </tr>
+        <tr>
+            <td><span class="transaction-code">8E : </span><span translate="sheet6.tr-08e-desc"></span></td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08E.Amount"/>
+                <div align="left" ng-show="instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08E.Amount">
+                    <button ng-controller="ModalController" tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
+                            ng-click="open('lg', 'CommentAddEditModal.html', 'CommentAddEditModalInstanceController', instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08E);"
+                            class="glyphicon glyphicon-comment" ></button>
+                    <span ng-if="instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08E.Comment"
+                          tooltip="{{instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08E.Comment}}">
+                        {{instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08E.Comment | limitTo:commentLimit}} ...
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="transaction-code">8F : </span><span translate="sheet6.tr-08f-desc"></span></td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F6_FUDest.Gas[$index].tr_08F.Amount"/>
+            </td>
+        </tr>
+    </table>
+</div> <!-- end of div name="Sheet6Section8" -->
+<!-- end of html subform [ng-form="Sheet6"] -->

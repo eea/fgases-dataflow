@@ -1,0 +1,172 @@
+<!-- html subform [ng-form="Sheet5"] -->
+<div data-name="Sheet5Section10" >
+    <h2><span data-translate="sheet5.section10-heading"></span></h2>
+    
+    <p><span data-translate="sheet5.section10-info1"></span></p>
+    <p><span data-translate="sheet5.section10-info2"></span></p>
+    <p><span data-translate="sheet5.section10-info3"></span></p>
+    <table class="table table-hover table-bordered fixed-table">
+        <colgroup>
+            <col class="fixed-width-gas-transaction-large">
+            <col class="fixed-width-cell-centered-small">
+            <col class="fixed-width-cell-centered-small">
+            <col class="fixed-width-cell-centered-small">
+            <col class="fixed-width-cell-centered-xlarge">
+            <col class="fixed-width-cell-centered-small" ng-repeat="reportedGas in viewModel.sheet5.section10.getSectionGases()">
+        </colgroup>
+        <thead>
+            <tr>
+                <th class="fixed-width-gas-transaction-large">
+                    <span data-translate="common.sheet-transactions-header"></span>
+                </th>
+                <th colspan="2" class="fixed-width-cell-centered-medium">
+                    <span data-translate="sheet5.sum-of-supplied-HFCS"></span>
+                </th>
+                <th class="fixed-width-cell-centered-small">
+                    <span data-translate="sheet5.authorized-quota-amount"></span>
+                </th>
+                <th class="fixed-width-cell-centered-xlarge">
+                    <span data-translate="sheet5.upload-proof-header"></span>
+                    <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet5.upload-proof-tooltip' | translate}}"></span>
+                </th>
+                <th class="fixed-width-cell-centered-small" ng-repeat="reportedGas in viewModel.sheet5.section10.getSectionGases()">
+                    <div align="center" ng-switch="reportedGas.IsCustomComposition">
+                        <span ng-switch-when="true">{{'common.mixture'| translate}} ({{reportedGas.Name}})</span>
+                        <span ng-switch-default>{{reportedGas.Name}}</span>
+                    </div>
+                </th>
+            </tr>
+            <tr>
+                <th class="fixed-width-gas-transaction-large"></th>
+                <th class="fixed-width-cell-centered-small">
+                    <span data-translate="common.unit"></span>
+                </th>
+                <th class="fixed-width-cell-centered-small">
+                    <span data-translate="common.unit-co2eq"></span>
+                </th>
+                <th class="fixed-width-cell-centered-small">
+                    <span data-translate="common.unit-co2eq"></span>
+                </th>
+                <th class="fixed-width-cell-centered-xlarge"></th>
+                <th class="fixed-width-cell-centered-small" ng-repeat="reportedGas in viewModel.sheet5.section10.getSectionGases()">
+                    <span data-translate="common.unit"></span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="fixed-width-gas-transaction-large">
+                    <div id="tr_10A">
+                        <span class="transaction-code">10A : </span>
+                        <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet5.tr-10a-tooltip'| translate}}"></span>
+                        <span data-translate="sheet5.tr-10a-desc"></span>
+                    </div>
+                    <div data-translate="sheet2.tr-05c-add-trading-partner-tooltip"></div>
+                    <div>
+                        <button ng-controller="ModalController" data-tooltip="{{'sheet2.tr-05c-add-trading-partner-tooltip'| translate}}"
+                                ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBackForSheet5,
+                                                    {'title': 'sheet2.tr-05a-trading-partner-modal-title', isMinimalDialog: true,
+                                                            'arrayToPush': instance.FGasesReporting.F5_S10_Auth_NER.tr_10A_TradePartners.Partner,
+                                                            'gasArray': instance.FGasesReporting.F5_S10_Auth_NER.Gas,
+                                                            'emptyInstancePath': 'FGasesReporting.F5_S10_Auth_NER.Gas.tr_10A.TradePartner',
+                                                            'fieldName': 'tr_10A'});"
+                                class="btn btn-primary btn-sm" >
+                            <span class="glyphicon glyphicon-plus-sign"></span>
+                            <span data-translate="sheet2.tr-05a-add-trading-partner"></span>
+                        </button>
+                    </div>
+                </td>
+                <td class="fixed-width-cell-centered-small">
+                    {{ viewModel.sheet5.section10.calculateSumOfS1() | amountTonnes }}
+                </td>
+                <td class="fixed-width-cell-centered-small">
+                    {{ viewModel.sheet5.section10.calculateSumOfS2() | thousandSeparator }}
+                </td>
+                <td class="fixed-width-cell-centered-small">
+                    {{ viewModel.sheet5.section10.calculateSumOfS3() | thousandSeparator }}
+                </td>
+                <td class="fixed-width-cell-centered-xlarge"></td>
+                <td class="fixed-width-cell-centered-small" ng-repeat="reportedGas in viewModel.sheet5.section10.getSectionGases()"></td>
+            </tr>
+            <tr ng-repeat="tradingPartner in viewModel.sheet5.section10.getTr10ATradePartners()">
+                <td class="fixed-width-gas-transaction-large" align="right">
+                    <strong>{{tradingPartner.CompanyName}}</strong>
+                    <!--<hr style="margin: 0.25em">-->
+                    <div>
+                        <small ng-if="tradingPartner.isEUBased">{{tradingPartner.EUVAT}}</small>
+                        <small ng-if="!tradingPartner.isEUBased">
+                            <span data-translate="common.trading-partner-country"></span>
+                            <span>: {{tradingPartner.NonEUCountryOfEstablishment}}</span>
+                            <span ng-if="tradingPartner.NonEURepresentativeName"> - </span>
+                            <span ng-if="tradingPartner.NonEURepresentativeName" data-translate="common.trading-partner-representative-name"></span>
+                            <span ng-if="tradingPartner.NonEURepresentativeName">: {{tradingPartner.NonEURepresentativeName}}</span>
+                        </small>
+                    </div>
+                    <div ng-if="!isTradePartnerFromSheet4(tradingPartner)">
+                        <button ng-controller="ModalController" type="button" class="btn btn-primary btn-xs" style="margin-left: 1em;"
+                                ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                                            {'title': 'sheet2.tr-05a-trading-partner-modal-title', isMinimalDialog: true,
+                                                    'arrayToPush': instance.FGasesReporting.F5_S10_Auth_NER.tr_10A_TradePartners.Partner,
+                                                    'index': $index,
+                                                    'nonEuCountries': codeList.FGasesCodelists.countries.concepts,
+                                                    'fieldName': 'tr_10A'});">
+                            <span data-translate="common.edit"></span>
+                        </button>
+                        <button type="button" class="btn btn-xs" style="margin-left: 1em;"
+                                ng-click="viewModel.sheet5.section10.removeTr10ATradePartner(tradingPartner.PartnerId)">
+                            <span data-translate="common.remove"></span>
+                        </button>
+                    </div>
+                </td>
+                <td class="fixed-width-cell-centered-small">
+                    {{ viewModel.sheet5.section10.getTr10AS1(tradingPartner.PartnerId) | amountTonnes }}
+                </td>
+                <td class="fixed-width-cell-centered-small">
+                    <div>{{ viewModel.sheet5.section10.getTr10AS2(tradingPartner.PartnerId) | thousandSeparator }}</div>
+                </td>
+                <td class="fixed-width-cell-centered-small">
+                    {{ viewModel.sheet4.section9.getAuthorizedQuotaAmount(tradingPartner.PartnerId) | thousandSeparator }}
+                </td>
+                <td class="fixed-width-cell-centered-xlarge">
+                    <div ng-if="viewModel.sheet5.section10.showTr10AUploader(tradingPartner.PartnerId)">
+                        <ul ng-if="viewModel.sheet5.section10.hasTr10ADocuments(tradingPartner.PartnerId)">
+                            <li ng-repeat="document in viewModel.sheet5.section10.getTr10ADocuments(tradingPartner.PartnerId)" class="document">
+                                <a href="{{document.Url}}" target="_blank">{{document.Url}}</a>
+                                <button type="button" class="btn btn-xs" style="margin-left: 1em;"
+                                    ng-click="removeDocument(instance.FGasesReporting.F5_S10_Auth_NER.SupportingDocuments.tr_10A[viewModel.sheet5.section10.getTr10ATradePartnerIndex(tradingPartner.PartnerId)].Document, 0, document);">
+                                    <span data-translate="common.remove"/>
+                                </button>
+                            </li>
+                        </ul>
+                        <div ng-if="!viewModel.sheet5.section10.hasTr10ADocuments(tradingPartner.PartnerId)">
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                            <span data-translate="sheet5.no-documents-warning"></span>
+                        </div>
+                        
+                        <div ng-if="!viewModel.sheet5.section10.hasTr10ADocuments(tradingPartner.PartnerId)">
+                            <input type="file" nv-file-select="uploadFile('FGasesReporting.F5_S10_Auth_NER.SupportingDocuments.tr_10A.' + viewModel.sheet5.section10.getTr10ATradePartnerIndex(tradingPartner.PartnerId) + '.Document')" 
+                                   uploader="uploader" ng-init="configureUploader" style="display:inline; margin-left:5px;"
+                                    ng-disabled="viewModel.sheet5.section10.isTr10AUploaderBlocked(tradingPartner.PartnerId)"/>
+                            <button type="button" class="btn btn-success btn-xs" ng-click="uploadFile('FGasesReporting.F5_S10_Auth_NER.SupportingDocuments.tr_10A.' + viewModel.sheet5.section10.getTr10ATradePartnerIndex(tradingPartner.PartnerId) + '.Document');" 
+                                    ng-if="uploader.queue.length > 0 && !viewModel.sheet5.section10.isTr10AUploaderBlocked(tradingPartner.PartnerId)">
+                                <span class="glyphicon glyphicon-upload"></span> Upload
+                            </button>
+                            <div class="progress" ng-show="uploader.isHTML5" 
+                                 ng-if="uploader.queue.length > 0 && !viewModel.sheet5.section10.isTr10AUploaderBlocked(tradingPartner.PartnerId)">
+                                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="fixed-width-cell-centered-small"
+                    ng-repeat="gasEntry in viewModel.sheet5.section10.getSectionGasEntries()">
+                    <input gas-input ng-model="viewModel.sheet5.section10.getTr10ABindableGasAmountOfTradePartner(tradingPartner.PartnerId, gasEntry.GasCode).amount" 
+                           ng-blur="viewModel.sheet5.section10.refreshTradePartnerSums(tradingPartner.PartnerId)"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<!-- end of html subform [ng-form="Sheet5"] -->

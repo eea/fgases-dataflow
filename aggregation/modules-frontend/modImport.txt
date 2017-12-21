@@ -1,0 +1,362 @@
+Option Compare Database
+Option Explicit
+
+Public Const ODS = "ods"
+Public Const FGASES = "fgases"
+
+Public Const SRC_DB_TABLES = "db_info,data_report,data_report_values,data_company_contacts"
+Public Const SRC_DB_TABLES_FGASES = SRC_DB_TABLES & ",data_blend_components,data_companies,data_report_contacts,data_affiliations,data_report_drafts,data_report_rejected,data_qc_warnings"
+Public Const ODS_LINKED_TABLES_SRC = ""
+Public Const ODS_LINKED_TABLES_DEST = "substance,country,template_x_substance"
+Public Const FGASES_LINKED_TABLES_SRC = ""
+Public Const FGASES_LINKED_TABLES_DEST = ""
+Public Const ODS_DB_TABLES = "company,country,customs_procedure,destruction_technology,reporter,subject,substance,table,value"
+Public Const FGASES_DB_TABLES = "tbl_report,tbl_value,tbl_companies_data,tbl_companies_map,tbl_gases,tbl_blendcomposition,tbl_components,tbl_actor,tbl_countries,tbl_transaction"
+Public Const FGASES_SKIP_TRANSACTIONS = "1E"
+
+Public skipTransactions() As String
+Public countImportReports As Integer
+Public countErrorReports As Integer
+Public countErrorDraft As Integer
+Public countErrorRejected As Integer
+Public countErrorCompanies As Integer
+Public countNewCompanies As Integer
+Public countUpdatedCompanies As Integer
+Public countNewGases As Integer
+Public importTime As Date
+Public countDraftEnvelopes As Integer
+Public countRejectedEnvelopes As Integer
+Private db As DAO.database
+
+'This is the main subroutine that is used to import reports into the final database.
+Public Sub ImportData(srcDbName As String, destDbName As String, dataflow As String, bOnlyMostRecent As Boolean)
+    On Error GoTo Err_import
+
+    Dim rs As Recordset
+    Dim recCount As Integer
+    Dim intImportCounter As Integer
+    Dim varStatus As Variant
+    Dim srcDb As DAO.database
+    Dim strSql As String
+    Dim importLogs As Collection
+    Dim strMsg As String
+    Dim verified As Boolean
+        
+    countImportReports = 0
+    countErrorReports = 0
+    countErrorDraft = 0
+    countErrorRejected = 0
+    countErrorCompanies = 0
+    countNewCompanies = 0
+    countUpdatedCompanies = 0
+    countNewGases = 0
+    countDraftEnvelopes = 0
+    countRejectedEnvelopes = 0
+    
+    'Initialize global database connection objects
+    modDatabases.init srcDbName, destDbName
+    
+    Set srcDb = currentDb
+       
+    If Not modVerifyDb.verifySrc(srcDbName) Then
+        GoTo Exit_import
+    End If
+    If Not modVerifyDb.verifyDest(destDbName) Then
+        GoTo Exit_import
+    End If
+    importHelperData dataflow, destDbName
+
+    skipTransactions = Split(FGASES_SKIP_TRANSACTIONS, ",")
+    
+    If bOnlyMostRecent Then
+        strSql = "SELECT r.* FROM data_report as r inner join( " & _
+        "SELECT company_id, transaction_year, max (release_time) as released " & _
+        "FROM data_report WHERE envelope_isreleased='1' and report_status='submitted' " & _
+        "GROUP BY company_id, transaction_year " & _
+        ") as r1 on (r.company_id=r1.company_id and r.transaction_year=r1.transaction_year and r.release_time=r1.released) " & _
+        "WHERE r.report_id NOT IN (SELECT report_id FROM sys_ignore_list) ORDER BY r.release_time"
+    Else
+        strSql = "SELECT * FROM data_report WHERE envelope_isreleased='1' and report_id NOT IN (SELECT report_id FROM sys_ignore_list) ORDER BY release_time"
+    End If
+    Set rs = srcDb.OpenRecordset(strSql, dbOpenSnapshot)
+    
+    If rs.RecordCount <= 0 And dataflow = ODS Then
+        MsgBox "There are no successfully submitted deliveries in data_report table. Nothing to import!"
+        GoTo Exit_import
+    Else
+        recCount = modDbUtil.CountRecords(rs)
+        If MsgBox("Found " & recCount & " successfully submitted reports from source database. Continue importing?", vbOKCancel) = vbCancel Then
+            GoTo Exit_import
+        End If
+        
+        importTime = Now
+        Set importLogs = New Collection
+        addImportLog importLogs, "", "IMPORT_START", basGlobals.INFO_LOG, "Start data import from " & srcDbName & " to " & destDbName
+        
+        varStatus = SysCmd(acSysCmdClearStatus)
+        
+        If dataflow = FGASES Then
+            ImportFGasesCompanies destDbName, importLogs
+            ' populate large companies
+            modFgasesCompanies.populateLargeCompaniesIds
+        End If
+        
+        Do While Not rs.EOF
+            intImportCounter = intImportCounter + 1
+            varStatus = SysCmd(acSysCmdSetStatus, "Importing report " & intImportCounter & " of " & recCount)
+            If dataflow = ODS Then
+                ImportOdsReport rs, destDbName, bOnlyMostRecent, importLogs
+            Else
+                ImportFGasesReport rs, destDbName, bOnlyMostRecent, importLogs
+            End If
+            rs.MoveNext
+        Loop
+        If dataflow = FGASES Then
+            importDraftEnvelopes destDbName, importLogs
+        End If
+        
+        varStatus = SysCmd(acSysCmdClearStatus)
+    
+        'Result message
+        strMsg = "Data import completed." & Chr(10) & Chr(10)
+        If countImportReports = 0 Then
+            strMsg = strMsg & "No new reports imported"
+        Else
+            strMsg = strMsg & countImportReports & " new report(s) imported into DB."
+        End If
+        If countErrorReports = 0 Then
+            strMsg = strMsg & Chr(10) & "No errors found when importing reports."
+        Else
+            strMsg = strMsg & Chr(10) & "NB! " & countErrorReports & " reports were not imported into DB because of errors."
+        End If
+        If countErrorCompanies = 0 Then
+            strMsg = strMsg & Chr(10) & "No errors found when importing companies."
+        Else
+            strMsg = strMsg & Chr(10) & "NB! " & countErrorCompanies & " companies were not imported into DB because of errors."
+        End If
+        
+        If countErrorDraft = 0 Then
+            strMsg = strMsg & Chr(10) & "No errors found when importing draft envelopes."
+        Else
+            strMsg = strMsg & Chr(10) & "NB! " & countErrorDraft & " draft envelopes were not imported into DB because of errors."
+        End If
+        
+        If countErrorRejected = 0 Then
+            strMsg = strMsg & Chr(10) & "No errors found when importing rejected envelopes."
+        Else
+            strMsg = strMsg & Chr(10) & "NB! " & countErrorRejected & " rejected envelopes were not imported into DB because of errors."
+        End If
+    
+        If countNewCompanies = 0 Then
+            strMsg = strMsg & Chr(10) & Chr(10) & "No new companies imported."
+        Else
+            strMsg = strMsg & Chr(10) & Chr(10) & countNewCompanies & " new company(ies) were inserted."
+        End If
+        If countUpdatedCompanies = 0 Then
+            strMsg = strMsg & Chr(10) & "No new companies data inserted."
+        Else
+            strMsg = strMsg & Chr(10) & countUpdatedCompanies & " companies data updated/inserted."
+        End If
+        If dataflow = FGASES Then
+            If countNewGases = 0 Then
+                strMsg = strMsg & Chr(10) & Chr(10) & "No new gases were imported."
+            Else
+                strMsg = strMsg & Chr(10) & Chr(10) & countNewGases & " new gas(es) were inserted." ' NB! Please verify the data and generate a new XML for BDR!!!"
+            End If
+            
+            If countDraftEnvelopes = 0 Then
+                strMsg = strMsg & Chr(10) & Chr(10) & "No new draft envelopes were imported."
+            Else
+                strMsg = strMsg & Chr(10) & Chr(10) & countDraftEnvelopes & " new draft envelopes were inserted."
+            End If
+            
+            If countRejectedEnvelopes = 0 Then
+                strMsg = strMsg & Chr(10) & "No new rejected envelopes were imported."
+            Else
+                strMsg = strMsg & Chr(10) & countRejectedEnvelopes & " new rejected envelopes were inserted."
+            End If
+        End If
+        strMsg = strMsg & Chr(10) & Chr(10) & "Check error log for further details."
+        
+        addImportLog importLogs, "", "IMPORT_END", basGlobals.INFO_LOG, Replace(strMsg, Chr(10), " ")
+        saveImportLogs importLogs
+    End If
+    
+    
+    
+    MsgBox strMsg
+Exit_import:
+    On Error Resume Next
+    If Not rs Is Nothing Then rs.Close
+    'If Not importDb Is Nothing Then importDb.Close
+    Set rs = Nothing
+    Set importLogs = Nothing
+    'Set importDb = Nothing
+    Set srcDb = Nothing
+    ' Destroy Global Databases
+    modDatabases.destroy
+    Exit Sub
+Err_import:
+    MsgBox "Error importing data: " & err.Description, vbCritical
+    GoTo Exit_import
+End Sub
+
+Public Sub addImportLog(ByRef importLogs As Collection, reportId As String, eventName As String, logLevel As String, strMsg As String, Optional strValueId As String)
+    Dim oImportLog As clsLog
+    
+    Set oImportLog = New clsLog
+    oImportLog.importTime = importTime
+    oImportLog.reportId = modCommonUtil.NullStr(reportId)
+    oImportLog.eventName = modCommonUtil.NullStr(eventName)
+    oImportLog.logLevel = modCommonUtil.NullStr(logLevel)
+    oImportLog.Message = modCommonUtil.NullStr(strMsg)
+    oImportLog.valueId = modCommonUtil.NullStr(strValueId)
+    
+    importLogs.Add oImportLog
+    
+    Set oImportLog = Nothing
+End Sub
+
+Private Sub saveImportLogs(ByRef importLogs As Collection)
+    On Error GoTo err
+    Dim rs As Recordset
+    Dim log As clsLog
+    
+    Set db = currentDb
+
+    Set rs = db.OpenRecordset("sys_import_log", dbOpenDynaset)
+    
+    For Each log In importLogs
+        With rs
+            .AddNew
+            !import_time = log.importTime
+            !report_id = log.reportId
+            !event_name = log.eventName
+            !log_level = log.logLevel
+            !Message = log.Message
+            !value_id = log.valueId
+            .update
+        End With
+    Next
+    
+
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Sub
+err:
+    MsgBox "Error saving import log: " & err.Description, vbCritical
+    GoTo exit_function
+End Sub
+
+Private Sub importHelperData(dataflow As String, destDbName As String)
+
+    If dataflow = ODS Then
+    Else
+        importFdbHelperData destDbName
+    End If
+
+End Sub
+        
+        
+Public Function isBeforeSubmissionDeadline(db As database, dataflow As String, transactionYear As Integer, releaseTime As Date, _
+    importLogs As Collection, reportId As String) As Boolean
+    On Error GoTo err
+    Dim rs As Recordset
+    Dim deadline As Date
+    Dim deadPeriodEnd As Date
+
+    Set rs = db.OpenRecordset("SELECT deadline, dead_period_end FROM sys_deadline where dataflow='" & dataflow & "'", dbOpenSnapshot)
+    
+    If rs.RecordCount > 0 Then
+        rs.MoveFirst
+        deadline = rs(0)
+        deadPeriodEnd = rs(1)
+        isBeforeSubmissionDeadline = ((CompareDates(releaseTime, deadline) <= 0) Or (CompareDates(releaseTime, deadPeriodEnd) >= 0)) And transactionYear >= year(deadline) - 1
+    Else
+        'submission deadline is not set for this year, return true and log event (only for fgases)
+        If dataflow = FGASES Then
+            addImportLog importLogs, reportId, "REPORT_IMPORT_WARNING", basGlobals.DEBUG_LOG, "Submission deadline is not set in 'sys_deadline' table for year: " & transactionYear
+        End If
+        isBeforeSubmissionDeadline = True
+    End If
+
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Function
+err:
+    isBeforeSubmissionDeadline = True
+    MsgBox "Error reading submission deadline info: " & err.Description, vbCritical
+    GoTo exit_function
+End Function
+
+Public Sub InsertData(strSql As String, deleteFirst As Boolean)
+    On Error GoTo Err_insert
+    Dim sql As Variant
+    Dim i As Integer
+    Dim db As database
+    Dim ws As DAO.Workspace
+
+    On Error GoTo Err_insert
+    
+    sql = ""
+    Set ws = DBEngine.Workspaces(0)
+    Set db = currentDb
+    
+    'start transaction
+    ws.BeginTrans
+    
+    If InStr(Trim(strSql), "INSERT INTO") >= 0 Then
+        If deleteFirst Then
+            db.Execute "DELETE FROM data_report", dbFailOnError
+            db.Execute "DELETE FROM data_company_contacts", dbFailOnError
+            db.Execute "DELETE FROM data_blend_components", dbFailOnError
+            db.Execute "DELETE FROM data_report_values", dbFailOnError
+        End If
+        If InStr(sql, ";--") = -1 Then
+            For Each sql In Split(strSql, ";" & Chr(13))
+                sql = Trim(sql)
+                If Len(sql) > 0 Then
+                    db.Execute sql, dbFailOnError
+                    i = i + 1
+                End If
+            Next sql
+        Else
+            For Each sql In Split(strSql, ";--" & Chr(13), , vbTextCompare)
+                sql = Trim(sql)
+                If Len(sql) > 0 Then
+                    If Right(sql, 2) = "--" Then
+                        sql = Mid(sql, 1, Len(sql) - 2)
+                    End If
+                    db.Execute sql, dbFailOnError
+                    i = i + 1
+                End If
+            Next sql
+        End If
+    End If
+    ws.CommitTrans
+    MsgBox i & " SQL statements executed."
+    
+Exit_insert:
+    On Error Resume Next
+    Exit Sub
+Err_insert:
+    ws.rollback
+    MsgBox "Error inserting data: " & err.Description & ". sql=" & sql, vbCritical
+    GoTo Exit_insert
+End Sub
+'Compares two dates, returns 0 if equal, positive if date1 > date2, negative if date2 > date1
+Private Function CompareDates(date1 As Date, date2 As Date) As Integer
+    Dim d1, d2 As Date
+    d1 = DateValue(date1)
+    d2 = DateValue(date2)
+
+    If d1 < d2 Then
+        CompareDates = -1
+    ElseIf d1 > d2 Then
+        CompareDates = 1
+    Else
+        CompareDates = 0
+    End If
+End Function

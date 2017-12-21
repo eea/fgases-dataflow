@@ -1,0 +1,2080 @@
+{
+    "FGasesReporting": {
+        "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+        "@xsi:noNamespaceSchemaLocation": "ttp://dd.eionet.europa.eu/schemas/fgases-2015/FGasesReporting.xsd",
+        "GeneralReportData": {
+            "@xml:lang": "",
+            "@status": "incomplete",
+            "Company": {
+                "@status": "incomplete",
+                "CompanyId": "String",
+                "CompanyName": "String",
+                "PostalAddress": {
+                    "StreetAddress": "String",
+                    "City": "String",
+                    "Region": "String",
+                    "PostalCode": "String"
+                },
+                "Country": {
+                    "@desc": "",
+                    "$": "aa"
+                },
+                "ContactInfo": {
+                    "Telephone": "String",
+                    "FaxNumber": "String",
+                    "Email": "String",
+                    "ContactPerson": "String"
+                },
+                "EoriCode": "String",
+                "VatCode": "String",
+                "NoReporting": true
+            },
+            "SubmissionDate": "1957-08-13",
+            "TransactionYear": 2007,
+            "Activities": {
+                "P": true,
+                "P-HFC": true,
+                "P-other": true,
+                "I": true,
+                "I-HFC": true,
+                "I-other": true,
+                "E": true,
+                "FU": true,
+                "D": true,
+                "Eq-I": true,
+                "Eq-I-RACHP-HFC": true,
+                "Eq-I-other": true,
+                "tr_uth": true,
+                "tr_uth-NER": true,
+                "NIL-Report": true
+            },
+            "HFCs": {
+                "GasName": "String"
+            },
+            "PFCs": {
+                "GasName": "String"
+            },
+            "SF6": {
+                "GasName": "String"
+            },
+            "UnsaturatedHFCsHCFC": {
+                "GasName": "String"
+            },
+            "FluorinatedEthersAlcohols": {
+                "GasName": "String"
+            },
+            "OtherPrefluorinatedCompounds": {
+                "GasName": "String"
+            },
+            "CommonlyUsedMixtures": {
+                "GasName": "String"
+            }
+        },
+        "ReportedGases": {
+            "GasGroup": "HFC",
+            "GasId": "String",
+            "Code": "String",
+            "IsBlend": true,
+            "IsCustomComposition": true,
+            "PreparationCompositions": null,
+            "BlendComponents": {
+                "Component": {
+                    "GasId": "String",
+                    "Code": "String",
+                    "IsOther": true,
+                    "DescriptionIfOther": "String",
+                    "Percentage": 1
+                }
+            }
+        },
+        "F1_S1_4_ProdImpExp": {
+            "TradePartners": {
+                "Partner": {
+                    "PartnerId": "text",
+                    "PartnerName": "text"
+                }
+            },
+            "Totals": {
+                "tr_01ASumAllGases": 3.14159265358979,
+                "tr_01ASumAllGasesCO2Eq": 3.14159265358979,
+                "tr_01ASumRothAllGases": 3.14159265358979,
+                "tr_01ASumRothAllGasesCO2Eq": 3.14159265358979,
+                "tr_02ASumAllGases": 3.14159265358979,
+                "tr_02ASumAllGasesCO2Eq": 3.14159265358979,
+                "tr_02ASumRothAllGases": 3.14159265358979,
+                "tr_02ASumRothAllGasesCO2Eq": 3.14159265358979,
+                "tr_03ASumAllGases": 3.14159265358979,
+                "tr_03ASumAllGasesCO2Eq": 3.14159265358979,
+                "tr_03ASumRothAllGases": 3.14159265358979,
+                "tr_03ASumRothAllGasesCO2Eq": 3.14159265358979
+            },
+            "Gas": {
+                "GasCode": "String",
+                "tr_01A": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_01B": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_01C": {
+                    "Code": "String",
+                    "SumOfPartnerAmounts": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String",
+                    "tr_adePartner": {
+                        "tr_adePartnerID": "String",
+                        "tr_mount": 3.14159265358979,
+                        "Comment": "String"
+                    }
+                },
+                "tr_01D": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_01E": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_02A": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_03A": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_03B": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_03C": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_03D": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_03E": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_03F": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_04A": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_04B": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_04C": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_04D": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_04E": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_04F": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_04G": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_04H": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_04I": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_04J": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_04K": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_04L": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_04M": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                }
+            }
+        },
+        "F2_S5_exempted_HFCs": {
+            "tr_adePartners": {
+                "Partner": {
+                    "PartnerId": "text",
+                    "PartnerName": "text"
+                }
+            },
+            "Gas": {
+                "GasCode": "String",
+                "tr_05A": {
+                    "Code": "String",
+                    "SumOfPartnerAmounts": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String",
+                    "tr_adePartner": {
+                        "tr_adePartnerID": "String",
+                        "tr_mount": 3.14159265358979,
+                        "Comment": "String"
+                    }
+                },
+                "tr_05B": {
+                    "Code": "String",
+                    "SumOfPartnerAmounts": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String",
+                    "tr_adePartner": {
+                        "tr_adePartnerID": "String",
+                        "tr_mount": 3.14159265358979,
+                        "Comment": "String"
+                    }
+                },
+                "tr_05C": {
+                    "Code": "String",
+                    "SumOfPartnerAmounts": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String",
+                    "tr_adePartner": {
+                        "tr_adePartnerID": "String",
+                        "tr_mount": 3.14159265358979,
+                        "Comment": "String"
+                    }
+                },
+                "tr_05D": {
+                    "Code": "String",
+                    "SumOfPartnerAmounts": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String",
+                    "tr_adePartner": {
+                        "tr_adePartnerID": "String",
+                        "tr_mount": 3.14159265358979,
+                        "Comment": "String"
+                    }
+                },
+                "tr_05E": {
+                    "Code": "String",
+                    "SumOfPartnerAmounts": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String",
+                    "tr_adePartner": {
+                        "tr_adePartnerID": "String",
+                        "tr_mount": 3.14159265358979,
+                        "Comment": "String"
+                    }
+                },
+                "tr_05F": {
+                    "Code": "String",
+                    "SumOfPartnerAmounts": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String",
+                    "tr_adePartner": {
+                        "tr_adePartnerID": "String",
+                        "tr_mount": 3.14159265358979,
+                        "Comment": "String"
+                    }
+                },
+                "tr_05G": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_05H": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_05I": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_05J": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                }
+            },
+            "SumOfAllHFCsS1": {
+                "tr_05G": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_05H": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_05I": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_05J": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                }
+            },
+            "SumOfAllHFCsS2": {
+                "tr_05G": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_05H": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_05I": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_05J": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                }
+            }
+        },
+        "F3A_S6A_IA_HFCs": {
+            "Gas": {
+                "GasCode": "String",
+                "tr_06A": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06B": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06C": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06D": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06E": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06F": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06G": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06H": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06I": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06J": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06K": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06L": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06M": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06N": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06O": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06P": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06Q": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06R": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06S": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06T": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06U": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06V": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_06W": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                }
+            }
+        },
+        "F6_FUDest": {
+            "Gas": {
+                "GasCode": "String",
+                "tr_07A": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_08A": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_08B": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_08C": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_08D": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_08E": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_08F": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                }
+            },
+            "Totals": {
+                "tr_07ASumAllGases": 3.14159265358979,
+                "tr_07ASumAllGasesCO2Eq": 3.14159265358979,
+                "tr_07ASumRothAllGases": 3.14159265358979,
+                "tr_07ASumRothAllGasesCO2Eq": 3.14159265358979,
+                "tr_08DSumAllGases": 3.14159265358979,
+                "tr_08DSumAllGasesCO2Eq": 3.14159265358979,
+                "tr_08DSumRothAllGases": 3.14159265358979,
+                "tr_08DSumRothAllGasesCO2Eq": 3.14159265358979
+            }
+        },
+        "F7_s11EquImportTable": {
+            "UISelectedTransactionListCSV": "String",
+            "Gas": {
+                "GasCode": "String",
+                "tr_11A": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A05": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A06": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A07": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A08": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A09": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A10": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A11": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A12": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A13": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A14": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B05": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B06": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B07": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B08": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B09": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B10": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B11": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B12": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B13": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B14": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11C": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11D": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11D01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11D02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11D03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F05": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F06": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F07": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F08": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F09": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11I": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11J": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11K": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11L": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11M": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11N": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11O": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11P": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11Q": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                }
+            },
+            "AmountOfImportedEquipment": {
+                "tr_11A01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A05": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A06": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A07": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A08": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A09": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A10": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A11": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A12": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A13": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A14": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B05": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B06": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B07": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B08": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B09": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B10": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B11": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B12": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B13": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B14": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11C": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11D01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11D02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11D03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F05": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F06": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F07": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F08": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F09": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11G": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11I": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11J": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11K": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11L": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11M": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11N": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11O": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11P": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11Q": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                }
+            },
+            "SumOfAllGasesS1": {
+                "tr_11A01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A05": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A06": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A07": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A08": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A09": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A10": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A11": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A12": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A13": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A14": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B05": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B06": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B07": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B08": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B09": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B10": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B11": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B12": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B13": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B14": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11C": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11D01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11D02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11D03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F05": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F06": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F07": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F08": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F09": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11G": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11I": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11J": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11K": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11L": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11M": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11N": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11O": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11P": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11Q": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                }
+            },
+            "SumOfAllGasesS2": {
+                "tr_11A01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A05": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A06": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A07": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A08": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A09": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A10": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A11": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A12": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A13": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11A14": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B05": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B06": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B07": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B08": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B09": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B10": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B11": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B12": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B13": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11B14": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11C": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11D01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11D02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11D03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11E04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F05": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F06": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F07": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F08": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11F09": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H01": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H02": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H03": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11H04": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11I": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11J": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11K": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11L": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11M": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11N": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11O": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11P": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                },
+                "tr_11Q": {
+                    "Code": "String",
+                    "tr_mount": 3.14159265358979,
+                    "Unit": "String",
+                    "Comment": "String"
+                }
+            },
+            "Totals": {
+                "tr_11GSumAllGasesCO2Eq": 3.14159265358979,
+                "tr_11QSumAllGasesCO2Eq": 3.14159265358979
+            }
+        }
+    }
+}

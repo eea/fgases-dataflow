@@ -1,0 +1,54 @@
+Option Compare Database
+Option Explicit
+Private db As DAO.database
+
+Public Function TableExists(db As database, sTable As String) As Boolean
+    
+    Dim tbl As TableDef
+    If db Is Nothing Then
+        Set db = currentDb()
+    End If
+    
+    TableExists = False
+    
+    For Each tbl In db.TableDefs
+        If tbl.name = sTable Then TableExists = True
+    Next tbl
+    
+End Function
+
+Public Function CountRecords(rs As Recordset) As Integer
+    Dim recCount As Integer
+    If Not rs.EOF Then
+        rs.MoveLast
+        recCount = rs.RecordCount
+        rs.MoveFirst
+    Else
+        recCount = 0
+    End If
+    CountRecords = recCount
+End Function
+
+Function FieldExists(rst As Recordset, strField As String) As Boolean
+    
+    Dim fld As Field
+    FieldExists = False
+    
+    On Error GoTo Err_Handle
+    
+    
+    For Each fld In rst.fields
+        If fld.name = strField Then
+            FieldExists = True
+            Exit Function
+        End If
+    Next fld
+    
+Err_Exit:
+    Exit Function
+    
+Err_Handle:
+    MsgBox "Error " & err.number & ": " & err.Description
+    Resume Err_Exit
+    
+End Function

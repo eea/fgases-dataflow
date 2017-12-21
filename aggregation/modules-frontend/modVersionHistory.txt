@@ -1,0 +1,84 @@
+Option Compare Database
+Option Explicit
+
+' BDR aggregation front-end version history
+' -- Version 3.22 (06 September 2016)
+'   - Fix for QC 2064. Refs #74849
+' -- Version 3.21 (22 December 2015)
+'   - Fix for substances. Refs #29693
+'   - Added function to remove linked tables on import
+'   - Fix for missing substances. Refs #31702
+' -- Version 3.20 (17 December 2015)
+'   - Added generic QC warnings for complex values that need to be calculated withing the webform. Refs #31464
+' -- Version 3.19 (11 December 2015)
+'   - Added feature to save disabled status in FDB, and portal registration date. Refs #29657
+' -- Version 3.18 (09 December 2015)
+'   - Added 2404 QC. Refs #31389
+'   - Added 2403 QC. Refs #31389
+'   - Added 2406 QC. Refs #31389
+' -- Version 3.17 (04 December 2015)
+'    - Change data type of Company portal_code to numeric. Refs #31079
+'    - Added 2409 QC. Refs #29679
+' -- Version 3.16 (27 November 2015)
+'    - Adjusted reporting deadline. Refs #29684
+'    - Changed tbl_users to tbl_companies_users. Refs #29708
+' -- Version 3.15 (10 July 2015)
+'    - Implemented report deadline logic according to Harvesting specs.
+' -- Version 3.14 (02 July 2015)
+'    - Fix comparison of envelope releated dates, to use only date portion of the Date type.
+' -- Version 3.13 (10 June 2015)
+'    - Switch VBA type used for report value ids from Integer to Long (modFdbImport)
+' -- Version 3.12 (14 April 2015)
+'    - Set Gas_Group = 7 for custom Blends containing HFCs and Gas_Group = 9 for custom Blends not containing HFCs.
+'    - write the mixture name also into the field "gas_name_IA" of tbl_gases  (exactly the same text string as written into "gas_name_display")
+' -- Version 3.11 (13 April 2015)
+'    - Set Gas_Group = 7 for custom Blends.
+'    - Replace gas_ID with component_ID for all Fgases in custom blend definitions (it's a bug in webform)
+' -- Version 3.10 (27 March 2015)
+'    - Fix bug in mapping of old companies function
+'    - Do not create QC tasks for calculated values
+' -- Version 3.9 (24 March 2015)
+'    - Create QC task 81 only if Other gas is defined in custom mixture
+' -- Version 3.8 (19 March 2015)
+'    - Fix QC rules for 5A (2028, 2029) and 5B (2031, 2071) - they rely on the explanation inserted into description_reporter_transaction field
+'    - Implement consistency check of reported stocks - check if stocks from previous transaction year is reported
+' -- Version 3.7 (13 March 2015)
+'    - ignore calculated fields in tbl_value (except section 11)
+'    - set gas_ID=142 for gwp values in section 11
+'    - change "unit" to pieces
+'    - set reported_in = report_submission_no when importing custom blends
+' -- Version 3.6 (7 March 2015)
+'    - Set tbl_report.Report_status_BDR = "accepted". Ignore test company dradft, rejected and accepted reports.
+' -- Version 3.5 (3 March 2015)
+'    - Restore Company_ID from tbl_copmanies_data. Ignore test copmany with code=10086
+' -- Version 3.4 (27 February 2015)
+'    - Remove Company_ID from tbl_copmanies_data. Create QC task ID=53
+' -- Version 3.3 (5 February 2015)
+'    - set valid_dataset field in tbl_companies_map after updating tbl_companies_data
+' -- Version 3.2 (January 2015)
+'    - QC rules implementation added
+' -- Version 3.1 (January 2015)
+'    - import new XML reports into tbl_report, tbl_report_values, tbl_affiliations, tbl_gases
+'    - import rejected and draft envelopes from BDR
+' -- Version 3.0 (January 2015)
+'    - import new company data into tbl_copmany_map, tbl_company_data and tbl_users
+' -- Version 2.4 released on June 2014
+'    - Change Fgases IGNORE_OLD_REPORTS  constant to "False", to be able to import reports from <= 2010
+
+' -- Verison 2.0 released on February 2014
+'    - imports ODS data from XML files (reported on 2014) to ODS database
+'    - imports F-Gases data from XML files (reported on 2014) to FDB database
+'    - year 2014 updates (http://taskman.eionet.europa.eu/issues/17951) for FDB import:
+'       * amending the import routine (BDR to FDB): entering a ‘company short name’ into FDB in case of a new reporter
+'       * amending the import routine for missing gases in 1st Jan stocks: (not yet communicated with Enriko):
+'        there are cases, where a company had a 31st December stock in year x-1 but did not select that gas in year x; Example: https://bdr.eionet.europa.eu/fgases/gb/fgas23363/envuuctlg/AutomaticQA_85869_1363192562
+'        we DO then have a warning (potential error) in the automatic QC; We NEED an entry to be written into the FDB with transaction_ID 8 (Stocks_held_1 January) for the gas in question: value: (empty); Comment_value_t prefilled with a text “31st Dec stocks were reported in previous year” + Warning flag set ON.
+'       * Adding Croatia to the list of eligible countries for moving reports from BDR to the FDB (highest priority)
+'           only reports for transactions in 2013 and later are eligible for moving from BDR to the FDB
+'       * We slightly changed the structure of gas & blends related tables in the FDB (and add the 2nd Assessment report GWPs as requested by Eva). The import routine (BDR to FDB) in case of new preparations defined by reporting companies might need to be adapted. New FDB schema is attached.
+'       * Adapt the import routine so that ID37 would be imported for non-producers as well. Currently the import routine only sets the ID37 flag for Producers by comparing the Calculated Total and the Total amount placed on the Community market.
+
+
+' -- Version 1.15 released on 19 April 2013
+'    - imports ODS data from XML files (reported on 2013) to ODS database
+'    - imports F-Gases data from XML files (reported on 2013) to FDB database

@@ -1,0 +1,1737 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<labels xml:lang="en">
+    <Questionnaire-title>Questionnaire on production, import, export, feedstock use and destruction of the substances listed in Annexes I or II of the F-Gas regulation.</Questionnaire-title>
+    <intro>
+        <reporting-info>Reporting information</reporting-info>
+        <reporting-year>Transaction year</reporting-year>
+        <reporting-year-tooltip>Year to which the transactions reported in this report refer to.</reporting-year-tooltip>
+        <intro-h>INTRODUCTION</intro-h>
+        <intro-1>The &lt;a href="http://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.L_.2014.150.01.0195.01.ENG"&gt;Regulation (EU) No 517/2014&lt;/a&gt;, requires reporting on production, import, export, feedstock use, and destruction of the substances listed in Annexes I or II of the F-Gas regulation. These reporting forms are to be completed by each:</intro-1>
+        <li-1>producer, importer and exporter that produced, imported or exported one metric tonne or 100 tonnes of CO&lt;sub&gt;2&lt;/sub&gt; equivalent or more of F-gases. The reportable quantity of F-gases imported or exported covers bulk shipments, including F-gases shipped with equipment for the purpose of charging that equipment.</li-1>
+        <li-2>company that destroyed 1 metric tonne or 1 000 tonnes of CO&lt;sub&gt;2&lt;/sub&gt; equivalent or more of F-gases;</li-2>
+        <li-3>company that used 1 000 tonnes of CO&lt;sub&gt;2&lt;/sub&gt; equivalent or more of F-gases as feedstock;</li-3>
+        <li-5>company that authorised the use of HFC quota to another undertaking.</li-5>
+        <li-4>company that placed on the EU market 500 tonnes of CO&lt;sub&gt;2&lt;/sub&gt; equivalent or more of F-gases contained in imported products or equipment;</li-4>
+        <intro-2>This electronic reporting tool is based on the format set out in &lt;a href="http://eur-lex.europa.eu/legal-content/EN/TXT/?qid=1415192747341&amp;uri=OJ:JOL_2014_318_R_0004"&gt;Commission Implementing Regulation (EU) No 1191/2014&lt;/a&gt;,</intro-2>
+        <confidentiality-h>CONFIDENTIALITY</confidentiality-h>
+        <confidentiality>All information provided via these reporting forms are treated as strictly confidential. No company-specific information is disclosed to the public; all company data are aggregated into summary reports before publication. The Commission and the EEA have established procedures to ensure that all of the data relating to individual companies remains strictly confidential even if it could plausibly be deduced from aggregate figures. No company-specific information is disclosed to the public; all company data are aggregated into summary reports before publication. These procedures limit the release of aggregate figures that might significantly rely on reports from less than three company groups. To this end, company groups that contribute to less than 5 % of an aggregate figure do not count toward the 'three company rule'. Company groups are defined according to affiliations to other companies as reported by both affiliates in the Company Information tab. Concerns regarding confidentiality can be addressed to the Commission or to the entity designated by the Commission.</confidentiality>
+        <instructions-h>INSTRUCTIONS</instructions-h>
+        <instructions>After updating and/or confirming your Company Information form (from the tab above), the "Years &amp; Activities" tab will then be visible. Based upon your selections for activities conducted in the previous calendar year, appropriate reporting forms will be automatically available. Activities conducted in any year should be reported and submitted, no later than 31 March of the following year. For your reference, a &lt;a href="http://ec.europa.eu/clima/policies/f-gas/docs/faq_reporting_en.pdf"&gt;'Frequently Asked Questions' (FAQ) list&lt;/a&gt; is available from the help section of the BDR.</instructions>
+        <instructions-2>Please note that for producers and importers the 1st January stocks will be automatically imported into section 4A/B/C based on the 31st December stocks data reported last year in section 4F/G/H. You have the option to manually edit those numbers.</instructions-2>
+    </intro>
+    <common>
+        <add-explanation>Add Explanation</add-explanation>
+        <delete-value>Delete Value</delete-value>
+        <remove>Remove</remove>
+        <ok>OK</ok>
+        <yes>Yes</yes>
+        <no>No</no>
+        <cancel>Cancel</cancel>
+        <save-changes>Save Changes</save-changes>
+        <discard-changes>Discard Changes</discard-changes>
+        <edit>Edit</edit>
+        <trade-partner-modal-title>Trade Partner Add/Update</trade-partner-modal-title>
+        <trading-partner-company-name>Company name</trading-partner-company-name>
+        <trading-partner-eu-based>Based in EU?</trading-partner-eu-based>
+        <trading-partner-vat-no>EU VAT No.</trading-partner-vat-no>
+        <trading-partner-country>Country of establishment</trading-partner-country>
+        <trading-partner-country-placeholder>Please type country</trading-partner-country-placeholder>
+        <trading-partner-reg-code>Registration code in the DG CLIMA F-gas portal</trading-partner-reg-code>
+        <trading-partner-representative-name>EU Only Representative</trading-partner-representative-name>
+        <trading-partner-representative-vat>EU Only Representative VAT No.</trading-partner-representative-vat>
+        <trading-partner-set-eu-based-field>Please set "Based in EU" Field</trading-partner-set-eu-based-field>
+        <trading-partner-company-name-should-be-at-least-two-characters>Company name must be at least two characters long</trading-partner-company-name-should-be-at-least-two-characters>
+        <trading-partner-all-fields-should-be-set>All fields should be defined</trading-partner-all-fields-should-be-set>
+        <trading-partner-company-name-should-contain-alpha-numeric-characters>Company name must consist of alphanumeric characters only and have at least one Latin character. The first character must be alphanumeric.</trading-partner-company-name-should-contain-alpha-numeric-characters>
+        <trading-partner-vat-not-registered>The entered VAT No. is not registered in the DG CLIMA HFC registry / F-gas portal. Please verify the number entered and/or make sure your trade partner completed their registration. Please note that, for verification purposes, a delay of approx. one working day may apply before new registrations are fully functional.</trading-partner-vat-not-registered>
+        <trading-partner-reg-code-not-registered>The entered code is not registered in the DG CLIMA HFC registry / F-gas portal. Please verify the number entered and/or make sure your trade partner completed their registration. Please note that, for verification purposes, a delay of approx. one working day may apply before new registrations are fully functional.</trading-partner-reg-code-not-registered>
+        <trading-partner-must-be-eu>Only EU-based companies can be named as trade partners for this transaction.</trading-partner-must-be-eu>
+        <trading-partner-own-vat>It seems as if you entered your own company's VAT number here. Please specify the VAT no. of a third party. Own exports of own imports or own production should be reported in section 3B, sheet I.</trading-partner-own-vat>
+        <trading-partner-own-id>It seems as if you entered your own company's portal code here. Please specify the portal code of a third party. Own exports of own imports or own production should be reported in section 3B, sheet I.</trading-partner-own-id>
+
+        <comment-should-contain-alpha-numeric-characters>Comment must have at least one Latin character and be at least 2 characters.</comment-should-contain-alpha-numeric-characters>
+        <click-to-enable>Click to enable</click-to-enable>
+        <other>Other</other>
+        <mixture>Mixture</mixture>
+        <sheet-transactions-header>Transactions/(metric tonnes)</sheet-transactions-header>
+        <sheet-transactions-header-metric-co2eq>Transactions/(t CO2-equivalents)</sheet-transactions-header-metric-co2eq>
+        <unit>unit: t</unit>
+        <unit-co2eq>unit: t CO2e</unit-co2eq>
+        <comment-add-modal-title>Add Comment</comment-add-modal-title>
+        <comment-edit-modal-title>Edit Comment</comment-edit-modal-title>
+        <add-edit-comment-tooltip>Add/Edit Comment</add-edit-comment-tooltip>
+        <amount>Amount</amount>
+        <no-unspecified-mix>For this transaction, there can be no unspecified mix reported.</no-unspecified-mix>
+        <select-p-hfc-to-report-on-transaction>Please select HFC production in the activity selection before reporting this transaction.</select-p-hfc-to-report-on-transaction>
+        <select-p-other-to-report-on-transaction>Please select production of non-HFCs in the activity selection before reporting this transaction.</select-p-other-to-report-on-transaction>
+        <select-i-hfc-to-report-on-transaction>Please select HFC import in the activity selection before reporting this transaction.</select-i-hfc-to-report-on-transaction>
+        <select-i-other-to-report-on-transaction>Please select import of non-HFCs in the activity selection before reporting this transaction.</select-i-other-to-report-on-transaction>
+        <select-i-p-hfc-to-report-on-transaction>Please select production or import of HFCs in the activity selection before reporting this transaction.</select-i-p-hfc-to-report-on-transaction>
+        <select-i-p-other-to-report-on-transaction>Please select production or import of non-HFCs in the activity selection before reporting this transaction.</select-i-p-other-to-report-on-transaction>
+        <select-i-p-to-report-on-transaction>Please select a production or an import activity in the activity selection before reporting this transaction.</select-i-p-to-report-on-transaction>
+        <no-pure-gas>This transaction applies only to F-gas mixtures, it cannot be reported for pure substances.</no-pure-gas>
+        <no-mixture>This transaction applies only to pure substances, it cannot be reported for F-gas mixtures.</no-mixture>
+        <no-documents>No documents uploaded</no-documents>
+        <go-to-tab>Go to Tab</go-to-tab>
+        <show-validation-messages>Show Validation Messages</show-validation-messages>
+        <hide-validation-messages>Hide Validation Messages</hide-validation-messages>
+        <go-to-field>Go to Field</go-to-field>
+        <validate-current-form>Validate current form</validate-current-form>
+        <transaction>Transaction</transaction>
+        <gas>gas</gas>
+        <trade-partner>trade partner</trade-partner>
+        <trading-partner-name-does-not-match-for-given-vat-no>Company name should match with the company name belonging to the VAT No</trading-partner-name-does-not-match-for-given-vat-no>
+        <trading-partner-name-does-not-match-for-given-reg-code>Company name should match with the company name belonging to the portal registration No.</trading-partner-name-does-not-match-for-given-reg-code>
+        <trading-partner-already-exist>Please report on this trading partner only once per reporting section.</trading-partner-already-exist>
+        <trading-partner-country-does-not-match-for-given-reg-code>The data provided for the portal code, country and VAT of Only Representative of this non-EU company do not match with our database. Please revise the entered data and/or make sure your trade partner completed their registration. Please note that, for verification purposes, a delay of approx. one working day may apply before new registrations are fully functional.</trading-partner-country-does-not-match-for-given-reg-code>
+        <trading-partner-name-does-not-match-for-given-country-code>The company you entered could not be found among the companies in the specified country in our database.</trading-partner-name-does-not-match-for-given-country-code>
+        <auth-should-be-selected>Before entering data here, please first select "Quota authoriser" in the activity selection.</auth-should-be-selected>
+        <gas-input-thousand-separator-error>Please use points, not commas, as decimal separators, and do not enter any thousand separators in your values.</gas-input-thousand-separator-error>
+        <gas-input-mmt-threshold-violation>Caution: You are entering a number above 1000. Please make sure you report in units of metric tonnes, not in kilograms. &#xA;&#xA;Revise data by pressing "Cancel", Confirm data by pressing "OK".</gas-input-mmt-threshold-violation>
+        <gas-input-mmt-threshold-violation-dissmiss-dialog>Don't show this confirmation again.</gas-input-mmt-threshold-violation-dissmiss-dialog>
+        <stocks-auto-import-info>The 1st January stocks data for gas {{ gasName }} were automatically pasted into section 4A/B/C based on the 31st December stocks data reported last year in section 4F/G/H. You have the option to edit those numbers.</stocks-auto-import-info>
+    </common>
+    <company-info>
+        <info>Organisation details</info>
+        <name>Organisation name</name>
+        <address>Address</address>
+        <address-street>Street</address-street>
+        <address-number>Number</address-number>
+        <address-city>City</address-city>
+        <address-region>Region</address-region>
+        <address-postcode>Postal Code</address-postcode>
+        <country>Country</country>
+        <country-tooltip>Please select a Member State</country-tooltip>
+        <contact-info>Contact Information</contact-info>
+        <contact-person>Contact person</contact-person>
+        <contact-first-name>First Name</contact-first-name>
+        <contact-last-name>Last Name</contact-last-name>
+        <contact-tel>Telephone</contact-tel>
+        <contact-email>E-mail</contact-email>
+        <website>Website</website>
+        <contact-fax>Fax</contact-fax>
+        <vat>VAT number (for a company)</vat>
+        <eu-country>EU Country</eu-country>
+        <non-eu-country>Non-EU Country</non-eu-country>
+        <eu-legal-representative>Eu Only Representative details</eu-legal-representative>
+        <eu-vat>Eu VAT number of the Only Representative</eu-vat>
+        <eu-legal-representative-name>Only representative name</eu-legal-representative-name>
+        <eu-legal-representative-contact>Only representative contact person name</eu-legal-representative-contact>
+        <eu-legal-representative-email>Only representative contact person e-mail</eu-legal-representative-email>
+        <details-confirmed>You have confirmed the organisation details</details-confirmed>
+        <details-modified>You have chosen to modify the organisation details in DG CLIMA F-gas portal</details-modified>
+        <details-reload>Reload organisation details from DG CLIMA F-gas portal</details-reload>
+        <modify-confirmation>Modify organisation details?</modify-confirmation>
+        <modify-text>The reporting will end at this stage and you are forwarded to DG CLIMA F-gas portal where organisation information can be changed. Are you sure you want to proceed with modifying company information?</modify-text>
+        <affiliation-header>Voluntary identification of members of own company group</affiliation-header>
+        <affiliation-intro>The European Commission and the EEA have established procedures to ensure that reported data will be kept strictly confidential. Aggregated data will not be published unless significantly relying on data reported by companies of at least three company groups.
+            In case you wish to be treated jointly with other reporting companies as belonging to the same company group for the purpose of confidentiality analysis of aggregated data, you are invited to identify other reporting companies of your "company group".
+            &lt;br/&gt;
+            Please note that affiliations can only be reported for companies which already registered in the DG CLIMA F-gas portal at &lt;a target="_blank" href="https://webgate.ec.europa.eu/ods2/"&gt;https://webgate.ec.europa.eu/ods2/&lt;/a&gt;.
+            &lt;br/&gt;
+            Please note that a reported affiliation in one company group will not be accepted unless reported here by both parties.
+        </affiliation-intro>
+        <affiliation-add-tooltip>Voluntarily, you can add affiliation(s) with this button</affiliation-add-tooltip>
+        <affiliation-modal-title>Add Affiliation</affiliation-modal-title>
+        <affiliation-add>Add Affiliation</affiliation-add>
+        <affiliation-edit>Edit Affiliations</affiliation-edit>
+        <affiliation-confirm>Confirm company affiliations</affiliation-confirm>
+        <affiliation-confirmed-message>You have confirmed the company affiliations</affiliation-confirmed-message>
+        <affiliation-nothing-to-report>I do not wish to report on company affiliations</affiliation-nothing-to-report>
+        <affiliation-confirmed-nothing>You have chosen to NOT report on company affiliations</affiliation-confirmed-nothing>
+        <number-of-affiliations>Number of reported affiliated companies is  </number-of-affiliations>
+    </company-info>
+    <activities>
+        <heading>Activities</heading>
+        <producer>EU producer of:</producer>
+        <producer-hfc>HFCs (Annex I, section 1)</producer-hfc>
+        <producer-other>Other fluorinated gases of Annex I or Annex II of Regulation (EU) No 517/2014</producer-other>
+        <importer-bulk>Importer (bulk gases) of:</importer-bulk>
+        <importer-bulk-hfc>HFCs (Annex I, section 1) or mixtures (including pre-blended polyols) containing HFCs</importer-bulk-hfc>
+        <importer-bulk-other>Other fluorinated gases of Annex I or Annex II of Regulation (EU) No 517/2014</importer-bulk-other>
+        <exporter-bulk>Exporter of bulk gases</exporter-bulk>
+        <feedstock-user>EU feedstock user</feedstock-user>
+        <destruction-company>EU destruction company</destruction-company>
+        <manufacturer-containing-fgases>EU manufacturer of products or equipment containing F-gases of Annex I or II: please read information!</manufacturer-containing-fgases>
+        <manufacturer-containing-fgases-info-text>EU manufacturers of products or equipment containing fluorinates gases of Annex I or II of the F-Gas regulation are NOT required to report in case they purchase within the EU the gases used for charging the products/equipment.</manufacturer-containing-fgases-info-text>
+        <manufacturer-containing-fgases-info-text2>In case these gases are imported from outside the EU (or produced within the EU) by the EU manufacturer of products/equipment, the manufacturer should report as an importer/producer of bulk gases (tickboxes above).</manufacturer-containing-fgases-info-text2>
+        <importer-fgases>Importer of products/equipment containing F-gases of Annex I or II:</importer-fgases>
+        <importer-fgases-hfc>Importer of refrigeration, air conditioning or heat pump equipment pre-charged with HFCs or HFC-containing mixtures</importer-fgases-hfc>
+        <importer-fgases-other>Importer of other products or equipment containing fluorinated gases of Annex I or Annex II of Regulation (EU) No 517/2014</importer-fgases-other>
+        <undertaking-authorisation>Undertaking having given an authorisation to use its HFC quota to another undertaking </undertaking-authorisation>
+        <undertaking-authorisation-transaction-year-tooltip>Reporting on issued authorisations is not possible before the 2015 transaction year.</undertaking-authorisation-transaction-year-tooltip>
+        <undertaking-authorisation-ner>Undertaking having received its quota exclusively on the basis of a declaration pursuant to Article 16(2) (new entrants reserve) (AND having given an authorisation for the use of HFC quota)</undertaking-authorisation-ner>
+        <undertaking-authorisation-ner-disabled-tooltip>Please select "Quota authoriser" above, before.</undertaking-authorisation-ner-disabled-tooltip>
+        <nil-report-heading>Nil Report</nil-report-heading>
+        <nil-report-desc>Check following box in case of none of the activities in the transaction year or activities below the reporting thresholds specified in Article 19.</nil-report-desc>
+        <nil-report>Not obliged to report (NIL report)</nil-report>
+        <company-should-be-eu-type>This activity can only be selected by EU-based companies.</company-should-be-eu-type>
+    </activities>
+    <gases>
+        <selection>Selection of gases &amp; mixtures</selection>
+        <selected-gases>Selected Gases</selected-gases>
+        <hfc-selection>HFCs (Annex I, section 1)</hfc-selection>
+        <pfc-selection>PFCs (Annex I, section 2)</pfc-selection>
+        <sf6-selection>SF6 (Annex I, section 3)</sf6-selection>
+        <unsaturated-hfc-selection>Unsaturated HFCs / HCFC (Annex II, section 1)</unsaturated-hfc-selection>
+        <fluorinated-ethers-alcohols-selection>Fluorinated ethers / alcohols (Annex II, section 2)</fluorinated-ethers-alcohols-selection>
+        <other-prefluorinated-selection>Other perfluorinated compounds (Annex II, section 3)</other-prefluorinated-selection>
+        <mixtures-selection>Commonly used HFC-containing mixtures</mixtures-selection>
+        <mixture-definition>Definition process for mixtures not contained in the shortlist:</mixture-definition>
+        <selected-fgases-for-mixture>Selected F-Gases for Mixtures</selected-fgases-for-mixture>
+        <selected-non-fgases-for-mixture>Selected non F-Gases for Mixtures</selected-non-fgases-for-mixture>
+        <add-mixture>Create Mixture</add-mixture>
+        <mixture-name>Trade name of the mixture</mixture-name>
+        <mixture-gas-name>Gas name</mixture-gas-name>
+        <mixture-gas-ratio>Share of gas in mixture (i.e. Percentage '%')</mixture-gas-ratio> <!-- this said "ratio" before, I'm not sure if that term is correct -->
+        <select-predefined-fgases-for-mixture>Select predefined F-Gases from the list</select-predefined-fgases-for-mixture>
+        <select-predefined-non-fgases-for-mixture>Select predefined non F-Gases from list or add other (non-listed) gas</select-predefined-non-fgases-for-mixture>
+        <or>or</or>
+        <select-other-gases-for-mixture>Add non-listed (user-defined) gases to Mixture</select-other-gases-for-mixture>
+        <add-other-gas-to-mixture>Add 'Other' gas</add-other-gas-to-mixture>
+        <add-other-gas-to-mixture-tooltip>Custom gas definition for non-listed gases, all fields are mandatory to fill in</add-other-gas-to-mixture-tooltip>
+        <other-gases-for-mixture>Added Other Gases for Mixture</other-gases-for-mixture>
+        <added-other-gas-name-for-mixture>Name</added-other-gas-name-for-mixture>
+        <added-other-gas-desc-for-mixture>Description</added-other-gas-desc-for-mixture>
+        <add-mixture>Add mixture</add-mixture>
+        <edit-mixture>Edit mixture</edit-mixture>
+        <defined-mixtures>Define new mixtures not contained in the shortlist</defined-mixtures>
+        <custom-mixtures>Custom mixtures</custom-mixtures>
+        <select-at-least-two-gases>Select at least two gases to define a mixture</select-at-least-two-gases>
+        <define-name-and-desc-for-other-gas>Please provide the name / industrial designation for the "other" component.</define-name-and-desc-for-other-gas>
+        <mixture-input-invalid-range>The percentage of gas in mixture has to be greater than 0 and less than 100.</mixture-input-invalid-range>
+        <mixture-total-100>The sum of all component shares in the mixture must equal 100%.</mixture-total-100>
+        <mixture-name-missing>Please define a name for the mixture</mixture-name-missing>
+        <mixture-name-should-contain-alpha-numeric-characters>Mixture name must consist of alphanumeric characters only and have at least one Latin character. The first character must be alphanumeric.</mixture-name-should-contain-alpha-numeric-characters>
+        <other-gas-name-should-contain-alpha-numeric-characters>Non-listed gas description must consist of alphanumeric characters only and have at least one Latin character. The first character must be alphanumeric.</other-gas-name-should-contain-alpha-numeric-characters>
+        <add-mixture-text1>In order report on a mixture not contained in the list, please:</add-mixture-text1>
+        <add-mixture-text2>Specify the trade name / industrial designation of the mixture</add-mixture-text2>
+        <add-mixture-text3>Select the components (if fluorinated gases of Annex I or II of the F-Gas Regulation) in the drop-down box on the left and specify the respective weight percentage</add-mixture-text3>
+        <add-mixture-text4>Select components not contained in Annex I or II of the F-Gas-Regulation in the drop-down box on the right and specify the respective weight percentages.</add-mixture-text4>
+        <add-mixture-text5>For other non-Annex I &amp; II components (not included in the drop-down box on the right) specify the name / industrial designation of that component and specify the weight percentage. I may add more than one additional non-Annex I &amp; II component, if necessary.</add-mixture-text5>
+        <add-mixture-text6>Please make sure that the percentages add up to 100%.</add-mixture-text6>
+        <unspecified-mix-disabled-tooltip>Quantities of an unspecified mix of F-gases can only be reported for destruction, import for destruction or export for destruction. Before selecting this gas, please first select "Destruction company", "Importer" and/or "Exporter" in the activity selection.</unspecified-mix-disabled-tooltip>
+        <discourage-unspecified-mix-msg>You have selected 'Unspecified mix of F-gases containing HFCs for destruction'. Instead of reporting on such an 'unspecified mix', you are encouraged to report on your best guess on a likely composition of that mixture. For specifying such a guess, please click "OK", for continuing with the 'unspecified mix', click "Cancel".</discourage-unspecified-mix-msg>
+    </gases>
+    <sheet1>
+        <section1-heading>Section 1: TO BE FILLED IN BY PRODUCERS OF GASES</section1-heading>
+		<section1-info1>Quantities shall be reported in metric tonnes with accuracy to the third decimal place, separately for each gas listed in Annex I or Annex II of Regulation (EU) No 517/2014.</section1-info1>
+		<section1-info2>Transactions 1A – 1E apply to EU producers of gases and cannot be reported for mixtures. Transactions 1F -1H apply to producers of mixtures and can only be reported for mixtures. Where an undertaking both produces gases and blends these gases into mixtures before placing on the market, it should report both on production of gases (1A-1E) and placing on the market of mixtures (1F – 1H).</section1-info2>
+        <tr-01a-desc>Total quantity of production from facilities in the Union, including unwanted by-products and recovered by-production</tr-01a-desc>
+        <tr-01b-desc>Thereof: Recovered by-production and unwanted by-products that were never placed on the market and destroyed in the reporting undertaking’s own facilities</tr-01b-desc>
+        <tr-01b-tooltip>Reports from producers which carry out destruction on the total quantities destroyed shall be made in reporting section 8</tr-01b-tooltip>
+        <tr-01c-desc>Thereof: Recovered by-production and unwanted by-products that were never placed on the market and handed over to other undertakings for destruction</tr-01c-desc>
+        <tr-01c-tooltip>The undertaking carrying out the destruction shall be identified.</tr-01c-tooltip>
+        <tr-01c-trading-partner-modal-title>Add Trading Partner</tr-01c-trading-partner-modal-title>
+        <tr-01c-add-trading-partner>Add a Trading Partner to Report</tr-01c-add-trading-partner>
+        <tr-01c-add-trading-partner-tooltip>If You want to report in this transaction, you can add trading partner(s) with this button</tr-01c-add-trading-partner-tooltip>
+        <tr-01d-desc>Thereof: By-products and unwanted production that was destroyed and never placed on the market</tr-01d-desc>
+        <tr-01d-formula>[1D = 1B + 1C]</tr-01d-formula>
+        <tr-01e-desc>Production available for sale</tr-01e-desc>
+        <tr-01e-formula>[1E = 1A - 1D]</tr-01e-formula>
+        <tr-01f-desc>Total amount of produced mixtures placed on the EU market for the first time.</tr-01f-desc>
+        <tr-01f-tooltip>Quantities reported here should not include imported mixtures placed on the EU market for the first time, as reported in section 4M. ('Mixture' means a fluid composed of two or more substances, at least one of which is a substance listed in Annex I or in Annex II of Regulation (EU) No 517/2014.)</tr-01f-tooltip>
+        <tr-01g-desc>Thereof: mixtures produced using other mixtures in the blending process</tr-01g-desc>
+        <tr-01h-desc>Thereof: mixtures produced without using other mixtures in the blending process</tr-01h-desc>
+        <tr-01h-formula>[1H = 1F - 1G]</tr-01h-formula>
+        <voluntary-reporting>Voluntary Reporting</voluntary-reporting>
+        <tr-01i-desc>Total purchases from the EU market</tr-01i-desc>
+        <tr-01j-desc>Total EU sales</tr-01j-desc>
+        <voluntarily-tooltip>Data may be voluntarily reported for consistency checking.</voluntarily-tooltip>
+        <tr-01k-desc>Total EU sales (as determined from entries in all sections)</tr-01k-desc>
+        <tr-01k-formula>[1K = 1A - 1B - 1C + 1I + 2A - 3A + 4A - 4F - 7A]</tr-01k-formula>
+        <tr-01k-tooltip>In case  1K does not equal 1J for all gases, reporters a re encouraged to identify the reason.</tr-01k-tooltip>
+        <section2-heading>Section 2: TO BE FILLED IN BY IMPORTERS OF GASES</section2-heading>
+		<section2-info1>Quantities shall be reported in metric tonnes with accuracy to the third decimal place, separately for each gas listed in Annex I or Annex II to Regulation (EU) No 517/2014, for mixtures containing at least one of those gases or for each gas or mixture contained in imported pre-blended polyols.</section2-info1>
+		<section2-info2>Only bulk imports shall be reported here, including quantities shipped alongside equipment for the purpose of charging that equipment after import, but not quantities contained in equipment. Imports of gases contained in products or equipment may be subject to reporting in reporting section 11. </section2-info2>
+		<section2-info3>All imports shall be reported, except imports for transit through the Unions customs territory or imports under other procedures that allow for a temporary movement of the goods on the customs territory provided that in the latter case the goods remain no longer than 45 days on the customs territory.</section2-info3>
+        <tr-02a-desc>Total amount imported into the Union in bulk</tr-02a-desc>
+        <tr-02b-desc>Amount imported into the Union by the reporting undertaking, not released for free circulation, and re-exported by the reporting undertaking contained in products or equipment (not in bulk)</tr-02b-desc>
+        <tr-02b-tooltip>For example gases imported for inward processing, charged into products or equipment and subsequently re-exported. In case the re-exports occur in the same year as the import, the respective amounts should be reported both in 2A (total imports) and 2B (re-exports within products/equipment). In case the re-exports occur in a later year, the amounts should be reported in 2A and 4H (31st December stocks) for the year of import and in 2B and 4C (1st January stocks) for the year of re-export.</tr-02b-tooltip>
+        <tr-02b-mandatory-comment>Please provide a short description of your company's operations resulting in an re-export of imported gases within products or equipment, without having the gases released by customs for free circulation</tr-02b-mandatory-comment>
+        <section3-heading>Section 3: TO BE FILLED IN BY EXPORTERS OF GASES</section3-heading>
+		<section3-info1>Quantities shall be reported in metric tonnes with accuracy to the third decimal place, separately for each gas listed in Annex I or Annex II to Regulation (EU) No 517/2014, for mixtures containing at least one of those gases or for each gas or mixture contained in exported pre-blended polyols.</section3-info1>
+		<section3-info2>Only exports of bulk gases, including any quantities shipped alongside equipment for the purpose of charging that equipment after export, shall be reported under this Section.</section3-info2>
+		<section3-info3>Quantities from own production or own import supplied to other undertakings in the Union for direct export shall be reported in reporting Section 5.</section3-info3>
+        <tr-03a-desc>Total amount exported from the Union in bulk</tr-03a-desc>
+        <tr-03b-desc>thereof: produced or imported by the reporting undertaking itself</tr-03b-desc>
+        <tr-03b-disabled-tooltip>Before entering data here, please first select "Producer" or "Importer"  in the activity selection.</tr-03b-disabled-tooltip>
+        <tr-03c-desc>thereof: purchased from other undertakings within the Union (calculated remainder)</tr-03c-desc>
+        <tr-03c-formula>[3C = 3A - 3B]</tr-03c-formula>
+        <tr-03d-desc>thereof: Amount exported for recycling</tr-03d-desc>
+        <tr-03e-desc>thereof: Amount exported for reclamation</tr-03e-desc>
+        <tr-03f-desc>thereof: Amount exported for destruction</tr-03f-desc>
+        <section4-heading>Section 4: TO BE FILLED IN BY PRODUCERS AND IMPORTERS OF GASES</section4-heading>
+		<section4-info1>Quantities shall be reported in metric tonnes with accuracy to the third decimal place, separately for each gas listed in Annex I or Annex II to Regulation (EU) No 517/2014 or for mixtures containing at least one of those gases or for each gas or mixture contained in pre-blended polyols.</section4-info1>
+        <tr-04a-desc>Total bulk stocks on 1 January, both from EU purchases and own imports or production</tr-04a-desc>
+        <tr-04b-desc>- thereof: Stocks on 1 January of quantities from own import or production</tr-04b-desc>
+        <tr-04c-desc>- thereof: not placed on the EU market before 1 January
+            (for stocks from own imports = not released for free circulation in the EU)</tr-04c-desc>
+        <tr-04c-tooltip>In particular unsold own production and own imports not released for free circulation</tr-04c-tooltip>
+        <tr-04d-desc>- thereof: already placed on the EU market before 1 January</tr-04d-desc>
+        <tr-04d-formula>[4D = 4B - 4C]</tr-04d-formula>
+        <tr-04d-tooltip>In particular own imports released for free circulation</tr-04d-tooltip>
+        <tr-04e-desc>- thereof: Other stocks on 1 January</tr-04e-desc>
+        <tr-04e-formula>[4E = 4A - 4B]</tr-04e-formula>
+        <tr-04e-tooltip>In particular from purchases within the Union</tr-04e-tooltip>
+        <tr-04f-desc>Total bulk stocks on 31 December, both from EU purchases and own imports or production</tr-04f-desc>
+        <tr-04f-formula>[4F = 4G - 4H]</tr-04f-formula>
+        <tr-04g-desc>- thereof: 31 December stocks of quantities from own import or production</tr-04g-desc>
+        <tr-04h-desc>- thereof: not yet placed on the EU market by 31 December
+            (for stocks from own imports = not yet released for free circulation in the EU)</tr-04h-desc>
+        <tr-04h-tooltip>In particular unsold own production, own imports not released for free circulation</tr-04h-tooltip>
+        <tr-04i-desc>- thereof: already placed on the EU market by 31 December</tr-04i-desc>
+        <tr-04i-formula>[4I = 4G-4H]</tr-04i-formula>
+        <tr-04i-tooltip>In particular own import released for free circulation</tr-04i-tooltip>
+        <tr-04j-desc>- thereof: Other stocks on 31 December</tr-04j-desc>
+        <tr-04j-formula>[4J = 4F - 4G]</tr-04j-formula>
+        <tr-04j-tooltip>In particular from purchases within the Union</tr-04j-tooltip>
+        <tr-04k-desc>Amount reclaimed by the undertaking itself</tr-04k-desc>
+        <tr-04l-desc>Amount recycled by the undertaking itself</tr-04l-desc>
+        <tr-04k-l-disabled-tooltip>Before entering data here, please first select "HFC Producer" or "HFC Importer"  in the activity selection.</tr-04k-l-disabled-tooltip>
+        <tr-04m-desc>Total amount physically placed on the market (as determined from entries in sections 1–4)</tr-04m-desc>
+        <tr-04m-formula>[4M = 1E + 2A -2B - 3B + 4C - 4H]</tr-04m-formula>
+    </sheet1>
+    <sheet2>
+        <section5-heading>Section 5: QUANTITIES FOR USES EXEMPTED UNDER ARTICLE 15(2), TO BE FILLED IN BY PRODUCERS AND IMPORTERS OF HYDROFLUOROCARBONS</section5-heading>
+		<section5-info1>Quantities shall be reported in metric tonnes with accuracy to the third decimal place, separately for each hydrofluorocarbon (for gases listed in Section 1 of Annex I to Regulation (EU) No 517/2014, for mixtures or pre-blended polyols containing at least one of those gases).</section5-info1>
+        <tr-05a-desc>Quantity imported into the Union for destruction </tr-05a-desc>
+        <tr-05a-tooltip>The undertaking/s carrying out the destruction shall be specified.</tr-05a-tooltip>
+        <tr-05a-trading-partner-modal-title>Add Trading Partner</tr-05a-trading-partner-modal-title>
+        <tr-05a-add-trading-partner>Add a Trading Partner to Report</tr-05a-add-trading-partner>
+        <tr-05a-add-trading-partner-tooltip>If You want to report in this transaction, you can add trading partner(s) with this button</tr-05a-add-trading-partner-tooltip>
+        <tr-05a-disabled-tooltip>Before entering data here, please first select "HFC Importer"  in the activity selection.</tr-05a-disabled-tooltip>
+        <tr-05b-desc>Quantity used by a producer or importer in feedstock applications or supplied directly by a producer or an importer to undertakings for use in feedstock applications.</tr-05b-desc>
+        <tr-05b-tooltip>The feedstock using undertaking/s shall be specified</tr-05b-tooltip>
+        <tr-05b-trading-partner-modal-title>Add Trading Partner</tr-05b-trading-partner-modal-title>
+        <tr-05b-add-trading-partner>Add a Trading Partner to Report</tr-05b-add-trading-partner>
+        <tr-05b-add-trading-partner-tooltip>If You want to report in this transaction, you can add trading partner(s) with this button</tr-05b-add-trading-partner-tooltip>
+        <tr-05c-desc>Quantity supplied directly to undertakings for export out of the Union, where those quantities were not subsequently made available to another party within the Union prior to export</tr-05c-desc>
+        <tr-05c-tooltip>The exporting undertaking/s shall be specified. Verification documents should be provided.</tr-05c-tooltip>
+        <tr-05c-trading-partner-modal-title>Add Trading Partner</tr-05c-trading-partner-modal-title>
+        <tr-05c-add-trading-partner>Add a Trading Partner to Report</tr-05c-add-trading-partner>
+        <tr-05c-add-trading-partner-tooltip>If You want to report in this transaction, you can add trading partner(s) with this button</tr-05c-add-trading-partner-tooltip>
+        <tr-05d-desc>Quantity supplied directly for use in military equipment</tr-05d-desc>
+        <tr-05d-tooltip>The receiving undertaking/s for use in military equipment shall be specified.</tr-05d-tooltip>
+        <tr-05d-trading-partner-modal-title>Add Trading Partner</tr-05d-trading-partner-modal-title>
+        <tr-05d-add-trading-partner>Add a Trading Partner to Report</tr-05d-add-trading-partner>
+        <tr-05d-add-trading-partner-tooltip>If You want to report in this transaction, you can add trading partner(s) with this button</tr-05d-add-trading-partner-tooltip>
+        <tr-05e-desc>Quantity supplied directly to an undertaking using it for the etching of semiconductor material or the cleaning of chemicals vapour deposition chambers within the semiconductor manufacturing sector</tr-05e-desc>
+        <tr-05e-tooltip>The receiving semiconductor manufacturer/s shall be specified.</tr-05e-tooltip>
+        <tr-05e-trading-partner-modal-title>Add Trading Partner</tr-05e-trading-partner-modal-title>
+        <tr-05e-add-trading-partner>Add a Trading Partner to Report</tr-05e-add-trading-partner>
+        <tr-05e-add-trading-partner-tooltip>If You want to report in this transaction, you can add trading partner(s) with this button</tr-05e-add-trading-partner-tooltip>
+        <tr-05f-desc>Quantity supplied directly to an undertaking producing metered dose inhalers for the delivery of pharmaceutical ingredients</tr-05f-desc>
+        <tr-05f-tooltip>The receiving producer/s of metered dose inhalers for the delivery of pharmaceutical ingredients shall be specified.</tr-05f-tooltip>
+        <tr-05f-trading-partner-modal-title>Add Trading Partner</tr-05f-trading-partner-modal-title>
+        <tr-05f-add-trading-partner>Add a Trading Partner to Report</tr-05f-add-trading-partner>
+        <tr-05f-add-trading-partner-tooltip>If You want to report in this transaction, you can add trading partner(s) with this button</tr-05f-add-trading-partner-tooltip>
+        <tr-05g_j-disclaimer>Please notice that the parameters 5H to 5J are values automatically calculated from the reporting data provided by you. These parameters are included in the BDR envelope as a service to companies for better understanding of their data provided. The disclosure of these values does not constitute a legal notification related to compliance with company quotas. Compliance with the company quota will be established by the European Commission only at a later time when all relevant data is available, which can include, in particular, the verification report by the independent auditor according to Article 19(6).</tr-05g_j-disclaimer>
+        <tr-05g-desc>Total reported amounts of hydrofluorocarbons supplied to exempted uses of Art. 15 (2)</tr-05g-desc>
+        <tr-05g-formula>[5G = sum(5A) + sum(5B) + sum(5C_exempted) + sum(5D) + sum(5E) + sum(5F)]</tr-05g-formula>
+        <tr-05h-desc>Total amount of hydrofluorocarbons physically placed on the market</tr-05h-desc>
+        <tr-05h-formula>[5H = 4M]</tr-05h-formula>
+        <tr-05i-desc>Total quantities of exempted uses of hydrofluorocarbons</tr-05i-desc>
+        <tr-05i-formula>[5I = sum(5A) + sum(5B) + sum(5C_exempted) + sum(5D) + sum(5E)]</tr-05i-formula>
+        <tr-05j-desc>Calculated amount of hydrofluorocarbons physically placed on the market, excluding exempted uses</tr-05j-desc>
+        <tr-05j-formula>[5J = max ( 5H - 5I , 0 )]</tr-05j-formula>
+        <voluntary-reporting>Voluntary Reporting</voluntary-reporting>
+        <tr-05r-desc>Quantities supplied directly to undertakings for manufacturing of equipment in the Union, where such equipment is subsequently directly exported out of the Union</tr-05r-desc>
+        <voluntarily-tooltip>Data may be voluntarily reported for consistency checking.</voluntarily-tooltip>
+        <tr-05r-tooltip>Data on supply for the manufacturing of equipment that is directly exported may be provided for information purposes, and should specify the exporting equipment manufacturer and quantities that were exported.</tr-05r-tooltip>
+        <tr-05r-trading-partner-modal-title>Add Trading Partner</tr-05r-trading-partner-modal-title>
+        <tr-05r-add-trading-partner>Add a Trading Partner to Report</tr-05r-add-trading-partner>
+        <tr-05r-add-trading-partner-tooltip>If You want to report in this transaction, you can add trading partner(s) with this button</tr-05r-add-trading-partner-tooltip>
+        <verified-desc>I take note of the obligation to have the transactions reported for the quota exemption of Art 15(2c) verified according to Annex V and Art. 19 (6) of the F-Gas Regulation: The undertaking shall keep the verification report for at least five years. The verification report shall be made available, on request, to the competent authority of the Member State concerned and to the Commission.</verified-desc>
+        <documents>Verification documents</documents>
+        <upload-document>Upload new verification document</upload-document>
+        <upload-document-text1>The legal deadline for the verification document(s) to be available is 30 June while the deadline for reporting is 31 March. However, in case the verification document(s) would be available in time for the reporting deadline, reporters have the option to attach here the verification document(s) to their report by means of a file upload.</upload-document-text1>
+        <upload-document-text2>Otherwise, reporting companies need to be prepared to make the verification report available, on request, to the competent authority of the Member State concerned and to the Commission.</upload-document-text2>
+        <qc-2044-tooltip>You specified quota-exempt supplies to third parties for direct export in bulk (5C_exempted). Note that you are therefore obliged to have this reporting verified. Please refer to section 9 and tick the box just under the form there to acknowledge this obligation. You also have the option to upload a verification document along with your report.</qc-2044-tooltip>
+    </sheet2>
+    <sheet3>
+        <section6-heading>Section 6: CATEGORIES OF APPLICATION OF GASES FOR THE EU MARKET, TO BE FILLED IN BY PRODUCERS AND IMPORTERS OF GASES</section6-heading>
+		<section6-info1>Quantities shall be reported in metric tonnes with accuracy to the third decimal place, separately for each gas listed in Annex I or Annex II to Regulation (EU) No 517/2014 or mixture containing at least one of those gases.</section6-info1>
+        <tr-06a-desc>Export</tr-06a-desc>
+        <tr-06a-tooltip>For hydrofluorocarbons, the amount reported here [6A] shall be the same amount or higher as that reported in reporting section 5 as supplied directly to undertakings for export out of the Union, where those quantities were not subsequently made available to any other party within the Union, prior to export [5C].</tr-06a-tooltip>
+        <tr-06b-desc>Destruction</tr-06b-desc>
+        <tr-06b-tooltip>For hydrofluorocarbons, the amount reported here [6B] shall be the same amount or higher as that reported in reporting section 5 as imported into the Union for destruction [5A].</tr-06b-tooltip>
+        <tr-06c-desc>Military equipment</tr-06c-desc>
+        <tr-06c-tooltip>For hydrofluorocarbons, the amount reported here [6C] shall be the same amount or higher as that reported in reporting section 5 as supplied directly for use in military equipment [5D].</tr-06c-tooltip>
+        <tr-06d-desc>Refrigeration, air-conditioning and heating</tr-06d-desc>
+        <tr-06e-desc>Other heat transfer fluids</tr-06e-desc>
+        <tr-06f-desc>Foams</tr-06f-desc>
+        <tr-06g-desc>Production of pre-blended polyols, e. g. for PU foam</tr-06g-desc>
+        <tr-06h-desc>Fire protection</tr-06h-desc>
+        <tr-06i-desc>Aerosols – medical dose inhalers</tr-06i-desc>
+        <tr-06i-tooltip>For hydrofluorocarbons, the amount reported here [6I] shall be the same amount or higher  as that reported in reporting section 5 as supplied directly to an undertaking producing metered dose inhalers for the delivery of pharmaceutical ingredients [5F].</tr-06i-tooltip>
+        <tr-06j-desc>Aerosols - other uses</tr-06j-desc>
+        <tr-06k-desc>Solvents</tr-06k-desc>
+        <tr-06l-desc>Feedstock</tr-06l-desc>
+        <tr-06l-tooltip>For hydrofluorocarbons, the amount reported here [6L] shall be the same amount  or higher as that reported in reporting section 5 as used by a producer in feedstock applications or supplied directly by a producer or an importer to undertakings for use in feedstock applications [5B].</tr-06l-tooltip>
+        <tr-06m-desc>Semiconductor manufacture</tr-06m-desc>
+        <tr-06m-tooltip>For hydrofluorocarbons, the amount reported here [6M] shall be the same amount or higher as that reported in reporting section 5 as supplied directly to an undertaking using it for the etching of semiconductor material or the cleaning of chemicals vapour deposition chambers within the semiconductor manufacturing sector [5E].</tr-06m-tooltip>
+        <tr-06n-desc>Photovoltaics manufacture</tr-06n-desc>
+        <tr-06o-desc>Other electronics manufacture</tr-06o-desc>
+        <tr-06p-desc>Electrical equipment</tr-06p-desc>
+        <tr-06q-desc>Particle accelerators</tr-06q-desc>
+        <tr-06r-desc>Magnesium die casting operations</tr-06r-desc>
+        <tr-06s-desc>Anaesthetics</tr-06s-desc>
+        <tr-06t-desc>Other or unknown application</tr-06t-desc>
+        <tr-06t-tooltip>Other application/s shall be specified and unknown application shall be explained.</tr-06t-tooltip>
+        <tr-06u-desc>Leakage during storage, transport or transfer</tr-06u-desc>
+        <tr-06u-tooltip>Where such quantities are reported, an explanation should be provided</tr-06u-tooltip>
+        <tr-06v-desc>Accountancy adjustments</tr-06v-desc>
+        <tr-06v-tooltip>Where such quantities are reported, an explanation should be provided</tr-06v-tooltip>
+        <tr-06w-desc>Total of intended applications</tr-06w-desc>
+        <tr-06w-formula>[6W = 6A + 6B + 6C + 6D + 6E + 6F + 6G + 6H + 6I + 6J + 6K + 6L + 6M + 6N + 6O + 6P + 6Q + 6R + 6S + 6T + 6U + 6V]</tr-06w-formula>
+        <tr-06w-tooltip>If data are reported correctly, then the total quantities for the categories of applications [6W] will correspond to the calculated total quantity supplied to the Union market [6X].</tr-06w-tooltip>
+        <tr-06x-desc>Total gas supplied to the Union market</tr-06x-desc>
+        <tr-06x-formula>[6X = 1E + 2A - 2B - 3B + 4B - 4G + 4K]</tr-06x-formula>
+    </sheet3>
+    <sheet4>
+        <section9-heading>Section 9: TO BE FILLED IN BY PRODUCERS OR IMPORTERS HAVING AUTHORISED THE USE OF A HYDROFLUOROCARBON QUOTA TO UNDERTAKINGS PLACING ON THE MARKET REFRIGERATION, AIR CONDITIONING AND HEAT PUMP EQUIPMENT CHARGED WITH HYDROFLUOROCARBONS</section9-heading>
+        <section9-info1>Quantities shall be reported in tonnes of CO2 equivalents with accuracy to 1 tonne of CO2 equivalent, without distinction between different hydrofluorocarbons.</section9-info1>
+        <section9-info2>Only authorisations issued during the calendar year for which the report is submitted shall be reported.</section9-info2>
+        <section9-info3>Quantities subject to authorisations to use a quota given to producers or importers of pre-charged equipment under Article 18(2) of Regulation (EU) No 517/2014</section9-info3>
+        <amount-of-hfcs>Amount of HFCs</amount-of-hfcs>
+        <tr-09a-head>For your convenience, authorisations as duly registered in the HFC registry by the date indicated below have been imported into the reporting form (9A_imp).  Additional information on authorisations may be added below (9A_add), however this is subject to acceptance at a later time and will lead to a need for justification and the presentation of proof.</tr-09a-head>
+        <tr-09a_imp-desc>Quota authorisations given to importers of refrigeration, air conditioning and heat pump equipment charged with hydrofluorocarbons (automatically imported fron the HFC registry)</tr-09a_imp-desc>
+        <tr-09a_add-desc>Quota authorisations given to importers of refrigeration, air conditioning and heat pump equipment charged with hydrofluorocarbons (additional to registry data)</tr-09a_add-desc>
+        <tr-09a_add-tooltip>The undertaking receiving the authorisation shall be specified.</tr-09a_add-tooltip>
+        <tr-09a_add-add-trading-partner-tooltip>If You want to report in this transaction, you can add trading partner(s) with this button</tr-09a_add-add-trading-partner-tooltip>
+        <tr-09a_add-add-trading-partner>Add a Trading Partner to Report</tr-09a_add-add-trading-partner>
+        <tr-09a_add-trading-partner-modal-title>Add Trading Partner</tr-09a_add-trading-partner-modal-title>
+        <tr-09A_add-mandatory-comment>By adding data in section 9A_add you are trying to report an authorisation that is not registered in the HFC registry. Please do not repeat in 9A_add authorisations that are covered in the HFC registry and contained in the data of section 9A_imp.
+            There should be no need for reporting authorisations outside the scope of 9A_imp, as authorisations can only be used by the recipient to cover their equipment imports in case the authorisation was duly registered in the HFC registry by 31 December.
+            If you are sure that your report should deviate in section 9A from the data as given in 9A_imp, please add a comment to explain why your authorisations were not registered in the HFC registry. You must be able to provide proof during quota compliance checking at a later time.
+        </tr-09A_add-mandatory-comment>
+        <tr-09a-desc>Quota authorisations given to importers of refrigeration, air conditioning and heat pump equipment charged with hydrofluorocarbons</tr-09a-desc>
+        <tr-09a-formula>[9A = Sum(9A_imp) + Sum(9A_add)]</tr-09a-formula>
+        <tr-09a-desc-tail>Date of HFC registry extract for 9A: {{ date }}</tr-09a-desc-tail>
+        <tr-09a-registry-description>For comparison: Quota authorisations given to producers or importers of pre-charged equipment, as recorded in the HFC registry [t CO2e]</tr-09a-registry-description>
+        <tr-09b_f-disclaimer>Please notice that the parameters 9B to 9F are values automatically calculated from the reporting data provided by you, while 9G is imported from the HFC Registry. These parameters are included in the BDR envelope as a service to companies and allow them to make a preliminary check of their quota compliance already at the stage of reporting. The disclosure of these values does not constitute a legal notification of compliance with the quota. Compliance with the quota will be established by the European Commission only at a later time when all relevant data is available, which can include, in particular, the verification report by the independent auditor according to Article 19(6).</tr-09b_f-disclaimer>
+        <tr-09b-desc>Total amount of bulk hydrofluorocarbons physically placed on the market</tr-09b-desc>
+        <tr-09b-formula>[9B = 5H]</tr-09b-formula>
+        <tr-09c-desc>Total amount of hydrofluorocarbons regarded as placed on the EU market (including authorisations)</tr-09c-desc>
+        <tr-09c-formula>[9C = 9B + 9A]</tr-09c-formula>
+        <tr-09d-desc>Total amount of exempted uses of bulk hydrofluorocarbons</tr-09d-desc>
+        <tr-09d-formula>[9D = 5I]</tr-09d-formula>
+        <tr-09e-desc>Calculated amount of bulk hydrofluorocarbons physically placed on the market excluding exempted uses</tr-09e-desc>
+        <tr-09e-formula>[9E = 5J]</tr-09e-formula>
+        <tr-09f-desc>Total calculated need of quota for hydrofluorocarbons placed on the market</tr-09f-desc>
+        <tr-09f-tooltip>The calculated need of quota is below the 100 t CO2 eq threshold of Art. 13(1).</tr-09f-tooltip>
+        <tr-09f-formula>[9F = 9E + 9A]</tr-09f-formula>
+        <tr-09f-warning-tooltip>The calculated need of quota is below the 100 t CO2 eq threshold of Art. 13(1).</tr-09f-warning-tooltip>
+        <tr-09g-head>Preliminary quota assessment</tr-09g-head>
+        <tr-09g-note>Please note that this preliminary quota assessment serves the sole purpose of quality control to the reporting under Articel 19 of the F-Gas Regulation 517/2014. It should not interpreted to have any legal significance related to company compliance with the HFC phase-down.</tr-09g-note>
+        <tr-09g-desc>Quota available in HFC registry on the date indicated below to cover the need of quota calculated in [9F]</tr-09g-desc>
+        <tr-09g-desc-tail>Date of HFC registry extract for 9G: {{ date }}</tr-09g-desc-tail>
+        <tr-09g-formula>[9G = Quota allocated + quota transfers received - quota transferred (all quota transactions in HFC registry)]</tr-09g-formula>
+        <verified-desc>I take note of the obligation to have this report verified according to Art. 19 (6) of the F-Gas Regulation: The undertaking shall keep the verification report for at least five years. The verification report shall be made available, on request, to the competent authority of the Member State concerned and to the Commission.</verified-desc>
+        <documents>Verification documents</documents>
+        <upload-document>Upload new verification document</upload-document>
+        <upload-document-text1>The legal deadline for the verification document to be available is 30 June while the deadline for reporting is 31 March. However, in case the verification document would be available in time for the reporting deadline, reporters have the option to attach the verification document to their report by means of a file upload. For that purpose, reporters may print out their draft reports, have that document verified, and upload here an electronic copy of the verification report before finally sub-mitting the report in the BDR.</upload-document-text1>
+        <upload-document-text2>Otherwise, reporting companies need to be prepared to make the verification report available, on request, to the competent authority of the Member State concerned and to the Commission.</upload-document-text2>
+        <quota-fetch-error-message>An unexpected error occured while fetching quotas from the registry.</quota-fetch-error-message>
+        <qc-2044-tooltip>According to your figures, you placed more than 10000 t CO2eq of HFCs on the market (9C). Note that you are therefore obliged to have this reporting verified. Please tick the box just under the form to acknowledge this obligation. You also have the option to upload a verification document along with your report.</qc-2044-tooltip>
+    </sheet4>
+
+    <sheet5>
+        <section10-heading>SECTION 10: TO BE FILLED IN BY UNDERTAKINGS WHICH HAVE RECEIVED THEIR QUOTA EXCLUSIVELY ON THE BASIS OF A DECLARATION PURSUANT TO ARTICLE 16(2) OF REGULATION (EU) NO 517/2014 AND WHICH HAVE AUTHORISED THE USE OF A HYDROFLUOROCARBON QUOTA TO UNDERTAKINGS PLACING ON THE MARKET REFRIGERATION, AIR CONDITIONING AND HEAT PUMP EQUIPMENT CHARGED WITH HYDROFLUOROCARBONS PURSUANT TO SECOND SUBPARAGRAPH OF ARTICLE 18(2) OF REGULATION (EU) NO 517/2014</section10-heading>
+        <section10-info1>Quantities shall be reported in metric tonnes with accuracy to the third decimal place, separately for each hydrofluorocarbon (gases listed in Section 1 of Annex I to Regulation (EU) No 517/2014 or mixture containing at least one of those gases).</section10-info1>
+        <section10-info2>All hydrofluorocarbon supplies linked to the authorisations issued during the calendar year for which the report is submitted, as reported under section 9, shall be reported in this reporting section. This information is needed to verify compliance with Article 18(2) of Regulation (EU) No 517/2014.</section10-info2>
+        <section10-info3>For related supplies to other companies than the recipients of the authorisations, please add additional lines below.</section10-info3>
+        <upload-proof-header>Upload of proof for physical supply</upload-proof-header>
+        <upload-proof-tooltip>Please upload a file containing additional proof for all physical supplies reported here (e.g. invoices) separately for each company in receipt of physical supplies.</upload-proof-tooltip>
+        <sum-of-supplied-HFCS>Sum Of Supplied HFCs</sum-of-supplied-HFCS>
+        <authorized-quota-amount>Authorized amount of quota</authorized-quota-amount>
+        <tr-10a-tooltip>The receiving undertaking/s shall be specified. With the report, undertakings should submit additional proof for all physical supplies reported here (e.g. invoices).</tr-10a-tooltip>
+        <tr-10a-desc>Amounts that were physically supplied to importers of refrigeration, air conditioning, or heat pump equipment charged with hydrofluorocarbons, and linked to authorisations given to those trading partners. This applies only to reporting companies who have received their quota from the New Entrants Reserve.</tr-10a-desc>
+        <no-documents-warning>Please upload proof of physical supplies (e.g. an invoice) separately for each trading partner.</no-documents-warning>
+    </sheet5>
+    <sheet6>
+        <section7-heading>Section 7: TO BE FILLED IN BY FEEDSTOCK USERS OF GASES</section7-heading>
+		<section7-info1>Quantities shall be reported in metric tonnes with accuracy to the third decimal place, separately for each gas listed in Annex I or Annex II to Regulation (EU) No 517/2014 or mixture containing at least one of those gases.</section7-info1>
+		<section7-info2>Only quantities actually used as feedstock by the reporting undertaking shall be reported here.</section7-info2>
+		<section7-info3>Where hydrofluorocarbons (gases listed in Section 1 of Annex I to Regulation (EU) No 517/2014 or mixture containing at least one of those gases) were produced or imported by the undertaking using them as the feedstock, the quantities used shall be reported in section 5 as well. Where the undertaking produced or imported those gases and subsequently sold them for use as feedstock to other undertakings, the quantities supplied shall only be reported in reporting section 5, specifying the feedstock using undertaking.</section7-info3>
+        <section7-info4>Please note that reporting on feedstock use is obligatory only for fluorinated greenhouse gases covered in Annex I of Regulation (EU) No 517/2014 (HFCs, PFCs and SF6). You may voluntarily report on feedstock use of gases covered in Annex II of the Regulation (unsaturated H(C)FCs, fluorinated ethers and alcohols, and other perfluorinated compounds).</section7-info4>
+        <tr-07a-desc>Amount used as a feedstock by the undertaking itself</tr-07a-desc>
+        <section8-heading>Section 8: TO BE FILLED IN BY UNDERTAKINGS HAVING DESTROYED GASES</section8-heading>
+		<section8-info1>The total quantities destroyed by the reporting undertaking themselves are to be reported. Undertakings which are producers shall also report on the quantities of its own production which have been destroyed, in reporting section 1.</section8-info1>
+		<section8-info2>Undertakings which are importers of hydrofluorocarbons (gases listed in Section 1 of Annex I to Regulation (EU) No 517/2014 or mixture containing at least one of those gases) shall report the quantities of its imports which have been destroyed, in reporting section 5.</section8-info2>
+		<section8-info3>Quantities sent for destruction to other undertakings in the EU shall not be reported here. Quantities exported for destruction outside the EU shall be reported in 3F.</section8-info3>
+		<section8-info4>Where the exact composition of destroyed mixtures is unknown, undertakings are invited to provide their best estimate.</section8-info4>
+        <tr-08a-desc>Amount destroyed by the reporting company using high temperature combustion</tr-08a-desc>
+        <tr-08b-desc>Amount destroyed by the reporting company using thermal desorption</tr-08b-desc>
+        <tr-08c-desc>Amount destroyed by the reporting company using other technologies</tr-08c-desc>
+        <tr-08c-tooltip>The employed destruction technologies shall be specified</tr-08c-tooltip>
+        <tr-08d-desc>Total amount destroyed by the undertaking itself</tr-08d-desc>
+        <tr-08d-formula>[8D = 8A + 8B + 8C]</tr-08d-formula>
+        <tr-08e-desc>1 January stocks intended for destruction</tr-08e-desc>
+        <tr-08f-desc>31 December stocks intended for destruction</tr-08f-desc>
+    </sheet6>
+    <form7>
+        <header>Section 11: TO BE FILLED IN BY UNDERTAKINGS HAVING PLACED ON THE MARKET GASES CONTAINED IN PRODUCTS OR EQUIPMENT PURSUANT TO ARTICLE 19(4) OF REGULATION 517/2014</header>
+        <intro>This Reporting Section can be filled in two consecutive steps:
+            In the first step, please select the categories of products/equipment relevant to you. Based on your choice, a table for reporting the respective quantities of gases and products/equipment will be rendered which you can fill in the second step. When necessary, you may return to the first step in order to add more or delete superfluous categories
+        </intro>
+		<section11-info1>In this reporting section, importers of products or equipment containing a fluorinated greenhouse gas listed in Annex I or II to Regulation (EU) No 517/2014 shall report on all gas containing imports which were placed on the market.</section11-info1>
+		<section11-info2>Producers of gas-containing products or equipment manufactured in the Union shall not report in this section where the contained gases were produced within or previously imported into the Union, as the respective gas amounts would be covered in the producers/ importers reports.</section11-info2>
+		<section11-info3>Please keep in mind to report the gas contained in imported equipment even if you did not import F-gases in bulk. The gases contained in imported equipment must be selected first in the „Gases“ tab.</section11-info3>
+		<section11-info4>Quantities of fluorinated greenhouse gases listed in Annex I or Annex II to Regulation (EU) No 517/2014 or mixtures containing at least one of those gases contained in the products and equipment shall be reported in metric tonnes with accuracy to the third decimal place, by category.</section11-info4>
+		<section11-info5>In addition to the total quantity of gases, the number of units shall be reported per category, unless otherwise stated.</section11-info5>
+		<section11-info6>The categories of products or equipment listed below include components intended for the specified product or equipment categories.</section11-info6>
+		<section11-info7>The term 'direct design' refers in particular to air-to-air, water-to-air, brine-to-air systems; the term 'indirect design' in particular to air-to-water, water-to-water, brine-to-water systems, including hydronic heat-pumps.</section11-info7>
+		<section11-info8>Imports of pre-blended polyols are not to be reported in this section but in section 2.</section11-info8>
+        <header_validation_errors>Validation errors</header_validation_errors>
+
+        <code_and_reporting_parameter>Code and reporting parameter</code_and_reporting_parameter>
+        <explanations_from_ia>Explanations from IA</explanations_from_ia>
+        <calculation_formula>Calculation Formula</calculation_formula>
+        <reporter_specify_category>Explanation for category, if needed</reporter_specify_category>
+        <amount_of_importer_equipment>amount of imported equipment / products per category</amount_of_importer_equipment>
+        <measurement_unit_for_amount>measurement unit for amount of imported equipment / products</measurement_unit_for_amount>
+
+        <s1>S1 Total amount of fluorinated gases - Sum of all gases</s1>
+        <s2>Average specific charge of fluorinated gas</s2>
+        <s3>S3 unit of specific charge</s3>
+        <obligatory_comment>Specific charge is outside of expected interval, please explain</obligatory_comment>
+        <specific_charge_range_comment>Specific charge is outside of expected interval ({{ min }} - {{ max }} {{ unit }}), please explain</specific_charge_range_comment>
+
+        <unit_tonnes>unit: t</unit_tonnes>
+        <cubicmetres>cubic metres</cubicmetres>
+        <metrictonnes>metric tonnes</metrictonnes>
+        <pieces>pieces of product or equipment</pieces>
+        <please_specify>Please specify</please_specify>
+        <validation_category>Category</validation_category>
+        <gas>Gas</gas>
+        <validation_violation>Violation description</validation_violation>
+        <warning_description>Warning description</warning_description>
+        <header_step1>Step 1: selection of categories</header_step1>
+        <header_step2>Step 2: Reporting on quantities of gases and products/equipment</header_step2>
+
+        <hierarchy_label>
+            <direct>direct</direct>
+            <indirect>indirect</indirect>
+            <both_direct_and_indirect>both direct and indirect</both_direct_and_indirect>
+            <standalone_monoblock_units>Standalone/monobloc units</standalone_monoblock_units>
+            <split_units>split units</split_units>
+            <single_split_units>single split units</single_split_units>
+            <commercial_or_industrial_use>commercial or industrial use</commercial_or_industrial_use>
+            <commercial_use>commercial use</commercial_use>
+            <domestic_use>domestic use</domestic_use>
+            <multi_split_units>multi split units</multi_split_units>
+            <other_use>other use</other_use>
+            <tr11b12_14>Stationary equipment for process cooling or heating</tr11b12_14>
+            <moveable>moveable</moveable>
+            <rooftop>rooftop</rooftop>
+            <other>other</other>
+            <charged_3kg_or_more_refrigerant>charged with 3 kilograms or more of refrigerant</charged_3kg_or_more_refrigerant>
+            <charged_less_than_3kg_refrigerant>charged with less than 3 kilograms of refrigerant</charged_less_than_3kg_refrigerant>
+
+            <tr_11e1>for refrigerated light duty vehicles (e.g. vans)</tr_11e1>
+            <tr_11e2>for refrigerated heavy duty vehicles (including trucks and trailers)</tr_11e2>
+            <tr_11e3>for refrigerated ships</tr_11e3>
+            <tr_11e4>Any other mobile refrigeration equipment</tr_11e4>
+
+            <tr_11f1>for passenger cars</tr_11f1>
+            <tr_11f2>for buses</tr_11f2>
+            <tr_11f3>for vans (light duty vehicles)</tr_11f3>
+            <tr_11f4>for trucks and trailers (heavy duty vehicles)</tr_11f4>
+            <tr_11f5>for agricultural, forestry and construction vehicles and machinery</tr_11f5>
+            <tr_11f6>for rail vehicles</tr_11f6>
+            <tr_11f7>for ships</tr_11f7>
+            <tr_11f8>for aircrafts and helicopters</tr_11f8>
+            <tr_11f9>Any other mobile air conditioning equipment</tr_11f9>
+
+            <tr_11h1>Extruded polystyrene (XPS) (e.g. for insulation boards)</tr_11h1>
+            <tr_11h2>Polyurethane (PU) (e.g. for insulation boards)</tr_11h2>
+            <tr_11h3>One component foam (OCF)</tr_11h3>
+            <tr_11h4>Other foam products</tr_11h4>
+
+            <design_type>design type</design_type>
+            <unit_type>unit type</unit_type>
+
+            <stationary_equipment_for_refrigeration>Stationary equipment for refrigeration</stationary_equipment_for_refrigeration>
+
+        </hierarchy_label>
+        <transcation_code>
+            <tr_11A01>11A1</tr_11A01>
+            <tr_11A02>11A2</tr_11A02>
+            <tr_11A03>11A3</tr_11A03>
+            <tr_11A04>11A4</tr_11A04>
+            <tr_11A05>11A5</tr_11A05>
+            <tr_11A06>11A6</tr_11A06>
+            <tr_11A07>11A7</tr_11A07>
+            <tr_11A08>11A8</tr_11A08>
+            <tr_11A09>11A9</tr_11A09>
+            <tr_11A10>11A10</tr_11A10>
+            <tr_11A11>11A11</tr_11A11>
+            <tr_11A12>11A12</tr_11A12>
+            <tr_11A13>11A13</tr_11A13>
+            <tr_11A14>11A14</tr_11A14>
+            <tr_11B01>11B1</tr_11B01>
+            <tr_11B02>11B2</tr_11B02>
+            <tr_11B03>11B3</tr_11B03>
+            <tr_11B04>11B4</tr_11B04>
+            <tr_11B05>11B5</tr_11B05>
+            <tr_11B06>11B6</tr_11B06>
+            <tr_11B07>11B7</tr_11B07>
+            <tr_11B08>11B8</tr_11B08>
+            <tr_11B09>11B9</tr_11B09>
+            <tr_11B10>11B10</tr_11B10>
+            <tr_11B11>11B11</tr_11B11>
+            <tr_11B12>11B12</tr_11B12>
+            <tr_11B13>11B13</tr_11B13>
+            <tr_11B14>11B14</tr_11B14>
+            <tr_11C>11C</tr_11C>
+            <tr_11D01>11D1</tr_11D01>
+            <tr_11D02>11D2</tr_11D02>
+            <tr_11D03>11D3</tr_11D03>
+            <tr_11E01>11E1 </tr_11E01>
+            <tr_11E02>11E2 </tr_11E02>
+            <tr_11E03>11E3 </tr_11E03>
+            <tr_11E04>11E4 </tr_11E04>
+            <tr_11F01>11F1</tr_11F01>
+            <tr_11F02>11F2</tr_11F02>
+            <tr_11F03>11F3</tr_11F03>
+            <tr_11F04>11F4</tr_11F04>
+            <tr_11F05>11F5</tr_11F05>
+            <tr_11F06>11F6</tr_11F06>
+            <tr_11F07>11F7</tr_11F07>
+            <tr_11F08>11F8</tr_11F08>
+            <tr_11F09>11F9</tr_11F09>
+            <tr_11H01>11H1</tr_11H01>
+            <tr_11H02>11H2</tr_11H02>
+            <tr_11H03>11H3</tr_11H03>
+            <tr_11H04>11H4</tr_11H04>
+            <tr_11H04_tonnes>11H4</tr_11H04_tonnes>
+            <tr_11H04_pieces>11H4</tr_11H04_pieces>
+            <tr_11H04_m3>11H4</tr_11H04_m3>
+            <tr_11I>11I</tr_11I>
+            <tr_11J>11J</tr_11J>
+            <tr_11K>11K</tr_11K>
+            <tr_11L>11L</tr_11L>
+            <tr_11M>11M</tr_11M>
+            <tr_11N>11N</tr_11N>
+            <tr_11O>11O</tr_11O>
+            <tr_11P>11P</tr_11P>
+            <tr_11P_tonnes>11P</tr_11P_tonnes>
+            <tr_11P_pieces>11P</tr_11P_pieces>
+            <tr_11P_m3>11P</tr_11P_m3>
+        </transcation_code>
+        <tr_11a>
+            <code>11A</code>
+            <parameter>Stationary equipment for comfort cooling or heating</parameter>
+            <formula>[11A = 11A1 + 11A2 + 11A3 + 11A4 + 11A5 + 11A6 + 11A7 + 11A8 + 11A9 + 11A10 + 11A11 + 11A12 + 11A13 + 11A14]</formula>
+            <unit_for_amount>pieces of equipment</unit_for_amount>
+        </tr_11a>
+
+        <tr_11a1>
+            <code>11A1</code>
+            <parameter>Stationary equipment for comfort cooling/heating, direct design: Standalone/monobloc units of moveable type</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11a1>
+
+        <tr_11a2>
+            <code>11A2</code>
+            <parameter>Stationary equipment for comfort cooling/heating, direct design: standalone/monobloc units of rooftop type </parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11a2>
+
+        <tr_11a3>
+            <code>11A3</code>
+            <parameter>Stationary equipment for comfort cooling/heating, direct design: standalone/monobloc units of other type </parameter>
+            <explanation_ia>The equipment type/s shall be specified</explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11a3>
+
+        <tr_11a4>
+            <code>11A4</code>
+            <parameter>Stationary equipment for comfort cooling/heating, direct design: single split units charged with 3 kilograms or more of refrigerant</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11a4>
+
+        <tr_11a5>
+            <code>11A5</code>
+            <parameter>Stationary equipment for comfort cooling/heating, direct design: single split units charged with less than 3 kilograms of refrigerant</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11a5>
+
+        <tr_11a6>
+            <code>11A6</code>
+            <parameter>Stationary equipment for comfort cooling/heating, direct design: multi split units</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11a6>
+
+        <tr_11a7>
+            <code>11A7</code>
+            <parameter>Stationary equipment for comfort cooling/heating, indirect design: standalone/monobloc units for domestic use</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11a7>
+
+        <tr_11a8>
+            <code>11A8</code>
+            <parameter>Stationary equipment for comfort cooling/heating, indirect design: standalone/monobloc units for commercial or industrial use</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11a8>
+
+        <tr_11a9>
+            <code>11A9</code>
+            <parameter>Stationary equipment for comfort cooling/heating, indirect design: standalone/monobloc units for other use</parameter>
+            <explanation_ia>The intended use/s shall be specified.</explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11a9>
+
+        <tr_11a10>
+            <code>11A10</code>
+            <parameter>Stationary equipment for comfort cooling/heating, indirect design: split units for domestic use</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11a10>
+
+        <tr_11a11>
+            <code>11A11</code>
+            <parameter>Stationary equipment for comfort cooling/heating, indirect design: split units for commercial or industrial use</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11a11>
+
+        <tr_11a12>
+            <code>11A12</code>
+            <parameter>Stationary equipment for comfort cooling/heating, indirect design: split units for other use</parameter>
+            <explanation_ia>The intended use/s shall be specified.</explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11a12>
+
+        <tr_11a13>
+            <code>11A13</code>
+            <parameter>Stationary equipment for comfort cooling/heating, both direct and indirect: standalone/monobloc units</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11a13>
+
+        <tr_11a14>
+            <code>11A14</code>
+            <parameter>Stationary equipment for comfort cooling/heating, both direct and indirect: split units</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11a14>
+
+        <tr_11b>
+            <code>11B</code>
+            <parameter>Stationary equipment for refrigeration </parameter>
+            <formula>[11B = 11B1 + 11B2 + 11B3 + 11B4 + 11B5 + 11B6 + 11B7 + 11B8 + 11B9 + 11B10 + 11B11 + 11B12 + 11B13 + 11B14]</formula>
+            <unit_for_amount>pieces of equipment</unit_for_amount>
+        </tr_11b>
+
+        <tr_11b1>
+            <code>11B1</code>
+            <parameter>Stationary equipment for refrigeration, direct design: standalone/monobloc units for domestic use</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11b1>
+
+        <tr_11b2>
+            <code>11B2</code>
+            <parameter>Stationary equipment for refrigeration, direct design: standalone/monobloc units for commercial or industrial use</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11b2>
+
+        <tr_11b3>
+            <code>11B3</code>
+            <parameter>Stationary equipment for refrigeration, direct design: standalone/monobloc units for other use</parameter>
+            <explanation_ia>The intended use/s shall be specified.</explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11b3>
+
+        <tr_11b4>
+            <code>11B4</code>
+            <parameter>Stationary equipment for refrigeration, direct design: split units for commercial or industrial use</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11b4>
+
+        <tr_11b5>
+            <code>11B5</code>
+            <parameter>Stationary equipment for refrigeration, direct design: split units for other use</parameter>
+            <explanation_ia>The intended use/s shall be specified.</explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11b5>
+
+        <tr_11b6>
+            <code>11B6</code>
+            <parameter>Stationary equipment for refrigeration, indirect design: standalone/monobloc units for commercial or industrial use</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11b6>
+
+        <tr_11b7>
+            <code>11B7</code>
+            <parameter>Stationary equipment for refrigeration, indirect design: standalone/monobloc units for other use</parameter>
+            <explanation_ia>The intended use/s shall be specified.</explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11b7>
+
+        <tr_11b8>
+            <code>11B8</code>
+            <parameter>Stationary equipment for refrigeration, indirect design: split units for commercial or industrial use</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11b8>
+
+        <tr_11b9>
+            <code>11B9</code>
+            <parameter>Stationary equipment for refrigeration in indirect design: split units for other use</parameter>
+            <explanation_ia>The intended use/s shall be specified.</explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11b9>
+
+        <tr_11b10>
+            <code>11B10</code>
+            <parameter>Stationary equipment for refrigeration, both direct and indirect: standalone/monobloc units</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11b10>
+
+        <tr_11b11>
+            <code>11B11</code>
+            <parameter>Stationary equipment for refrigeration, both direct and indirect: split units</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11b11>
+
+        <tr_11b12>
+            <code>11B12</code>
+            <parameter>Stationary equipment for process cooling or heating in direct design</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11b12>
+
+        <tr_11b13>
+            <code>11B13</code>
+            <parameter>Stationary equipment for process cooling or heating in indirect design</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11b13>
+
+        <tr_11b14>
+            <code>11B14</code>
+            <parameter>Stationary equipment for process cooling or heating, both direct and indirect</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11b14>
+
+        <tr_11c>
+            <code>11C</code>
+            <parameter>Heat pump tumble dryers</parameter>
+            <formula></formula>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11c>
+
+        <tr_11d>
+            <code>11D</code>
+            <parameter>Stationary heating/air conditioning including heat pumps as well as refrigeration (HACR) equipment for any other purposes</parameter>
+            <formula>[11D = 11D1 + 11D2 + 11D3]</formula>
+            <unit_for_amount>pieces of equipment</unit_for_amount>
+        </tr_11d>
+
+        <tr_11d1>
+            <code>11D1</code>
+            <parameter>Stationary HACR equipment for any other purposes, direct design</parameter>
+            <explanation_ia>The equipment type/s and purpose/s shall be specified.</explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11d1>
+
+        <tr_11d2>
+            <code>11D2</code>
+            <parameter>Stationary HACR equipment for any other purposes, indirect design</parameter>
+            <explanation_ia>The equipment type/s and purpose/s shall be specified.</explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11d2>
+
+        <tr_11d3>
+            <code>11D3</code>
+            <parameter>Stationary HACR equipment for any other purposes, both direct and indirect</parameter>
+            <explanation_ia>The equipment type/s and purpose/s shall be specified.</explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11d3>
+
+        <tr_11e>
+            <code>11E</code>
+            <parameter>Mobile refrigeration equipment</parameter>
+            <formula>[11E = 11E1 + 11E2 + 11E3 + 11E4]</formula>
+            <unit_for_amount>pieces of equipment</unit_for_amount>
+        </tr_11e>
+
+        <warning_11E>DON'T REMOVE SPACE AFTER 11E1..11E4 CODES! THEY GET CONVERTED TO INTEGER AND ARE NOT SHOWN!!!</warning_11E>
+
+        <tr_11e1>
+            <code>11E1 </code>
+            <parameter>Mobile refrigeration equipment for refrigerated light duty vehicles (e.g. vans)</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11e1>
+
+        <tr_11e2>
+            <code>11E2 </code>
+            <parameter>Mobile refrigeration equipment for refrigerated heavy duty vehicles (including trucks and trailers)</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11e2>
+
+        <tr_11e3>
+            <code>11E3 </code>
+            <parameter>Mobile refrigeration equipment for refrigerated ships</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11e3>
+
+        <tr_11e4>
+            <code>11E4 </code>
+            <parameter>Any other mobile refrigeration equipment</parameter>
+            <explanation_ia>The equipment type/s shall be specified.</explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11e4>
+
+        <tr_11f>
+            <code>11F</code>
+            <parameter>Mobile air conditioning equipment </parameter>
+            <formula>[11F = 11F1 + 11F2 + 11F3 + 11F4 + 11F5 + 11F6 + 11F7 + 11F8 + 11F9]</formula>
+            <unit_for_amount>pieces of equipment</unit_for_amount>
+        </tr_11f>
+
+        <tr_11f1>
+            <code>11F1</code>
+            <parameter>Mobile air conditioning equipment for passenger cars</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11f1>
+
+        <tr_11f2>
+            <code>11F2</code>
+            <parameter>Mobile air conditioning equipment for buses</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11f2>
+
+        <tr_11f3>
+            <code>11F3</code>
+            <parameter>Mobile air conditioning equipment for vans (light duty vehicles)</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11f3>
+
+        <tr_11f4>
+            <code>11F4</code>
+            <parameter>Mobile air conditioning equipment for trucks and trailers (heavy duty vehicles)</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11f4>
+
+        <tr_11f5>
+            <code>11F5</code>
+            <parameter>Mobile air conditioning equipment for agricultural, forestry and construction vehicles and machinery</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11f5>
+
+        <tr_11f6>
+            <code>11F6</code>
+            <parameter>Mobile air conditioning equipment for rail vehicles</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11f6>
+
+        <tr_11f7>
+            <code>11F7</code>
+            <parameter>Mobile air conditioning equipment for ships</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11f7>
+
+        <tr_11f8>
+            <code>11F8</code>
+            <parameter>Mobile air conditioning equipment for aircraft and helicopters</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11f8>
+
+        <tr_11f9>
+            <code>11F9</code>
+            <parameter>Any other mobile air conditioning equipment</parameter>
+            <explanation_ia>The equipment type/s shall be specified.</explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11f9>
+
+        <tr_11g>
+            <code>11G</code>
+            <parameter>Total refrigeration, air conditioning or heat pump equipment </parameter>
+            <formula>[11G = 11A + 11B + 11C + 11D + 11E + 11F]</formula>
+            <unit_for_amount>pieces of equipment</unit_for_amount>
+        </tr_11g>
+
+        <tr_11h>
+            <code>11H</code>
+            <parameter>Foam products</parameter>
+            <formula>[11H = 11H1 + 11H2 + 11H3 + 11H4]</formula>
+            <unit_for_amount>pieces of equipment</unit_for_amount>
+        </tr_11h>
+
+
+        <tr_11h1>
+            <code>11H1</code>
+            <parameter>Extruded polystyrene (XPS) (e. g. for insulation boards)</parameter>
+            <explanation_ia>Quantities of XPS boards shall be reported in units of cubic metres (next to quantities of contained fluorinated gases in units of metric tonnes)</explanation_ia>
+            <unit>cubic metres</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per cubic metre</unit_of_spec_charge>
+        </tr_11h1>
+
+        <tr_11h2>
+            <code>11H2</code>
+            <parameter>Polyurethane (PU) (e. g. for insulation boards)</parameter>
+            <explanation_ia>Quantities of PU boards shall be reported in units of cubic metres (next to quantities of contained fluorinated gases in units of metric tonnes)</explanation_ia>
+            <unit>cubic metres</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per cubic metre</unit_of_spec_charge>
+        </tr_11h2>
+
+
+        <tr_11h3>
+            <code>11H3</code>
+            <parameter>One component foam (OCF)</parameter>
+            <explanation_ia>The measurement unit can be pieces of OCF cans (next to quantities of contained fluorinated gases in units of metric tonnes)</explanation_ia>
+            <unit>containers</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per container</unit_of_spec_charge>
+        </tr_11h3>
+
+
+        <tr_11h4>
+            <code>11H4</code>
+            <parameter>Other foam products</parameter>
+            <explanation_ia>The product category/ies shall be specified.
+                Imports of pre-blended polyols (e.g. in foam systems/containers) shall not be reported here but in section 2.
+                Quantities of foam products shall be reported in units of either cubic metres, metric tonnes or pieces of product/equipment (next to quantities of contained fluorinated gases in units of metric tonnes). </explanation_ia>
+            <unit>cubic metres / metric tonnes / pieces of product or equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per </unit_of_spec_charge>
+        </tr_11h4>
+
+
+        <tr_11i>
+            <code>11I</code>
+            <parameter>Fire protection equipment (including systems incorporated in vehicles)</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11i>
+
+        <tr_11j>
+            <code>11J</code>
+            <parameter>Medical or pharmaceutical aerosols</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>containers</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per container</unit_of_spec_charge>
+        </tr_11j>
+
+        <tr_11k>
+            <code>11K</code>
+            <parameter>Non-medical aerosols</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>containers</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per container</unit_of_spec_charge>
+        </tr_11k>
+
+        <tr_11l>
+            <code>11L</code>
+            <parameter>Medical equipment (without aerosols)</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11l>
+
+        <tr_11m>
+            <code>11M</code>
+            <parameter>Switch gear for transmission and distribution of electricity</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11m>
+
+        <tr_11n>
+            <code>11N</code>
+            <parameter>Other electrical transmission and distribution equipment</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11n>
+
+        <tr_11o>
+            <code>11O</code>
+            <parameter>Particle accelerators</parameter>
+            <explanation_ia></explanation_ia>
+            <unit>pieces of equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per piece of equipment</unit_of_spec_charge>
+        </tr_11o>
+
+        <tr_11p>
+            <code>11P</code>
+            <parameter><![CDATA[Other products and equipment containing gases listed in Annex I or Annex II of Regulation (EU) No. 517/2014
+                </br>Note: Refrigeration, air conditioning and heat pump equipment referred to in Article 14 of Regulation (EU) No. 517/2014 shall not be reported here, but in an appropriate category of sections 11A-F (above).]]>
+            </parameter>
+            <explanation_ia>The product or equipment category/ies shall be specified.
+                The measurement unit can be either volume, weight or pieces of product/equipment.
+                (next to quantities of contained fluorinated gases in units of metric tonnes)</explanation_ia>
+            <unit>cubic metres / metric tonnes / pieces of product or equipment</unit>
+            <unit_of_spec_charge>kg of fluorinated gas per </unit_of_spec_charge>
+        </tr_11p>
+
+        <tr_11q>
+            <code>11Q</code>
+            <parameter>Total of products and equipment containing fluorinated gases listed in Annex I or Annex II of Regulation (EU) No 517/2014</parameter>
+            <formula>[11Q = 11G + 11H + 11I + 11J + 11K + 11L + 11M + 11N + 11O + 11P]</formula>
+            <unit_for_amount>pieces of equipment</unit_for_amount>
+        </tr_11q>
+        <documents>Supporting documents</documents>
+        <upload-document>Upload new supporting document</upload-document>
+        <upload-document-text1>Please upload additional information material transparently documenting the reported F-gas amounts, for example based on numbers of imported equipment and specific charges.</upload-document-text1>
+
+        <noCategoySelected>No category selected.</noCategoySelected>
+    </form7>
+
+    <validation_messages>
+        <qc_1400>
+            <error_text>Please confirm the use of {{gas}} for {{code}}.</error_text>
+            <warning_flag></warning_flag>
+        </qc_1400>
+        <qc_1400_empty_gas_list>
+            <error_text>Transaction {{code}}: Is not commonly reported for {{gas}}. Please confirm the use of {{gas}} for {{code}}.</error_text>
+            <warning_flag></warning_flag>
+        </qc_1400_empty_gas_list>
+        <qc_1400_submission>
+            <error_text>Transaction {{code}} is not commonly reported for {{gas}}.</error_text>
+            <warning_flag></warning_flag>
+        </qc_1400_submission>
+        <qc_1401>
+            <error_text>Feedstock use has repeatedly been subject to erroneous reporting. Please provide a brief explanation of the process where the reported gas is used as a feedstock.</error_text>
+            <warning_flag></warning_flag>
+        </qc_1401>
+        <qc_1403_06T>
+            <error_text>Please describe the 'other' intended application (6T) for {{ gasName }} in a comment.</error_text>
+        </qc_1403_06T>
+        
+        <qc_1403_06U>
+            <error_text>Please give an explanation for reporting leakage (6U) of {{ gasName }} in a comment.</error_text>
+        </qc_1403_06U>
+        <qc_1403_06V>
+            <error_text>Please give an explanation for accountancy adjustments (6V) for {{ gasName }} in a comment.</error_text>
+        </qc_1403_06V>
+        <qc_2300>
+            <error_text>The calculated specific charge of F-gases is not in the expected range ({{min}} - {{max}}) {{unit}}. Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2300>
+
+        <qc_2300_warning>
+            <error_text>The calculated specific charge of F-gases per {{unit}} in section {{transaction}} is outside the expected range ({{min}} {{unit}} - {{max}} {{unit}}). The explanation provided will be taken into account when evaluating the report.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2300_warning>
+
+        <qc_2301>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 0.2 and 1000 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2301>
+
+        <qc_23011>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 0.2 and 100 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_23011>
+
+        <qc_23012>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (&gt;=3 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_23012>
+
+        <qc_23013>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (&lt;3 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_23013>
+
+        <qc_23014>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 5 and 1000 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_23014>
+
+        <qc_23015>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 0.2 and 10 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_23015>
+
+        <qc_2302>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 0.2 and 300 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2302>
+
+        <qc_2303>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 1 and 1000 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2303>
+
+        <qc_23031>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 0.05 and 2 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_23031>
+
+        <qc_23032>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 0.05 and 10 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_23032>
+
+        <qc_2304>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 1 and 800 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2304>
+
+        <qc_2305>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 1 and 400 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2305>
+
+        <qc_2306>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 0.15 and 0.5 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2306>
+
+        <qc_2307>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 0.2 and 1000 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2307>
+
+        <qc_2308>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 0.2 and 300 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2308>
+
+        <qc_2310>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 0.7 and 1.3 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2310>
+
+        <qc_2311>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 0.8 and 1.6 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2311>
+
+        <qc_2312>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 10 and 5000 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2312>
+
+        <qc_2313>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 0.3 and 1.5 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2313>
+
+        <qc_2314>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 7 and 20 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2314>
+
+        <qc_2315>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 0.5 and 1.5 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2315>
+
+        <qc_2316>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 0.7 and 1.5 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2316>
+
+        <qc_2317>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 0.7 and 2.5 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2317>
+
+        <qc_2318>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 5 and 35 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2318>
+
+        <qc_2319>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 100 and 1000 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2319>
+
+        <qc_2320>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (between 2 and 10 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2320>
+
+        <qc_2321>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (up to 5000 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2321>
+
+        <qc_2322>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (up to 1040 kg/cubic metre). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2322>
+
+        <qc_2323>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (up to 100 kg / cubic metre). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2323>
+
+        <qc_2324>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (up to 0,5 kg per container). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2324>
+
+        <qc_2325>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (10-100 kg/tonne; 1-10kg/m3; up to 1000 kg per piece otherwise). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2325>
+
+        <qc_2327>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (3 to 500 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2327>
+
+        <qc_2328>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (0.007-0.020 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2328>
+
+        <qc_2329>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (0.05-0.5 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2329>
+
+        <qc_2330>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (1-500 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2330>
+
+        <qc_2331>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (up to 500 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2331>
+
+        <qc_2332>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (1-500 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2332>
+
+        <qc_2333>
+            <error_text>The calculated specific charge of F-gases is not in the expected range (0,2 up to 1000 kg/piece). Please make sure you correctly reported the amounts of gases in units of tonnes, not in kilograms. Please revise your data or provide an explanation to the calculated specific charge.</error_text>
+            <warning_flag>specific charge outside expected range</warning_flag>
+        </qc_2333>
+
+
+        <qc_2048>
+            <error_text>Please explain the equipment category.</error_text>
+            <warning_flag>check explanation of product category</warning_flag>
+        </qc_2048>
+
+        <qc_2050>
+            <error_text>Please specify a measurement unit for the amount of products/equipment imported.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2050>
+
+        <qc_2079>
+            <error_text>Please explain the category of imported products/equipment.</error_text>
+            <warning_flag>check explanation of product category (to be regarded as RACHP equipment?)</warning_flag>
+        </qc_2079>
+
+        <qc_2086>
+            <error_text>The mixture {{ duplicateMixtureName }} is identical to the mixture {{ customMixtureName }} which you defined in this report. Please revise the composition. In case you handle mixtures of different trade names, but identical composition, please report them jointly and merge both trade names into the mixture's name to be used for the present report.</error_text>
+        </qc_2086>
+
+        <qc_2087>
+            <error_text>Please explain the category of imported foam products.</error_text>
+            <warning_flag>check explanation of foam product category (to be regarded as RACHP equipment?)</warning_flag>
+        </qc_2087>
+
+        <qc_2051>
+            <error_text>You reported on the amount of imported products/equipment. Please report on the amount of contained gases , as well (unit: metric tonnes of gases).</error_text>
+            <warning_flag></warning_flag>
+        </qc_2051>
+
+        <qc_2065>
+            <error_text>You reported on  the amount of contained gases in imported products/equipment. Please report on the amount of imported products/equipment, as well.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2065>
+
+        <qc_2049>
+            <error_text>Please upload additional information which transparently documents the calculation of imported gas quantities based on amounts of products / equipment and specific gas charges / gas contents.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2049>
+
+        <qc_1056>
+            <error_text>Please select import of RACHP equipment containing HFCs in the activity selection before reporting this transaction.</error_text>
+            <warning_flag></warning_flag>
+        </qc_1056>
+
+        <qc_1057>
+            <error_text>Please select import of other equipment containing fluorinated gases in the activity selection before reporting this transaction.</error_text>
+            <warning_flag></warning_flag>
+        </qc_1057>
+
+        <qc_1058>
+            <error_text>Please select import of other equipment containing fluorinated gases in the activity selection before reporting this transaction.</error_text>
+            <warning_flag></warning_flag>
+        </qc_1058>
+
+        <qc_2002>
+            <error_text>You selected "HFC producer" in the activity selection. Please report on production of HFCs in section 1A or unselect the activity.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2002>
+        <qc_2003>
+            <error_text>You selected "non-HFC producer" in the activity selection. Please report on production of non-HFCs in section 1A or unselect the activity.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2003>
+        <qc_2004>
+            <error_text>You selected "HFC importer" in the activity selection. Please report on import of HFCs or HFC-conatining mixtures in section 2A or unselect the activity.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2004>
+        <qc_2005>
+            <error_text>You selected "non-HFC importer" in the activity selection. Please report in section 2A on import of non-HFCs or mixtures not containing HFCs or unselect the activity.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2005>
+        <qc_2006>
+            <error_text>You selected "exporter" in the activity selection. Please report on export in section 3A or unselect the activity.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2006>
+        <qc_2007>
+            <error_text>You selected "Provider of authorisations to other companies" in the activity selection. Please report on authorisations that were given out in section 9A or unselect the activity.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2007>
+        <qc_2008>
+            <error_text>You selected "Feedstock user" in the activity selection. Please report on feedstock use in section 7A or unselect the activity.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2008>
+        <qc_2009>
+            <error_text>You selected "Destruction company" in the activity selection. Please report on destruction in section 8 or unselect the activity.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2009>
+        <qc_2015>
+            <error_text_ner>According to the HFC Registry, your company received its HFC quota through a declaration for the New Entrants Reserve (NER). Please select the corresponding option just below the "Authorisations provider" section of the Year &amp; Activities page.</error_text_ner>
+            <error_text_not_ner>According to the HFC Registry, your company did not receive its HFC quota through a declaration for the New Entrants Reserve (NER). Please unselect the corresponding option just below the "Authorisations provider" section of the Year &amp; Activities page.</error_text_not_ner>
+        </qc_2015>
+        <qc_2016>
+            <error_text>You reported on own destruction in section 1B. Please accordingly select to be a destruction company in the activity selection and report subsequently in section 8.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2016>
+        <qc_2017>
+            <error_text>A negative amount here is implausible, please revise your data.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2017>
+        <qc_2018>
+            <error_text>The partial amounts reported for export in section 3 must not exceed the total reported in section 3A. Please revise your data.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2018>
+        <qc_2020>
+            <error_text>The stocks awaiting destruction reported in section 8 must not exceed the total stocks reported in section 4.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2020>
+        <qc_2023>
+            <error_text>The stocks awaiting destruction reported in section 8 must not exceed the total stocks reported in section 4.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2023>
+        <qc_2024>
+            <error_text>The increase in stocks between 1st January and 31st December appears to be implausibly high. Please revise data or add an explanation to the 31st December value by clicking the speech bubble button.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2024>
+        <qc_2025>
+            <error_text>The increase in stocks between 1st January and 31st December appears to be implausibly high. Please revise data or add an explanation to the 31st December value by clicking the speech bubble button.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2025>
+        <qc_2026>
+            <error_text>It is not plausible that the amount in section 4M (amount placed on the market, determined from reported values) is smaller than the increase of stocks that are already placed on the market during the reporting year (determined from 4I and 4D). Please double-check and revise your data reported in sections 1 – 4.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2026>
+        <qc_2028>
+            <error_text>You reported import for own destruction in section 5A. Please accordingly select to be a destruction company in the activity selection and report subsequently in section 8 or add an explanation in section 5A by clicking the speech bubble button.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2028>
+        <qc_2029>
+            <error_text>It appears implausible that your import for own destruction reported in 5A exceeds total destruction reported in section 8. Please revise your data or add an explanation in section 5A by clicking the speech bubble button.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2029>
+
+        <qc_2031>
+            <error_text>You reported supply for own feedstock use in section 5B. Please accordingly select to be a feedstock user in the activity selection and report subsequently in section 7.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2031>
+
+        <qc_2039>
+            <error_text>The totals for {{ gas }} reported for exempted uses in sections 5A - 5F cannot exceed the amount reported as physically placed on the market in sections 1–3, taking changes in stocks (section 4) into account. Please review your data.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2039>
+
+        <qc_2042>
+            <error_text>The totals reported for intended applications (6W) should match the totals reported as placed on the Union market (6X). Please revise your data.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2042>
+        <qc_2043>
+            <error_text>The totals calculated in 6X must not be negative. Please check amounts reported for production, imports, exports, and stocks (sections 1 to 4).</error_text>
+            <warning_flag></warning_flag>
+        </qc_2043>
+        <qc_2044>
+            <error_text>According to your figures, you placed more than 10000 t CO2eq of HFCs on the market (9C) or specified quota-exempt supplies to third parties for direct export in bulk (5C_exempted). Note that you are therefore obliged to have this reporting verified. Please tick the box under section 9 to acknowledge this obligation. You also have the option to upload a verification document along with your report.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2044>
+        <qc_2055>
+            <error_text>Stocks reported for [gas] on 1 Jan [transaction_year] (field [field_code]) are significantly below the corresponding stocks reported on 31 Dec of the previous year ([stock_value]; refer to [stock_field_code] in report on [previous_year]). Please revise your data or provide an explanation in section [field_code]. You may need to select "Importer" in the activity selection in order to access section 4.</error_text>
+            <warning_text>Stocks reported for [gas] on 1 Jan [transaction_year] (field [field_code]) are significantly below the corresponding stocks reported on 31 Dec of the previous year ([stock_value]; refer to [stock_field_code] in report on [previous_year]). The comment provided will be considered during quality control.</warning_text>
+            <warning_flag></warning_flag>
+        </qc_2055>
+        <qc_2056>
+            <error_text>Stocks were reported for [gas] on 31 Dec [previous_year] ([stock_value]; refer to [stock_field_code] in report on [previous_year]), but [gas] is not included in this report. Please make sure that your gas selection for activities in [transaction_year] is complete before submitting your report.</error_text>
+            <error_text_8F>Stocks were reported as waiting for destruction for [gas] on 31 Dec [previous_year] ([stock_value]; refer to [stock_field_code] in report on [previous_year]), but [gas] is not included in this report. Please make sure that your gas selection for activities in [transaction_year] is complete before submitting your report.</error_text_8F>
+        </qc_2056>
+        <qc_2064>
+            <error_text>The reported company name of the trade partner does not match the name associated with the VAT number in our data base. Please revise your data or confirm correctness.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2064>
+        <qc_2075>
+            <error_text>The reported company name of the trade partner does not match the name associated with the portal code in our data base. Please revise your data or confirm correctness.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2075>
+        <qc_2076>
+            <error_text>The reported company name of the Only Representative does not match the name associated with the Only Representative's VAT code in our data base. Please revise your data or confirm correctness. </error_text>
+            <warning_flag></warning_flag>
+        </qc_2076>
+
+        <qc_2071>
+            <error_text>It appears implausible that your supply for own feedstock use reported in 5B exceeds total feedstock use reported in section 7A. Please revise your data or add an explanation to your comment in section 5B by clicking the speech bubble button.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2071>
+        <qc_2072>
+            <error_text>It appears implausible that destruction of your own by-production (1B) exceeds total destruction reported in section 8. Please revise your data or add an explanation in section 1B.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2072>
+        <qc_2073>
+            <error_text>It appears implausible that the sum of your destruction of own production (1B) plus your import for own destruction (5A) exceeds total destruction reported in section 8. Please revise your data or add an explanation in section 1B by clicking the speech bubble button.</error_text>
+            <warning_text>It appears implausible that the sum of your destruction of own production (1B) plus your import for own destruction (5A) exceeds total destruction reported in section 8. The explanation provided will be considered during quality control.</warning_text>
+            <warning_flag></warning_flag>
+        </qc_2073>
+
+        <qc_2078>
+            <error_text>A negative amount here is implausible, please revise your data.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2078>
+
+        <qc_2091>
+            <error_text>The amount reported for exempted supply for export in 5C_exempted must not exceed the amount reported for the intended application "export" in 6A. Please revise your data.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2091>
+        <qc_2092>
+            <error_text>The amount reported for exempted import for destruction in 5A must not exceed the amount reported for the intended application "destruction" in 6B. Please revise your data.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2092>
+        <qc_2093>
+            <error_text>The amount reported for exempted supply for military equipment in 5D must not exceed the amount reported for the intended application "military equipment" in 6C. Please revise your data.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2093>
+        <qc_2094>
+            <error_text>The amount reported for exempted supply for metered dose inhalers in 5F must not exceed the amount reported for the intended application "Aerosols – medical dose inhalers" in 6I. Please revise your data.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2094>
+        <qc_2095>
+            <error_text>The amount reported for exempted supply for feedstock use in 5B must not exceed the amount reported for the intended application "feedstock" in 6L. Please revise your data.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2095>
+        <qc_2096>
+            <error_text>The amount reported for exempted supply for semiconductor manufacture in 5E must not exceed the amount reported for the intended application "semiconductor manufacture" in 6M. Please revise your data.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2096>
+
+        <qc_2098>
+            <error_text>Re-exports in products/equipment (2B) must not exceed the sum of your total imports and 1st January stocks from own import/production not placed on the market (2A + 4C). Please revise your data.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2098>
+
+        <qc_2999>
+            <error_text>You placed data for 5C_exempted. Please acknowledge by ticking the box your obligation to have this reporting verified. Please note that you have the option to upload a verification document.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2999>
+        <qc_9999>
+            <error_text>UNKNOWN QC CODE</error_text>
+            <warning_flag></warning_flag>
+        </qc_9999>
+
+        <qc_2040_tr_06T>
+            <error_text>Please describe the 'other' intended application (6T) for {{ gasName }} in a comment.</error_text>
+        </qc_2040_tr_06T>
+        <qc_2040_tr_06U>
+            <error_text>Please give an explanation for reporting leakage (6U) of {{ gasName }} in a comment.</error_text>
+        </qc_2040_tr_06U>
+        <qc_2041>
+            <error_text>Please give an explanation for accountancy adjustments (6V) for {{ gasName }} in a comment.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2041>
+
+        <qc_2010>
+            <error_text>You selected "Importer of refrigeration, air conditioning or heat pump equipment pre-charged with HFCs or HFC-containing mixtures" in the activity selection. Please report on HFCs or HFC-containing mixtures in section 11A-11F or unselect the activity.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2010>
+
+        <qc_2011>
+            <error_text>You selected "Importer of other products or equipment" in the activity selection. Please report on section 11H-11P or on non-HFCs or mixtures not containing HFCs in section 11A-11F or unselect the activity.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2011>
+
+        <qc_2099>
+            <error_text>Destroyed own production (1D) must not exceed the sum of your total production and 1st January stocks from own import/production not placed on the market (1A + 4C). Please revise your data.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2099>
+        <qc_2403>
+            <error_text>Based on numbers reported, the automatic plausibility check indicates that the available HFC quota (9G) might not suffice to cover the non-exempted HFC amounts placed on the market (9F). Please double-check your reported data in order to avoid erroneous reporting.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2403>
+        <qc_24031>
+          <error_text>The need of quota for HFCs placed on the market (section 9F) is calculated to be negative for the sum of all reported HFCs. This is not likely to be plausible. Please double check your data reported in sections 1, 2, 3, 4, 5 and/or 9A</error_text>
+          <warning_flag></warning_flag>
+        </qc_24031>
+        <qc_2404>
+            <error_text>According to the HFC Registry, authorisations have been issued to equipment importers by your undertaking (see section 9), but not included in this report. Please select the Auth activity (Supplier of Authorisations) on the Activities page and review the values in section 9. Keep in mind that incomplete reporting on authorisations may distort the preliminary quota assessment based on this report.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2404>
+        <qc_24041>
+            <error_text>By adding data in section 9A_add you are trying to report an authorisation that is not registered in the HFC registry. Please do not repeat in 9A_add authorisations that are covered in the HFC registry and contained in the data of section 9A_imp. There should be no need for reporting authorisations outside the scope of 9A_imp, as authorisations can only be used by the recipient to cover their equipment imports in case the authorisation was duly registered in the HFC registry by 31 December. If you are sure that your report should deviate in section 9A from the data as given in 9A_imp, please add a comment to explain why your authorisations were not registered in the HFC registry. You must be able to provide proof during quota compliance checking at a later time.</error_text>
+        </qc_24041>
+        <qc_24042>
+            <error_text>In section 9A you are reporting on authorisations that deviate from those registered in the HFC Registry. Please note that the European Commission will decide on a case by case basis whether such deviations from the Registry are acceptable. Keep in mind that incorrect reporting on authorisations may distort the automatic preliminary calculation of quota demand based on this report.
+            </error_text>
+        </qc_24042>
+        <qc_24043>
+            <error_text>You have reported authorisations in section 9A_add in addition to those registered in the HFC Registry. Your additions are negative in sum, which means that the total sum of authorisations in your report will not completely account for your authorisations registered in the HFC registry. Please check whether the data reported in section 9A_add are complete before submitting. Keep in mind that incomplete reporting on authorisations may distort the automatic preliminary calculation of quota demand based on this report.</error_text>
+        </qc_24043>
+        <qc_2405>
+            <error_text>Please note that authorisations issued to your own company are not deemed acceptable by the European Commission. Thus, the use of such self-authorisations to cover equipment imports charged with HFCs may be rejected during quota compliance checks.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2405>
+        <qc_2406>
+            <error_text>The physical supplies reported in section 10A do not suffice to cover the given authorisations as reported in section 9A. This would imply that you may have given away more authorisations than you were entitled. This may be followed up by the European Commission or Member State authorities in the context of quota compliance checks. Please revisit your data reported in sections 9A and 10A in order to avoid erroneous reporting.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2406>
+        <qc_2407>
+            <error_text>Please upload one file, separately for each company in receipt of physical supplies, containing proof (e.g. invoices) for all physical supplies reported here.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2407>
+        <qc_2408>
+            <error_text>You have reported both own exports in section 3A and supply for exports (intended application 6A) for {{ gasName }}. Please note that reporting on the 'intended application: export' in 6A reporting is only adequate if you supply another companies with gases which that other company will export OR in case you export your own 1st January stocks as calculated in section 4D. Please double check your data.</error_text>
+        </qc_2408>
+        <qc_2409_partner>
+            <error_text>Feedstock use has repeatedly been subject to erroneous reporting. Please provide a brief explanation of the process where {{gas}} supplied by {{partner}} is used as a feedstock in section {{section}}</error_text>
+            <warning_flag></warning_flag>
+        </qc_2409_partner>
+        <qc_2409>
+            <error_text>Feedstock use has repeatedly been subject to erroneous reporting. Please provide a brief explanation of the process where {{gas}} is used as a feedstock in section {{section}}</error_text>
+            <warning_flag></warning_flag>
+        </qc_2409>
+        <qc_2410>
+            <error_text>Reporting on re-exports (2B) has been erroneous in the past. Please provide a brief comment for {{ gas }} in section 2B explaining the nature of the re-exports.</error_text>
+            <warning_flag></warning_flag>
+        </qc_2410>
+        <qc_2411>
+            <error_text>The values reported for equipment imports (11Q) and bulk imports (2A) of {{ gasName }} are very close to each other. Please note that 2A should only contain imports in bulk and not those F-gases that are contained in imported equipment. Your report may be followed up to avoid any issues of double counting.</error_text>
+        </qc_2411>
+        
+        <qc_2501>
+            <error_text>The webform was unable to fetch some company related data that are crucial for the validation process of your report. You will not be able to finalise the questionnaire until that data is available. Please save your work, close the webform and try again later. We apologise for the inconvenience.</error_text>
+        </qc_2501>
+
+        <unusualGasesG1>
+            <part1>is an unusual gas for the application of</part1>
+            <part2>Continue with</part2>
+        </unusualGasesG1>
+
+        <unusualGasesG2>
+            <part1>is unusual for the product category of</part1>
+            <part2>Continue with</part2>
+        </unusualGasesG2>
+
+    </validation_messages>
+
+    <submission>
+        <header>Review of the webform</header>
+        <validation_failed>There are validation errors (blocking errors) that must be repaired before an acceptable submission of this report. Please check the blocking errors in the list of errors and solutions below. 'Potential errors' listed below should also be checked but do not necessarily need to be removed before the submission. Potential errors will be followed up during manual quality control after your submission. In case you need further assistance, please contact the BDR Helpdesk at &lt;a href="mailto:bdr.helpdesk@eea.europa.eu"&gt;bdr.helpdesk@eea.europa.eu&lt;/a&gt;. In case you submit the report at this stage, it will be automatically rejected as not acceptable.</validation_failed>
+        <ready_for_submission>The form has no blocking errors and is ready for submission. 'Potential errors' listed below will be followed up during manual quality control after your submission.</ready_for_submission>
+        <close_text>For submission of your report, please first click "close report and proceed to BDR". This will let you return to your BDR envelope where you need to click "Submit to DG CLIMA/EEA" in order to actually submit your report.</close_text>
+        <reopen-text>The report is closed and successfully stored in BDR's envelope. Continue with BDR envelope to finalise the submission by running automatic QA and submiting the envelope. Click "Reopen form" button to re-edit the report.</reopen-text>
+        <submitted>The report has been finished, no changes allowed anymore.</submitted>
+        <submit_button>Close report and proceed to BDR</submit_button>
+        <reopen_button>Reopen form</reopen_button>
+
+        <general_errors>General validation errors</general_errors>
+        <activities_errors>Validation errors on form "Year and Activities".</activities_errors>
+        <gases_errors>Validation errors on form "Gases". </gases_errors>
+        <sheet1_errors>Validation errors on form I – Production, Bulk Import and Export, Stocks (sections 1-4)</sheet1_errors>
+        <sheet2_errors>Validation errors on form II – Exempted HFCs (section 5)</sheet2_errors>
+        <sheet3_errors>Validation errors on form III – Intended Applications (section 6)</sheet3_errors>
+        <sheet4_errors>Validation errors on form IV – Issued Authorisations (section 9) and quota calculation</sheet4_errors>
+        <sheet5_errors>Validation errors on form V – Physical Supplies for Authorisations for NER Quota Holders (section 10)</sheet5_errors>
+        <sheet6_errors>Validation errors on form VI – Feedstock Use and Destruction (sections 7-8)</sheet6_errors>
+        <form7_errors>Validation errors on form VII – Import of Products/Equipment containing F-gases (section 11)</form7_errors>
+        <unusualGases>Warning - unusual choice of gases for reported categories</unusualGases>
+        
+        <column-error-category-header>Validation error category</column-error-category-header>
+        <error-level-blocker>Blocking error</error-level-blocker>
+        <error-level-warning>Potential error</error-level-warning>
+
+    </submission>
+
+</labels>

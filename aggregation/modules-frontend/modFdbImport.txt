@@ -1,0 +1,1945 @@
+Option Compare Database
+Option Explicit
+
+Private srcDb As DAO.database
+Private wrk As DAO.Workspace
+Private destDb As DAO.database
+
+Private Const IGNORE_OLD_REPORTS = False
+Private Const TEST_COMPANY_CODE = "10086"
+Private Const TEST_COMPANY_COLLECTION = "https://bdr.eionet.europa.eu/fgases/ro/colvnm0fa"
+
+Public Const EQ_HFC_11TRANSACTIONS = "A,B,C,D,E,F"
+Public Const EQ_OTHER_11TRANSACTIONS = "H,I,J,K,L,M,N,O,P"
+
+Public eqHfc11TransactionTransactions() As String
+Public eqOther11TransactionTransactions() As String
+
+Public Sub ImportFGasesReport(srcReportRecordset As Recordset, ByVal destDbName As String, ByVal bOnlyMostRecent As Boolean, ByRef importLogs As Collection)
+    On Error GoTo Err_import_report
+    
+    Dim currentYear As Integer
+    
+    Dim rs As Recordset
+    Dim rsTotals As Recordset
+    Dim totalsQuery As String
+    
+    Dim companyId As String
+    Dim reportId As String
+    Dim envelopeUrl As String
+    Dim fileName As String
+    Dim releaseTime As Date
+    Dim country As String
+    Dim companyName As String
+    Dim transactionYear As Integer
+    Dim company_street, company_house_no, company_postcode, company_city, company_country_ID, company_is_EU, telephone, website, VAT_no, OR_Name, OR_Street, OR_House_no, OR_postcode, OR_city, OR_country, OR_firstname, OR_lastname, OR_email, OR_telephone, OR_website, OR_VAT_no, Former_CompanyId_2104 As String
+    Dim isNILReport As Boolean
+    Dim Producer_P As Boolean, Producer_other As Boolean, Importer_P As Boolean, Importer_other As Boolean, Exporter As Boolean, FeedstockUser As Boolean, Destructor As Boolean, Eq_I_RACHP_HFC As Boolean, Eq_I_other As Boolean, auth As Boolean, auth_NER As Boolean
+    Dim verification_received_5c As Boolean
+    Dim verification_received_9c As Boolean
+    
+    Dim isReporter As Boolean
+    Dim isMostRecentRep As Boolean
+    Dim isPrevReportAccepted As Boolean
+    
+    Dim mostRecentReport, statusECApprovalPending As Boolean
+    
+    Dim totalImp, totalProd, totalExp As Double
+    Dim nonVisibleForms As Collection
+    
+    Dim fdbCompanyId As Integer
+    Dim fdbCountryId As Integer
+    Dim fdbReportId As String
+    Dim isBeforeDeadline As Boolean
+    
+    Dim transactionsMap As Collection
+    Dim calculatedTransactions As Collection
+    Dim newBlends As Collection
+    Dim gasesList As Collection
+    
+    Set srcDb = currentDb
+    Set wrk = DBEngine.Workspaces(0)
+    Set destDb = wrk.OpenDatabase(destDbName)
+
+    currentYear = year(Now)
+    
+On Error GoTo Err_import_parse_src
+    eqHfc11TransactionTransactions = Split(EQ_HFC_11TRANSACTIONS, ",")
+    eqOther11TransactionTransactions = Split(EQ_OTHER_11TRANSACTIONS, ",")
+    
+    'get report fields
+    companyId = modCommonUtil.NullStr(srcReportRecordset("company_id"))
+    reportId = modCommonUtil.NullStr(srcReportRecordset("report_id"))
+    envelopeUrl = modCommonUtil.NullStr(srcReportRecordset("envelope_url"))
+    fileName = modCommonUtil.NullStr(srcReportRecordset("file_name"))
+    releaseTime = IIf(IsNull(srcReportRecordset("release_time")), Now(), srcReportRecordset("release_time"))
+    transactionYear = srcReportRecordset("transaction_year")
+    isNILReport = srcReportRecordset("NIL-report")
+    
+    ' ignore test reports, but increment error in count of reports
+    If companyId = TEST_COMPANY_CODE Or InStr(1, envelopeUrl, TEST_COMPANY_COLLECTION) > 0 Then
+        addImportLog importLogs, reportId, "REPORT_IMPORT_SKIPPED", basGlobals.WARN_LOG, "Ignore dummy test company report."
+        countErrorReports = countErrorReports + 1
+        GoTo Exit_import_report
+    End If
+    
+    'company data
+    companyName = modCommonUtil.NullStr(srcReportRecordset("company_name"))
+    country = modCommonUtil.NullStr(srcReportRecordset("company_country_ID"))
+    company_street = modCommonUtil.NullStr(srcReportRecordset("company_street"))
+    company_house_no = modCommonUtil.NullStr(srcReportRecordset("company_house_no"))
+    company_postcode = modCommonUtil.NullStr(srcReportRecordset("company_postcode"))
+    company_city = modCommonUtil.NullStr(srcReportRecordset("company_city"))
+    company_country_ID = modCommonUtil.NullStr(srcReportRecordset("company_country_ID"))
+    company_is_EU = modCommonUtil.NullStr(srcReportRecordset("company_is_EU"))
+    telephone = modCommonUtil.NullStr(srcReportRecordset("telephone"))
+    website = modCommonUtil.NullStr(srcReportRecordset("website"))
+    VAT_no = modCommonUtil.NullStr(srcReportRecordset("VAT_no"))
+    OR_Name = modCommonUtil.NullStr(srcReportRecordset("OR_Name"))
+    OR_Street = modCommonUtil.NullStr(srcReportRecordset("OR_Street"))
+    OR_House_no = modCommonUtil.NullStr(srcReportRecordset("OR_House_no"))
+    OR_postcode = modCommonUtil.NullStr(srcReportRecordset("OR_postcode"))
+    OR_city = modCommonUtil.NullStr(srcReportRecordset("OR_city"))
+    OR_country = modCommonUtil.NullStr(srcReportRecordset("OR_country"))
+    OR_firstname = modCommonUtil.NullStr(srcReportRecordset("OR_firstname"))
+    OR_lastname = modCommonUtil.NullStr(srcReportRecordset("OR_lastname"))
+    OR_email = modCommonUtil.NullStr(srcReportRecordset("OR_email"))
+    OR_telephone = modCommonUtil.NullStr(srcReportRecordset("OR_telephone"))
+    OR_website = modCommonUtil.NullStr(srcReportRecordset("OR_website"))
+    OR_VAT_no = modCommonUtil.NullStr(srcReportRecordset("OR_VAT_no"))
+    Former_CompanyId_2104 = modCommonUtil.NullStr(srcReportRecordset("Former_CompanyId_2104"))
+    
+    verification_received_5c = srcReportRecordset("verification_received_5c")
+    verification_received_9c = srcReportRecordset("verification_received_9c")
+
+    'Activity data
+    Producer_P = srcReportRecordset("Producer-P")
+    Producer_other = srcReportRecordset("Producer-other")
+    Importer_P = srcReportRecordset("Importer-P")
+    Importer_other = srcReportRecordset("Importer-other")
+    Exporter = srcReportRecordset("Exporter")
+    FeedstockUser = srcReportRecordset("FeedstockUser")
+    Destructor = srcReportRecordset("Destructor")
+    Eq_I_RACHP_HFC = srcReportRecordset("Eq-I-RACHP-HFC")
+    Eq_I_other = srcReportRecordset("Eq-I-other")
+    auth = srcReportRecordset("auth")
+    auth_NER = srcReportRecordset("auth-NER")
+    
+    'TODO: Findout if correct year and if this is used anywhere
+    If transactionYear <= 2013 And IGNORE_OLD_REPORTS Then
+        addImportLog importLogs, reportId, "REPORT_IMPORT_SKIPPED", basGlobals.WARN_LOG, "Report is not imported due to obsolete transaction year: " & transactionYear
+        GoTo Exit_import_report
+    End If
+
+'On Error GoTo Err_import_get_country
+    ' get country ID
+    'fdbCountryId = getFdbCountryId(country)
+    'If fdbCountryId = 0 Then
+    '    addImportLog importLogs, reportId, "REPORT_IMPORT_SKIPPED", basGlobals.DEBUG_LOG, "Report for ambigious country is not imported: " & country
+    '    GoTo Exit_import_report
+    'End If
+
+On Error GoTo Err_import_get_company
+    ' Check if company exists in company table and get ID
+    fdbCompanyId = getFdbCompanyId(companyId, Former_CompanyId_2104, importLogs)
+    If fdbCompanyId = 0 Then
+        addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Could not receive company ID from FDB."
+        GoTo Err_import_get_company
+    End If
+
+On Error GoTo Err_import_is_imported
+    ' Check if company ID + trans year +  release date exists
+    If (isReportImported(fdbCompanyId, transactionYear, releaseTime)) Then
+        addImportLog importLogs, reportId, "REPORT_IMPORT_SKIPPED", basGlobals.DEBUG_LOG, "Report is already imported."
+        GoTo Exit_import_report
+    End If
+    
+On Error GoTo Err_import_is_most_recent
+    ' Check if company ID + trans year +  release date exists and is most recent
+    isMostRecentRep = isMostRecentReport(fdbCompanyId, transactionYear, releaseTime)
+    If isMostRecentRep = False And bOnlyMostRecent Then
+        addImportLog importLogs, reportId, "REPORT_IMPORT_SKIPPED", basGlobals.DEBUG_LOG, "Report is not most recent report."
+        GoTo Exit_import_report
+    End If
+    
+On Error GoTo Err_import_is_before_deadline
+    isBeforeDeadline = isBeforeSubmissionDeadline(srcDb, FGASES, transactionYear, releaseTime, importLogs, reportId)
+
+On Error GoTo Err_import_is_prev_report_accepted
+    isPrevReportAccepted = False
+    If isNILReport And (Not isBeforeDeadline Or IsOldTransaction(transactionYear)) Then
+        ' Check if Status_EC_approval_pending =true if NIl report is submitted after deadline, or if the transaction year is older than the (current year - 1)
+        isPrevReportAccepted = isPrevReportAcceptedQuery(fdbCompanyId, transactionYear)
+    End If
+    
+On Error GoTo Err_import_get_transactions
+    Set transactionsMap = New Collection
+    Set calculatedTransactions = New Collection
+    getTransactionsMap transactionsMap, calculatedTransactions
+    Set gasesList = New Collection
+    getFdbGases gasesList
+
+    'start transaction
+    On Error GoTo Err_rollback
+    With wrk
+        .BeginTrans
+        
+        If isBeforeDeadline And Not IsOldTransaction(transactionYear) Then
+            destDb.Execute "UPDATE tbl_report SET Most_recent_report=0 where Company_ID=" & fdbCompanyId & " AND " & _
+                "Transaction_year = " & transactionYear & " AND Report_submissiondate < CDate('" & releaseTime & "')"
+                
+            mostRecentReport = True
+            statusECApprovalPending = False
+        Else
+            'Described in harvesting specs, section 2.3.2
+            If isNILReport And Not isPrevReportAccepted Then
+                mostRecentReport = True
+                statusECApprovalPending = False
+            Else
+                mostRecentReport = False
+                statusECApprovalPending = True
+            End If
+        End If
+        
+        Set rs = destDb.OpenRecordset("tbl_report", dbOpenDynaset)
+        With rs
+            .AddNew
+            !report_submission_no = reportId
+            !Report_submissiondate = releaseTime
+            !Company_ID = fdbCompanyId
+            !Company_name = companyName
+            !Transaction_year = transactionYear
+            !Nil_report = isNILReport
+            !Most_recent_report = mostRecentReport
+            !Status_EC_approval_pending = statusECApprovalPending
+            !bdr_delivery_url = envelopeUrl
+            !scheme_version = 2
+            
+            'reporting company data
+            !company_street = company_street
+            !company_house_no = company_house_no
+            !company_postcode = company_postcode
+            !company_city = company_city
+            !Company_VAT_No = VAT_no
+            
+            !OR_Name = OR_Name
+            !OR_Street = OR_Street
+            !OR_House_no = OR_House_no
+            !OR_postcode = OR_postcode
+            !OR_city = OR_city
+            !OR_country_ID = OR_country
+            !OR_firstname = OR_firstname
+            !OR_lastname = OR_lastname
+            !OR_email = OR_email
+            !OR_telephone = OR_telephone
+            !OR_website = OR_website
+            !OR_VAT_no = OR_VAT_no
+
+            !verification_received_5c = verification_received_5c
+            !verification_received_9c = verification_received_9c
+            !Report_status_BDR = "accepted"
+            
+            .update
+            .MoveLast
+            fdbReportId = reportId
+            .Close
+        End With
+        
+        Set rs = destDb.OpenRecordset("tbl_actor_2015", dbOpenDynaset)
+        With rs
+            .AddNew
+            !report_submission_no = reportId
+
+            ![actor_p-hfc] = Producer_P
+            ![actor_p-other] = Producer_other
+            ![actor_i-hfc] = Importer_P
+            ![actor_i-other] = Importer_other
+            ![actor_e] = Exporter
+            ![actor_fu] = FeedstockUser
+            ![actor_d] = Destructor
+            ![actor_eq-i-rachp-hfc] = Eq_I_RACHP_HFC
+            ![actor_eq-i-other] = Eq_I_other
+            ![actor_auth] = auth
+            ![actor_auth-ner] = auth_NER
+            
+            .update
+            .MoveLast
+            .Close
+        End With
+        
+        'import reporting company contacts from report
+        importReportContacts reportId, fdbReportId, fdbCompanyId, importLogs
+        
+        ' import affiliations
+        importAffiliations reportId, reportId, importLogs
+        
+        ' import user-defined blends
+        Set newBlends = New Collection
+        importUserDefinedBlends reportId, fdbReportId, newBlends, importLogs
+        
+        'import tbl_value data
+        importFdbReportValues reportId, fdbReportId, gasesList, transactionsMap, calculatedTransactions, newBlends, fdbCompanyId, FeedstockUser, Destructor, Eq_I_RACHP_HFC, Eq_I_other, importLogs
+        
+        'create qc tasks for complex QCs
+        modQCWarnings.createQCTasks reportId, fdbReportId, destDbName, importLogs
+        
+        addImportLog importLogs, reportId, "REPORT_ADDED", basGlobals.INFO_LOG, "Report imported successfully"
+
+      .CommitTrans
+      countImportReports = countImportReports + 1
+    End With
+    
+Exit_import_report:
+    On Error Resume Next
+    Set nonVisibleForms = Nothing
+    If Not rsTotals Is Nothing Then rsTotals.Close
+    If Not destDb Is Nothing Then destDb.Close
+    Set rs = Nothing
+    Set rsTotals = Nothing
+    Exit Sub
+Err_rollback:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Report in DB. Additions done for this report were rolled back. [" & err.number & "]" & err.Description & ""
+    countErrorReports = countErrorReports + 1
+    wrk.rollback
+    GoTo Exit_import_report
+Err_import_report:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Report in DB: [" & err.number & "]" & err.Description & "; Error on line: " & Erl
+    countErrorReports = countErrorReports + 1
+    GoTo Exit_import_report
+Err_import_parse_src:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when reading Report data from source DB: [" & err.number & "]" & err.Description
+    countErrorReports = countErrorReports + 1
+    GoTo Exit_import_report
+Err_import_get_country:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when finding country ID from FDB: [" & err.number & "]" & err.Description
+    countErrorReports = countErrorReports + 1
+    GoTo Exit_import_report
+Err_import_get_company:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when finding company ID from FDB: [" & err.number & "]" & err.Description
+    countErrorReports = countErrorReports + 1
+    GoTo Exit_import_report
+Err_import_is_imported:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when checking if report is already imported to FDB: [" & err.number & "]" & err.Description
+    countErrorReports = countErrorReports + 1
+    GoTo Exit_import_report
+Err_import_is_most_recent:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when checking if report is most recent in FDB: [" & err.number & "]" & err.Description
+    countErrorReports = countErrorReports + 1
+    GoTo Exit_import_report
+Err_import_is_prev_report_accepted:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when checking Status_EC_approval_pending  flag for NIL reports submitted after deadline in FDB: [" & err.number & "]" & err.Description
+    countErrorReports = countErrorReports + 1
+    GoTo Exit_import_report
+Err_import_get_transactions:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when getting transaction Ids and codes from FDB: [" & err.number & "]" & err.Description
+    countErrorReports = countErrorReports + 1
+    GoTo Exit_import_report
+Err_import_is_before_deadline:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when checking submission deadline for reporting year: [" & err.number & "]" & err.Description
+    countErrorReports = countErrorReports + 1
+    GoTo Exit_import_report
+End Sub
+
+Private Sub importFdbReportValues(reportId As String, fdbReportId As String, ByRef gasesList As Collection, _
+    ByRef transactionsMap As Collection, ByRef calculatedTransactions As Collection, ByRef newBlends As Collection, _
+    ByRef ownCompanyId As Integer, ByRef FeedstockUser As Boolean, Destructor As Boolean, _
+    Eq_I_RACHP_HFC As Boolean, Eq_I_other As Boolean, ByRef importLogs As Collection)
+    
+    On Error GoTo err
+    
+    Dim srcRs As Recordset
+    Dim destRs As Recordset
+
+    Dim gasId As String
+    Dim transactionCode As String
+    Dim val As Double
+    Dim unit As String
+    Dim descriptionReporter As String
+    Dim descriptionReporterTransaction As String
+    Dim qcWarnings As String
+    Dim qcWarningsTP As String
+    Dim qcWarningsArray() As String
+    Dim qcWarning As Variant
+    Dim qcWarningsTPArray() As String
+    Dim qcWarningTP As Variant
+    Dim qcWarningId As Integer
+    
+    Dim logValueId As String
+    Dim companyName, EuVat, NonEUCountry, NonEUDgClimaRegCode, NonEURepName, NonEURepVAT As String
+    Dim isEUBased As Boolean
+    
+    Dim fdbCompanyId As Integer
+    Dim fdbGasId As Integer
+    Dim fdbTransactionId As Integer
+    Dim fdbValueId As Long
+    
+    Dim calculated As Boolean
+    
+    Dim errNum As Long
+    Dim errDesc As String
+    
+    ' get reported values from source DB
+    Set srcRs = srcDb.OpenRecordset("SELECT * FROM data_report_values WHERE report_id = " & StrLiteral(reportId), dbOpenSnapshot)
+    
+    If srcRs.RecordCount > 0 Then
+        Do While Not srcRs.EOF
+            fdbValueId = 0
+            'read data from source DB
+            gasId = modCommonUtil.NullStr(srcRs("gas_id"))
+            transactionCode = modCommonUtil.NullStr(srcRs("transaction_code"))
+            
+            ' skip unnecessary transactions
+            If IsInArray(transactionCode, skipTransactions) Then
+                GoTo Loop_next
+            End If
+
+            val = IIf(IsNull(srcRs("num_value")), 0, srcRs("num_value"))
+            unit = modCommonUtil.NullStr(srcRs("unit_name_short"))
+            descriptionReporter = modCommonUtil.NullStr(srcRs("description_reporter"))
+            descriptionReporterTransaction = modCommonUtil.NullStr(srcRs("description_reporter_transaction"))
+            
+            companyName = modCommonUtil.NullStr(srcRs("trade_partner"))
+            isEUBased = modCommonUtil.NullStr(srcRs("trade_partner_EU"))
+            EuVat = modCommonUtil.NullStr(srcRs("trade_partner_EU_VAT_no"))
+            NonEURepName = modCommonUtil.NullStr(srcRs("trade_partner_nonEU_OR"))
+            NonEURepVAT = modCommonUtil.NullStr(srcRs("trade_partner_nonEU_OR_VAT_no"))
+            NonEUDgClimaRegCode = modCommonUtil.NullStr(srcRs("trade_partner_nonEU_portal_code"))
+            NonEUCountry = modCommonUtil.NullStr(srcRs("trade_partner_nonEU_country"))
+            qcWarnings = modCommonUtil.NullStr(srcRs("qc_warning"))
+            qcWarningsTP = modCommonUtil.NullStr(srcRs("qc_warning_trade_partner"))
+            calculated = srcRs("calculated")
+            ' get company internal_ID
+            If (EuVat = "" And NonEUDgClimaRegCode = "") Or transactionCode = "5C_voluntary" Or transactionCode = "10A" Then
+                fdbCompanyId = 0
+            Else
+                fdbCompanyId = getCompanyIdByCodeAndVat(isEUBased, NonEUDgClimaRegCode, EuVat, importLogs)
+            
+                If (IsNull(fdbCompanyId) Or fdbCompanyId = 0) Then
+                '    On Error GoTo Err_missing_data
+                '    err.Raise vbObjectError + 513, , "Company Internal_ID is null for portalcode = " & NonEUDgClimaRegCode & "; EU vat=" & EuVat
+                '    GoTo err
+                End If
+            End If
+            
+            If InCollection(transactionsMap, , transactionCode) Then
+                fdbTransactionId = transactionsMap.Item(transactionCode)
+            Else
+                fdbTransactionId = 0
+            End If
+            'If calculated = False And InCollection(calculatedTransactions, , transactionCode) Then
+            '    calculated = True
+            'End If
+            
+            ' for 9* transactions gas ID is null
+            If Not gasId = "" Then
+                If InCollection(gasesList, , gasId) Then
+                    fdbGasId = CInt(gasId)
+                ElseIf InCollection(newBlends, , gasId) Then
+                    fdbGasId = CInt(newBlends.Item(gasId))
+                Else
+                    fdbGasId = 0
+                End If
+                If (IsNull(fdbGasId) Or fdbGasId = 0) Then
+                    On Error GoTo Err_missing_data
+                    err.Raise 500, , "Error when trying to create new Value record in DB: Reported gas ID is not found from tbl_gases gasId = " & gasId
+                    GoTo err
+                End If
+            Else
+                fdbGasId = 0
+            End If
+            If (IsNull(fdbTransactionId) Or fdbTransactionId = 0) Then
+                On Error GoTo Err_missing_data
+                err.Raise 500, , "Error when trying to create new Value record in DB: Transaction ID is null for transaction code = " & transactionCode
+                GoTo err
+            End If
+                        
+            
+            ' skip empty rows
+            If (IsNull(val)) And descriptionReporter = "" And descriptionReporterTransaction = "" Then
+                GoTo Loop_next
+            End If
+
+            If Mid(transactionCode, 1, 1) = "9" Then
+                unit = "t_gwp_ar4"
+            End If
+            ' fix "unit" to "pieces"
+            If unit = "unit" Then
+                unit = "pieces"
+            End If
+                       
+            ' Calculated values will not be stored, except explicitly stated.
+            ' Save the specific charges of gases in products in sheet 11 (see step 2.3.10).
+            ' Save 5J, 5I values for 2016 reporting round.
+            Dim calculatedException As Boolean
+            calculatedException = False
+            If transactionCode = "5I" Or transactionCode = "5J" Then
+                calculated = True
+                calculatedException = True
+            End If
+                               
+            If (calculatedException = True) Or (Not InCollection(calculatedTransactions, , transactionCode) And _
+                (Mid(transactionCode, 1, 2) <> "11" Or (Mid(transactionCode, 1, 2) = "11" And Len(transactionCode) > 2 And _
+                (((IsInArray(Mid(transactionCode, 3, 1), eqHfc11TransactionTransactions) And Eq_I_RACHP_HFC) Or _
+                (IsInArray(Mid(transactionCode, 3, 1), eqOther11TransactionTransactions) And Eq_I_other)))))) Then
+                
+                If gasId = "" And calculated = True And Mid(transactionCode, 1, 2) = "11" Then
+                    'For additional clarity set gas ID of those specific charges in section 11 to generic "F-Gases" ID 142.
+                    fdbGasId = 142
+                End If
+                                    
+                Set destRs = destDb.OpenRecordset("tbl_value", dbOpenDynaset)
+                With destRs
+                    .AddNew
+                    !report_submission_no = fdbReportId
+                    !transaction_ID = fdbTransactionId
+                    !Gas_ID = IIf(gasId = "" And fdbGasId = 0, Null, fdbGasId)
+                    !description_reporter = descriptionReporter
+                    !description_reporter_transaction = descriptionReporterTransaction
+                    !num_value = val
+                    !unit_name_short = unit
+                   
+                     !calculated = calculated
+                    If fdbCompanyId > 0 Or transactionCode = "5C_voluntary" Or transactionCode = "10A" Or transactionCode = "9A" Then
+                        !trade_partner_ID = IIf(transactionCode = "5C_voluntary" Or transactionCode = "10A" Or fdbCompanyId = 0, Null, fdbCompanyId)
+                        !trade_partner_name = companyName
+                        !trade_partner_EU = isEUBased
+                        !trade_partner_EU_VAT_no = EuVat
+                        !trade_partner_nonEU_country = NonEUCountry
+                        !trade_partner_nonEU_portal_code = NonEUDgClimaRegCode
+                        !trade_partner_nonEU_OR_name = NonEURepName
+                        !trade_partner_nonEU_OR_VAT_no = NonEURepVAT
+                    End If
+                    .update
+                    .MoveLast
+                    fdbValueId = .fields("Value_ID")
+                    .Close
+                End With
+                                        
+                ' Create QC rules
+                '2059
+                If calculated = False And val > 1000 And unit = "t" Then
+                    If Not containsLong(CLng(ownCompanyId), modFgasesCompanies.largeCompaniesIds) Then
+                        createQCTask fdbReportId, fdbValueId, fdbGasId, 1, importLogs
+                    End If
+                End If
+            
+                ' 2300
+                If Mid(transactionCode, 1, 2) = "11" And calculated = True And Len(descriptionReporter) > 0 Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 2, importLogs
+                End If
+            
+                ' 2079
+                If transactionCode = "11P" And calculated = False And gasId = "" And Len(descriptionReporter) > 0 Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 31, importLogs
+                ' 2087
+                ElseIf transactionCode = "11H4" And calculated = False And gasId = "" And Len(descriptionReporter) > 0 Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 32, importLogs
+                ' 2048
+                ElseIf Mid(transactionCode, 1, 2) = "11" And calculated = False And gasId = "" And Len(descriptionReporter) > 0 Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 33, importLogs
+                ' 2024
+                ElseIf (transactionCode = "4G" And Len(descriptionReporter) > 0 And modQCWarnings.getQCErrorStatus(reportId, "2024") = False) Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 30, importLogs
+                ' 2025
+                ElseIf (transactionCode = "4H" And Len(descriptionReporter) > 0 And modQCWarnings.getQCErrorStatus(reportId, "2025") = False) Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 30, importLogs
+                ' 2028
+                'ElseIf transactionCode = "5A" And Not Destructor And Len(descriptionReporter) > 0 Then
+                '    createQCTask fdbReportId, fdbValueId, fdbGasId, 11, importLogs
+                ' 2029
+                'ElseIf transactionCode = "5A" And Destructor And Len(descriptionReporter) > 0 Then
+                '    createQCTask fdbReportId, fdbValueId, fdbGasId, 61, importLogs
+                ' 2031
+                ' TODO identify why flag for qc missing
+                'ElseIf transactionCode = "5B" And Not FeedstockUser And Len(descriptionReporter) > 0 Then
+                '    createQCTask fdbReportId, fdbValueId, fdbGasId, 12, importLogs
+                ' 2071
+                ' TODO REMOVE for 2016
+                'ElseIf transactionCode = "5B" And FeedstockUser And Len(descriptionReporter) > 0 Then
+                '    createQCTask fdbReportId, fdbValueId, fdbGasId, 63, importLogs
+                ' 2040
+                ElseIf transactionCode = "6T" And Len(descriptionReporter) > 0 Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 71, importLogs
+                ' 2041
+                ElseIf transactionCode = "6V" And Len(descriptionReporter) > 0 Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 73, importLogs
+                ElseIf transactionCode = "6U" And Len(descriptionReporter) > 0 Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 72, importLogs
+                ' 2055
+                ElseIf (transactionCode = "4A" And Len(descriptionReporter) > 0 And modQCWarnings.getQCErrorStatus(reportId, "2055", "4A") = False) Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 30, importLogs
+                ElseIf (transactionCode = "4B" And Len(descriptionReporter) > 0 And modQCWarnings.getQCErrorStatus(reportId, "2055", "4B") = False) Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 30, importLogs
+                ElseIf (transactionCode = "4C" And Len(descriptionReporter) > 0 And modQCWarnings.getQCErrorStatus(reportId, "2055", "4C") = False) Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 30, importLogs
+                ' 2072, 2073
+                ElseIf (transactionCode = "1B" And Len(descriptionReporter) > 0 And modQCWarnings.getQCErrorStatus(reportId, "2072") = False _
+                    And modQCWarnings.getQCErrorStatus(reportId, "2073") = False) Then
+                        createQCTask fdbReportId, fdbValueId, fdbGasId, 30, importLogs
+                End If
+                
+                ' 2400
+                If (transactionCode = "5A" Or transactionCode = "1C") And fdbCompanyId > 0 And fdbCompanyId <> ownCompanyId Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 101, importLogs
+                ' 2401
+                ElseIf transactionCode = "5B" And fdbCompanyId > 0 And fdbCompanyId <> ownCompanyId Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 102, importLogs
+                ' 2402
+                ElseIf transactionCode = "5C_exempted" And fdbCompanyId > 0 And fdbCompanyId <> ownCompanyId Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 103, importLogs
+                End If
+                
+                ' 2405
+                If ((transactionCode = "9A") And (fdbCompanyId = ownCompanyId)) Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 301, importLogs
+                End If
+                
+                ' 2409
+                If (transactionCode = "5B") Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 63, importLogs
+                End If
+                If (transactionCode = "7A") Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 63, importLogs
+                End If
+                If (transactionCode = "6L") Then
+                    createQCTask fdbReportId, fdbValueId, fdbGasId, 63, importLogs
+                End If
+                
+                ' 2064, 2075, 2076
+                ' This has been left with the old functionality in order not to break anything. We might have to change this in the future.
+                If Not qcWarningsTP = "" And Not transactionCode = "5C_voluntary" Then
+                    qcWarningsTPArray = SplitStringToArray(qcWarningsTP, ",")
+                    For Each qcWarningTP In qcWarningsTPArray
+                        qcWarningId = 0
+                        If qcWarningTP = "2075" Then
+                            qcWarningId = 21
+                        ElseIf qcWarningTP = "2064" Then
+                            qcWarningId = 21
+                        ElseIf qcWarningTP = "2076" Then
+                            qcWarningId = 22
+                        End If
+                        If qcWarningId > 0 Then
+                            createQCTask fdbReportId, fdbValueId, fdbGasId, qcWarningId, importLogs
+                        End If
+                    Next qcWarningTP
+                End If
+            End If
+
+Loop_next:
+            srcRs.MoveNext
+        Loop
+    End If
+
+exit_function:
+    On Error Resume Next
+    If Not srcRs Is Nothing Then srcRs.Close
+    If Not destRs Is Nothing Then destRs.Close
+    Set srcRs = Nothing
+    Set destRs = Nothing
+    If Not err Is Nothing Then err.Raise err.number, err.source, err.Description
+    Exit Sub
+err:
+    errNum = err.number
+    errDesc = err.Description
+    
+    logValueId = getLogValueId(gasId, val, transactionCode, fdbCompanyId, companyName)
+    addImportLog importLogs, reportId, "VALUE_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Value record in DB: [" & errNum & "]" & errDesc, logValueId
+    MsgBox "Error importing value record: " & Chr(10) & errDesc, vbCritical
+    GoTo exit_function
+Err_missing_data:
+    errNum = err.number
+    errDesc = err.Description
+    
+    logValueId = getLogValueId(gasId, val, transactionCode, fdbCompanyId, companyName)
+    addImportLog importLogs, reportId, "VALUE_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Value record in DB: [" & errNum & "]" & errDesc, logValueId
+    MsgBox "Error importing value record: " & Chr(10) & Chr(10) & errDesc, vbCritical
+    GoTo exit_function
+End Sub
+Private Sub importAffiliations(reportId As String, fdbReportId As String, ByRef importLogs As Collection)
+    On Error GoTo err
+    
+    Dim srcRs As Recordset
+    Dim destRs As Recordset
+    
+    Dim companyName, EuVat, NonEUCountry, NonEUDgClimaRegCode, NonEURepName, NonEURepVAT As String
+    Dim isEUBased As Boolean
+    Dim fdbCompanyId As Integer
+    Dim qcWarningsTP As String
+    Dim qcWarningsArray() As String
+    Dim qcWarning As Variant
+    Dim qcWarningId As Integer
+    
+    Dim errNum As Long
+    Dim errDesc As String
+    
+    'add transaction values
+    Set srcRs = srcDb.OpenRecordset("SELECT * FROM data_affiliations WHERE report_id = " & StrLiteral(reportId), dbOpenSnapshot)
+    
+    If srcRs.RecordCount > 0 Then
+        Do While Not srcRs.EOF
+            companyName = modCommonUtil.NullStr(srcRs("trade_partner"))
+            isEUBased = modCommonUtil.NullStr(srcRs("trade_partner_EU"))
+            EuVat = modCommonUtil.NullStr(srcRs("trade_partner_EU_VAT_no"))
+            NonEURepName = modCommonUtil.NullStr(srcRs("trade_partner_nonEU_OR"))
+            NonEURepVAT = modCommonUtil.NullStr(srcRs("trade_partner_nonEU_OR_VAT_no"))
+            NonEUDgClimaRegCode = modCommonUtil.NullStr(srcRs("trade_partner_nonEU_portal_code"))
+            NonEUCountry = modCommonUtil.NullStr(srcRs("trade_partner_nonEU_country"))
+            qcWarningsTP = modCommonUtil.NullStr(srcRs("qc_warning"))
+            
+            fdbCompanyId = getCompanyIdByCodeAndVat(isEUBased, NonEUDgClimaRegCode, EuVat, importLogs)
+            
+            If (IsNull(fdbCompanyId) Or fdbCompanyId = 0) Then
+                On Error GoTo Err_missing_data
+                err.Raise 500, , "Error when trying to create new Affiliation record in DB: Company Internal_ID is null for portalcode = " & NonEUDgClimaRegCode & "; EU vat=" & EuVat
+                GoTo err
+            End If
+            
+            Set destRs = destDb.OpenRecordset("tbl_affiliations", dbOpenDynaset)
+            With destRs
+                .AddNew
+                !report_submission_no = fdbReportId
+                !affiliate_company_ID = fdbCompanyId
+                !companyName = companyName
+                !EUBased = isEUBased
+                !EuVat = EuVat
+                !NonEUCountry = NonEUCountry
+                !NonEUDgClimaRegCode = NonEUDgClimaRegCode
+                !NonEURepName = NonEURepName
+                !NonEURepVAT = NonEURepVAT
+                .update
+                .Close
+            End With
+            ' 2064, 2075, 2076
+            If Not qcWarningsTP = "" Then
+                qcWarningsArray = SplitStringToArray(qcWarningsTP, ",")
+                For Each qcWarning In qcWarningsArray
+                    qcWarningId = 0
+                    If qcWarning = "2064" Or qcWarning = "2075" Then
+                        qcWarningId = 21
+                    ElseIf qcWarning = "2076" Then
+                        qcWarningId = 22
+                    End If
+                    If qcWarningId > 0 Then
+                        createQCTask fdbReportId, 0, 0, qcWarningId, importLogs
+                    End If
+                Next qcWarning
+            End If
+
+Loop_next:
+            srcRs.MoveNext
+        Loop
+    End If
+
+exit_function:
+    On Error Resume Next
+    If Not srcRs Is Nothing Then srcRs.Close
+    If Not destRs Is Nothing Then destRs.Close
+    Set srcRs = Nothing
+    Set destRs = Nothing
+    If Not err Is Nothing Then err.Raise err.number, err.source, err.Description
+    Exit Sub
+err:
+    errNum = err.number
+    errDesc = err.Description
+    
+    addImportLog importLogs, reportId, "AFFILIATION_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new affiliation record in FDB: [" & errNum & "]" & errDesc
+    MsgBox "Error importing affiliation record: " & errDesc, vbCritical
+    GoTo exit_function
+Err_missing_data:
+    errNum = err.number
+    errDesc = err.Description
+    
+    addImportLog importLogs, reportId, "AFFILIATION_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new affiliatoin record in FDB: [" & errNum & "]" & errDesc
+    MsgBox "Error importing affiliation record: " & errDesc, vbCritical
+    GoTo exit_function
+End Sub
+Private Function getLogValueId(ByVal gasId As Variant, ByVal val As String, ByVal transactionCode As String, ByVal tradePartnerId As Integer, ByVal tradePartnerName As String)
+    Dim logValueId As String
+    
+    logValueId = ""
+    If (Not modCommonUtil.IsNullOrEmpty(gasId)) Then
+        logValueId = logValueId & "gasId=" & gasId & "; "
+    End If
+    If (Not modCommonUtil.IsNullOrEmpty(transactionCode)) Then
+        logValueId = logValueId & "transactionCode=" & transactionCode & "; "
+    End If
+    If (Not modCommonUtil.IsNullOrEmpty(val)) Then
+        logValueId = logValueId & "value=" & val & "; "
+    End If
+    If (Not modCommonUtil.IsNullOrEmpty(tradePartnerId)) Then
+        logValueId = logValueId & "tradepartner_id=" & tradePartnerId & "; "
+    End If
+    If (Not modCommonUtil.IsNullOrEmpty(tradePartnerName)) Then
+        logValueId = logValueId & "tradepartner_name=" & tradePartnerName & "; "
+    End If
+    
+   
+    getLogValueId = logValueId
+End Function
+
+Private Function getFdbCountryCode(countryCode As String) As String
+    On Error GoTo err
+    Dim fdbCountryCode As String
+    Dim rs As Recordset
+    
+'    If LCase(countryCode) = "gb" Then
+'        countryCode = "uk"
+'    ElseIf LCase(countryCode) = "gr" Then
+'        countryCode = "el"
+'    End If
+    
+    Set rs = destDb.OpenRecordset("SELECT ISO_code_A2 FROM tbl_countries where ISO_code_A2=" & StrLiteral(UCase(countryCode)), dbOpenSnapshot)
+    If rs.RecordCount <= 0 Then
+        'LOG wrong country, ignore record
+    Else
+        rs.MoveFirst
+        fdbCountryCode = rs(0)
+    End If
+    
+    getFdbCountryCode = fdbCountryCode
+
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Function
+err:
+    getFdbCountryCode = countryCode
+    MsgBox "Error reading country: " & err.Description, vbCritical
+    GoTo exit_function
+    
+End Function
+
+Private Function getFdbCompanyId(companyId As String, Former_CompanyId_2104 As String, ByRef importLogs As Collection) As Integer
+    On Error GoTo err
+    Dim fdbCompanyId As Integer
+    Dim rs As Recordset
+    Dim fdbPortalCode As Long
+    
+    fdbPortalCode = modCommonUtil.getLong(companyId)
+
+    Set rs = destDb.OpenRecordset("SELECT ID_internal FROM tbl_companies_map where portal_code=" & fdbPortalCode & _
+    " OR BDR_username = " & StrLiteral(Former_CompanyId_2104), dbOpenSnapshot)
+    If rs.RecordCount <= 0 Then
+        GoTo err
+    Else
+        rs.MoveFirst
+        fdbCompanyId = rs(0)
+    End If
+    
+    getFdbCompanyId = fdbCompanyId
+
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Function
+err:
+    getFdbCompanyId = 0
+    addImportLog importLogs, companyId, "GET_COMPANY_FAILED", basGlobals.ERROR_LOG, "Failed to get company ID_internal from FDB. companyId = " & companyId
+    'MsgBox "Error reading company: " & err.Description, vbCritical
+    GoTo exit_function
+End Function
+
+
+Public Function getCompanyIdByCodeAndVat(ByVal isEuCompany As Boolean, ByVal portalCode As String, ByVal vat As String, ByRef importLogs As Collection) As Integer
+    On Error GoTo err
+    Dim fdbCompanyId As Integer
+    Dim rs As Recordset
+    Dim sql As String
+    Dim fdbPortalCode As Long
+    
+    fdbPortalCode = modCommonUtil.getLong(portalCode)
+    
+    If isEuCompany Then
+        sql = "SELECT m.ID_internal as Company_ID FROM tbl_companies_map AS m INNER JOIN tbl_companies_data AS d ON m.valid_dataset=d.Dataset_ID " & _
+            "WHERE d.VAT_no=" & StrLiteral(vat)
+            
+    Else
+        sql = "SELECT ID_internal as Company_ID FROM tbl_companies_map where portal_code=" & fdbPortalCode
+    End If
+    
+    Set rs = destDb.OpenRecordset(sql, dbOpenSnapshot)
+    If rs.RecordCount <= 0 Then
+        GoTo err
+    Else
+        rs.MoveFirst
+        fdbCompanyId = rs(0)
+    End If
+    
+    getCompanyIdByCodeAndVat = fdbCompanyId
+
+exit_function:
+    On Error Resume Next
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Function
+err:
+    getCompanyIdByCodeAndVat = 0
+    'addImportLog importLogs, vat, "GET_COMPANY_FAILED", basGlobals.ERROR_LOG, "Failed to get company ID_internal from FDB. portalcode = " & portalCode & "; vat=" & vat
+    'MsgBox "Error reading company: " & err.Description, vbCritical
+    Resume exit_function
+End Function
+
+Private Function isMostRecentReport(companyId As Integer, transactionYear As Integer, releaseTime As Date) As Boolean
+    On Error GoTo err
+    Dim rs As Recordset
+
+    Set rs = destDb.OpenRecordset("SELECT count(*) FROM tbl_report where Company_ID=" & companyId & " AND " & _
+        "Transaction_year = " & transactionYear & " AND Report_submissiondate >= CDate('" & releaseTime & "')", dbOpenSnapshot)
+    rs.MoveFirst
+    
+    If rs(0) > 0 Then
+        isMostRecentReport = False
+    Else
+        isMostRecentReport = True
+    End If
+
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Function
+err:
+    isMostRecentReport = False
+    MsgBox "Error reading most recent report: " & err.Description, vbCritical
+    GoTo exit_function
+End Function
+
+Private Function isPrevReportAcceptedQuery(companyId As Integer, transactionYear As Integer) As Boolean
+    On Error GoTo err
+    Dim rs As Recordset
+
+    Set rs = destDb.OpenRecordset("SELECT count(*) FROM tbl_report where Company_ID=" & companyId & " AND " & _
+        "Transaction_year = " & transactionYear & " AND LCase(Report_Status_BDR) = 'accepted'", dbOpenSnapshot)
+    rs.MoveFirst
+    
+    If rs(0) > 0 Then
+        isPrevReportAcceptedQuery = True
+    Else
+        isPrevReportAcceptedQuery = False
+    End If
+
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Function
+err:
+    isPrevReportAcceptedQuery = False
+    MsgBox "Error reading Status_EC_approval_pending from data_report: " & err.Description, vbCritical
+    GoTo exit_function
+End Function
+
+Private Function isReportImported(companyId As Integer, transactionYear As Integer, releaseTime As Date) As Boolean
+    On Error GoTo err
+    Dim rs As Recordset
+
+    Set rs = destDb.OpenRecordset("SELECT count(*) FROM tbl_report where Company_ID=" & companyId & " AND " & _
+        "Transaction_year = " & transactionYear & " AND Report_submissiondate = CDate('" & releaseTime & "')", dbOpenSnapshot)
+    rs.MoveFirst
+    
+    If rs(0) > 0 Then
+        isReportImported = True
+    Else
+        isReportImported = False
+    End If
+
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Function
+err:
+    isReportImported = False
+    MsgBox "Error reading report already imported data: " & err.Description, vbCritical
+    GoTo exit_function
+End Function
+
+'Checks for already existing mixtures and imports the non-existing mixtures to the destination database
+Private Sub importUserDefinedBlends(reportId As String, fdbReportId As String, ByRef newBlends As Collection, ByRef importLogs As Collection)
+    On Error GoTo err
+    
+    Dim srcRs, srcRs2 As Recordset
+    Dim destRs, destRs2 As Recordset
+    Dim newGasId As Integer
+    Dim containsOther As Boolean
+    Dim gasGroupId As String
+    Dim blendGWP_HFC As String
+    Dim displayName As String
+       
+    Dim errNum As Long
+    Dim errDesc As String
+    
+    Dim rs3, rs4 As DAO.Recordset
+    
+    'Populate Gmixtures from destination database
+    modFgasesMixtures.refresh
+    
+    Set srcRs = srcDb.OpenRecordset("SELECT distinct blend_id, blend_name, blend_GWP_AR4_HFC FROM data_blend_components WHERE is_custom=true and report_id = " & StrLiteral(reportId), dbOpenSnapshot)
+    If srcRs.RecordCount > 0 Then
+        Do While Not srcRs.EOF
+            Dim blendId As String
+            Dim blendName As String
+            
+            blendId = modCommonUtil.NullStr(srcRs("blend_id"))
+            blendName = modCommonUtil.NullStr(srcRs("blend_name"))
+                        
+            'Search for existing entries before adding mixture in source database
+            Dim blend As fgasesMixture
+            Dim blendComponents As Collection
+            Set blendComponents = New Collection
+            Dim blendExists As Boolean
+                        
+            Set rs3 = srcDb.OpenRecordset("SELECT gas_id, gas_code, percentage FROM data_blend_components WHERE is_custom=true and report_id = " & StrLiteral(reportId) & " and blend_id = " & StrLiteral(blendId) & " ORDER BY gas_id", dbOpenSnapshot)
+            With rs3
+               Do While Not rs3.EOF
+                    Dim y As fgasesComponentPair
+                    Set y = New fgasesComponentPair
+                    Dim tmpId As Long
+                    tmpId = modNumbers.getLong(rs3("gas_id"))
+                    If (tmpId = Empty) Then
+                        y.setId = 128
+                        y.setName = modCommonUtil.NullOrEmptyStr(rs3("gas_code"))
+                    Else
+                        'unfortunate workaround to make sure we get the correct component id instead of gas id for mixtures.
+                        Dim x As Long
+                        Set rs4 = srcDb.OpenRecordset("SELECT component_id FROM tbl_components WHERE fgasid = " & modNumbers.getLong(rs3("gas_id")), dbOpenSnapshot)
+                        x = modNumbers.getLong(rs4("component_id"))
+                        If Not x = Empty Then
+                            y.setId = x
+                        Else
+                            y.setId = tmpId
+                        End If
+                    End If
+                    y.setPercentage = modNumbers.getDouble(rs3("percentage")) * 0.01
+                    blendComponents.Add y
+                    .MoveNext
+                Loop
+            End With
+            Dim z As fgasesMixture
+            Set z = New fgasesMixture
+            z.components = blendComponents
+            blendExists = modFgasesMixtures.mixtureExists(z)
+                                    
+            'If blend already exists, don't add to database but add to newblends list
+            If blendExists = True Then
+                Dim tmpGasId As Long
+                tmpGasId = modFgasesMixtures.getIdFromHash(z.getHash)
+                'Add Mixture trade name to FDB - tbl_gas_trade_names
+                Set destRs = destDb.OpenRecordset("tbl_gas_trade_names", dbOpenDynaset)
+                With destRs
+                    .AddNew
+                    !Gas_ID = tmpGasId
+                    !report_submission_no = fdbReportId
+                    !trade_name = blendName
+                    .update
+                    .Close
+                End With
+                newBlends.Add tmpGasId, modCommonUtil.NullStr(srcRs("blend_id"))
+                GoTo Loop_next
+            End If
+            
+            containsOther = False
+            blendGWP_HFC = modCommonUtil.NullStr(srcRs("blend_GWP_AR4_HFC"))
+            
+            'Fetch Max ID from tbl_gases table - emulate autonumber behaviour
+            Dim calcRs As DAO.Recordset
+            Dim maxId As Long
+            Set calcRs = srcDb.OpenRecordset("SELECT MAX(gas_id) as [calc] from tbl_gases")
+            maxId = modNumbers.getLong(calcRs("calc"))
+            'Add new gas to tbl_gases table in destination database
+            Set destRs = destDb.OpenRecordset("tbl_gases", dbOpenDynaset)
+            With destRs
+                .AddNew
+                !Gas_ID = maxId + 1
+                !sortkey = 400
+                !Custom = True
+                !blend = True
+                '!reported_trade_name = "New mixture: " & modCommonUtil.NullStr(srcRs("blend_name"))
+                '!reported_in = fdbReportId
+                If Len(blendGWP_HFC) > 0 And CDbl(blendGWP_HFC) = 0 Then
+                    !Gas_Group = 9
+                ElseIf Len(blendGWP_HFC) > 0 And CDbl(blendGWP_HFC) > 0 Then
+                    !Gas_Group = 7
+                End If
+                .update
+                .MoveLast
+                newGasId = .fields("gas_ID")
+                newBlends.Add newGasId, modCommonUtil.NullStr(srcRs("blend_id"))
+                .Close
+            End With
+            
+            'Add Mixture hash to Mixtures list
+            modFgasesMixtures.addMixtureHash z.getHash
+            modFgasesMixtures.addMixtureHashWithId z.getHash & ":" & newGasId
+            
+            'Add Mixture trade name to FDB - tbl_gas_trade_names
+            Set destRs = destDb.OpenRecordset("tbl_gas_trade_names", dbOpenDynaset)
+            With destRs
+                .AddNew
+                !Gas_ID = newGasId
+                !report_submission_no = fdbReportId
+                !trade_name = blendName
+                .update
+                .Close
+            End With
+                
+            Set srcRs2 = srcDb.OpenRecordset("SELECT * FROM data_blend_components WHERE is_custom=true and report_id = " & StrLiteral(reportId) & _
+                " And blend_id=" & StrLiteral(modCommonUtil.NullStr(srcRs("blend_id"))), dbOpenSnapshot)
+                
+            If srcRs2.RecordCount > 0 Then
+                Set destRs = destDb.OpenRecordset("tbl_blendcomposition", dbOpenDynaset)
+                Do While Not srcRs2.EOF
+                    gasGroupId = modCommonUtil.NullStr(srcRs2("gas_group_id"))
+                    With destRs
+                        .AddNew
+                        !Gas_ID = newGasId
+                        !percentage = srcRs2("percentage") * 0.01
+                        If srcRs2("is_other") Then
+                            !Component_ID = 128
+                            !reported_other_explanation = modCommonUtil.NullStr(srcRs2("gas_code"))
+                            containsOther = True
+                        Else
+                            'FIXME componentID of non-FGases is stored correctly. The ID of all the other gases refer to gasID in tbl_gases
+                            If gasGroupId = 6 Then
+                                !Component_ID = srcRs2("gas_id")
+                            Else
+                                Set destRs2 = destDb.OpenRecordset("SELECT FIRST(component_ID) AS new_component_ID FROM tbl_blendcomposition WHERE gas_ID=" & srcRs2("gas_id"), dbOpenSnapshot)
+                                If srcRs.RecordCount > 0 Then
+                                    destRs2.MoveFirst
+                                    !Component_ID = destRs2("new_component_ID")
+                                Else
+                                    addImportLog importLogs, "", "BLEND_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying match componentID for gas_ID=" & srcRs2("gas_id")
+                                    GoTo Err_missing_data
+                                End If
+                            End If
+                        End If
+                        .update
+                    End With
+                    srcRs2.MoveNext
+                Loop
+                destRs.Close
+            End If
+            Set destRs = destDb.OpenRecordset("SELECT * FROM tbl_gases WHERE Gas_ID=" & newGasId, dbOpenDynaset)
+            displayName = "Mix: " & getCompositionString(newGasId)
+            With destRs
+                .Edit
+                !gas_name_display = displayName
+                !gas_name_IA = displayName
+                .update
+                .Close
+            End With
+            createQCTask fdbReportId, 0, newGasId, 200, importLogs
+            If containsOther Then
+                createQCTask fdbReportId, 0, newGasId, 81, importLogs
+            End If
+            countNewGases = countNewGases + 1
+            addImportLog importLogs, reportId, "NEW_BLEND_ADDED", basGlobals.INFO_LOG, "Inserted a new user-defined blend into FDB. Gas_ID = " & newGasId
+
+Loop_next:
+            srcRs.MoveNext
+        Loop
+    End If
+    
+
+exit_function:
+    On Error Resume Next
+    If Not srcRs Is Nothing Then srcRs.Close
+    If Not srcRs2 Is Nothing Then srcRs2.Close
+    If Not destRs Is Nothing Then destRs.Close
+    If Not destRs2 Is Nothing Then destRs2.Close
+    If Not calcRs Is Nothing Then calcRs.Close
+    Set srcRs = Nothing
+    Set destRs = Nothing
+    Set srcRs2 = Nothing
+    Set destRs2 = Nothing
+    Set calcRs = Nothing
+    If Not err Is Nothing Then err.Raise err.number, err.source, err.Description
+    Exit Sub
+err:
+    errNum = err.number
+    errDesc = err.Description
+    
+    addImportLog importLogs, "", "BLEND_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new user-defined blend record in FDB: [" & errNum & "]" & errDesc
+    MsgBox "Error importing user-defined blend record: " & errDesc, vbCritical
+    GoTo exit_function
+Err_missing_data:
+    errNum = err.number
+    errDesc = err.Description
+    
+    addImportLog importLogs, "", "BLEND_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new user-defined blend record in FDB: [" & errNum & "]" & errDesc
+    MsgBox "Error importing user-defined blend record: " & errDesc, vbCritical
+    GoTo exit_function
+End Sub
+
+Public Function getCompositionString(Gas_ID As Integer) As String
+    
+    Dim rs As DAO.Recordset
+    Dim sql As String
+    
+    sql = "Select component_name_IA, percentage, reported_other_explanation FROM tbl_blendcomposition INNER JOIN tbl_components ON " & _
+        "tbl_blendcomposition.component_ID = tbl_components.component_ID WHERE Gas_ID = " & Gas_ID & " ORDER BY percentage DESC;"
+    
+    Set rs = destDb.OpenRecordset(sql, dbOpenForwardOnly)
+    
+    If rs.EOF Then
+        getCompositionString = "no composition data"
+    Else
+        If rs.fields(0) = "Other" And rs.fields(2) <> "" Then
+            getCompositionString = rs.fields(0).Value & " (" & rs.fields(2).Value & "): " & rs.fields(1).Value * 100 & "%"
+        Else
+            getCompositionString = rs.fields(0).Value & ": " & rs.fields(1).Value * 100 & "%"
+        End If
+        
+        rs.MoveNext
+    End If
+    
+    Do Until rs.EOF
+        If rs.fields(0) = "Other" And rs.fields(2) <> "" Then
+            getCompositionString = getCompositionString & "; " & rs.fields(0).Value & " (" & rs.fields(2).Value & "): " & rs.fields(1).Value * 100 & "%"
+        Else
+            getCompositionString = getCompositionString & "; " & rs.fields(0).Value & ": " & rs.fields(1).Value * 100 & "%"
+        End If
+        rs.MoveNext
+    Loop
+    
+    rs.Close
+    Set rs = Nothing
+
+End Function
+
+Public Function importFdbHelperData(destDbName As String)
+    On Error GoTo err
+    Dim tdf As TableDef
+    
+    On Error Resume Next
+'    CurrentDb.Execute " DROP TABLE fdb_transaction", dbFailOnError
+'    CurrentDb.Execute " DROP TABLE fdb_gases", dbFailOnError
+'    CurrentDb.Execute " DROP TABLE fdb_blendcomposition", dbFailOnError
+    On Error GoTo err
+    
+'    DoCmd.TransferDatabase acImport, "Microsoft Access", destDbName, acTable, "tbl_transaction", "fdb_transaction", False
+'    DoCmd.TransferDatabase acImport, "Microsoft Access", destDbName, acTable, "tbl_gases", "fdb_gases", False
+'    DoCmd.TransferDatabase acImport, "Microsoft Access", destDbName, acTable, "tbl_blendcomposition", "fdb_blendcomposition", False
+    
+'    updateTransacitonMappings
+    
+exit_function:
+    Exit Function
+err:
+    MsgBox "Error copying transactions and gases tables: " & err.Description, vbCritical
+    GoTo exit_function
+End Function
+Private Sub updateTransacitonMappings()
+    'update mappings
+    currentDb.Execute "UPDATE sys_fdb_transaction_mapping as m, fdb_transaction AS t SET m.fdb_transaction_id = t.Transaction_ID where m.fdb_transaction = t.transaction"
+End Sub
+
+Public Sub ImportFGasesCompanies(ByVal destDbName As String, ByRef importLogs As Collection)
+    On Error GoTo Err_import_companies
+
+    Dim rs As Recordset
+    Dim strSql As String
+    Dim companyId As Integer
+    Dim datasetId As Integer
+    Dim companyMapIds() As Integer
+    Dim recCount As Integer
+    Dim portalCode As String
+    Dim country, formerCompanyId As String
+
+    Set srcDb = currentDb
+    Set wrk = DBEngine.Workspaces(0)
+    Set destDb = wrk.OpenDatabase(destDbName)
+
+    companyId = "0"
+    strSql = "SELECT * FROM data_companies"
+    Set rs = srcDb.OpenRecordset(strSql, dbOpenSnapshot)
+
+    recCount = modDbUtil.CountRecords(rs)
+    If MsgBox("Found " & recCount & " companies from source database. Do you want to import companies?", vbOKCancel) = vbCancel Then
+        GoTo Exit_import_companies
+    End If
+    Do While Not rs.EOF
+        On Error GoTo Err_import_parse_src
+        portalCode = modCommonUtil.NullStr(rs("company_id"))
+        formerCompanyId = modCommonUtil.NullStr(rs("Former_Company_no_2007_2010"))
+        country = modCommonUtil.NullStr(rs("country"))
+        
+        If portalCode = TEST_COMPANY_CODE Then
+            addImportLog importLogs, portalCode, "TEST_COMPANY_IGNORED", basGlobals.INFO_LOG, "Ignore test copmany with portal code=" & portalCode
+            GoTo Loop_next
+        End If
+                
+        On Error GoTo Err_import_get_company
+        ' check if portal code exists in tbl_companies_map
+        companyMapIds = getFdbCompanyMapId(portalCode, formerCompanyId, country, importLogs)
+        companyId = companyMapIds(0)
+        datasetId = companyMapIds(1)
+        
+        On Error GoTo Err_import_get_company_data
+        ' update/create record in tbl_companies_data if needed
+        importCompanyData companyId, datasetId, rs, importLogs
+        
+        ' add company contacts
+        importCompanyUsers companyId, portalCode, importLogs
+
+Loop_next:
+        rs.MoveNext
+    Loop
+
+Exit_import_companies:
+    On Error Resume Next
+    If Not destDb Is Nothing Then destDb.Close
+    Set rs = Nothing
+    Exit Sub
+Err_rollback:
+    addImportLog importLogs, portalCode, "COMPANY_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Report in DB. Additions done for this report were rolled back. [" & err.number & "]" & err.Description & ""
+    countErrorCompanies = countErrorCompanies + 1
+    wrk.rollback
+    GoTo Exit_import_companies
+Err_import_companies:
+    addImportLog importLogs, portalCode, "COMPANY_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Report in DB: [" & err.number & "]" & err.Description & "; Error on line: " & Erl
+    countErrorCompanies = countErrorCompanies + 1
+    'MsgBox "Error importing report: " & Err.Description, vbCritical
+    GoTo Exit_import_companies
+Err_import_parse_src:
+    addImportLog importLogs, portalCode, "COMPANY_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when reading Report data from source DB: [" & err.number & "]" & err.Description
+    countErrorCompanies = countErrorCompanies + 1
+    GoTo Exit_import_companies
+Err_import_get_country:
+    addImportLog importLogs, portalCode, "COMPANY_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when finding country ID from FDB: [" & err.number & "]" & err.Description
+    countErrorCompanies = countErrorCompanies + 1
+    GoTo Exit_import_companies
+Err_import_get_company:
+    addImportLog importLogs, portalCode, "COMPANY_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when finding company ID from FDB: [" & err.number & "]" & err.Description
+    countErrorCompanies = countErrorCompanies + 1
+    GoTo Exit_import_companies
+Err_import_get_company_data:
+    addImportLog importLogs, portalCode, "COMPANY_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when finding company data from FDB: [" & err.number & "]" & err.Description
+    countErrorCompanies = countErrorCompanies + 1
+    GoTo Exit_import_companies
+Err_import_is_imported:
+    addImportLog importLogs, portalCode, "COMPANY_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when checking if report is already imported to FDB: [" & err.number & "]" & err.Description
+    countErrorCompanies = countErrorCompanies + 1
+    GoTo Exit_import_companies
+Err_import_is_most_recent:
+    addImportLog importLogs, portalCode, "COMPANY_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when checking if report is most recent in FDB: [" & err.number & "]" & err.Description
+    countErrorCompanies = countErrorCompanies + 1
+    GoTo Exit_import_companies
+Err_import_visible_forms:
+    addImportLog importLogs, portalCode, "COMPANY_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when calculating totals and finding visible forms for FDB: [" & err.number & "]" & err.Description
+    countErrorCompanies = countErrorCompanies + 1
+    GoTo Exit_import_companies
+End Sub
+
+
+Private Function getFdbCompanyMapId(ByVal portalCode As String, ByVal formerCompanyId As String, ByVal country As String, ByRef importLogs As Collection) As Integer()
+    On Error GoTo err
+    Dim rs As Recordset
+    Dim fdbCompanyId As Integer
+    Dim validDatasetId As Integer
+    Dim resultIdsArray(2) As Integer
+    Dim fdbPortalCode As Long
+    
+    fdbCompanyId = 0
+    validDatasetId = 0
+    fdbPortalCode = modCommonUtil.getLong(portalCode)
+    
+    Set rs = destDb.OpenRecordset("SELECT ID_internal, portal_code, valid_dataset FROM tbl_companies_map where portal_code=" & _
+        fdbPortalCode & " OR (len([BDR_username])>0 and [BDR_username]=" & StrLiteral(formerCompanyId) & ") ORDER BY portal_code DESC", dbOpenDynaset)
+    If rs.RecordCount <= 0 Then
+        
+        Set rs = destDb.OpenRecordset("tbl_companies_map", dbOpenDynaset)
+        With rs
+            .AddNew
+            !portal_code = fdbPortalCode
+            '![BDR_username] = formerCompanyId
+            !country_id = country
+            .update
+            .MoveLast
+            fdbCompanyId = .fields("ID_internal")
+        End With
+        countNewCompanies = countNewCompanies + 1
+        addImportLog importLogs, portalCode, "NEW_COMPANY_ADDED", basGlobals.INFO_LOG, "Inserted a new company into FDB. ID_internal = " & fdbCompanyId & "; portal_code = " & fdbPortalCode & "; country = " & country
+    Else
+        
+        rs.MoveFirst
+        fdbCompanyId = rs(0)
+        If IsNullOrEmpty(rs!portal_code) Then
+            rs.Edit
+            rs!portal_code = fdbPortalCode
+            rs.update
+            addImportLog importLogs, portalCode, "COMPANY_PORTALCODE_UPDATED", basGlobals.INFO_LOG, "Update portal code. ID_internal = " & fdbCompanyId & "; portal_code = " & fdbPortalCode & "; country = " & country
+        ElseIf rs("portal_code") <> fdbPortalCode Then
+            addImportLog importLogs, portalCode, "COMPANY_PORTALCODE_UPDATED", basGlobals.ERROR_LOG, "Portal code mismatch for BDR_username=" & formerCompanyId & ". ID_internal = " & fdbCompanyId & "; portal_code = " & fdbPortalCode & "; country = " & country
+        End If
+        validDatasetId = IIf(rs!valid_dataset = Null, 0, rs!valid_dataset)
+    End If
+    resultIdsArray(0) = fdbCompanyId
+    resultIdsArray(1) = validDatasetId
+    
+    getFdbCompanyMapId = resultIdsArray
+
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Function
+err:
+    resultIdsArray(0) = fdbCompanyId
+    resultIdsArray(1) = validDatasetId
+    getFdbCompanyMapId = resultIdsArray
+    addImportLog importLogs, portalCode, "NEW_COMPANY_FAILED", basGlobals.ERROR_LOG, "Failed to add new company into FDB. portalCode = " & portalCode
+    MsgBox "Error reading company: " & err.Description, vbCritical
+    GoTo exit_function
+End Function
+
+
+Private Sub importCompanyData(ByVal companyId As Integer, ByVal datasetId As Integer, importCompanyRs As Recordset, ByRef importLogs As Collection)
+    On Error GoTo err
+    Dim rs, rsInsert As Recordset
+    Dim update As Boolean
+    Dim name, street, house_no, postcode, city, country_type, telephone, website, VAT_no, formerCompanyId, types() As String
+    Dim OR_Name, OR_Street, OR_House_no, OR_postcode, OR_city, OR_country, OR_country_type, OR_website, OR_firstname, OR_lastname, OR_telephone, OR_email, OR_VAT_no As String
+    Dim portal_prod_imp_HFC, portal_exp_HFC, portal_prod_imp_exp_other, portal_feedstock_user, portal_destruction, portal_imp_equipment, portal_imp_equipment_RACHP_HFC, portal_imp_equipment_other, portal_exempted, portal_exempted_destruction, portal_exempted_feedstock, portal_exempted_bulkexport, portal_exempted_military, portal_exempted_semiconductor, portal_exempted_pharma, portal_equipment_manufacturer As Boolean
+    Dim strCompanySql As String
+    Dim newDatasetId As Integer
+    Dim disabled As Boolean
+    Dim portal_registration_date As String
+    Dim rowUpdated As Boolean
+    Dim affectedRows As Long
+    
+    
+    update = False
+    disabled = False
+    
+    name = modCommonUtil.NullStr(importCompanyRs("name"))
+    street = modCommonUtil.NullStr(importCompanyRs("street"))
+    house_no = modCommonUtil.NullStr(importCompanyRs("house_no"))
+    postcode = modCommonUtil.NullStr(importCompanyRs("postcode"))
+    city = modCommonUtil.NullStr(importCompanyRs("city"))
+    country_type = modCommonUtil.NullStr(importCompanyRs("country_type"))
+    telephone = modCommonUtil.NullStr(importCompanyRs("telephone"))
+    website = modCommonUtil.NullStr(importCompanyRs("website"))
+    VAT_no = modCommonUtil.NullStr(importCompanyRs("VAT_no"))
+    types = SplitStringToArray(modCommonUtil.NullStr(importCompanyRs("types")), ",")
+    disabled = modFgasesUtil.isDisabled(modCommonUtil.NullStr(importCompanyRs("status")))
+    portal_registration_date = modCommonUtil.ISODatetimeToDate(modCommonUtil.NullStr(importCompanyRs("portal_registration_date")))
+    OR_Name = modCommonUtil.NullStr(importCompanyRs("OR_name"))
+    OR_Street = modCommonUtil.NullStr(importCompanyRs("OR_street"))
+    OR_House_no = modCommonUtil.NullStr(importCompanyRs("OR_house_no"))
+    OR_postcode = modCommonUtil.NullStr(importCompanyRs("OR_postcode"))
+    OR_city = modCommonUtil.NullStr(importCompanyRs("OR_city"))
+    OR_country = modCommonUtil.NullStr(importCompanyRs("OR_country"))
+    OR_country_type = modCommonUtil.NullStr(importCompanyRs("OR_country_type"))
+    OR_website = modCommonUtil.NullStr(importCompanyRs("OR_website"))
+    OR_firstname = modCommonUtil.NullStr(importCompanyRs("OR_firstname"))
+    OR_lastname = modCommonUtil.NullStr(importCompanyRs("OR_lastname"))
+    OR_telephone = modCommonUtil.NullStr(importCompanyRs("OR_telephone"))
+    OR_email = modCommonUtil.NullStr(importCompanyRs("OR_email"))
+    OR_VAT_no = modCommonUtil.NullStr(importCompanyRs("OR_VAT_no"))
+    
+    portal_prod_imp_HFC = IsInArray("FGAS_PRODUCER_IMPORTER_HFCS", types)
+    portal_exp_HFC = IsInArray("FGAS_EXPORTER_HFCS", types)
+    portal_prod_imp_exp_other = IsInArray("FGAS_PRODUCER_IMPORTER_EXPORTER_NON_HFCS", types)
+    portal_feedstock_user = IsInArray("FGAS_FEEDSTOCK_USER_HFCS", types)
+    portal_destruction = IsInArray("FGAS_DESTROYER_HFCS", types)
+    portal_imp_equipment = IsInArray("FGAS_IMPORTER_OF_EQUIPMENT_HFCS", types)
+    portal_imp_equipment_RACHP_HFC = IsInArray("fgas.importer.of.refrigeration.ac..and.heatpump.equipment.containing.hfcs", types)
+    portal_imp_equipment_other = IsInArray("fgas.importer.of.other.products.and.equipment", types)
+    portal_exempted = IsInArray("FGAS_RECEIVER_EXEMPTED_HFCS", types)
+    portal_exempted_destruction = IsInArray("fgas.imports.for.destruction", types)
+    portal_exempted_feedstock = IsInArray("fgas.feedstock.use", types)
+    portal_exempted_bulkexport = IsInArray("fgas.export", types)
+    portal_exempted_military = IsInArray("fgas.military.use", types)
+    portal_exempted_semiconductor = IsInArray("fgas.semiconductor.manufacture", types)
+    portal_exempted_pharma = IsInArray("fgas.mdis", types)
+    portal_equipment_manufacturer = IsInArray("FGAS_MANUFACTURER_OF_EQUIPMENT_HFCS", types)
+    
+    strCompanySql = "SELECT * FROM tbl_companies_data WHERE Dataset_ID=" & datasetId
+    Set rs = destDb.OpenRecordset(strCompanySql, dbOpenSnapshot)
+    If datasetId > 0 And rs.RecordCount > 0 Then
+        'compare company data
+        If name = modCommonUtil.NullStr(rs("Company_name_full")) And _
+            street = modCommonUtil.NullStr(rs("street")) And house_no = modCommonUtil.NullStr(rs("house_no")) And _
+            postcode = modCommonUtil.NullStr(rs("postcode")) And city = modCommonUtil.NullStr(rs("city")) And _
+            telephone = modCommonUtil.NullStr(rs("telephone")) And website = modCommonUtil.NullStr(rs("website")) And _
+            VAT_no = modCommonUtil.NullStr(rs("VAT_no")) And _
+            OR_Name = modCommonUtil.NullStr(rs("OR_name")) And OR_Street = modCommonUtil.NullStr(rs("OR_street")) And _
+            OR_House_no = modCommonUtil.NullStr(rs("OR_House_no")) And OR_postcode = modCommonUtil.NullStr(rs("OR_postcode")) And _
+            OR_city = modCommonUtil.NullStr(rs("OR_city")) And OR_country = modCommonUtil.NullStr(rs("OR_country_ID")) And _
+            OR_website = modCommonUtil.NullStr(rs("OR_website")) And OR_firstname = modCommonUtil.NullStr(rs("OR_firstname")) And _
+            OR_lastname = modCommonUtil.NullStr(importCompanyRs("OR_lastname")) And OR_telephone = modCommonUtil.NullStr(importCompanyRs("OR_telephone")) And _
+            OR_email = modCommonUtil.NullStr(importCompanyRs("OR_email")) And OR_VAT_no = modCommonUtil.NullStr(importCompanyRs("OR_VAT_no")) And _
+            portal_prod_imp_HFC = rs("portal_prod_imp_HFC") And portal_exp_HFC = rs("portal_exp_HFC") And _
+            portal_prod_imp_exp_other = rs("portal_prod_imp_exp_other") And _
+            portal_feedstock_user = rs("portal_feedstock_user") And _
+            portal_destruction = rs("portal_destruction") And _
+            portal_imp_equipment = rs("portal_imp_equipment") And _
+            portal_imp_equipment_RACHP_HFC = rs("portal_imp_equipment_RACHP_HFC") And _
+            portal_imp_equipment_other = rs("portal_imp_equipment_other") And _
+            portal_exempted = rs("portal_exempted") And _
+            portal_exempted_destruction = rs("portal_exempted_destruction") And _
+            portal_exempted_feedstock = rs("portal_exempted_feedstock") And _
+            portal_exempted_bulkexport = rs("portal_exempted_bulkexport") And _
+            portal_exempted_military = rs("portal_exempted_military") And _
+            portal_exempted_semiconductor = rs("portal_exempted_semiconductor") And portal_equipment_manufacturer = rs("portal_equipment_manuf") And _
+            portal_exempted_pharma = rs("portal_exempted_pharma") Then
+            update = False
+        Else
+            update = True
+        End If
+    Else
+        update = True
+    End If
+    'start transaction
+    On Error GoTo Err_rollback
+    With wrk
+        .BeginTrans
+        If update Then
+            Set rsInsert = destDb.OpenRecordset("tbl_companies_data", dbOpenDynaset)
+            With rsInsert
+                .AddNew
+                !Company_ID = companyId
+                !Company_name_full = name
+                !street = street
+                !house_no = house_no
+                !postcode = postcode
+                !city = city
+                !telephone = telephone
+                !website = website
+                !VAT_no = VAT_no
+                !OR_Name = OR_Name
+                !OR_Street = OR_Street
+                !OR_House_no = OR_House_no
+                !OR_postcode = OR_postcode
+                !OR_city = OR_city
+                !OR_country_ID = OR_country
+                !OR_website = OR_website
+                !OR_firstname = OR_firstname
+                !OR_lastname = OR_lastname
+                !OR_telephone = OR_telephone
+                !OR_email = OR_email
+                !OR_VAT_no = OR_VAT_no
+                !portal_prod_imp_HFC = portal_prod_imp_HFC
+                !portal_exp_HFC = portal_exp_HFC
+                !portal_prod_imp_exp_other = portal_prod_imp_exp_other
+                !portal_feedstock_user = portal_feedstock_user
+                !portal_destruction = portal_destruction
+                !portal_imp_equipment = portal_imp_equipment
+                !portal_imp_equipment_RACHP_HFC = portal_imp_equipment_RACHP_HFC
+                !portal_imp_equipment_other = portal_imp_equipment_other
+                !portal_exempted = portal_exempted
+                !portal_exempted_destruction = portal_exempted_destruction
+                !portal_exempted_feedstock = portal_exempted_feedstock
+                !portal_exempted_bulkexport = portal_exempted_bulkexport
+                !portal_exempted_military = portal_exempted_military
+                !portal_exempted_semiconductor = portal_exempted_semiconductor
+                !portal_exempted_pharma = portal_exempted_pharma
+                !portal_equipment_manuf = portal_equipment_manufacturer
+                .update
+                .MoveLast
+                newDatasetId = .fields("Dataset_ID")
+            End With
+            destDb.Execute "UPDATE tbl_companies_map SET valid_dataset=" & newDatasetId & " WHERE ID_internal=" & companyId
+            rowUpdated = IIf(destDb.RecordsAffected > 0, True, False)
+        End If
+        
+        Dim tmpSql As String
+        If portal_registration_date = Empty Then
+            tmpSql = "UPDATE tbl_companies_map SET disabled=" & disabled & ", Date_Portal_registration=" & basGlobals.NULL_STR & _
+            " WHERE ID_internal=" & companyId & " and (disabled <> " & disabled & " or Date_Portal_registration IS NOT NULL)"
+        Else
+            tmpSql = "UPDATE tbl_companies_map SET disabled=" & disabled & ", Date_Portal_registration=" & portal_registration_date & _
+            " WHERE ID_internal=" & companyId & " and (disabled <> " & disabled & " or ((Date_Portal_registration IS NULL) or (Date_Portal_registration <> " & portal_registration_date & ")))"
+        End If
+        destDb.Execute tmpSql
+        rowUpdated = IIf(destDb.RecordsAffected > 0, True, rowUpdated)
+        
+        If rowUpdated Then
+            countUpdatedCompanies = countUpdatedCompanies + 1
+            addImportLog importLogs, "", "COMPANY_DATA_UPDATED", basGlobals.INFO_LOG, "Update company data for company_ID = " & companyId
+        End If
+        .CommitTrans
+    End With
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    If Not rsInsert Is Nothing Then rsInsert.Close
+    Set rsInsert = Nothing
+    Exit Sub
+err:
+    addImportLog importLogs, "", "NEW_COMPANYDATA_FAILED", basGlobals.ERROR_LOG, "Failed to add new company data into FDB. company_ID = " & companyId
+    MsgBox "Error reading company: " & err.Description, vbCritical
+    GoTo exit_function
+Err_rollback:
+    'If Not rs Is Nothing Then rs.Close
+    wrk.rollback
+    GoTo err
+End Sub
+
+Private Sub importCompanyUsers(ByVal companyId As Integer, ByVal portalCode As String, ByRef importLogs As Collection)
+    On Error GoTo err
+    Dim rsUsers, rsInsert As Recordset
+    Dim rs As Recordset
+    Dim update As Boolean
+    Dim strContactsSql, strUsersSql As String
+    Dim contacts(), contactFields() As String
+    Dim fname, lname, email, fdbUser As String
+    Dim contact As Variant
+    Dim i, userIdx As Integer
+    Dim contactsCount As Integer
+    
+    update = False
+    
+    strContactsSql = "SELECT distinct * FROM data_company_contacts WHERE company_id=" & StrLiteral(portalCode)
+    Set rs = srcDb.OpenRecordset(strContactsSql, dbOpenSnapshot)
+    
+    contactsCount = CountRecords(rs)
+    If contactsCount > 0 Then
+        ReDim contacts(contactsCount - 1)
+        If rs.RecordCount > 0 Then
+            i = 0
+            Do While Not rs.EOF
+                fname = modCommonUtil.NullStr(rs("FirstName"))
+                lname = modCommonUtil.NullStr(rs("LastName"))
+                email = modCommonUtil.NullStr(rs("Email"))
+                contacts(i) = fname & "|" & lname & "|" & email
+                i = i + 1
+                rs.MoveNext
+            Loop
+        End If
+    
+        strUsersSql = "SELECT * FROM tbl_companies_users WHERE valid=True and Company_ID=" & companyId
+        Set rsUsers = destDb.OpenRecordset(strUsersSql, dbOpenDynaset)
+        
+        If rsUsers.RecordCount > 0 Then
+            rsUsers.MoveFirst
+            Do While Not rsUsers.EOF
+                fname = modCommonUtil.NullStr(rsUsers("firstname"))
+                lname = modCommonUtil.NullStr(rsUsers("lastname"))
+                email = modCommonUtil.NullStr(rsUsers("email"))
+                fdbUser = fname & "|" & lname & "|" & email
+                userIdx = getInArrayIndex(fdbUser, contacts)
+                If userIdx = -1 Then
+                    rsUsers.Edit
+                    rsUsers!valid = False
+                    rsUsers.update
+                    addImportLog importLogs, fdbUser, "USER_INVALID", basGlobals.INFO_LOG, "Marked existing user invalid for company_ID = " & companyId
+                Else
+                    contacts(userIdx) = "-"
+                End If
+                rsUsers.MoveNext
+            Loop
+        End If
+        If UBound(contacts) > -1 Then
+            Set rsInsert = destDb.OpenRecordset("tbl_companies_users", dbOpenDynaset)
+            For Each contact In contacts
+                If Not contact = "-" Then
+                    contactFields = SplitStringToArray(CStr(contact), "|")
+                    With rsInsert
+                        .AddNew
+                        !Company_ID = companyId
+                        !firstname = contactFields(0)
+                        !lastname = contactFields(1)
+                        !email = contactFields(2)
+                        !valid = True
+                        .update
+                    End With
+                    addImportLog importLogs, CStr(contact), "USER_ADDED", basGlobals.INFO_LOG, "Added new user for company_ID = " & companyId
+                End If
+            Next
+        End If
+    End If
+    
+exit_function:
+    On Error Resume Next
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    If Not rsInsert Is Nothing Then rsInsert.Close
+    Set rsInsert = Nothing
+    If Not rsUsers Is Nothing Then rsUsers.Close
+    Set rsUsers = Nothing
+    Exit Sub
+err:
+    addImportLog importLogs, "", "NEW_USER_FAILED", basGlobals.ERROR_LOG, "Failed to add new company data into FDB. company_ID = " & companyId
+    MsgBox "Error while importing company contacts: " & err.Description, vbCritical
+    Resume exit_function
+End Sub
+
+Private Sub importReportContacts(ByVal reportId As String, ByVal fdbReportId As String, ByVal companyId As Integer, ByRef importLogs As Collection)
+    On Error GoTo err
+    Dim rsInsert As Recordset
+    Dim rs As Recordset
+    Dim strContactsSql, strUsersSql As String
+    Dim fname, lname, email, fdbUser As String
+    
+    strContactsSql = "SELECT distinct * FROM data_report_contacts WHERE report_id=" & StrLiteral(reportId)
+    Set rs = srcDb.OpenRecordset(strContactsSql, dbOpenSnapshot)
+    
+    ReDim contacts(CountRecords(rs) - 1)
+    
+    If rs.RecordCount > 0 Then
+        Set rsInsert = destDb.OpenRecordset("tbl_companies_users", dbOpenDynaset)
+        Do While Not rs.EOF
+            fname = modCommonUtil.NullStr(rs("FirstName"))
+            lname = modCommonUtil.NullStr(rs("LastName"))
+            email = modCommonUtil.NullStr(rs("Email"))
+                With rsInsert
+                    .AddNew
+                    !report_submission_no = fdbReportId
+                    !firstname = fname
+                    !lastname = lname
+                    !email = email
+                    !valid = True
+                    .update
+                End With
+            rs.MoveNext
+        Loop
+    End If
+
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    If Not rsInsert Is Nothing Then rsInsert.Close
+    Set rsInsert = Nothing
+    Exit Sub
+err:
+    addImportLog importLogs, "", "NEW_CONTACT_FAILED", basGlobals.ERROR_LOG, "Failed to insert report contacts into tbl_companies_users. report_ID = " & reportId
+    MsgBox "Error inserting report contacs snapshot: " & err.Description, vbCritical
+    GoTo exit_function
+End Sub
+
+Private Sub createQCTask(fdbReportId As String, valueId As Long, gasId As Integer, typeId As Integer, ByRef importLogs As Collection)
+    On Error GoTo err
+    
+    Dim destRs As Recordset
+    
+    Dim errNum As Long
+    Dim errDesc As String
+    
+    Set destRs = destDb.OpenRecordset("tbl_qc_tasks", dbOpenDynaset)
+    With destRs
+        .AddNew
+        !report_submission_no = fdbReportId
+        !value_id = IIf(valueId = 0, Null, valueId)
+        !Gas_ID = IIf(gasId = 0, Null, gasId)
+        !type_ID = typeId
+        .update
+        .Close
+    End With
+
+exit_function:
+    On Error Resume Next
+    If Not destRs Is Nothing Then destRs.Close
+    Set destRs = Nothing
+    Exit Sub
+err:
+    errNum = err.number
+    errDesc = err.Description
+    
+    addImportLog importLogs, fdbReportId, "NEW_QCTASK_ADD_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new QC task record in FDB: [" & errNum & "]" & errDesc
+    MsgBox "Error adding QC task record: " & errDesc, vbCritical
+    GoTo exit_function
+End Sub
+Private Sub getTransactionsMap(ByRef transactionsMap As Collection, ByRef calculatedTransactions As Collection)
+    On Error GoTo err
+    
+    Dim rs As Recordset
+    Dim sql As String
+    Dim id As Integer
+    Dim code As String
+
+    sql = "SELECT distinct Transaction_ID, code_2015, calculated FROM tbl_transaction where len(code_2015) > 0"
+    Set rs = destDb.OpenRecordset(sql, dbOpenSnapshot)
+    
+    If rs.RecordCount > 0 Then
+        Do While Not rs.EOF
+            id = rs("Transaction_ID")
+            code = modCommonUtil.NullStr(rs("code_2015"))
+           
+            transactionsMap.Add id, code
+            
+            If rs("calculated") = True Then
+                calculatedTransactions.Add id, code
+            End If
+            rs.MoveNext
+        Loop
+    End If
+    
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Sub
+err:
+    MsgBox "Error reading transaction mapping from FDB: " & err.Description, vbCritical
+    GoTo exit_function
+End Sub
+Private Sub getFdbGases(ByRef gasesList As Collection)
+    On Error GoTo err
+    Dim rs As Recordset
+    Dim sql As String
+    Dim id As Integer
+    Dim name As String
+   
+    sql = "SELECT Gas_ID, gas_name_display FROM tbl_gases"
+    Set rs = destDb.OpenRecordset(sql, dbOpenSnapshot)
+    
+    If rs.RecordCount > 0 Then
+        Do While Not rs.EOF
+            id = rs("Gas_ID")
+            name = modCommonUtil.NullStr(rs("gas_name_display"))
+            gasesList.Add name, CStr(id)
+            rs.MoveNext
+        Loop
+    End If
+    
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Sub
+err:
+    MsgBox "Error reading gases from FDB: " & err.Description, vbCritical
+    GoTo exit_function
+End Sub
+
+Public Sub importDraftEnvelopes(destDbName As String, ByRef importLogs As Collection)
+    On Error GoTo err_draft
+    
+    Dim srcRs As Recordset
+    Dim destRs As Recordset
+    Dim destRs2 As Recordset
+    
+    Dim envelopeUrl As String, companyId As String
+    Dim envelopeDate As String
+    
+    Dim errNum As Long
+    Dim errDesc As String
+    Dim fdbCompanyId As Integer
+    Dim sql As String
+    
+    Set srcDb = currentDb
+    Set wrk = DBEngine.Workspaces(0)
+    Set destDb = wrk.OpenDatabase(destDbName)
+    On Error GoTo err_clear
+    modFgasesDraftEnvelopes.clearDraftEnvelopes importLogs
+    On Error GoTo err_draft
+    Set srcRs = srcDb.OpenRecordset("SELECT * FROM data_report_drafts", dbOpenSnapshot)
+    
+    If srcRs.RecordCount > 0 Then
+        Do While Not srcRs.EOF
+            envelopeDate = srcRs("creation_date")
+            companyId = srcRs("company_id")
+            envelopeUrl = modCommonUtil.NullStr(srcRs("envelope_url"))
+            
+            If envelopeDate = Null Or envelopeUrl = "" Or companyId = Null _
+                Or companyId = TEST_COMPANY_CODE Or InStr(1, envelopeUrl, TEST_COMPANY_COLLECTION) > 0 Then
+                GoTo Loop_next
+            End If
+            
+            Set destRs2 = destDb.OpenRecordset("SELECT * FROM tbl_report_drafts where Draft_date=CDate('" & envelopeDate & "') AND " & _
+                "bdr_delivery_url=" & StrLiteral(envelopeUrl), dbOpenSnapshot)
+            If destRs2.RecordCount > 0 Then
+                GoTo Loop_next
+            End If
+                
+            fdbCompanyId = getFdbCompanyId(companyId, "UNKNOWN", importLogs)
+            
+            If (fdbCompanyId = Empty) Then
+                addImportLog importLogs, envelopeUrl, "DRAFT_ENVELOPE_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new draft envelope record in FDB: Company Internal_ID is null for companyId = " & companyId
+                countErrorDraft = countErrorDraft + 1
+                GoTo Loop_next
+            End If
+            
+            Set destRs = destDb.OpenRecordset("tbl_report_drafts", dbOpenDynaset)
+            With destRs
+                .AddNew
+                !draft_date = envelopeDate
+                !Company_ID = fdbCompanyId
+                !bdr_delivery_url = envelopeUrl
+                .update
+                .Close
+            End With
+            countDraftEnvelopes = countDraftEnvelopes + 1
+Loop_next:
+            srcRs.MoveNext
+        Loop
+    End If
+    On Error GoTo err_rejected
+    Set srcRs = srcDb.OpenRecordset("SELECT * FROM data_report_rejected", dbOpenSnapshot)
+    
+    If srcRs.RecordCount > 0 Then
+        Do While Not srcRs.EOF
+            envelopeDate = srcRs("submission_date")
+            companyId = srcRs("company_id")
+            envelopeUrl = modCommonUtil.NullStr(srcRs("envelope_url"))
+            
+            If envelopeDate = Null Or envelopeUrl = "" Or companyId = Null _
+                Or companyId = TEST_COMPANY_CODE Or InStr(1, envelopeUrl, TEST_COMPANY_COLLECTION) > 0 Then
+                GoTo Loop_next2
+            End If
+            
+            sql = "SELECT * FROM tbl_report where Report_Status_BDR=" & _
+                StrLiteral("rejected") & " And Report_submissiondate=CDate('" & envelopeDate & "') AND " & _
+                "bdr_delivery_url=" & StrLiteral(envelopeUrl)
+            Set destRs2 = destDb.OpenRecordset(sql, dbOpenSnapshot)
+            If destRs2.RecordCount > 0 Then
+                GoTo Loop_next2
+            End If
+                
+            fdbCompanyId = getFdbCompanyId(companyId, "UNKNOWN", importLogs)
+            
+            If (fdbCompanyId = Empty) Then
+                countErrorRejected = countErrorRejected + 1
+                addImportLog importLogs, envelopeUrl, "DRAFT_ENVELOPE_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new rejected envelope record in FDB: Company Internal_ID is null for companyId = " & companyId
+                GoTo Loop_next2
+            End If
+            
+            Set destRs = destDb.OpenRecordset("tbl_report", dbOpenDynaset)
+            With destRs
+                .AddNew
+                !report_submission_no = envelopeUrl & "#" & CStr(envelopeDate)
+                !Report_submissiondate = envelopeDate
+                !Company_ID = fdbCompanyId
+                !bdr_delivery_url = envelopeUrl
+                !Report_status_BDR = "rejected"
+                .update
+                .Close
+            End With
+            countRejectedEnvelopes = countRejectedEnvelopes + 1
+Loop_next2:
+            srcRs.MoveNext
+        Loop
+    End If
+
+exit_function:
+    On Error Resume Next
+    If Not srcRs Is Nothing Then srcRs.Close
+    If Not destRs Is Nothing Then destRs.Close
+    If Not destRs2 Is Nothing Then destRs2.Close
+    Set srcRs = Nothing
+    Set destRs = Nothing
+    Set destRs2 = Nothing
+    If Not destDb Is Nothing Then destDb.Close
+    If Not err Is Nothing Then err.Raise err.number, err.source, err.Description
+    Exit Sub
+err_clear:
+    errNum = err.number
+    errDesc = err.Description
+    addImportLog importLogs, envelopeUrl, "DRAFT_CLEAR_INFO", basGlobals.ERROR_LOG, "Error while clearing draft envelope table: [" & errNum & "]" & errDesc
+    MsgBox "Error while clearing draft envelope table: " & errDesc, vbCritical
+    Resume exit_function
+err_draft:
+    errNum = err.number
+    errDesc = err.Description
+    countErrorDraft = countErrorDraft + 1
+    addImportLog importLogs, envelopeUrl, "DRAFT_ENVELOPE_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new draft envelope record in FDB: [" & errNum & "]" & errDesc
+    MsgBox "Error importing draft envelope record: " & errDesc, vbCritical
+    GoTo exit_function
+err_rejected:
+    errNum = err.number
+    errDesc = err.Description
+    countErrorRejected = countErrorRejected + 1
+    addImportLog importLogs, envelopeUrl, "REJECTED_ENVELOPE_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new rejected envelope record in FDB: [" & errNum & "]" & errDesc
+    MsgBox "Error importing rejected envelope record: " & errDesc, vbCritical
+    GoTo exit_function
+End Sub
+
+Private Function IsOldTransaction(transactionYear As Integer) As Boolean
+    IsOldTransaction = transactionYear < year(Now) - 1
+End Function

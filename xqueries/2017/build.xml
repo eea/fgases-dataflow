@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="fgases-qa" default="test">
+
+    <property name="build" location="build" />
+    
+    <target name="base">
+        <mkdir dir="${build}" />
+        
+        <delete>
+            <fileset dir="${build}" />
+        </delete>
+        
+        <copy todir="${build}">
+            <fileset file="fgases-2017.xquery" />
+            <fileset file="fgases-2017-additional.xquery" />
+            <fileset file="fgases-report-acknowledgement.xquery" />
+            <fileset file="fgases-feedback-title.xquery" />
+            <fileset file="fgases-envelope-2017.xquery" />
+            <fileset file="fgases-common-util-2017.xquery" />
+            <fileset file="fgases-ui-util-2017.xquery" />
+        </copy>
+        
+        <concat destfile="${build}/fgases-helper.xquery">
+            <filterchain>
+                <replaceregex pattern="'../angular/xml/fgases-gases-2017.xml'" replace="'${fgases-list-uri}'" />
+            </filterchain>
+            
+            <fileset file="fgases-helper.xquery" />
+        </concat>
+    </target>
+    
+    <target name="test">
+        <antcall target="base">
+            <param name="fgases-list-uri" value="https://converterstest.eionet.europa.eu/xmlfile/fgases-gases-2017.xml" />
+        </antcall>
+    </target>
+    
+    <target name="prod">
+        <antcall target="base">
+            <param name="fgases-list-uri" value="https://convertersbdr.eionet.europa.eu/xmlfile/fgases-gases-2017.xml" />
+        </antcall>
+    </target>
+
+</project>

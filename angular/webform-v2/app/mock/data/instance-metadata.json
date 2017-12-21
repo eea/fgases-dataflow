@@ -1,0 +1,25 @@
+
+{
+    "conversions": [
+        {
+            "id": "424",
+            "description": "HTML printout",
+            "resultType": "HTML",
+            "basic": true
+        },
+        {
+            "id": "430",
+            "description": "SQL inserts",
+            "resultType": "SQL",
+            "basic": false
+        }
+    ],
+    "updated": "08 Oct 2015 08:28:36",
+    "created": "08 Oct 2015 08:28:36",
+    "downloaded": "08 Oct 2015 08:38:20",
+    "localFile": true,
+    "downloadLink": "/download/user_file?fileId=6602",
+    "deleteLink": "/remove/files?selectedUserFile=6602",
+    "conversionLink": "/download/convert?fileId=6602&conversionId=",
+    "size": "41 KB"
+}

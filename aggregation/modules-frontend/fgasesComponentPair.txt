@@ -1,0 +1,40 @@
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+Dim id As Long
+Dim percentage As Double
+Dim name As String
+
+Public Property Get getId() As Long
+    getId = id
+End Property
+
+Public Property Let setId(pId As Long)
+    id = pId
+End Property
+Public Property Let setName(pName As String)
+    name = pName
+End Property
+Public Property Get getName() As String
+    getName = name
+End Property
+
+Public Property Get getPercentage() As Double
+    getPercentage = percentage
+End Property
+
+Public Property Let setPercentage(pPercentage As Double)
+    percentage = pPercentage
+End Property
+
+'Custom constructor function
+Public Function init(pId As Long, pPercentage As Double, pName As String) As fgasesComponentPair
+    Set init = New fgasesComponentPair
+    init.setId = pId
+    init.setPercentage = pPercentage
+    init.setName = pName
+End Function

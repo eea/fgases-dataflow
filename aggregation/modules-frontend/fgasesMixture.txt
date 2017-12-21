@@ -1,0 +1,46 @@
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+Dim mMixtureId As Long
+Dim mComponents As Collection
+
+Public Property Get components() As Collection
+    Set components = mComponents
+End Property
+
+Public Property Get id() As Long
+    id = mMixtureId
+End Property
+
+Public Property Let id(pId As Long)
+    mMixtureId = pId
+End Property
+
+Public Property Let components(pComponents As Collection)
+    Set mComponents = pComponents
+End Property
+
+Private Sub Class_Initalize()
+    Set mComponents = New Collection
+End Sub
+'TODO: remove special characters from names
+Public Function getHash() As String
+    Dim a As Object
+    Dim h As String
+    Dim x As fgasesComponentPair
+    
+    For Each a In mComponents
+        Set x = a
+        If x.getId = 128 Then
+            h = h & "|" & CStr(x.getName) & ";" & CStr(x.getPercentage)
+        Else
+            h = h & "|" & CStr(x.getId) & ";" & CStr(x.getPercentage)
+        End If
+    Next a
+    Set x = Nothing
+    getHash = h
+End Function

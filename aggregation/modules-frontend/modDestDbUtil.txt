@@ -1,0 +1,52 @@
+Option Compare Database
+Option Explicit
+
+Public Function isCalculated(transactionId As Long) As Boolean
+   Dim sql As String
+   Dim rs As DAO.Recordset
+   
+   sql = "SELECT calculated FROM tbl_transaction WHERE transaction_id = " & Nz(transactionId, 0)
+   Set rs = GdestDb.OpenRecordset(sql, dbOpenSnapshot)
+   If Not rs.EOF Then
+     isCalculated = rs("calculated")
+   Else
+     isCalculated = False
+   End If
+   Set rs = Nothing
+End Function
+
+Public Function createValueId(fdbReportId, gasId, transactionId, numValue) As Long
+    Dim rs As DAO.Recordset
+    Dim sql As String
+                
+    Set rs = GdestDb.OpenRecordset("tbl_value", dbOpenDynaset)
+    With rs
+        .AddNew
+        !report_submission_no = fdbReportId
+        !Gas_ID = gasId
+        !transaction_ID = transactionId
+        !num_value = numValue
+        .update
+        .MoveLast
+        createValueId = .fields("Value_ID")
+        .Close
+    End With
+    Set rs = Nothing
+End Function
+
+Public Function getPortalCodeFromId(ByVal id As Long) As Long
+    On Error GoTo err
+    Dim rs As DAO.Recordset
+    Dim sql As String
+    
+    sql = "SELECT portal_code FROM tbl_companies_map WHERE ID_internal = " & id
+    Set rs = GdestDb.OpenRecordset(sql, dbOpenSnapshot)
+    If Not rs.EOF Then
+        getPortalCodeFromId = modCommonUtil.getLong(rs("ID_internal"))
+    End If
+exit_function:
+    Set rs = Nothing
+    Exit Function
+err:
+    Resume exit_function
+End Function

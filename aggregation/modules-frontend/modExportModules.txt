@@ -1,0 +1,64 @@
+Option Compare Database
+Option Explicit
+
+Public Sub DocDatabase()
+ '====================================================================
+ ' Name:    DocDatabase
+ ' Purpose: Documents the database to a series of text files
+ '
+ ' Author:  Arvin Meyer
+ ' Date:    June 02, 1999
+ ' Comment: Uses the undocumented [Application.SaveAsText] syntax
+ '          To reload use the syntax [Application.LoadFromText]
+ '====================================================================
+On Error GoTo Err_DocDatabase
+Dim dbs As database
+Dim cnt As Container
+Dim doc As Document
+Dim i As Integer
+
+Set dbs = currentDb() ' use CurrentDb() to refresh Collections
+
+Set cnt = dbs.Containers("Forms")
+For Each doc In cnt.Documents
+    Application.SaveAsText acForm, doc.name, "C:\eea\Reportnet\Dataflows\FGases\aggregation\modules-frontend\" & doc.name & ".txt"
+Next doc
+
+'Set cnt = dbs.Containers("Reports")
+'For Each doc In cnt.Documents
+'    Application.SaveAsText acReport, doc.name, "D:\Document\" & doc.name & ".txt"
+'Next doc
+
+'Set cnt = dbs.Containers("Scripts")
+'For Each doc In cnt.Documents
+'    Application.SaveAsText acMacro, doc.name, "D:\Document\" & doc.name & ".txt"
+'Next doc
+
+Set cnt = dbs.Containers("Modules")
+For Each doc In cnt.Documents
+    If doc.name <> "modTest" Then
+        Application.SaveAsText acModule, doc.name, "C:\eea\Reportnet\Dataflows\FGases\aggregation\modules-frontend\" & doc.name & ".txt"
+    End If
+Next doc
+
+'For i = 0 To dbs.QueryDefs.Count - 1
+'    Application.SaveAsText acQuery, dbs.QueryDefs(i).name, "D:\Document\" & dbs.QueryDefs(i).name & ".txt"
+'Next i
+
+Set doc = Nothing
+Set cnt = Nothing
+Set dbs = Nothing
+
+Exit_DocDatabase:
+    Exit Sub
+
+
+Err_DocDatabase:
+    Select Case err
+
+    Case Else
+        MsgBox err.Description
+        Resume Exit_DocDatabase
+    End Select
+
+End Sub

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataRoot>
+   <registryData companyId="1111">
+      <stocks>
+         <stock>
+            <transactionCode>4F</transactionCode>
+            <gasId>2</gasId>
+            <gasName>HFC-23</gasName>
+            <amount>3.5</amount>
+         </stock>
+         <stock>
+            <transactionCode>4G</transactionCode>
+            <gasId>2</gasId>
+            <gasName>HFC-23</gasName>
+            <amount>3</amount>
+         </stock>
+         <stock>
+            <transactionCode>4H</transactionCode>
+            <gasId>3</gasId>
+            <gasName>HFC-32</gasName>
+            <amount>4.5</amount>
+         </stock>
+      </stocks>
+      <quota>
+         <allocatedQuota>120000</allocatedQuota>
+         <allocatedQuotaDate>2016-12-30</allocatedQuotaDate>
+         <availableQuota>140000</availableQuota>
+         <availableQuotaDate>2016-12-30</availableQuotaDate>
+         <quota9A_imp>
+            <tradePartner>
+               <CompanyName>EU Company 1</CompanyName>
+               <EUVAT>eu-1</EUVAT>
+            </tradePartner>
+            <amount>60000</amount>
+         </quota9A_imp>
+         <quota9A_imp>
+            <tradePartner>
+               <CompanyName>EU Company 2</CompanyName>
+               <EUVAT>eu-2</EUVAT>
+            </tradePartner>
+            <amount>50000</amount>
+         </quota9A_imp>
+         <quota9A_imp>
+            <tradePartner>
+               <CompanyName>Non EU Company 1</CompanyName>
+               <NonEUCountryCodeOfEstablishment>US</NonEUCountryCodeOfEstablishment>
+               <NonEUCountryOfEstablishment>United States</NonEUCountryOfEstablishment>
+               <NonEUDgClimaRegCode>123456</NonEUDgClimaRegCode>
+               <NonEURepresentativeName>Eu Company 28</NonEURepresentativeName>
+               <NonEURepresentativeVAT>eu-28</NonEURepresentativeVAT>
+            </tradePartner>
+            <amount>10000</amount>
+         </quota9A_imp>
+      </quota>
+      <large>false</large>
+      <ner>true</ner>
+   </registryData>
+</dataRoot>

@@ -1,0 +1,257 @@
+Option Compare Database
+Option Explicit
+
+Private cdb As DAO.database
+
+'Main Function to verify if the database is in a good state
+Public Function verifySrc(dbFileName As String) As Boolean
+    On Error GoTo catch
+    Dim error As Boolean
+    Dim source As Boolean
+    
+    source = True
+    If getGDataflow = ODS Then
+        verifySrc = verifyLinkedTables(dbFileName, source, ODS)
+    ElseIf getGDataflow = FGASES Then
+        verifySrc = verifyLinkedTables(dbFileName, source, FGASES)
+    Else
+        err.Raise vbObjectError + 513, , "Dataflow can't be detected, please select a valid database"
+    End If
+    dropLinkedTables source
+    refreshLinkedTables dbFileName, source, getGDataflow
+    verifySrc = True
+finally:
+    On Error GoTo 0
+    If error = True Then verifySrc = False
+    Exit Function
+catch:
+    error = True
+    MsgBox err.Description, vbCritical
+    Resume finally
+End Function
+Public Function verifyDest(dbFileName As String) As Boolean
+    On Error GoTo catch
+    Dim error As Boolean
+    Dim source As Boolean
+    
+    source = False
+    If getGDataflow = FGASES Then
+        verifyDest = verifyLinkedTables(dbFileName, False, FGASES)
+    ElseIf getGDataflow = ODS Then
+        verifyDest = verifyLinkedTables(dbFileName, False, ODS)
+    ElseIf getGDataflow = Empty Then
+        err.Raise vbObjectError + 513, , "Please select a source database first"
+    Else
+        verifyDest = False
+    End If
+    dropLinkedTables source
+    refreshLinkedTables dbFileName, source, getGDataflow
+finally:
+    On Error GoTo 0
+    If error = True Then verifyDest = False
+    Exit Function
+catch:
+    MsgBox err.Description, vbCritical
+    error = True
+    Resume finally
+End Function
+
+'Fetches dataflow value from intermediate database. This is saved in the description of the table db_info properties. ("ods" or "fgases")
+Public Function getDataflow(dbFileName As String) As String
+    On Error GoTo catch
+    Dim db As DAO.database
+    Dim error As Boolean
+    
+    Set db = DAO.OpenDatabase(dbFileName)
+    getDataflow = db.TableDefs("db_info").Properties("Description").Value
+finally:
+    On Error GoTo 0
+    If Not db Is Nothing Then db.Close
+    Set db = Nothing
+    If error = True Then err.Raise vbObjectError + 513, , "Could not retrieve the dataflow for the selected database, please check the description of the source db_info table"
+    Exit Function
+catch:
+    error = True
+    Resume finally
+End Function
+
+'Checks if all needed linked tables exist in database
+Private Function verifyLinkedTables(dbFileName As String, source As Boolean, Optional dataflow As String = "") As Boolean
+    On Error GoTo catch
+    Dim error As Boolean
+    Dim srcDb As DAO.database
+    Dim rs As DAO.Recordset
+    Dim wrk As DAO.Workspace
+    Dim sql As String
+    Dim tblName As String
+    Dim tmp As String
+    
+    Set wrk = DBEngine.Workspaces(0)
+    Set cdb = currentDb
+    Set srcDb = wrk.OpenDatabase(dbFileName)
+    
+    If dataflow = Empty Then
+        sql = "SELECT tbl_name FROM sys_linked_tables WHERE source = " & IIf(source = True, "TRUE", "FALSE")
+    ElseIf dataflow = ODS Then
+        sql = "SELECT tbl_name FROM sys_linked_tables WHERE ods = TRUE AND source = " & IIf(source = True, "TRUE", "FALSE")
+    ElseIf dataflow = FGASES Then
+        sql = "SELECT tbl_name FROM sys_linked_tables WHERE fgases = TRUE AND source = " & IIf(source = True, "TRUE", "FALSE")
+    End If
+    Set rs = cdb.OpenRecordset(sql, dbOpenSnapshot)
+    Do While Not rs.EOF
+        tblName = rs("tbl_name")
+        tmp = srcDb.TableDefs(tblName).name
+        rs.MoveNext
+    Loop
+    verifyLinkedTables = True
+finally:
+    If error = True Then verifyLinkedTables = False
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    If Not srcDb Is Nothing Then srcDb.Close
+    Set srcDb = Nothing
+    Exit Function
+catch:
+    Select Case err.number
+        Case 3265
+            MsgBox "Table: " & tblName & " not found in " & IIf(source = True, "source", "destination") & " database for dataflow " & dataflow & "." & Chr(10) & "Please make sure you have selected the correct source database.", vbCritical
+        Case Else
+    End Select
+    error = True
+    Resume finally
+End Function
+'Public subroutine to drop linked tables.
+Public Sub dropLinkedTables(source As Boolean, Optional dataflow As String = "")
+    On Error GoTo catch
+    Dim rs As DAO.Recordset
+    Dim sql As String
+    Dim tblName As String
+    Dim error As Boolean
+    
+    Set cdb = currentDb
+    
+    If dataflow = Empty Then
+        sql = "SELECT tbl_name FROM sys_linked_tables WHERE source = " & IIf(source = True, "TRUE", "FALSE")
+    ElseIf dataflow = ODS Then
+        sql = "SELECT tbl_name FROM sys_linked_tables WHERE ods = TRUE AND source = " & IIf(source = True, "TRUE", "FALSE")
+    ElseIf dataflow = FGASES Then
+        sql = "SELECT tbl_name FROM sys_linked_tables WHERE fgases = TRUE AND source = " & IIf(source = True, "TRUE", "FALSE")
+    End If
+    Set rs = cdb.OpenRecordset(sql, dbOpenSnapshot)
+    Do While Not rs.EOF
+        tblName = CStr(rs("tbl_name"))
+        cdb.Execute " DROP TABLE [" & tblName & "]", dbFailOnError
+nextTable:
+        rs.MoveNext
+    Loop
+finally:
+    On Error GoTo 0
+    If error = True Then err.Raise vbObjectError + 513, , "There was an error while dropping linked tables"
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Set cdb = Nothing
+    Exit Sub
+catch:
+    Select Case err.number
+        Case 3376
+            Resume nextTable
+        'ODS has used a table named table. This is a reserved word so this different error occurs for that table.
+        Case 3295
+            Resume nextTable
+        Case Else
+            error = True
+    End Select
+    Resume finally
+End Sub
+
+'Function to relink tables for databases
+'Throws Exception if table is not found
+Private Function refreshLinkedTables(srcDbName As String, source As Boolean, Optional dataflow As String = "")
+    On Error GoTo catch
+    Dim rs As DAO.Recordset
+    Dim sql As String
+    Dim tblName As String
+    Dim tdf As TableDef
+    Dim error As Boolean
+        
+    Set cdb = currentDb
+    
+    If dataflow = Empty Then
+        sql = "SELECT tbl_name FROM sys_linked_tables WHERE source = " & IIf(source = True, "TRUE", "FALSE")
+    ElseIf dataflow = ODS Then
+        sql = "SELECT tbl_name FROM sys_linked_tables WHERE ods = TRUE AND source = " & IIf(source = True, "TRUE", "FALSE")
+    ElseIf dataflow = FGASES Then
+        sql = "SELECT tbl_name FROM sys_linked_tables WHERE fgases = TRUE AND source = " & IIf(source = True, "TRUE", "FALSE")
+    End If
+    Set rs = cdb.OpenRecordset(sql, dbOpenSnapshot)
+    Do While Not rs.EOF
+        tblName = CStr(rs("tbl_name"))
+        'TODO: Redundant DROP table, we need to find a better way to implement this.
+        On Error Resume Next
+        cdb.Execute " DROP TABLE [" & tblName & "]", dbFailOnError
+        On Error GoTo catch
+        Set tdf = cdb.CreateTableDef(tblName)
+        tdf.Connect = ";DATABASE=" & srcDbName
+        tdf.SourceTableName = tblName
+        cdb.TableDefs.Append tdf
+        rs.MoveNext
+    Loop
+finally:
+    On Error GoTo 0
+    If Not rs Is Nothing Then rs.Close
+    Set cdb = Nothing
+    Set rs = Nothing
+    Set tdf = Nothing
+    If error = True Then err.Raise vbObjectError + 513, , "There was an error while creating linked tables"
+    Exit Function
+catch:
+    MsgBox "Error linking db tables: " & err.Description & Erl, vbCritical
+    error = True
+    Resume finally
+End Function
+
+Public Function getLinkedTables(source As Boolean, Optional dataflow As String = "") As String()
+    On Error GoTo catch
+    Dim cdb As DAO.database
+    Dim rs As DAO.Recordset
+    Dim sql As String
+    Dim tblName As String
+    Dim col As Collection
+    
+    Set col = New Collection
+    Set cdb = currentDb
+    If dataflow = Empty Then
+        sql = "SELECT tbl_name FROM sys_linked_tables WHERE ODS = True AND FGASES = TRUE AND source = " & source
+    Else
+        sql = "SELECT tbl_name FROM sys_linked_tables WHERE [" & dataflow & "] = True AND source = " & source
+    End If
+    Set rs = cdb.OpenRecordset(sql, dbOpenSnapshot)
+    Do While Not rs.EOF
+        tblName = CStr(rs("tbl_name"))
+        col.Add tblName
+        rs.MoveNext
+    Loop
+    If col.count = 0 Then GoTo finally
+    Dim zrray() As String
+    ReDim zrray(1 To col.count)
+    Dim i As Integer
+    For i = 1 To col.count
+        zrray(i) = col(i)
+    Next
+    getLinkedTables = zrray
+finally:
+    Exit Function
+catch:
+    MsgBox "Error while reading linked tables", vbCritical
+    Resume finally
+End Function
+
+'Helper Function to return global obligation value
+Public Function getGDataflow() As String
+    getGDataflow = Forms("frmMain").cboObligation.Value
+End Function
+
+'Helper Function to set global obligation value
+Public Function setGDataflow(dataflow As String)
+    Forms("frmMain").cboObligation.Value = dataflow
+End Function

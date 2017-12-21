@@ -1,0 +1,162 @@
+Option Compare Database
+Option Explicit
+
+Public Function ISODatetimeToDate(datetime As String) As String
+    Dim myDate As String
+    myDate = Format(Mid(datetime, 1, 10), "mm/dd/yyyy")
+    If (IsDate(myDate)) Then
+        ISODatetimeToDate = "#" & myDate & "#"
+    Else
+        ISODatetimeToDate = ""
+    End If
+End Function
+' returns empty string or given default if given parameter is null
+Public Function NullStr(str As Variant, Optional strDef As String = "") As String
+    Dim sTmp As String
+    If IsNull(str) Then
+        sTmp = strDef
+    End If
+    NullStr = IIf(IsNull(str), strDef, str)
+End Function
+Public Function getLong(number As Variant, Optional longDef As Long = 0) As Long
+    On Error GoTo err
+    getLong = CLng(number)
+    Exit Function
+err:
+    getLong = longDef
+End Function
+
+Public Function NullOrEmptyStr(str As Variant, Optional strDef As String = "") As String
+    Dim sTmp As String
+    If IsNullOrEmpty(str) Then
+        sTmp = strDef
+    Else
+        sTmp = str
+    End If
+    NullOrEmptyStr = sTmp
+End Function
+Public Function IsNullOrEmpty(str As Variant) As Boolean
+    Dim ret As Boolean
+    ret = IsNull(str) Or Trim(str) = ""
+    IsNullOrEmpty = ret
+End Function
+Public Function StrLiteral(str As String) As String
+    Dim result As String
+    result = Replace(str, "'", "''")
+    StrLiteral = "'" & result & "'"
+End Function
+Public Function SplitStringToArray(str As String, delim As String) As String()
+    Dim strArray() As String
+
+    If InStr(str, delim) > 0 Then
+        strArray = Split(str, delim)
+    Else
+        ReDim strArray(0)
+        strArray(0) = str
+    End If
+    SplitStringToArray = strArray
+End Function
+Function IsInArray(stringToBeFound As String, arr As Variant) As Boolean
+  IsInArray = (UBound(Filter(arr, stringToBeFound)) > -1)
+End Function
+Function hasArrayValue(val As String, arr As Variant) As Boolean
+    hasArrayValue = getInArrayIndex(val, arr) > -1
+End Function
+Function getInArrayIndex(stringToBeFound As String, arr As Variant) As Long
+  Dim i As Long
+  ' default return value if value not found in array
+  getInArrayIndex = -1
+
+  For i = LBound(arr) To UBound(arr)
+    If StrComp(stringToBeFound, arr(i), vbTextCompare) = 0 Then
+      getInArrayIndex = i
+      Exit For
+    End If
+  Next i
+End Function
+
+Function ConvertToDouble(ByVal stValue As String) As Double
+ On Error GoTo ConversionFailureHandler
+ ConvertToDouble = CDbl(stValue)  'TRY to convert to an Integer value
+ Exit Function           'If we reach this point, then we succeeded so exit
+
+ConversionFailureHandler:
+ 'IF we've reached this point, then we did not succeed in conversion
+ 'If the error is type-mismatch, clear the error and return numeric 0 from the function
+ 'Otherwise, disable the error handler, and re-run the code to allow the system to
+ 'display the error
+ If err.number = 13 Then 'error # 13 is Type mismatch
+      err.Clear
+      ConvertToDouble = 0
+      Exit Function
+ Else
+      On Error GoTo 0
+      Resume
+ End If
+End Function
+
+'Check if obejct exists in Collection
+Public Function InCollection(col As Collection, Optional vItem, Optional vKey) As Boolean
+On Error Resume Next
+
+Dim vColItem As Variant
+
+InCollection = False
+
+If Not IsMissing(vKey) Then
+    col.Item vKey
+
+    '5 if not in collection, it is 91 if no collection exists
+    If err.number <> 5 And err.number <> 91 Then
+        InCollection = True
+    End If
+ElseIf Not IsMissing(vItem) Then
+    For Each vColItem In col
+        If vColItem = vItem Then
+            InCollection = True
+            GoTo Exit_Proc
+        End If
+    Next vColItem
+End If
+
+Exit_Proc:
+Exit Function
+Err_Handle:
+Resume Exit_Proc
+End Function
+
+'Simple solution for checking if an object exists in a collection
+'See: http://stackoverflow.com/questions/137845/determining-whether-an-object-is-a-member-of-a-collection-in-vba
+Public Function Contains(col As Collection, key As Variant) As Boolean
+Dim obj As Variant
+On Error GoTo err
+    Contains = True
+    obj = col(key)
+    Exit Function
+err:
+    Contains = False
+End Function
+
+'Simple solution for checking if an object exists in a collection by value
+Public Function ContainsValue(col As Collection, ByVal key As Variant) As Boolean
+Dim obj As Variant
+On Error GoTo err
+    For Each obj In col
+        If obj = key Then
+            ContainsValue = True
+        End If
+    Next obj
+err:
+End Function
+
+' Returns True if Array is empty, False if Array has values
+Public Function IsArrayEmpty(arr As Variant) As Boolean
+    On Error GoTo err
+    Dim UB As Long
+    
+    UB = UBound(arr, 1)
+    IsArrayEmpty = False
+    Exit Function
+err:
+    IsArrayEmpty = True
+End Function

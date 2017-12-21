@@ -1,0 +1,648 @@
+<!-- html subform [ng-form="Sheet2"] -->
+<div name="Sheet2Section5">
+    <h2><span translate="sheet2.section5-heading"></span></h2>
+    <p><span translate="sheet2.section5-info1"></span></p>
+    <table class="table table-hover table-bordered fixed-table">
+        <colgroup>
+            <col class="fixed-width-gas-transaction"/>
+            <col class="fixed-width-gas-amount" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" ng-if="containsHFC(reportedGas)"/>
+        </colgroup>
+        <tr>
+            <th class="fixed-width-gas-transaction"><span translate="common.sheet-transactions-header"></span></th>
+            <th ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                <div align="center" ng-switch="reportedGas.IsCustomComposition">
+                    <span ng-switch-when="true">{{'common.mixture' | translate}} ({{reportedGas.Name}})</span>
+                    <span ng-switch-default>{{reportedGas.Name}}</span>
+                </div>
+            </th>
+        </tr>
+        <tr>
+            <th></th>
+            <th ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                <div align="center"><span translate="common.unit"></span></div>
+            </th>
+        </tr>
+        <!-- Field 5A Start -->
+        <tr>
+            <td colspan="{{instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05A_TradePartners.Partner.length > 0 ? 1 : filteredReportedGasesForHFCLength + 1}}">
+                <div id="tr_05A">
+                    <span class="transaction-code">5A : </span>
+                    <span class="glyphicon glyphicon-info-sign row-tooltip" tooltip-placement="right" tooltip="{{'sheet2.tr-05a-tooltip' | translate}}"></span>
+                    <span translate="sheet2.tr-05a-desc"></span>
+                </div>
+                <div><span translate="sheet2.tr-05c-add-trading-partner-tooltip"></span></div>
+                <div>
+                    <button ng-controller="ModalController" tooltip="{{'sheet2.tr-05c-add-trading-partner-tooltip' | translate}}"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'sheet2.tr-05a-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05A_TradePartners.Partner,
+                            'gasArray': instance.FGasesReporting.F2_S5_exempted_HFCs.Gas,
+                            'emptyInstancePath': 'FGasesReporting.F2_S5_exempted_HFCs.Gas.tr_05A.TradePartner',
+                            'fieldName': 'tr_05A'});"
+                            class="btn btn-primary btn-sm" >
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        <span translate="sheet2.tr-05a-add-trading-partner"/>
+                    </button>
+                </div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-init="gasIndex = $index"
+                ng-if="instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05A_TradePartners.Partner.length > 0 && containsHFC(reportedGas)">
+                <div id="{{'tr_05A_' + reportedGas.GasId}}">{{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05A.SumOfPartnerAmounts}}</div>
+                <div align="left" ng-show="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05A.SumOfPartnerAmounts">
+                    <button ng-controller="ModalController" tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
+                            ng-click="open('lg', 'CommentAddEditModal.html', 'CommentAddEditModalInstanceController', instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05A);"
+                            class="glyphicon glyphicon-comment" ></button>
+                    <span ng-if="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05A.Comment"
+                          tooltip="{{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05A.Comment}}">
+                        {{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05A.Comment | limitTo:commentLimit}} ...
+                    </span>
+                </div>
+                <span ng-repeat="validationMessage in validationMessages.sheet2 | filter:{'transaction': 'tr_05A', 'gasIndex': gasIndex}:true" tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
+            </td>
+        </tr>
+        <tr ng-repeat="tradingPartner in instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05A_TradePartners.Partner" ng-init="partnerIndex = $index">
+            <td align="right">
+                <strong>{{tradingPartner.CompanyName}}</strong>
+                <!--<hr style="margin: 0.25em">-->
+                <div>
+                    <small ng-if="tradingPartner.isEUBased">{{tradingPartner.EUVAT}}</small>
+                    <small ng-if="!tradingPartner.isEUBased">
+                        <span translate="common.trading-partner-country"></span>
+                        <span>: {{tradingPartner.NonEUCountryOfEstablishment}} - </span>
+                        <span translate="common.trading-partner-representative-name"></span>
+                        <span>: {{tradingPartner.NonEURepresentativeName}}</span>
+                    </small>
+                </div>
+                <div>
+                    <button ng-controller="ModalController" type="button" class="btn btn-primary btn-xs" style="margin-left: 1em;"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'sheet2.tr-05a-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05A_TradePartners.Partner,
+                            'index': $index,
+                            'nonEuCountries': codeList.FGasesCodelists.countries.concepts,
+                            'fieldName': 'tr_05A'});" >
+                        <span translate="common.edit"/>
+                    </button>
+                    <button type="button" class="btn btn-xs" style="margin-left: 1em;"
+                            ng-click="removeTradingPartnerAndUpdateCalculations('F2_S5_exempted_HFCs', 'tr_05A_TradePartners', $index, 'tr_05A', ['tr_05G']);">
+                        <span translate="common.remove"/>
+                    </button>
+                </div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                <input gas-input ng-model="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05A.TradePartner[$parent.$parent.$parent.$index].amount"
+                       ng-change="calculateTradingPartnerTotalAmount(instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05A);
+                                  doCalculationForFields($index, ['tr_05G']);
+                                  doCalculationTotalForRowForSheet2('F2_S5_exempted_HFCs', ['tr_05G', 'tr_05I', 'tr_05J']);"
+                       ng-if="instance.FGasesReporting.GeneralReportData.Activities['I-HFC']"/>
+                <div ng-if="!instance.FGasesReporting.GeneralReportData.Activities['I-HFC']"
+                     ng-init="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05A.TradePartner[$parent.$parent.$parent.$index].amount = null;
+                              calculateTradingPartnerTotalAmount(instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05A);
+                              doCalculationForFields($index, ['tr_05G']);
+                              doCalculationTotalForRowForSheet2('F2_S5_exempted_HFCs', ['tr_05G', 'tr_05I', 'tr_05J']);">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span tooltip="{{'sheet2.tr-05a-disabled-tooltip' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+                <div align="left" ng-show="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05A.TradePartner[$parent.$parent.$index].amount">
+                    <button ng-controller="ModalController" tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
+                            ng-click="open('lg', 'CommentAddEditModal.html', 'CommentAddEditModalInstanceController', instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05A.TradePartner[$parent.$parent.$parent.$index]);"
+                            class="glyphicon glyphicon-comment" ></button>
+                    <span ng-if="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05A.TradePartner[$parent.$parent.$index].Comment"
+                          tooltip="{{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05A.TradePartner[$parent.$parent.$parent.$parent.$index].Comment}}">
+                        {{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05A.TradePartner[$parent.$parent.$parent.$parent.$index].Comment | limitTo:commentLimit}} ...
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <!-- Field 5A End -->
+        <!-- Field 5B Start -->
+        <tr>
+            <td colspan="{{instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05B_TradePartners.Partner.length > 0 ? 1 : filteredReportedGasesForHFCLength + 1}}">
+                <div id="tr_05B">
+                    <span class="transaction-code">5B : </span>
+                    <span class="glyphicon glyphicon-info-sign row-tooltip" tooltip-placement="right" tooltip="{{'sheet2.tr-05b-tooltip' | translate}}"></span>
+                    <span translate="sheet2.tr-05b-desc"></span>
+                </div>
+                <div><span translate="sheet2.tr-05c-add-trading-partner-tooltip"></span></div>
+                <div>
+                    <button ng-controller="ModalController" tooltip="{{'sheet2.tr-05c-add-trading-partner-tooltip' | translate}}"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'sheet2.tr-05b-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05B_TradePartners.Partner,
+                            'gasArray': instance.FGasesReporting.F2_S5_exempted_HFCs.Gas,
+                            'emptyInstancePath': 'FGasesReporting.F2_S5_exempted_HFCs.Gas.tr_05B.TradePartner',
+                            'fieldName': 'tr_05B'});"
+                            class="btn btn-primary btn-sm" >
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        <span translate="sheet2.tr-05b-add-trading-partner"/>
+                    </button>
+                </div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-init="gasIndex = $index"
+                ng-if="instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05B_TradePartners.Partner.length > 0 && containsHFC(reportedGas)">
+                <div id="{{'tr_05B_' + reportedGas.GasId}}">{{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05B.SumOfPartnerAmounts}}</div>
+                <div align="left" ng-show="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05B.SumOfPartnerAmounts">
+                    <button ng-controller="ModalController" tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
+                            ng-click="open('lg', 'CommentAddEditModal.html', 'CommentAddEditModalInstanceController', instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05B);"
+                            class="glyphicon glyphicon-comment" ></button>
+                    <span ng-if="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05B.Comment"
+                          tooltip="{{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05B.Comment}}">
+                        {{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05B.Comment | limitTo:commentLimit}} ...
+                    </span>
+                </div>
+                <span ng-repeat="validationMessage in validationMessages.sheet2 | filter:{'transaction': 'tr_05B', 'gasIndex': gasIndex}:true" tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
+            </td>
+        </tr>
+        <tr ng-repeat="tradingPartner in instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05B_TradePartners.Partner" ng-init="partnerIndex = $index">
+            <td align="right">
+                <strong>{{tradingPartner.CompanyName}}</strong>
+                <!--<hr style="margin: 0.25em">-->
+                <div>
+                    <small ng-if="tradingPartner.isEUBased">{{tradingPartner.EUVAT}}</small>
+                    <small ng-if="!tradingPartner.isEUBased">
+                        <span translate="common.trading-partner-country"></span>
+                        <span>: {{tradingPartner.NonEUCountryOfEstablishment}} - </span>
+                        <span translate="common.trading-partner-representative-name"></span>
+                        <span>: {{tradingPartner.NonEURepresentativeName}}</span>
+                    </small>
+                </div>
+                <div>
+                    <button ng-controller="ModalController" type="button" class="btn btn-primary btn-xs" style="margin-left: 1em;"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'sheet2.tr-05b-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05B_TradePartners.Partner,
+                            'index': $index,
+                            'nonEuCountries': codeList.FGasesCodelists.countries.concepts,
+                            'fieldName': 'tr_05B'});" >
+                        <span translate="common.edit"/>
+                    </button>
+                    <button type="button" class="btn btn-xs" style="margin-left: 1em;"
+                            ng-click="removeTradingPartnerAndUpdateCalculations('F2_S5_exempted_HFCs', 'tr_05B_TradePartners', $index, 'tr_05B', ['tr_05G']);">
+                        <span translate="common.remove"/>
+                    </button>
+                </div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                <input gas-input ng-model="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05B.TradePartner[$parent.$parent.$parent.$index].amount"
+                       ng-change="calculateTradingPartnerTotalAmount(instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05B);
+                                  doCalculationForFields($index, ['tr_05G']);
+                                  doCalculationTotalForRowForSheet2('F2_S5_exempted_HFCs', ['tr_05G', 'tr_05I', 'tr_05J']);"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+                <div align="left" ng-show="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05B.TradePartner[$parent.$parent.$index].amount">
+                    <button ng-controller="ModalController" tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
+                            ng-click="open('lg', 'CommentAddEditModal.html', 'CommentAddEditModalInstanceController', instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05B.TradePartner[$parent.$parent.$parent.$index]);"
+                            class="glyphicon glyphicon-comment" ></button>
+                    <span ng-if="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05B.TradePartner[$parent.$parent.$index].Comment"
+                          tooltip="{{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05B.TradePartner[$parent.$parent.$parent.$parent.$index].Comment}}">
+                        {{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05B.TradePartner[$parent.$parent.$parent.$parent.$index].Comment | limitTo:commentLimit}} ...
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <!-- Field 5B End -->
+        <!-- Field 5C_exempted Start -->
+        <tr>
+            <td colspan="{{instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05C_TradePartners.Partner.length > 0 ? 1 : filteredReportedGasesForHFCLength + 1}}">
+                <div>
+                    <span class="transaction-code">5C_exempted : </span>
+                    <span class="glyphicon glyphicon-info-sign row-tooltip" tooltip-placement="right" tooltip="{{'sheet2.tr-05c-tooltip' | translate}}"></span>
+                    <span translate="sheet2.tr-05c-desc"></span>
+                </div>
+                <div><span translate="sheet2.tr-05c-add-trading-partner-tooltip"></span></div>
+                <div>
+                    <button ng-controller="ModalController" tooltip="{{'sheet2.tr-05c-add-trading-partner-tooltip' | translate}}"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'sheet2.tr-05c-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05C_TradePartners.Partner,
+                            'gasArray': instance.FGasesReporting.F2_S5_exempted_HFCs.Gas,
+                            'emptyInstancePath': 'FGasesReporting.F2_S5_exempted_HFCs.Gas.tr_05C.TradePartner',
+                            'fieldName': 'tr_05C'});"
+                            class="btn btn-primary btn-sm" >
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        <span translate="sheet2.tr-05c-add-trading-partner"/>
+                    </button>
+                </div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center"
+                ng-if="instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05C_TradePartners.Partner.length > 0 && containsHFC(reportedGas)">
+                {{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05C.SumOfPartnerAmounts}}
+            </td>
+        </tr>
+        <tr ng-repeat="tradingPartner in instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05C_TradePartners.Partner" ng-init="partnerIndex = $index">
+            <td align="right">
+                <strong>{{tradingPartner.CompanyName}}</strong>
+                <!--<hr style="margin: 0.25em">-->
+                <div>
+                    <small ng-if="tradingPartner.isEUBased">{{tradingPartner.EUVAT}}</small>
+                    <small ng-if="!tradingPartner.isEUBased">
+                        <span translate="common.trading-partner-country"></span>
+                        <span>: {{tradingPartner.NonEUCountryOfEstablishment}} - </span>
+                        <span translate="common.trading-partner-representative-name"></span>
+                        <span>: {{tradingPartner.NonEURepresentativeName}}</span>
+                    </small>
+                </div>
+                <div>
+                    <button ng-controller="ModalController" type="button" class="btn btn-primary btn-xs" style="margin-left: 1em;"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'sheet2.tr-05c-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05C_TradePartners.Partner,
+                            'index': $index,
+                            'nonEuCountries': codeList.FGasesCodelists.countries.concepts,
+                            'fieldName': 'tr_05C'});" >
+                        <span translate="common.edit"/>
+                    </button>
+                    <button type="button" class="btn btn-xs" style="margin-left: 1em;"
+                            ng-click="removeTradingPartnerAndUpdateCalculations('F2_S5_exempted_HFCs', 'tr_05C_TradePartners', $index, 'tr_05C', ['tr_05G']);">
+                        <span translate="common.remove"/>
+                    </button>
+                </div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                <input gas-input ng-model="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05C.TradePartner[$parent.$parent.$parent.$index].amount"
+                       ng-change="calculateTradingPartnerTotalAmount(instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05C);
+                                  doCalculationForFields($index, ['tr_05G']);
+                                  doCalculationTotalForRowForSheet2('F2_S5_exempted_HFCs', ['tr_05G', 'tr_05I', 'tr_05J']);
+                                  doCalculationTotalForRow('F2_S5_exempted_HFCs', 'tr_05C');"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <!-- Field 5C_exempted End -->
+        <!-- Field 5D Start -->
+        <tr>
+            <td colspan="{{instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05D_TradePartners.Partner.length > 0 ? 1 : filteredReportedGasesForHFCLength + 1}}">
+                <div>
+                    <span class="transaction-code">5D : </span>
+                    <span class="glyphicon glyphicon-info-sign row-tooltip" tooltip-placement="right" tooltip="{{'sheet2.tr-05d-tooltip' | translate}}"></span>
+                    <span translate="sheet2.tr-05d-desc"></span>
+                </div>
+                <div><span translate="sheet2.tr-05c-add-trading-partner-tooltip"></span></div>
+                <div>
+                    <button ng-controller="ModalController" tooltip="{{'sheet2.tr-05c-add-trading-partner-tooltip' | translate}}"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'sheet2.tr-05d-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05D_TradePartners.Partner,
+                            'gasArray': instance.FGasesReporting.F2_S5_exempted_HFCs.Gas,
+                            'emptyInstancePath': 'FGasesReporting.F2_S5_exempted_HFCs.Gas.tr_05D.TradePartner',
+                            'fieldName': 'tr_05D'})"
+                            class="btn btn-primary btn-sm" >
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        <span translate="sheet2.tr-05d-add-trading-partner"/>
+                    </button>
+                </div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center"
+                ng-if="instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05D_TradePartners.Partner.length > 0 && containsHFC(reportedGas)">
+                {{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05D.SumOfPartnerAmounts}}
+            </td>
+        </tr>
+        <tr ng-repeat="tradingPartner in instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05D_TradePartners.Partner" ng-init="partnerIndex = $index">
+            <td align="right">
+                <strong>{{tradingPartner.CompanyName}}</strong>
+                <!--<hr style="margin: 0.25em">-->
+                <div>
+                    <small ng-if="tradingPartner.isEUBased">{{tradingPartner.EUVAT}}</small>
+                    <small ng-if="!tradingPartner.isEUBased">
+                        <span translate="common.trading-partner-country"></span>
+                        <span>: {{tradingPartner.NonEUCountryOfEstablishment}} - </span>
+                        <span translate="common.trading-partner-representative-name"></span>
+                        <span>: {{tradingPartner.NonEURepresentativeName}}</span>
+                    </small>
+                </div>
+                <div>
+                    <button ng-controller="ModalController" type="button" class="btn btn-primary btn-xs" style="margin-left: 1em;"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'sheet2.tr-05d-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05D_TradePartners.Partner,
+                            'index': $index,
+                            'nonEuCountries': codeList.FGasesCodelists.countries.concepts,
+                            'fieldName': 'tr_05D'});" >
+                        <span translate="common.edit"/>
+                    </button>
+                    <button type="button" class="btn btn-xs" style="margin-left: 1em;"
+                            ng-click="removeTradingPartnerAndUpdateCalculations('F2_S5_exempted_HFCs', 'tr_05D_TradePartners', $index, 'tr_05D', ['tr_05G']);">
+                        <span translate="common.remove"/>
+                    </button>
+                </div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                <input gas-input ng-model="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05D.TradePartner[$parent.$parent.$parent.$index].amount"
+                       ng-change="calculateTradingPartnerTotalAmount(instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05D);
+                                  doCalculationForFields($index, ['tr_05G']);
+                                  doCalculationTotalForRowForSheet2('F2_S5_exempted_HFCs', ['tr_05G', 'tr_05I', 'tr_05J']);"
+                       ng-blur="confirmNotInWhitelist('5D', reportedGas, instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05D.TradePartner[$parent.$parent.$parent.$index], 'amount');"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <!-- Field 5D End -->
+        <!-- Field 5E Start -->
+        <tr>
+            <td colspan="{{instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05E_TradePartners.Partner.length > 0 ? 1 : filteredReportedGasesForHFCLength + 1}}">
+                <div>
+                    <span class="transaction-code">5E : </span>
+                    <span class="glyphicon glyphicon-info-sign row-tooltip" tooltip-placement="right" tooltip="{{'sheet2.tr-05e-tooltip' | translate}}"></span>
+                    <span translate="sheet2.tr-05e-desc"></span>
+                </div>
+                <div><span translate="sheet2.tr-05c-add-trading-partner-tooltip"></span></div>
+                <div>
+                    <button ng-controller="ModalController" tooltip="{{'sheet2.tr-05c-add-trading-partner-tooltip' | translate}}"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'sheet2.tr-05e-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05E_TradePartners.Partner,
+                            'gasArray': instance.FGasesReporting.F2_S5_exempted_HFCs.Gas,
+                            'emptyInstancePath': 'FGasesReporting.F2_S5_exempted_HFCs.Gas.tr_05E.TradePartner',
+                            'fieldName': 'tr_05E'})"
+                            class="btn btn-primary btn-sm" >
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        <span translate="sheet2.tr-05e-add-trading-partner"/>
+                    </button>
+                </div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center"
+                ng-if="instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05E_TradePartners.Partner.length > 0 && containsHFC(reportedGas)">
+                {{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05E.SumOfPartnerAmounts}}
+            </td>
+        </tr>
+        <tr ng-repeat="tradingPartner in instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05E_TradePartners.Partner" ng-init="partnerIndex = $index">
+            <td align="right">
+                <strong>{{tradingPartner.CompanyName}}</strong>
+                <!--<hr style="margin: 0.25em">-->
+                <div>
+                    <small ng-if="tradingPartner.isEUBased">{{tradingPartner.EUVAT}}</small>
+                    <small ng-if="!tradingPartner.isEUBased">
+                        <span translate="common.trading-partner-country"></span>
+                        <span>: {{tradingPartner.NonEUCountryOfEstablishment}} - </span>
+                        <span translate="common.trading-partner-representative-name"></span>
+                        <span>: {{tradingPartner.NonEURepresentativeName}}</span>
+                    </small>
+                </div>
+                <div>
+                    <button ng-controller="ModalController" type="button" class="btn btn-primary btn-xs" style="margin-left: 1em;"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'sheet2.tr-05e-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05E_TradePartners.Partner,
+                            'index': $index,
+                            'nonEuCountries': codeList.FGasesCodelists.countries.concepts,
+                            'fieldName': 'tr_05E'});" >
+                        <span translate="common.edit"/>
+                    </button>
+                    <button type="button" class="btn btn-xs" style="margin-left: 1em;"
+                            ng-click="removeTradingPartnerAndUpdateCalculations('F2_S5_exempted_HFCs', 'tr_05E_TradePartners', $index, 'tr_05E', ['tr_05G']);">
+                        <span translate="common.remove"/>
+                    </button>
+                </div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                <input gas-input ng-model="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05E.TradePartner[$parent.$parent.$parent.$index].amount"
+                       ng-change="calculateTradingPartnerTotalAmount(instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05E);
+                                  doCalculationForFields($index, ['tr_05G']);
+                                  doCalculationTotalForRowForSheet2('F2_S5_exempted_HFCs', ['tr_05G', 'tr_05I', 'tr_05J']);"
+                       ng-blur="confirmNotInWhitelist('5E', reportedGas, instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05E.TradePartner[$parent.$parent.$parent.$index], 'amount');"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <!-- Field 5E End -->
+        <!-- Field 5F Start -->
+        <tr>
+            <td colspan="{{instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05F_TradePartners.Partner.length > 0 ? 1 : filteredReportedGasesForHFCLength + 1}}">
+                <div>
+                    <span class="transaction-code">5F : </span>
+                    <span class="glyphicon glyphicon-info-sign row-tooltip" tooltip-placement="right" tooltip="{{'sheet2.tr-05f-tooltip' | translate}}"></span>
+                    <span translate="sheet2.tr-05f-desc"></span>
+                </div>
+                <div><span translate="sheet2.tr-05c-add-trading-partner-tooltip"></span></div>
+                <div>
+                    <button ng-controller="ModalController" tooltip="{{'sheet2.tr-05c-add-trading-partner-tooltip' | translate}}"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'sheet2.tr-05f-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05F_TradePartners.Partner,
+                            'gasArray': instance.FGasesReporting.F2_S5_exempted_HFCs.Gas,
+                            'emptyInstancePath': 'FGasesReporting.F2_S5_exempted_HFCs.Gas.tr_05F.TradePartner',
+                            'fieldName': 'tr_05F'})"
+                            class="btn btn-primary btn-sm" >
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        <span translate="sheet2.tr-05f-add-trading-partner"/>
+                    </button>
+                </div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center"
+                ng-if="instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05F_TradePartners.Partner.length > 0  && containsHFC(reportedGas)">
+                {{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05F.SumOfPartnerAmounts}}
+            </td>
+        </tr>
+        <tr ng-repeat="tradingPartner in instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05F_TradePartners.Partner" ng-init="partnerIndex = $index">
+            <td align="right">
+                <strong>{{tradingPartner.CompanyName}}</strong>
+                <!--<hr style="margin: 0.25em">-->
+                <div>
+                    <small ng-if="tradingPartner.isEUBased">{{tradingPartner.EUVAT}}</small>
+                    <small ng-if="!tradingPartner.isEUBased">
+                        <span translate="common.trading-partner-country"></span>
+                        <span>: {{tradingPartner.NonEUCountryOfEstablishment}} - </span>
+                        <span translate="common.trading-partner-representative-name"></span>
+                        <span>: {{tradingPartner.NonEURepresentativeName}}</span>
+                    </small>
+                </div>
+                <div>
+                    <button ng-controller="ModalController" type="button" class="btn btn-primary btn-xs" style="margin-left: 1em;"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'sheet2.tr-05f-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05F_TradePartners.Partner,
+                            'index': $index,
+                            'nonEuCountries': codeList.FGasesCodelists.countries.concepts,
+                            'fieldName': 'tr_05F'});" >
+                        <span translate="common.edit"/>
+                    </button>
+                    <button type="button" class="btn btn-xs" style="margin-left: 1em;"
+                            ng-click="removeTradingPartnerAndUpdateCalculations('F2_S5_exempted_HFCs', 'tr_05F_TradePartners', $index, 'tr_05F', ['tr_05G']);">
+                        <span translate="common.remove"/>
+                    </button>
+                </div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                <input gas-input ng-model="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05F.TradePartner[$parent.$parent.$parent.$index].amount"
+                       ng-change="calculateTradingPartnerTotalAmount(instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05F);
+                                  doCalculationForFields($index, ['tr_05G']);
+                                  doCalculationTotalForRowForSheet2('F2_S5_exempted_HFCs', ['tr_05G', 'tr_05I', 'tr_05J']);"
+                       ng-blur="confirmNotInWhitelist('5F', reportedGas, instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05F.TradePartner[$parent.$parent.$parent.$index], 'amount');"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <!-- Field 5F End -->
+        <tr>
+            <td>
+                <span class="transaction-code">5G : </span>
+                <span translate="sheet2.tr-05g-desc"></span>
+                <div><span class="formula" translate="sheet2.tr-05g-formula"></span></div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)" ng-init="gasIndex = $index">
+                <div id="{{'tr_05G_' + reportedGas.GasId}}">
+                    <span>{{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05G.Amount}}</span>
+                    <span ng-repeat="validationMessage in validationMessages.sheet2 | filter:{'transaction': 'tr_05G', 'gasIndex': gasIndex}:true" tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="transaction-code">5H : </span>
+                <span translate="sheet2.tr-05h-desc"></span>
+                <div><span class="formula" translate="sheet2.tr-05h-formula"></span></div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                {{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05H.Amount}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="transaction-code">5I : </span>
+                <span translate="sheet2.tr-05i-desc"></span>
+                <div><span class="formula" translate="sheet2.tr-05i-formula"></span></div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                {{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05I.Amount}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="transaction-code">5J : </span>
+                <span translate="sheet2.tr-05j-desc"></span>
+                <div><span class="formula" translate="sheet2.tr-05j-formula"></span></div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                {{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05J.Amount}}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="{{filteredReportedGasesForHFCLength + 1}}">
+                <strong><span translate="sheet2.voluntary-reporting" tooltip="{{'sheet2.voluntarily-tooltip' | translate}}"></span></strong>
+            </td>
+        </tr>
+        <!-- Field 5C_voluntary Start -->
+        <tr>
+            <td colspan="{{instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05R_TradePartners.Partner.length > 0 ? 1 : filteredReportedGasesForHFCLength + 1}}">
+                <div>
+                    <span class="transaction-code">5C_voluntary : </span>
+                    <span class="glyphicon glyphicon-info-sign row-tooltip" tooltip-placement="right" tooltip="{{'sheet2.tr-05r-tooltip' | translate}}"></span>
+                    <span translate="sheet2.tr-05r-desc"></span>
+                </div>
+                <div><span translate="sheet2.tr-05r-add-trading-partner-tooltip"></span></div>
+                <div>
+                    <button ng-controller="ModalController" tooltip="{{'sheet2.tr-05r-add-trading-partner-tooltip' | translate}}"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'sheet2.tr-05r-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05R_TradePartners.Partner,
+                            'gasArray': instance.FGasesReporting.F2_S5_exempted_HFCs.Gas,
+                            'emptyInstancePath': 'FGasesReporting.F2_S5_exempted_HFCs.Gas.tr_05R.TradePartner',
+                            'fieldName': 'tr_05R'});"
+                            class="btn btn-primary btn-sm" >
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        <span translate="sheet2.tr-05r-add-trading-partner"/>
+                    </button>
+                </div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center"
+                ng-if="instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05R_TradePartners.Partner.length > 0 && containsHFC(reportedGas)">
+                {{instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05R.SumOfPartnerAmounts}}
+            </td>
+        </tr>
+        <tr ng-repeat="tradingPartner in instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05R_TradePartners.Partner" ng-init="partnerIndex = $index">
+            <td align="right">
+                <strong>{{tradingPartner.CompanyName}}</strong>
+                <!--<hr style="margin: 0.25em">-->
+                <div>
+                    <small ng-if="tradingPartner.isEUBased">{{tradingPartner.EUVAT}}</small>
+                    <small ng-if="!tradingPartner.isEUBased">
+                        <span translate="common.trading-partner-country"></span>
+                        <span>: {{tradingPartner.NonEUCountryOfEstablishment}} - </span>
+                        <span translate="common.trading-partner-representative-name"></span>
+                        <span>: {{tradingPartner.NonEURepresentativeName}}</span>
+                    </small>
+                </div>
+                <div>
+                    <button ng-controller="ModalController" type="button" class="btn btn-primary btn-xs" style="margin-left: 1em;"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'sheet2.tr-05r-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F2_S5_exempted_HFCs.tr_05R_TradePartners.Partner,
+                            'index': $index,
+                            'nonEuCountries': codeList.FGasesCodelists.countries.concepts,
+                            'fieldName': 'tr_05R'});" >
+                        <span translate="common.edit"/>
+                    </button>
+                    <button type="button" class="btn btn-xs" style="margin-left: 1em;"
+                            ng-click="removeTradingPartnerAndUpdateCalculations('F2_S5_exempted_HFCs', 'tr_05R_TradePartners', $index, 'tr_05R', []);">
+                        <span translate="common.remove"/>
+                    </button>
+                </div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                <input gas-input ng-model="instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05R.TradePartner[$parent.$parent.$parent.$index].amount"
+                       ng-change="calculateTradingPartnerTotalAmount(instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[$index].tr_05R);"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <!-- Field 5C_voluntary End -->
+    </table>
+    <div ng-show="instance.FGasesReporting.GeneralReportData.TransactionYear > 2014">  <!-- div for check box -->
+        <div>
+            <input type="checkbox" id="sheet2ChkVerified" ng-model="instance.FGasesReporting.F2_S5_exempted_HFCs.Verified"
+                   ng-required="instance.FGasesReporting.F2_S5_exempted_HFCs.Totals.tr_05CSumAllGases > 0 && instance.FGasesReporting.GeneralReportData.TransactionYear > 2014"
+                   ng-disabled="!(instance.FGasesReporting.F2_S5_exempted_HFCs.Totals.tr_05CSumAllGases > 0 && instance.FGasesReporting.GeneralReportData.TransactionYear > 2014)"/>
+            <label for="sheet2ChkVerified" style="padding-left: 1em; font-weight: bold; display:inline" translate="sheet2.verified-desc"></label>
+        </div>
+
+        <h2><span translate="sheet2.documents"></span></h2>
+        <p translate="sheet2.upload-document-text1"></p>
+        <p translate="sheet2.upload-document-text2"></p>
+        <ul ng-if="instance.FGasesReporting.F2_S5_exempted_HFCs.SupportingDocuments.Document.length > 0">
+            <li ng-repeat="document in instance.FGasesReporting.F2_S5_exempted_HFCs.SupportingDocuments.Document" class="document">
+                <a href="{{document.Url}}" target="_blank">{{document.Url}}</a>
+                <button type="button" class="btn btn-xs" style="margin-left: 1em;"
+                        ng-click="removeDocument(instance.FGasesReporting.F2_S5_exempted_HFCs.SupportingDocuments.Document, $index, document);">
+                    <span translate="common.remove"/>
+                </button>
+            </li>
+        </ul>
+        <p ng-if="instance.FGasesReporting.F2_S5_exempted_HFCs.SupportingDocuments.Document.length == 0" translate="common.no-documents"></p>
+        <br/>
+        <br/>
+        <div>
+            <strong><span translate="sheet2.upload-document"></span></strong>
+            <input type="file" nv-file-select="uploadFile('FGasesReporting.F2_S5_exempted_HFCs.SupportingDocuments.Document')" uploader="uploader" ng-init="configureUploader" style="display:inline; margin-left:5px;"
+                   ng-disabled="!(instance.FGasesReporting.F2_S5_exempted_HFCs.Totals.tr_05CSumAllGases > 0 && instance.FGasesReporting.GeneralReportData.TransactionYear > 2014)"/>
+            <button type="button" class="btn btn-success btn-xs" ng-click="uploadFile('FGasesReporting.F2_S5_exempted_HFCs.SupportingDocuments.Document')" ng-if="uploader.queue.length == 1">
+                <span class="glyphicon glyphicon-upload"></span> Upload
+            </button>
+            <div class="progress" ng-if="uploader.queue.length == 1" ng-show="uploader.isHTML5">
+                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <!-- end of div name="Sheet2Section5" -->
+<!-- end of html subform [ng-form="Sheet2"] -->
+

@@ -1,0 +1,86 @@
+
+[
+    {
+        "@type": "FGASUndertaking",
+        "id": 2222,
+        "name": "orgTest222",
+        "address": {
+            "street": "street",
+            "number": "11",
+            "zipCode": "1234",
+            "city": "asdfsafsaf",
+            "country": {
+                "code": "CN",
+                "name": "China",
+                "type": "NONEU_TYPE"
+            }
+        },
+        "website": "http://website",
+        "phone": "+3234343",
+        "domain": "FGAS",
+        "contactPersons": [
+            {
+                "userName": "user1",
+                "firstName": "User 1",
+                "lastName": "User 1",
+                "emailAddress": "user1@mock.ec.europa.eu"
+            }
+        ],
+        "status": "VALID",
+        "euLegalRepresentativeCompany": {
+            "name": "eulegalrep org",
+            "address": {
+                "street": "street",
+                "number": "12",
+                "zipCode": "1233",
+                "city": "asdfafd",
+                "country": {
+                    "code": "BE",
+                    "name": "Belgium",
+                    "type": "EU_TYPE"
+                }
+            },
+            "website": "http://website",
+            "phone": "+3234343",
+            "vatNumber": "VAT23424",
+            "contactPersonFirstName": "fname--9270",
+            "contactPersonLastName": "lname--9270",
+            "contactPersonEmailAddress": "email@email.com"
+        },
+        "vat": "VAT23424",
+        "Former_Company_no_2007-2010": "fgas00000"
+    }
+    ,
+    {
+        "@type": "FGASUndertaking",
+        "id": 1111,
+        "name": "orgTest1111",
+        "address": {
+            "street": "street",
+            "number": "11",
+            "zipCode": "1234",
+            "city": "asdfsafsaf",
+            "country": {
+                "code": "EE",
+                "name": "Estonia",
+                "type": "EU_TYPE"
+            }
+        },
+        "website": "http://website",
+        "phone": "+3234343",
+        "domain": "FGAS",
+        "contactPersons": [
+            {
+                "userName": "user1",
+                "firstName": "User 1",
+                "lastName": "User 1",
+                "emailAddress": "user1@mock.ec.europa.eu"
+            }
+        ],
+        "status": "VALID",
+        "vat": "VAT23424",
+        "Former_Company_no_2007-2010": "fgas30000"
+    }
+
+
+]

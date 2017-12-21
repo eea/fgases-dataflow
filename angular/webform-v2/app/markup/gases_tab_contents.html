@@ -1,0 +1,295 @@
+<!-- html subform [ng-form="GasesSelection"] for activities & gases tab -->
+<h2><span data-translate="gases.selection"></span></h2>
+<div style="margin-top: 1em;">
+    <strong><span data-translate="gases.hfc-selection"></span></strong>
+    <hr width="100%" style="margin: 0.5em">
+    <div multiselect class="multiselect" name="HFCs" multiple="true"
+         ng-model="instance.FGasesReporting.GeneralReportData.HFCs.GasName"
+         options="gas.GasId as gas.Name for gas in codeList.FGasesCodelists.FGases.Gas | filter:{'GasGroupId': HFCsGasGroupId}:true"
+         showFilter="true" showCheckAll="false" showCode="false" showGroups="false"
+         change="gasSelectionChanged('HFCs');"></div>
+    <div ng-show="instance.FGasesReporting.GeneralReportData.HFCs.GasName.length > 0" style="margin-top: 0.5em;">
+        <ul>
+            <li ng-repeat="selectedGas in instance.FGasesReporting.GeneralReportData.HFCs.GasName">
+                <span ng-repeat="allGases in codeList.FGasesCodelists.FGases.Gas | filter:{'GasId': selectedGas}:true ">
+                    {{allGases.Name}}
+                </span>
+                <button type="button" class="btn btn-xs" style="margin-left: 1em;" ng-click="removeGasFromSelection(instance.FGasesReporting.GeneralReportData.HFCs.GasName, $index)">
+                    <span data-translate="common.remove"/>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+<div style="margin-top: 1em;">
+    <strong><span data-translate="gases.mixtures-selection"></span></strong>
+    <hr width="100%" style="margin: 0.5em">
+    <div multiselect class="multiselect" name="CommonlyUsedMixtures" multiple="true" style="margin-top: 0.5em;"
+         ng-model="instance.FGasesReporting.GeneralReportData.CommonlyUsedMixtures.GasName"
+         options="gas.GasId as (gas.Name + (gas.Name.indexOf('Mix:') < 0 ? ' | ' + gas.BlendComposition : '')) for gas in codeList.FGasesCodelists.FGases.Gas | filter:{'IsShortlisted': true}:true"
+         showFilter="true" showCheckAll="false" showCode="false" showGroups="true"
+         change="gasSelectionChanged('CommonlyUsedMixtures');"></div>
+    <div ng-show="instance.FGasesReporting.GeneralReportData.CommonlyUsedMixtures.GasName.length > 0" style="margin-top: 0.5em;">
+        <ul>
+            <li ng-repeat="selectedGas in instance.FGasesReporting.GeneralReportData.CommonlyUsedMixtures.GasName">
+                 <span ng-repeat="allGases in codeList.FGasesCodelists.FGases.Gas | filter:{'GasId': selectedGas}:true ">
+                    {{allGases.Name}}
+                </span>
+                <button type="button" class="btn btn-xs" style="margin-left: 1em;" ng-click="removeGasFromSelection(instance.FGasesReporting.GeneralReportData.CommonlyUsedMixtures.GasName, $index)">
+                    <span data-translate="common.remove"/>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+<div style="margin-top: 1em;">
+    <strong><span data-translate="gases.unsaturated-hfc-selection"></span></strong>
+    <hr width="100%" style="margin: 0.5em">
+    <div multiselect class="multiselect" name="UnsaturatedHFCsHCFC" multiple="true" style="margin-top: 0.5em;"
+         ng-model="instance.FGasesReporting.GeneralReportData.UnsaturatedHFCsHCFC.GasName"
+         options="gas.GasId as gas.Name for gas in codeList.FGasesCodelists.FGases.Gas | filter:{'GasGroupId': UnsaturatedHFCsHCFCGasGroupId}:true"
+         showFilter="true" showCheckAll="false" showCode="false" showGroups="false"
+         change="gasSelectionChanged('UnsaturatedHFCsHCFC');"></div>
+    <div ng-show="instance.FGasesReporting.GeneralReportData.UnsaturatedHFCsHCFC.GasName.length > 0" style="margin-top: 0.5em;">
+        <ul>
+            <li ng-repeat="selectedGas in instance.FGasesReporting.GeneralReportData.UnsaturatedHFCsHCFC.GasName">
+                <span ng-repeat="allGases in codeList.FGasesCodelists.FGases.Gas | filter:{'GasId': selectedGas}:true ">
+                    {{allGases.Name}}
+                </span>
+                <button type="button" class="btn btn-xs" style="margin-left: 1em;" ng-click="removeGasFromSelection(instance.FGasesReporting.GeneralReportData.UnsaturatedHFCsHCFC.GasName, $index)">
+                    <span data-translate="common.remove"/>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div style="margin-top: 1em;">
+    <strong><span data-translate="gases.pfc-selection"></span></strong>
+    <hr width="100%" style="margin: 0.5em">
+    <div multiselect class="multiselect" name="PFCs" multiple="true" style="margin-top: 0.5em;"
+         ng-model="instance.FGasesReporting.GeneralReportData.PFCs.GasName"
+         options="gas.GasId as gas.Name for gas in codeList.FGasesCodelists.FGases.Gas | filter:{'GasGroupId': PFCsGasGroupId}:true"
+         showFilter="true" showCheckAll="false" showCode="false" showGroups="false"
+         change="gasSelectionChanged('PFCs');"></div>
+    <div ng-show="instance.FGasesReporting.GeneralReportData.PFCs.GasName.length > 0" style="margin-top: 0.5em;">
+        <ul>
+            <li ng-repeat="selectedGas in instance.FGasesReporting.GeneralReportData.PFCs.GasName">
+                <span ng-repeat="allGases in codeList.FGasesCodelists.FGases.Gas | filter:{'GasId': selectedGas}:true ">
+                    {{allGases.Name}}
+                </span>
+                <button type="button" class="btn btn-xs" style="margin-left: 1em;" ng-click="removeGasFromSelection(instance.FGasesReporting.GeneralReportData.PFCs.GasName, $index)">
+                    <span data-translate="common.remove"/>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+<div style="margin-top: 1em;">
+    <strong><span data-translate="gases.sf6-selection"></span></strong>
+    <hr width="100%" style="margin: 0.5em">
+    <div multiselect class="multiselect" name="SF6" multiple="true" style="margin-top: 0.5em;"
+         ng-model="instance.FGasesReporting.GeneralReportData.SF6.GasName"
+         options="gas.GasId as gas.Name for gas in codeList.FGasesCodelists.FGases.Gas | filter:{'GasGroupId': SF6GasGroupId}:true"
+         showFilter="true" showCheckAll="false" showCode="false" showGroups="false"
+         change="gasSelectionChanged('SF6');"></div>
+    <div ng-show="instance.FGasesReporting.GeneralReportData.SF6.GasName.length > 0" style="margin-top: 0.5em;">
+        <ul>
+            <li ng-repeat="selectedGas in instance.FGasesReporting.GeneralReportData.SF6.GasName">
+                <span ng-repeat="allGases in codeList.FGasesCodelists.FGases.Gas | filter:{'GasId': selectedGas}:true ">
+                    {{allGases.Name}}
+                </span>
+                <button type="button" class="btn btn-xs" style="margin-left: 1em;" ng-click="removeGasFromSelection(instance.FGasesReporting.GeneralReportData.SF6.GasName, $index)">
+                    <span data-translate="common.remove"/>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+<div style="margin-top: 1em;">
+    <strong><span data-translate="gases.fluorinated-ethers-alcohols-selection"></span></strong>
+    <hr width="100%" style="margin: 0.5em">
+    <div multiselect class="multiselect" name="FluorinatedEthersAlcohols" multiple="true" style="margin-top: 0.5em;"
+         ng-model="instance.FGasesReporting.GeneralReportData.FluorinatedEthersAlcohols.GasName"
+         options="gas.GasId as gas.Name for gas in codeList.FGasesCodelists.FGases.Gas | filter:{'GasGroupId': FluorinatedEthersAlcoholsGasGroupId}:true"
+         showFilter="true" showCheckAll="false" showCode="false" showGroups="false"
+         change="gasSelectionChanged('FluorinatedEthersAlcohols');"></div>
+    <div ng-show="instance.FGasesReporting.GeneralReportData.FluorinatedEthersAlcohols.GasName.length > 0" style="margin-top: 0.5em;">
+        <ul>
+            <li ng-repeat="selectedGas in instance.FGasesReporting.GeneralReportData.FluorinatedEthersAlcohols.GasName">
+                <span ng-repeat="allGases in codeList.FGasesCodelists.FGases.Gas | filter:{'GasId': selectedGas}:true ">
+                    {{allGases.Name}}
+                </span>
+                <button type="button" class="btn btn-xs" style="margin-left: 1em;" ng-click="removeGasFromSelection(instance.FGasesReporting.GeneralReportData.FluorinatedEthersAlcohols.GasName, $index)">
+                    <span data-translate="common.remove"/>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+<div style="margin-top: 1em;margin-bottom: 2.5em;">
+    <strong><span data-translate="gases.other-prefluorinated-selection"></span></strong>
+    <hr width="100%" style="margin: 0.5em">
+    <div multiselect class="multiselect" name="OtherPrefluorinatedCompounds" multiple="true" style="margin-top: 0.5em;"
+         ng-model="instance.FGasesReporting.GeneralReportData.OtherPrefluorinatedCompounds.GasName"
+         options="gas.GasId as gas.Name for gas in codeList.FGasesCodelists.FGases.Gas | filter:{'GasGroupId': OtherPrefluorinatedCompoundsGasGroupId}:true"
+         showFilter="true" showCheckAll="false" showCode="false" showGroups="false"
+         change="gasSelectionChanged('OtherPrefluorinatedCompounds');"></div>
+    <div ng-show="instance.FGasesReporting.GeneralReportData.OtherPrefluorinatedCompounds.GasName.length > 0" style="margin-top: 0.5em;">
+       <ul>
+            <li ng-repeat="selectedGas in instance.FGasesReporting.GeneralReportData.OtherPrefluorinatedCompounds.GasName">
+                <span ng-repeat="allGases in codeList.FGasesCodelists.FGases.Gas | filter:{'GasId': selectedGas}:true ">
+                    {{allGases.Name}}
+                </span>
+                <button type="button" class="btn btn-xs" style="margin-left: 1em;" ng-click="removeGasFromSelection(instance.FGasesReporting.GeneralReportData.OtherPrefluorinatedCompounds.GasName, $index)">
+                    <span data-translate="common.remove"/>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div>
+    <h2><span data-translate="gases.defined-mixtures"></span></h2>
+    <button ng-controller="ModalController"
+            ng-click="open('lg', 'MixtureDefinitionModalContent.html', 'MixtureDefinitionModalInstanceController', null, mixtureEditModalWindowCloseCallBack, {'preDefinedMixtureList': (codeList.FGasesCodelists.FGases.Gas | filter:{'IsShortlisted': true}), 'existingCustomMixtures': (instance.FGasesReporting.ReportedGases | filter:{IsCustomComposition : true})})" class="btn btn-primary btn-sm" >
+        <span class="glyphicon glyphicon-plus-sign"></span>
+        <span data-translate="gases.add-mixture"/>
+    </button>
+    <table class="table table-hover table-bordered" ng-show="(instance.FGasesReporting.ReportedGases | filter:{IsCustomComposition : true}).length > 0">
+        <tr>
+            <th><span data-translate="gases.mixture-name"></span></th>
+            <th><span data-translate="gases.mixture-gas-name"></span> - <span data-translate="gases.mixture-gas-ratio"></span></th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="mixture in instance.FGasesReporting.ReportedGases" ng-if="mixture.IsCustomComposition">
+            <td>
+                <span data-translate="common.mixture"></span><span> ({{mixture.Name}})</span>
+            </td>
+            <td>
+                <ul>
+                    <li ng-repeat="gas in mixture.BlendComponents.Component">
+                        <div ng-if="gas.IsOther">
+                            <span data-translate="common.other"></span><span> ({{gas.Code}}) - {{gas.Percentage}}%</span>
+                        </div>
+                        <div ng-if="!gas.IsOther">
+                            <span>{{gas.Name}} - {{gas.Percentage}}%</span>
+                        </div>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <button ng-controller="ModalController" ng-click="open('lg', 'MixtureDefinitionModalContent.html', 'MixtureDefinitionModalInstanceController', instance.FGasesReporting.ReportedGases[$index], mixtureEditModalWindowCloseCallBack, {'index': $index, 'preDefinedMixtureList': (codeList.FGasesCodelists.FGases.Gas | filter:{'IsShortlisted': true}), 'existingCustomMixtures': (instance.FGasesReporting.ReportedGases | filter:{IsCustomComposition : true})})" class="btn btn-primary btn-xs">
+                    <span data-translate="common.edit"/>
+                </button>
+            </td>
+            <td>
+                <button type="button" ng-click="removeGasFromReportedGases($index)"class="btn btn-xs" >
+                    <span data-translate="common.remove"/>
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div ng-controller="ModalController">
+    <script type="text/ng-template" id="MixtureDefinitionModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title"><span data-translate="{{mixtureModalTitle}}"/></h3>
+        </div>
+        <div class="modal-body">
+            <div class="info">
+                <p><span data-translate="gases.add-mixture-text1"></span></p>
+                <ul>
+                    <li><span data-translate="gases.add-mixture-text2"></span></li>
+                    <li><span data-translate="gases.add-mixture-text3"></span></li>
+                    <li><span data-translate="gases.add-mixture-text4"></span></li>
+                    <li><span data-translate="gases.add-mixture-text5"></span></li>
+                </ul>
+                <p><span data-translate="gases.add-mixture-text6"></span></p>
+            </div>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><span data-translate="gases.select-predefined-fgases-for-mixture"></span></th>
+                    <th><span data-translate="gases.select-predefined-non-fgases-for-mixture"></span></th>
+                </tr>
+                <tr>
+                    <td>
+                        <!-- FIXME the list should use Component IDs and not GasIds. Change it before reporting starts in 2016. -->
+                        <div multiselect class="multiselect" multiple="true"
+                             ng-model="tempPredefinedGases.fgases"
+                             options="gas.GasId as gas.Name for gas in codeList.FGasesCodelists.FGasesOrderedAndFilteredForMixtureDefinition.Gas"
+                             showFilter="true" showCheckAll="false" showCode="false" showGroups="true"
+                             change="mixturePredefinedFGasSelectionChanged(codeList.FGasesCodelists.FGasesOrderedAndFilteredForMixtureDefinition.Gas);"></div>
+                        <div ng-show="tempMixtureDefinition.fgases.length > 0">
+                            <span data-translate="gases.selected-fgases-for-mixture"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div multiselect class="multiselect inline-block" multiple="true"
+                             ng-model="tempPredefinedGases.nonfgases" modelIdFieldName="ComponentId"
+                             options="gas.ComponentId as gas.Name for gas in codeList.FGasesCodelists.FGases.Component | filter:{'GasGroupId': NonFGasesGroupId}:true"
+                             showFilter="true" showCheckAll="false" showCode="false" showGroups="true"
+                             change="mixturePredefinedNonFGasSelectionChanged((codeList.FGasesCodelists.FGases.Component | filter:{'GasGroupId': NonFGasesGroupId}:true));"></div>
+                        <div ng-show="tempMixtureDefinition.fgases.length > 0">
+                            <span data-translate="gases.selected-nonfgases-for-mixture"></span>
+                        </div>
+                        &nbsp;<span data-translate="gases.or"></span>&nbsp;
+                        <div class="inline-block">
+                            <button type="button" class="btn btn-xs btn-primary" ng-click="addOtherGas()"
+                                    data-tooltip="{{'gases.add-other-gas-to-mixture-tooltip' | translate}}" >
+                                <span class="glyphicon glyphicon-plus-sign"></span>
+                                <span data-translate="gases.add-other-gas-to-mixture"/>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <td><span data-translate="gases.mixture-name"></span></td>
+                    <td colspan="2">
+                        <input type="text" name="MixtureName" focus-me ng-model="mixtureDefinitionModalData.Code" required/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span data-translate="gases.mixture-gas-name"></span></span></th>
+                    <th><span data-translate="gases.mixture-gas-ratio"></span></th>
+                    <th/>
+                </tr>
+                <tr ng-repeat="component in mixtureDefinitionModalData.BlendComponents.Component">
+                    <td>
+                        <span ng-if="!component.IsOther && !component.IsNonFGas" ng-repeat="allGases in codeList.FGasesCodelists.FGases.Gas | filter:{'GasId': component.ComponentId}:true">
+                            <span ng-init="component.Code = allGases.Code; component.Name = allGases.Name">{{component.Name}}</span>
+                        </span>
+                        <span ng-if="!component.IsOther && component.IsNonFGas" ng-repeat="allComponents in codeList.FGasesCodelists.FGases.Component | filter:{'ComponentId': component.ComponentId}:true">
+                            <span ng-init="component.Code = allComponents.Code; component.Name = allComponents.Name">{{component.Name}}</span>
+                        </span>
+                        <div ng-if="component.IsOther">
+                            <span data-translate="common.other"></span>
+                            <input type="text" name="OtherMixtureGasName" ng-model="component.Code" required data-tooltip="{{'gases.added-other-gas-name-for-mixture' | translate}}" style="margin-left: 0.5em"/>
+                        </div>
+                    </td>
+                    <td>
+                        <input gas-input name="MixtureGasRatio" ng-model="component.Percentage" ng-change="calculateSumForMixture(mixtureDefinitionModalData)" title="{{'gases.mixture-gas-ratio' | translate}}"/><span>%</span>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-xs" ng-click="removeAddedGasFromMixture($index);">
+                            <span data-translate="common.remove"/>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="remove(alerts, $index, alert)"><span data-translate="{{alert.msg}}"></span></alert>
+        </div>
+        <div class="modal-footer">
+            <span><button class="btn btn-primary" ng-click="ok()" data-tooltip="{{'common.save-changes' | translate}}"><span data-translate="common.ok"/></button></span>
+            <span><button class="btn btn-default" ng-click="cancel()" data-tooltip="{{'common.discard-changes' | translate}}"><span data-translate="common.cancel"/></button></span>
+        </div>
+    </script>
+</div>
+
+

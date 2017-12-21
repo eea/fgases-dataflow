@@ -1,0 +1,155 @@
+Option Compare Database
+Option Explicit
+
+Public Const NAVIGATION_FGASES_GROUP = "FGases Linked Tables"
+Public Const NAVIGATION_ODS_GROUP = "ODS Linked Tables"
+Public Const NAVIGATION_GENERIC_GROUP = "Generic Linked Tables"
+Private db As DAO.database
+
+'Initialize navigation pane for Source or Dest database
+Public Sub refreshNavigationPane(dbType As String)
+    Dim rs As DAO.Recordset
+    Dim FGasesGroupId As Long
+    Dim GenericGroupId As Long
+    Dim OdsGroupId As Long
+    Dim tblName As String
+    Dim objectId As Long
+    Dim GenericLinkedTables() As String
+    Dim FGasesLinkedTables() As String
+    Dim OdsLinkedTables() As String
+    Dim dataflow As String
+    
+    Set db = currentDb
+    grantAccessToAdmin
+    
+    dataflow = getGDataflow
+    
+    If (dbType = "Source") Then
+        GenericLinkedTables = getLinkedTables(True)
+        If (dataflow = ODS) Then
+            OdsLinkedTables = getLinkedTables(True, ODS)
+        Else
+            FGasesLinkedTables = getLinkedTables(True, FGASES)
+        End If
+    ElseIf (dbType = "Dest") Then
+        GenericLinkedTables = getLinkedTables(False)
+        If (dataflow = ODS) Then
+            OdsLinkedTables = getLinkedTables(False, ODS)
+        Else
+            FGasesLinkedTables = getLinkedTables(False, FGASES)
+        End If
+    End If
+    
+    GenericGroupId = getNavGroupId(NAVIGATION_GENERIC_GROUP)
+    FGasesGroupId = getNavGroupId(NAVIGATION_FGASES_GROUP)
+    OdsGroupId = getNavGroupId(NAVIGATION_ODS_GROUP)
+    
+    'Sync updated Objects table with Navigation pane Object table
+    'This is the most important step for the functionality to work properly.
+    syncNavGTO
+    
+    If (FGasesGroupId <> Empty And GenericGroupId <> Empty And OdsGroupId <> Empty) Then
+        Set rs = db.OpenRecordset("SELECT * FROM MSysNavPaneObjectIDs WHERE type=6")
+        Do While Not rs.EOF
+            tblName = rs("Name")
+            objectId = rs("Id")
+            If Not IsArrayEmpty(GenericLinkedTables) Then
+                If IsInArray(tblName, GenericLinkedTables) Then
+                    syncLinkedTable GenericGroupId, objectId, tblName
+                End If
+            End If
+            If (dataflow = FGASES) Then
+                If Not IsArrayEmpty(FGasesLinkedTables) Then
+                    If IsInArray(tblName, FGasesLinkedTables) Then
+                        syncLinkedTable FGasesGroupId, objectId, tblName
+                    End If
+                End If
+            Else
+                If Not IsArrayEmpty(OdsLinkedTables) Then
+                    If IsInArray(tblName, OdsLinkedTables) Then
+                        syncLinkedTable OdsGroupId, objectId, tblName
+                    End If
+                End If
+            End If
+            rs.MoveNext
+        Loop
+    End If
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Application.RefreshDatabaseWindow
+End Sub
+Private Sub grantAccessToAdmin()
+    On Error Resume Next
+    CurrentProject.Connection.Execute "GRANT SELECT ON MSysObjects TO Admin;"
+End Sub
+'Retrieves the group id for the navigation pane menu
+Private Function getNavGroupId(strGroupName As String) As Long
+    On Error GoTo 0
+    Dim rs As DAO.Recordset
+    
+    Set rs = db.OpenRecordset("SELECT Id FROM MSysNavPaneGroups WHERE Name = " & StrLiteral(strGroupName))
+    If Not rs.EOF Then
+        getNavGroupId = rs("Id")
+        rs.Close
+    End If
+End Function
+'Function used to sync linked tables to the navigation pane
+Private Sub syncLinkedTable(groupId As Long, objectId As Long, tblName As String)
+    On Error GoTo 0
+    Dim rs As DAO.Recordset
+    Set rs = db.OpenRecordset("SELECT * FROM MSysNavPaneGroupToObjects WHERE GroupID = " & groupId & " AND Name = " & StrLiteral(tblName), dbOpenDynaset)
+    If Not rs.EOF Then
+        rs.Edit
+        rs![objectId] = objectId
+        rs.update
+    Else
+        rs.AddNew
+        rs![flags] = 0
+        rs![groupId] = groupId
+        rs![icon] = 0
+        rs![objectId] = objectId
+        rs![name] = tblName
+        rs![position] = 0
+        rs.update
+    End If
+    rs.Close
+    If Not rs Is Nothing Then Set rs = Nothing
+End Sub
+'Sync linked tables with categories
+Private Sub syncNavGTO()
+    Dim rsObjects As DAO.Recordset
+    Dim rsNavObjects As DAO.Recordset
+    Dim rsNavGTObjects As DAO.Recordset
+        
+    Set rsObjects = db.OpenRecordset("SELECT * FROM MSysObjects WHERE type = 6;", dbOpenSnapshot)
+    Do While Not rsObjects.EOF
+        Dim lngId As Long
+        lngId = modNumbers.getLong(rsObjects("id"))
+        Set rsNavObjects = db.OpenRecordset("SELECT * FROM MSysNavPaneObjectIDs WHERE name = '" & rsObjects("name") & "'", dbOpenDynaset)
+        Do While Not rsNavObjects.EOF
+            rsNavObjects.Edit
+            rsNavObjects![id] = lngId
+            rsNavObjects.update
+            rsNavObjects.MoveNext
+        Loop
+        rsObjects.MoveNext
+    Loop
+End Sub
+'General information about navigation pane
+
+' Types
+        ' Type TypeDesc
+        '-32768  Form
+        '-32766  Macro
+        '-32764  Reports
+        '-32761  Module
+        '-32758  Users
+        '-32757  Database Document
+        '-32756  Data Access Pages
+        '1   Table - Local Access Tables
+        '2   Access object - Database
+        '3   Access object - Containers
+        '4   Table - Linked ODBC Tables
+        '5   Queries
+        '6   Table - Linked Access Tables
+        '8   SubDataSheets

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="LargeCompanies">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Company" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="CompanyID" type="xs:string" minOccurs="1" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

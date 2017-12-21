@@ -1,0 +1,11 @@
+Option Compare Database
+Option Explicit
+
+'log levels
+Public Const DEBUG_LOG = "DEBUG"
+Public Const INFO_LOG = "INFO"
+Public Const WARN_LOG = "WARN"
+Public Const ERROR_LOG = "ERROR"
+Public Const FATAL_LOG = "FATAL"
+
+Public Const NULL_STR = "NULL"

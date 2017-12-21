@@ -1,0 +1,105 @@
+{
+    "FGasesCodelists": {
+        "-xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+        "Languages": {
+            "item": [
+                {
+                    "code": "bg",
+                    "label": "Български (bg)"
+                },
+                {
+                    "code": "es",
+                    "label": "Español (es)"
+                },
+                {
+                    "code": "cs",
+                    "label": "Čeština (cs)"
+                },
+                {
+                    "code": "da",
+                    "label": "Dansk (da)"
+                },
+                {
+                    "code": "de",
+                    "label": "Deutsch (de)"
+                },
+                {
+                    "code": "et",
+                    "label": "Eesti (et)"
+                },
+                {
+                    "code": "el",
+                    "label": "ελληνικά (el)"
+                },
+                {
+                    "code": "en",
+                    "label": "English (en)"
+                },
+                {
+                    "code": "fr",
+                    "label": "Français (fr)"
+                },
+                {
+                    "code": "hr",
+                    "label": "Hrvatski (hr)"
+                },
+                {
+                    "code": "it",
+                    "label": "Italiano (it)"
+                },
+                {
+                    "code": "lv",
+                    "label": "Latviešu valoda (lv)"
+                },
+                {
+                    "code": "lt",
+                    "label": "Lietuvių kalba (lt)"
+                },
+                {
+                    "code": "hu",
+                    "label": "Magyar (hu)"
+                },
+                {
+                    "code": "hr",
+                    "label": "Hrvatski (hr)"
+                },
+                {
+                    "code": "mt",
+                    "label": "Malti (mt)"
+                },
+                {
+                    "code": "nl",
+                    "label": "Nederlands (nl)"
+                },
+                {
+                    "code": "pl",
+                    "label": "Polski (pl)"
+                },
+                {
+                    "code": "pt",
+                    "label": "Português (pt)"
+                },
+                {
+                    "code": "ro",
+                    "label": "Română (ro)"
+                },
+                {
+                    "code": "sk",
+                    "label": "Slovenčina (sk)"
+                },
+                {
+                    "code": "sl",
+                    "label": "Slovenščina (sl)"
+                },
+                {
+                    "code": "fi",
+                    "label": "Suomi (fi)"
+                },
+                {
+                    "code": "sv",
+                    "label": "Svenska (sv)"
+                }
+            ]
+        }
+    }
+}

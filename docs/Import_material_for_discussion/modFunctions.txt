@@ -1,0 +1,70 @@
+Attribute VB_Name = "modFunctions"
+Option Compare Database
+
+Function Calculation_GWP(Substance)
+Dim rst As New Recordset
+Dim CON As New Connection
+Set CON = CurrentProject.Connection
+rst.Open "Select * from substances where substance ='" & Substance & "'", CON
+Calculation_GWP = rst!GWP_TAR_100
+rst.Close
+CON.Close
+
+
+
+End Function
+Function FCNaming(TID)
+Dim rst As New Recordset
+Dim CON As New Connection
+Set CON = CurrentProject.Connection
+rst.Open "Select * from header_transaction where transaction_id =" & TID & "", CON
+FCNaming = rst![Transaction]
+rst.Close
+CON.Close
+
+
+
+End Function
+
+Function FC_EU_SALES(SID, TYear, Sgroup)
+Dim Tons As Double
+Dim ANZ As Byte
+Dim rst As New Recordset
+Dim CON As New Connection
+Set CON = CurrentProject.Connection
+rst.Open "Select * from q_eu_sales where substance_id =" & SID & " AND Transaction_year= '" & TYear & "' Order by Transaction_ID", CON
+Select Case Sgroup
+    Case "HFC"
+        ANZ = 1
+        Do While rst.EOF = False
+            Select Case ANZ
+                Case 3, 6, 9, 10, 11, 12
+                Tons = Tons - rst![Value_t]
+                Case 1, 2, 4, 5, 7, 8
+                Tons = Tons + rst![Value_t]
+            End Select
+            rst.MoveNext
+            ANZ = ANZ + 1
+        Loop
+    Case "SF6", "PFC"
+        ANZ = 1
+        Do While rst.EOF = False
+            Select Case ANZ
+                Case 3, 6, 9, 10, 11
+                Tons = Tons - rst![Value_t]
+                Case 1, 2, 4, 5, 7, 8
+                Tons = Tons + rst![Value_t]
+            End Select
+            rst.MoveNext
+            ANZ = ANZ + 1
+        Loop
+End Select
+FC_EU_SALES = Tons
+rst.Close
+CON.Close
+
+
+
+End Function
+
+

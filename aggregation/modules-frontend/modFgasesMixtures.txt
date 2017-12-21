@@ -1,0 +1,121 @@
+Option Compare Database
+Option Explicit
+
+Public Gmixtures As Collection
+Public GmixturesWithId As Collection
+Private db As DAO.database
+
+'Initialize Mixtures Collection with all mixtures from the destination database. This collection is then used to find existing mixtures.
+Public Function init()
+    On Error GoTo err
+    Set db = currentDb
+    Set Gmixtures = New Collection
+    Set GmixturesWithId = New Collection
+    Dim rs1, rs2, rs3 As DAO.Recordset
+    Set rs1 = db.OpenRecordset("SELECT DISTINCT gas_id FROM tbl_blendcomposition", dbOpenSnapshot)
+    With rs1
+    Do While Not rs1.EOF
+        Dim mixture As fgasesMixture
+        Set mixture = New fgasesMixture
+        Dim mixtureComponents As Collection
+        Set mixtureComponents = New Collection
+        Dim gasId As String
+        gasId = modCommonUtil.NullStr(rs1("gas_id"))
+        'In MS-Access SQL, we can't order by an alias, so we use the column number. Taken from http://stackoverflow.com/a/19408647/1951487
+        Dim cSql As String
+        cSql = "SELECT gas_id, component_id, reported_other_explanation, percentage, IIF(component_id = 128, reported_other_explanation, component_id) As CustomId" & _
+            " FROM tbl_blendcomposition WHERE gas_id = " & modNumbers.getLong(gasId) & " ORDER BY 5"
+        Set rs2 = db.OpenRecordset(cSql, dbOpenSnapshot)
+        With rs2
+        Do While Not rs2.EOF
+            Dim y As fgasesComponentPair
+            Set y = New fgasesComponentPair
+            y.setId = modNumbers.getLong(rs2("component_id"))
+            y.setName = modCommonUtil.NullOrEmptyStr(rs2("reported_other_explanation"))
+            y.setPercentage = modNumbers.getDouble(modCommonUtil.NullStr(rs2("percentage")))
+            mixtureComponents.Add y
+            .MoveNext
+        Loop
+        End With
+        mixture.components = mixtureComponents
+        mixture.id = gasId
+        Gmixtures.Add mixture.getHash
+        GmixturesWithId.Add mixture.getHash & ":" & mixture.id
+        .MoveNext
+    Loop
+    End With
+exit_function:
+    If Not rs1 Is Nothing Then rs1.Close
+    If Not rs2 Is Nothing Then rs2.Close
+    If Not rs3 Is Nothing Then rs3.Close
+    Set rs1 = Nothing
+    Set rs2 = Nothing
+    Set rs3 = Nothing
+    Exit Function
+err:
+    Resume exit_function
+End Function
+Public Sub addMixtureHash(hash As String)
+    Gmixtures.Add hash
+End Sub
+Public Sub addMixtureHashWithId(hash As String)
+    GmixturesWithId.Add hash
+End Sub
+Public Sub refresh()
+    init
+End Sub
+Public Sub timeInit()
+    Dim t As Single
+    t = Timer
+    modFgasesMixtures.init
+    Debug.Print "Execution time was " & (Timer - t) & " seconds"
+End Sub
+'Checks if mixture exists in collection
+Public Function mixtureExists(z As fgasesMixture) As Boolean
+    Dim mixture As fgasesMixture
+    Dim components As Collection
+    Set components = z.components
+    Dim h As String
+    h = z.getHash
+    mixtureExists = ContainsValue(modFgasesMixtures.Gmixtures, h)
+End Function
+' Get id of mixture from hash
+Public Function getIdFromHash(hash As String) As Long
+    Dim obj As Variant
+    For Each obj In GmixturesWithId
+        If Split(obj, ":")(0) = hash Then
+            getIdFromHash = CLng(Split(obj, ":")(1))
+            GoTo exit_function
+        End If
+    Next obj
+exit_function:
+End Function
+'Remove mixtures collection from memory
+Public Sub destroy()
+    If Not Gmixtures Is Nothing Then
+        Set Gmixtures = Nothing
+    End If
+    If Not GmixturesWithId Is Nothing Then
+        Set GmixturesWithId = Nothing
+    End If
+End Sub
+
+'Add Mixture trade name to FDB - tbl_gas_trade_names
+Public Sub populateTradeName(gasId As Long, reportId As String, tradeName As String)
+    On Error GoTo err
+    Dim rs As DAO.Recordset
+    Set rs = db.OpenRecordset("tbl_gas_trade_names", dbOpenDynaset)
+    With rs
+        .AddNew
+        !Gas_ID = gasId
+        !report_submission_no = reportId
+        !trade_name = tradeName
+        .update
+        .Close
+    End With
+err:
+    If Not rs Is Nothing Then
+        rs.Close
+    End If
+    Set rs = Nothing
+End Sub

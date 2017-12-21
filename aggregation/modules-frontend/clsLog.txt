@@ -1,0 +1,53 @@
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+Dim iLogLevel As String
+Dim dImportTime As Date
+Dim strEvent As String
+Dim strReportId As String
+Dim strMessage As String
+Dim strValueId As String
+
+Public Property Get importTime() As Date
+    importTime = dImportTime
+End Property
+Public Property Let importTime(newImportTime As Date)
+    dImportTime = newImportTime
+End Property
+
+Public Property Get logLevel() As String
+    logLevel = iLogLevel
+End Property
+Public Property Let logLevel(newLogLevel As String)
+    iLogLevel = newLogLevel
+End Property
+
+Public Property Get eventName() As String
+    eventName = strEvent
+End Property
+Public Property Let eventName(newEvent As String)
+    strEvent = newEvent
+End Property
+Public Property Get Message() As String
+    Message = strMessage
+End Property
+Public Property Let Message(newMessage As String)
+    strMessage = newMessage
+End Property
+Public Property Get reportId() As String
+    reportId = strReportId
+End Property
+Public Property Let reportId(newReportId As String)
+    strReportId = newReportId
+End Property
+
+Public Property Get valueId() As String
+    valueId = strValueId
+End Property
+Public Property Let valueId(newValueId As String)
+    strValueId = newValueId
+End Property

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="fgases" default="build" basedir=".">
+    <property name="site_root" location="app"/>
+    <property name="css" location="${site_root}/css" />
+    <property name="js" location="${site_root}/js" />
+    <property name="scripts" location="${site_root}/scripts" />
+    <property name="markup" location="${site_root}/markup" />
+    
+    <property name="bower_components" location="${site_root}/bower_components" />
+    <property name="bower_component_promise_tracker" location="${bower_components}/angular-promise-tracker" />
+    <property name="bower_component_file_upload" location="${bower_components}/angular-file-upload/dist" />
+    
+    <property name="build" location="build" />
+    <property name="dist" location="dist" />
+    
+    <filterchain id="js_standard">
+        <linecontains negate="true">
+            <contains value="use strict" />
+        </linecontains>
+        <linecontains negate="true">
+            <contains value="/*-ant-includes" />
+        </linecontains>
+        <linecontains negate="true">
+            <contains value="ant-includes-*/" />
+        </linecontains>
+    </filterchain>
+    
+    <target name="clean">
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+    
+    <target name="build" depends="clean">
+        <mkdir dir="${build}" />
+        
+        <copy flatten="true" todir="${build}" includeEmptyDirs="false">
+            <fileset dir="${css}" />
+            <fileset dir="${markup}" />
+            <fileset file="${scripts}/notification/notification.css" />
+            <fileset file="${bower_component_promise_tracker}/promise-tracker.js" />
+            <fileset file="${bower_component_promise_tracker}/promise-tracker-http-interceptor.js" />
+            <fileset file="${bower_component_file_upload}/angular-file-upload.min.js" />
+        </copy>
+        
+        <concat destfile="${build}/app.js" encoding="UTF-8" outputencoding="UTF-8" fixlastline="true">
+            <filterchain refid="js_standard" />
+            
+            <fileset file="${js}/app.js" />
+            <fileset dir="${js}/controllers" />
+            <fileset dir="${js}/directives" />
+            <fileset dir="${js}/filters" />
+            <fileset dir="${js}/services" />
+            <fileset dir="${js}/viewmodel" />
+            <fileset dir="${scripts}">
+                <exclude name="**/*.css" />
+            </fileset>
+        </concat>
+        
+        <copy file="${site_root}/index.html" todir="${build}">
+            <filterchain>
+                <linecontains negate="true">
+                    <contains value="href=&quot;css/" />
+                </linecontains>
+                <linecontains negate="true">
+                    <contains value="href=&quot;scripts/" />
+                </linecontains>
+                <linecontains negate="true">
+                    <contains value="src=&quot;scripts/" />
+                </linecontains>
+                <linecontains negate="true">
+                    <contains value="src=&quot;js/" />
+                </linecontains>
+                <linecontains negate="true">
+                    <contains value="src=&quot;mock/" />
+                </linecontains>
+                <linecontains negate="true">
+                    <contains value="ant-includes" />
+                </linecontains>
+                <linecontains negate="true">
+                    <contains value="=&quot;bower_components/" />
+                </linecontains>
+                <linecontains negate="true">
+                    <contains value="=&quot;markup/" />
+                </linecontains>
+            </filterchain>
+        </copy>
+    </target>
+    
+    <target name="build-to-deploy" depends="build">
+        <fail>
+            <condition>
+                <not>
+                    <isset property="project"/>
+                </not>
+            </condition>
+        </fail>
+    </target>
+    
+    <target name="build-test" depends="build-to-deploy">
+        <exec executable="python" failonerror="true">
+            <arg line="build-archiver.py test ${project}" />
+        </exec>
+    </target>
+    
+    <target name="build-prod" depends="build-to-deploy">
+        <exec executable="python" failonerror="true">
+            <arg line="build-archiver.py prod ${project}" />
+        </exec>
+    </target>
+    
+</project>

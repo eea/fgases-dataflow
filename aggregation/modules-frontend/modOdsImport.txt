@@ -1,0 +1,642 @@
+Option Compare Database
+Option Explicit
+
+Private srcDb As DAO.database
+Private wrk As DAO.Workspace
+Private destDb As DAO.database
+
+
+Public Sub ImportOdsReport(srcReportRecordset As Recordset, ByVal destDbName As String, ByVal bOnlyMostRecent As Boolean, ByRef importLogs As Collection)
+    On Error GoTo Err_import_report
+    
+    Dim rs As Recordset
+    
+    Dim companyId As String
+    Dim reportId As String
+    Dim envelopeUrl As String
+    Dim fileName As String
+    Dim releaseTime As Date
+    Dim country As String
+    Dim companyName As String
+    Dim transactionYear As Integer
+    Dim isImporter As Boolean
+    Dim isProducer As Boolean
+    Dim isExporter As Boolean
+    Dim isDest As Boolean
+    Dim isPau As Boolean
+    Dim isFdst As Boolean
+    Dim isNILReport As Boolean
+    Dim isMostRecentRep As Boolean
+       
+    Dim odsCompanyId As Integer
+    Dim odsCountryId As Integer
+    Dim odsActivityId As Integer
+    Dim odsReportId As String
+    Dim isBeforeSubmissionDeadline As Boolean
+    Dim comment As String
+      
+    Set srcDb = currentDb
+    Set wrk = DBEngine.Workspaces(0)
+    Set destDb = wrk.OpenDatabase(destDbName)
+    
+On Error GoTo Err_import_parse_src
+    'get report fields
+    companyId = srcReportRecordset("company_id")
+    companyName = srcReportRecordset("company_name")
+    country = srcReportRecordset("country")
+    reportId = srcReportRecordset("report_id")
+    envelopeUrl = srcReportRecordset("envelope_url")
+    fileName = srcReportRecordset("file_name")
+    releaseTime = IIf(IsNull(srcReportRecordset("release_time")), Now(), srcReportRecordset("release_time"))
+    transactionYear = srcReportRecordset("transaction_year")
+    isProducer = srcReportRecordset("Producer")
+    isImporter = srcReportRecordset("Importer")
+    isExporter = srcReportRecordset("Exporter")
+    isDest = srcReportRecordset("Destruction")
+    isPau = srcReportRecordset("ProcessAgent")
+    isFdst = srcReportRecordset("Feedstock")
+    isNILReport = srcReportRecordset("NIL_report")
+    comment = IIf(IsNull(srcReportRecordset("comment")), "", srcReportRecordset("comment"))
+        
+    ' get country ID
+On Error GoTo Err_import_get_country
+    odsCountryId = getOdsCountryId(country)
+    If odsCountryId = 0 Then
+        addImportLog importLogs, reportId, "REPORT_IMPORT_SKIPPED", basGlobals.DEBUG_LOG, "Report for ambigious country is not imported: " & country
+        GoTo Exit_import_report
+    End If
+
+On Error GoTo Err_import_get_company
+    ' Check if company exists in company table and get ID
+    odsCompanyId = getOdsCompanyId(companyId, odsCountryId, reportId, companyName, importLogs)
+    If odsCompanyId = 0 Then
+        addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Could not receive company ID from DB."
+        GoTo Exit_import_report
+    End If
+On Error GoTo Err_import_is_imported
+    ' Check if company ID + trans year +  release date exists
+    If (isReportImported(odsCompanyId, transactionYear, releaseTime)) Then
+        addImportLog importLogs, reportId, "REPORT_IMPORT_SKIPPED", basGlobals.DEBUG_LOG, "Report is already imported."
+        GoTo Exit_import_report
+    End If
+    
+On Error GoTo Err_import_is_most_recent
+    ' Check if company ID + trans year +  release date exists and is most recent
+    isMostRecentRep = isMostRecentReport(odsCompanyId, transactionYear, releaseTime)
+    If isMostRecentRep = False And bOnlyMostRecent Then
+        addImportLog importLogs, reportId, "REPORT_IMPORT_SKIPPED", basGlobals.DEBUG_LOG, "Report is not most recent report."
+        GoTo Exit_import_report
+    End If
+    
+On Error GoTo Err_import_update_contacts
+    updateContacts reportId, odsCompanyId
+    
+    'isBeforeSubmissionDeadline = isBeforeSubmissionDeadline(srcDb, ODS, transactionYear, releaseTime, importLogs, reportId)
+    
+    'start transaction
+On Error GoTo Err_rollback_begin
+    With wrk
+        .BeginTrans
+        'If isBeforeSubmissionDeadline = True Then
+        ' update existing reports Most_recent_report flag
+On Error GoTo Err_rollback_update_isfinal
+        destDb.Execute "UPDATE reporter SET is_final=0 WHERE company_id=" & odsCompanyId & " AND " & _
+                "year_reported = " & transactionYear & " AND CDate(Nz(bdr_date_delivered, 0)) < CDate('" & releaseTime & "')"
+        'End If
+On Error GoTo Err_rollback_insert_co_year
+    destDb.Execute "INSERT INTO company_years (company_id, YearReported)" & _
+                   " SELECT " & odsCompanyId & ", " & transactionYear & " FROM (SELECT count(*) as c FROM company_years WHERE company_id=" & _
+                    odsCompanyId & " AND YearReported=" & transactionYear & ") as year_count WHERE year_count.c=0"
+                
+        
+On Error GoTo Err_rollback_add_report
+        Set rs = destDb.OpenRecordset("reporter", dbOpenDynaset)
+        With rs
+            .AddNew
+            !Company_ID = odsCompanyId
+            !bdr_date_delivered = releaseTime
+            !date_processed = importTime
+            !is_null_report = isNILReport
+            '!status_id = ?
+            !template_id = 5
+            !year_reported = transactionYear
+            '!qa_qc2_needed = ?
+            ' !value_other_substance = ? + 3 value_other fields
+            !value_comment_report = modCommonUtil.NullStr(comment)
+            !bdr_delivery_url = reportId
+            !is_final = isMostRecentRep 'and isBeforeSubmissionDeadline
+            .update
+            .MoveLast
+            odsReportId = .fields("id")
+            .Close
+        End With
+      
+On Error GoTo Err_rollback_add_activities
+        ' Add activities
+        If isNILReport = False Then
+            addActivities odsReportId, isProducer, isImporter, isExporter, isDest, isPau, isFdst, reportId, importLogs
+        End If
+        
+On Error GoTo Err_rollback_add_values
+        'import tbl_value data
+        importOdsReportValues reportId, odsReportId, importLogs
+        
+On Error GoTo Err_rollback_add_log
+        addImportLog importLogs, reportId, "REPORT_ADDED", basGlobals.INFO_LOG, "Report imported successfully"
+
+On Error GoTo Err_rollback_commit
+      .CommitTrans
+      countImportReports = countImportReports + 1
+    End With
+    
+Exit_import_report:
+    On Error Resume Next
+    If Not destDb Is Nothing Then destDb.Close
+    Set rs = Nothing
+    Exit Sub
+Err_rollback_begin:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Report in DB. Begin transaction failed. Additions done for this report were rolled back. [" & err.number & "]" & err.Description & ""
+    GoTo Err_rollback
+Err_rollback_commit:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Report in DB. Commit transaction failed. Additions done for this report were rolled back. [" & err.number & "]" & err.Description & ""
+    GoTo Err_rollback
+Err_rollback_add_report:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Report in DB. Adding new report record failed. Additions done for this report were rolled back. [" & err.number & "]" & err.Description & ""
+    GoTo Err_rollback
+Err_rollback_update_isfinal:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Report in DB. Updating is_final flag failed. Additions done for this report were rolled back. [" & err.number & "]" & err.Description & ""
+    GoTo Err_rollback
+Err_rollback_insert_co_year:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Report in DB. Insert company_year record failed. Additions done for this report were rolled back. [" & err.number & "]" & err.Description & ""
+    GoTo Err_rollback
+Err_rollback_add_activities:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Report in DB. Add activities failed. Additions done for this report were rolled back. [" & err.number & "]" & err.Description & ""
+    GoTo Err_rollback
+Err_rollback_add_values:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Report in DB. Add values failed. Additions done for this report were rolled back. [" & err.number & "]" & err.Description & ""
+    GoTo Err_rollback
+Err_rollback_add_log:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Report in DB. Add log record failed. Additions done for this report were rolled back. [" & err.number & "]" & err.Description & ""
+    GoTo Err_rollback
+Err_rollback:
+    countErrorReports = countErrorReports + 1
+    wrk.rollback
+    GoTo Exit_import_report
+Err_import_report:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Report in DB: [" & err.number & "]" & err.Description
+    countErrorReports = countErrorReports + 1
+    'MsgBox "Error importing report: " & Err.Description, vbCritical
+    GoTo Exit_import_report
+Err_import_parse_src:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when reading Report data from source DB: [" & err.number & "]" & err.Description
+    countErrorReports = countErrorReports + 1
+    GoTo Exit_import_report
+Err_import_get_country:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when finding country ID from DB: [" & err.number & "]" & err.Description
+    countErrorReports = countErrorReports + 1
+    GoTo Exit_import_report
+Err_import_get_company:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when finding company ID from DB: [" & err.number & "]" & err.Description
+    countErrorReports = countErrorReports + 1
+    GoTo Exit_import_report
+Err_import_is_imported:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when checking if report is already imported to DB: [" & err.number & "]" & err.Description
+    countErrorReports = countErrorReports + 1
+    GoTo Exit_import_report
+Err_import_is_most_recent:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when checking if report is most recent in DB: [" & err.number & "]" & err.Description
+    countErrorReports = countErrorReports + 1
+    GoTo Exit_import_report
+Err_import_update_contacts:
+    addImportLog importLogs, reportId, "REPORT_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when updating company contacts: [" & err.number & "]" & err.Description
+    countErrorReports = countErrorReports + 1
+    GoTo Exit_import_report
+End Sub
+Private Sub importOdsReportValues(reportId As String, odsReportId As String, ByRef importLogs As Collection)
+    On Error GoTo Err_importOdsReportValues
+    
+    Dim srcRs As Recordset
+    Dim destRs As Recordset
+
+    Dim tableName As String
+    Dim substanceCode As String
+    Dim subjectName As String
+    Dim subjectOther As String
+    Dim customsProcText As String
+    Dim destTechCode As String
+    Dim otherDestTech As String
+    Dim val As Long
+    Dim comment As String
+    Dim containment As String
+    Dim company As String
+    Dim country As String
+    Dim companyAddress As String
+    Dim logValueId As String
+    
+    Dim odsSubstanceId As Integer
+    Dim odsSubjectId As Integer
+    Dim odsCustomsProcId As Integer
+    Dim odsDestTechId As Integer
+    Dim odsCountryId As Integer
+    Dim errNum As Long
+    Dim errDesc As String
+    Dim sql As String
+    Dim isVirgin As Boolean
+    
+    sql = "SELECT r.*, s.ods_id as ods_subject_id, c.ods_id as ods_customs_proc_id," & _
+        " d.ods_id as ods_dest_tech_id, template.id as substance_id, country.id as country_id FROM (((((data_report_values as r " & _
+        "LEFT JOIN sys_ods_subject_mapping as s on (r.table_name=s.table_t and r.subject = s.bdr_subject)) " & _
+        "LEFT JOIN sys_ods_customs_proc_mapping as c on (r.customs_procedure=c.bdr_customs_procedure)) " & _
+        "LEFT JOIN sys_ods_dest_tech_mapping as d on (r.destruction_technology_code=d.code)) " & _
+        "LEFT JOIN substance as subst on (r.substance = subst.name and r.is_virgin = subst.is_virgin)) " & _
+        "LEFT JOIN template_x_substance as template on (subst.id = template.substance_id and template.template_id=5)) " & _
+        "LEFT JOIN country as country on (r.country = country.country_code_alpha2) " & _
+        "WHERE report_id = " & StrLiteral(reportId) & " AND template.post_2014_reporting_year = TRUE"
+                
+    'add transaction values
+    Set srcRs = srcDb.OpenRecordset(sql, dbOpenSnapshot)
+    
+    If Not (IsNull(srcRs)) And srcRs.RecordCount > 0 Then
+        Do While Not srcRs.EOF
+            tableName = modCommonUtil.NullOrEmptyStr(srcRs("table_name"))
+            
+            substanceCode = modCommonUtil.NullOrEmptyStr(srcRs("substance"))
+            odsSubstanceId = modCommonUtil.getLong(srcRs("substance_id"))
+            isVirgin = srcRs("is_virgin")
+            
+            subjectName = modCommonUtil.NullOrEmptyStr(srcRs("subject"))
+            odsSubjectId = modCommonUtil.getLong(srcRs("ods_subject_id"))
+            subjectOther = modCommonUtil.NullOrEmptyStr(srcRs("subject_other")) 'also other comments
+            
+            odsCustomsProcId = modCommonUtil.getLong(srcRs("ods_customs_proc_id"))
+            customsProcText = modCommonUtil.NullOrEmptyStr(srcRs("customs_procedure"))
+            
+            destTechCode = modCommonUtil.NullOrEmptyStr(srcRs("destruction_technology_code"))
+            otherDestTech = modCommonUtil.NullOrEmptyStr(srcRs("destruction_technology"))
+            odsDestTechId = modCommonUtil.getLong(srcRs("ods_dest_tech_id"))
+            
+            odsCountryId = modCommonUtil.getLong(srcRs("country_id"))
+            country = modCommonUtil.NullOrEmptyStr(srcRs("country"))
+            company = modCommonUtil.NullOrEmptyStr(srcRs("company"))
+            companyAddress = modCommonUtil.NullOrEmptyStr(srcRs("company_address"))
+            
+            val = modCommonUtil.getLong(srcRs("value"))
+            comment = modCommonUtil.NullOrEmptyStr(srcRs("comment"))
+            containment = modCommonUtil.NullOrEmptyStr(srcRs("containment"))
+            
+            'ignore zero values and no comments
+            'TODO Fix this. Zero values are not empty values.
+            If (val = Empty And comment = Empty) Then
+                GoTo Loop_next
+            End If
+            
+            If (odsSubjectId = Empty And Len(subjectName) > 0) Then
+                On Error GoTo Err_missing_data
+                err.Raise vbObjectError + 513, "modOdsImport::importOdsReportValues", "Error when trying to create new Value record in DB: Subject ID is null for subject = '" & subjectName & "' in table '" & tableName & "'"
+                GoTo Err_importOdsReportValues
+            End If
+                       
+            If (odsCustomsProcId = Empty And Len(customsProcText) > 0) Then
+                On Error GoTo Err_missing_data
+                err.Raise vbObjectError + 513, , "Error when trying to create new Value record in DB: Customs procedure ID is null for '" & customsProcText & "' in table '" & tableName & "'"
+                GoTo Err_importOdsReportValues
+            End If
+            
+            If (odsDestTechId = Empty And Len(otherDestTech) > 0) Then
+                On Error GoTo Err_missing_data
+                err.Raise vbObjectError + 513, , "Error when trying to create new Value record in DB: Destruction technology ID is null for '" & otherDestTech & "' in table '" & tableName & "'"
+                GoTo Err_importOdsReportValues
+            End If
+            
+            If (odsCountryId = Empty And Len(country) > 0) Then
+                On Error GoTo Err_missing_data
+                err.Raise vbObjectError + 513, , "Error when trying to create new Value record in DB: Country ID is null for '" & country & "' in table '" & tableName & "'"
+                GoTo Err_importOdsReportValues
+            End If
+            
+            If (odsSubstanceId = Empty) Then
+                On Error GoTo Err_missing_data
+                err.Raise vbObjectError + 513, , "Error when trying to create new Value record in DB: Substance ID is null for '" & substanceCode & IIf(isVirgin = True, "(Virgin)", "(Non Virgin)") & "' in table '" & tableName & "'"
+                GoTo Err_importOdsReportValues
+            End If
+            
+            Set destRs = destDb.OpenRecordset("value", dbOpenDynaset)
+            With destRs
+                .AddNew
+                !reporter_id = odsReportId
+                !subject_id = IIf(odsSubjectId = 0, Null, odsSubjectId)
+                !template_x_substance_id = IIf(odsSubstanceId = 0, Null, odsSubstanceId)
+                '!company_id
+                !country_id = IIf(odsCountryId = 0, Null, odsCountryId)
+                !customs_procedure_id = IIf(odsCustomsProcId = 0, Null, odsCustomsProcId)
+                !destruction_technology_id = IIf(odsDestTechId = 0, Null, odsDestTechId)
+                !Value = val
+                
+                If (Right(subjectName, 5) = "other") Then
+                    !value_comment = modCommonUtil.NullStr(subjectOther)
+                ElseIf (destTechCode = "other") Then
+                    !value_comment = modCommonUtil.NullStr(otherDestTech)
+                ElseIf subjectName = "comments" Then
+                    !value_comment = modCommonUtil.NullStr(comment) ' stocks
+                Else
+                    !value_comment = modCommonUtil.NullStr(comment) ' stocks
+                End If
+                
+                !value_company_other = modCommonUtil.NullStr(company) & " " & modCommonUtil.NullStr(companyAddress)
+                !value_containment = modCommonUtil.NullStr(containment)
+                'TODO Remove this deprecated code if decided that it will no longer be necessary.
+                'If (odsSubstanceId = Empty) Then
+                '    !value_substance_other = modCommonUtil.NullStr(substanceCode)
+                '    !template_x_substance_id = 236 'other
+                'End If
+                .update
+                .Close
+            End With
+Loop_next:
+            srcRs.MoveNext
+        Loop
+    End If
+
+exit_function:
+    On Error Resume Next
+    If Not srcRs Is Nothing Then srcRs.Close
+    If Not destRs Is Nothing Then destRs.Close
+    Set srcRs = Nothing
+    Set destRs = Nothing
+    If Not err Is Nothing Then err.Raise err.number, err.source, err.Description
+    Exit Sub
+Err_importOdsReportValues:
+    errNum = err.number
+    errDesc = err.Description
+    
+    logValueId = getLogValueId(tableName, substanceCode, subjectName, val, otherDestTech, customsProcText, company)
+    addImportLog importLogs, reportId, "VALUE_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Value record in DB: [" & errNum & "]" & errDesc, logValueId
+    MsgBox "Error importing value record: " & errDesc, vbCritical
+    GoTo exit_function
+Err_missing_data:
+    errNum = err.number
+    errDesc = err.Description
+    
+    logValueId = getLogValueId(tableName, substanceCode, subjectName, val, otherDestTech, customsProcText, company)
+    addImportLog importLogs, reportId, "VALUE_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new Value record in DB: [" & errNum & "]" & errDesc, logValueId
+    MsgBox "Error importing value record: " & errDesc, vbCritical
+    GoTo exit_function
+End Sub
+
+Private Function getLogValueId(tableName As String, substanceCode As String, subjectName As String, _
+    val As Long, otherDestTech As String, customsProcText As String, company As String) As String
+On Error GoTo err_getLogValueId
+    Dim logValueId As String
+    
+    logValueId = ""
+    If (Not modCommonUtil.IsNullOrEmpty(tableName)) Then
+        logValueId = logValueId & "tableName=" & modCommonUtil.NullStr(tableName) & "; "
+    End If
+    If (Not modCommonUtil.IsNullOrEmpty(substanceCode)) Then
+        logValueId = logValueId & "substanceCode=" & modCommonUtil.NullStr(substanceCode) & "; "
+    End If
+    If (Not modCommonUtil.IsNullOrEmpty(subjectName)) Then
+        logValueId = logValueId & "subjectName=" & modCommonUtil.NullStr(subjectName) & "; "
+    End If
+    If (Not modCommonUtil.IsNullOrEmpty(val)) Then
+        logValueId = logValueId & "value=" & modCommonUtil.NullStr(val) & "; "
+    End If
+    If (Not modCommonUtil.IsNullOrEmpty(otherDestTech)) Then
+        logValueId = logValueId & "destructionTechnology=" & modCommonUtil.NullStr(otherDestTech) & "; "
+    End If
+    If (Not modCommonUtil.IsNullOrEmpty(customsProcText)) Then
+        logValueId = logValueId & "customsProcedure=" & modCommonUtil.NullStr(customsProcText) & "; "
+    End If
+    If (Not modCommonUtil.IsNullOrEmpty(company)) Then
+        logValueId = logValueId & "company=" & modCommonUtil.NullStr(company) & "; "
+    End If
+    
+    
+    getLogValueId = logValueId
+    
+exit_function:
+    Exit Function
+err_getLogValueId:
+    getLogValueId = "UNKNOWN"
+    MsgBox "Error building log id: " & err.Description, vbCritical
+    GoTo exit_function
+
+End Function
+
+Private Function getOdsCountryId(countryCode As String) As Integer
+    On Error GoTo err_getOdsCountryId
+    Dim odsCountryId As Integer
+    Dim rs As Recordset
+    
+    'If LCase(countryCode) = "gb" Then
+    '    countryCode = "uk"
+    'ElseIf LCase(countryCode) = "gr" Then
+    '    countryCode = "el"
+    'End If
+    
+    Set rs = destDb.OpenRecordset("SELECT id FROM country where country_code_alpha2=" & StrLiteral(UCase(countryCode)), dbOpenSnapshot)
+    If rs.RecordCount > 0 Then
+        rs.MoveFirst
+        odsCountryId = rs(0)
+    End If
+    
+    getOdsCountryId = odsCountryId
+
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Function
+err_getOdsCountryId:
+    getOdsCountryId = 0
+    MsgBox "Error reading country: " & err.Description, vbCritical
+    GoTo exit_function
+    
+End Function
+
+Private Function getOdsCompanyId(companyId As String, odsCountryId As Integer, reportId As String, companyName As String, ByRef importLogs As Collection) As Integer
+    On Error GoTo err_getOdsCompanyId
+    Dim odsCompanyId As Integer
+    Dim rs As Recordset
+
+    Set rs = destDb.OpenRecordset("SELECT id FROM company where bdr_company_id=" & StrLiteral(companyId), dbOpenSnapshot)
+    If rs.RecordCount <= 0 Then
+        
+        Set rs = destDb.OpenRecordset("company", dbOpenDynaset)
+        With rs
+            .AddNew
+            !bdr_company_id = companyId
+            !country_id = odsCountryId
+            !name = companyName
+            .update
+            .MoveLast
+            odsCompanyId = .fields("id")
+        End With
+        countNewCompanies = countNewCompanies + 1
+        addImportLog importLogs, reportId, "NEW_COMPANY_ADDED", basGlobals.INFO_LOG, "Inserted a new company into DB. Copmany ID = " & odsCompanyId & "; Company_No = " & companyId
+    Else
+        rs.MoveFirst
+        odsCompanyId = rs(0)
+    End If
+    
+    getOdsCompanyId = odsCompanyId
+
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Function
+err_getOdsCompanyId:
+    getOdsCompanyId = 0
+    addImportLog importLogs, reportId, "NEW_COMPANY_FAILED", basGlobals.ERROR_LOG, "Failed to add new company into DB. companyId = " & companyId
+    MsgBox "Error reading company: " & err.Description, vbCritical
+    GoTo exit_function
+End Function
+
+Private Function isMostRecentReport(companyId As Integer, transactionYear As Integer, releaseTime As Date) As Boolean
+    On Error GoTo err_isMostRecentReport
+    Dim rs As Recordset
+
+    Set rs = destDb.OpenRecordset("SELECT count(*) FROM reporter where company_id=" & companyId & " AND " & _
+        "year_reported = " & transactionYear & " AND CDate(Nz(bdr_date_delivered, 0)) >= CDate('" & releaseTime & "')", dbOpenSnapshot)
+    rs.MoveFirst
+    
+    If rs(0) > 0 Then
+        isMostRecentReport = False
+    Else
+        isMostRecentReport = True
+    End If
+
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Function
+err_isMostRecentReport:
+    isMostRecentReport = False
+    MsgBox "Error reading most recent report: " & err.Description, vbCritical
+    GoTo exit_function
+End Function
+
+Private Function isReportImported(companyId As Integer, transactionYear As Integer, releaseTime As Date) As Boolean
+    On Error GoTo err_isReportImported
+    Dim rs As Recordset
+
+    Set rs = destDb.OpenRecordset("SELECT count(*) FROM reporter where company_id=" & companyId & " AND " & _
+        "year_reported = " & transactionYear & " AND CDate(Nz(bdr_date_delivered, 0)) = CDate('" & releaseTime & "')", dbOpenSnapshot)
+    rs.MoveFirst
+    
+    If rs(0) > 0 Then
+        isReportImported = True
+    Else
+        isReportImported = False
+    End If
+
+exit_function:
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Function
+err_isReportImported:
+    isReportImported = False
+    MsgBox "Error reading report already imported data: " & err.Description, vbCritical
+    GoTo exit_function
+End Function
+
+Private Function addActivities(odsReportId As String, isProducer As Boolean, isImporter As Boolean, isExporter As Boolean, _
+    isDest As Boolean, isPau As Boolean, isFdst As Boolean, reportId As String, ByRef importLogs As Collection)
+    On Error GoTo err_addActivities
+    
+    Dim activities As String
+    
+    Dim sql As String
+    
+    activities = ""
+    If isProducer Then
+        activities = activities & "'Production',"
+    End If
+    If isImporter Then
+        activities = activities & "'Import',"
+    End If
+    If isExporter Then
+        activities = activities & "'Export',"
+    End If
+    If isDest Then
+        activities = activities & "'Destruction',"
+    End If
+    If isPau Then
+        activities = activities & "'Process agent use',"
+    End If
+    If isFdst Then
+        activities = activities & "'Feedstock use',"
+    End If
+    
+    If Len(activities) > 0 Then
+        activities = Mid(activities, 1, Len(activities) - 1)
+        sql = "INSERT INTO reporter_x_activity (reporter_id, activity_id) SELECT  " & odsReportId & _
+            ", id FROM activity WHERE name IN (" & activities & ")"
+        destDb.Execute sql
+    Else
+        addImportLog importLogs, reportId, "ACTIVITY_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new reporter_x_activity records in DB. No activites found for this report and this is not NIL report."
+    End If
+exit_function:
+    Exit Function
+err_addActivities:
+    addImportLog importLogs, reportId, "ACTIVITY_IMPORT_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new reporter_x_activity records in DB: [" & err.number & "]" & err.Description
+    MsgBox "Error inserting activities: " & err.Description, vbCritical
+    GoTo exit_function
+    
+End Function
+
+Private Sub updateContacts(reportId As String, odsCompanyId As Integer)
+On Error GoTo err_updateContacts
+    Dim rs As Recordset
+    Dim rsDest As Recordset
+    
+    destDb.Execute "DELETE * FROM company_contacts where company_id=" & odsCompanyId
+
+    Set rs = srcDb.OpenRecordset("SELECT * from data_company_contacts WHERE report_id=" & StrLiteral(reportId), dbOpenSnapshot)
+    rs.MoveFirst
+    
+    If rs.RecordCount > 0 Then
+        Do While Not rs.EOF
+        Set rsDest = destDb.OpenRecordset("company_contacts", dbOpenDynaset)
+        With rsDest
+            .AddNew
+            !Company_ID = odsCompanyId
+            !telephone = rs("telephone")
+            !fax = rs("faxnumber")
+            !e_mail = rs("email")
+            !contact_person = rs("contact_person")
+            .update
+            .Close
+        End With
+        rs.MoveNext
+        Loop
+    End If
+
+exit_function:
+    On Error Resume Next
+    If Not rs Is Nothing Then rs.Close
+    Set rsDest = Nothing
+    Set rs = Nothing
+    Exit Sub
+err_updateContacts:
+    MsgBox "Error updating company contacts: " & err.Description, vbCritical
+    GoTo exit_function
+
+End Sub
+
+Public Function importOdsHelperData(destDbName As String)
+    On Error GoTo err_importOdsHelperData
+    Dim tdf As TableDef
+    
+'    On Error Resume Next
+'    CurrentDb.Execute " DROP TABLE template_x_substance", dbFailOnError
+'    On Error GoTo err
+    
+'    DoCmd.TransferDatabase acImport, "Microsoft Access", destDbName, acTable, "template_x_substance", "ods_substance", False
+    
+    
+exit_function:
+    Exit Function
+err_importOdsHelperData:
+    MsgBox "Error copying transactions and gases tables: " & err.Description, vbCritical
+    GoTo exit_function
+End Function

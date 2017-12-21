@@ -1,0 +1,25 @@
+'This module is used to create global connections to databases. This should help with performance issues.
+Option Compare Database
+Option Explicit
+
+Public GsrcDb As DAO.database
+Public Gwrk As DAO.Workspace
+Public GdestDb As DAO.database
+
+' Databases constructor
+Public Sub init(srcDbName As String, destDbName As String)
+    Set Gwrk = DBEngine.Workspaces(0)
+    Set GsrcDb = Gwrk.OpenDatabase(srcDbName)
+    Set GdestDb = Gwrk.OpenDatabase(destDbName)
+End Sub
+
+' Databases destructor
+Public Sub destroy()
+    On Error Resume Next
+    If Not GsrcDb Is Nothing Then GsrcDb.Close
+    If Not Gwrk Is Nothing Then Gwrk.Close
+    If Not GdestDb Is Nothing Then GdestDb.Close
+    Set GsrcDb = Nothing
+    Set Gwrk = Nothing
+    Set GdestDb = Nothing
+End Sub

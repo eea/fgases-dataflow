@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FGasesReporting>
+    <GeneralReportData>
+        <Activities>
+            <D>true</D>
+        </Activities>
+    </GeneralReportData>
+    <F1_S1_4_ProdImpExp>
+        <Gas>
+            <GasCode>3</GasCode>
+            <tr_01B>
+                <Code>01B</Code>
+                <Amount>500</Amount>
+            </tr_01B>
+        </Gas>
+        <Gas>
+            <GasCode>4</GasCode>
+            <tr_01B>
+                <Code>01B</Code>
+                <Amount>600</Amount>
+            </tr_01B>
+        </Gas>
+    </F1_S1_4_ProdImpExp>
+</FGasesReporting>

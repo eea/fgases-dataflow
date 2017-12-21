@@ -1,0 +1,184 @@
+<!-- html subform [ng-form="Sheet4"] -->
+<div name="Sheet4Section9">
+    <h2><span translate="sheet4.section9-heading"></span></h2>
+    <table class="table table-hover table-bordered fixed-table">
+        <colgroup>
+            <col class="fixed-width-gas-transaction-sheet4"/>
+            <col class="fixed-width-gas-amount"/>
+        </colgroup>
+        <tr>
+            <th><span translate="common.sheet-transactions-header"></span></th>
+            <th>
+                <span translate="sheet4.amount-of-hfcs"></span>
+            </th>
+        </tr>
+        <tr>
+            <th></th>
+            <th align="center">
+                <div align="center"><span translate="common.unit-co2eq"></span></div>
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <div id="tr_09A">
+                    <span class="transaction-code">9A : </span>
+                    <span class="glyphicon glyphicon-info-sign row-tooltip" tooltip-placement="right" tooltip="{{'sheet4.tr-09a-tooltip' | translate}}"></span>
+                    <span translate="sheet4.tr-09a-desc"></span>
+                </div>
+                <div><span translate="sheet4.tr-09a-add-trading-partner-tooltip"></span></div>
+                <div>
+                    <button ng-controller="ModalController" tooltip="{{'sheet4.tr-09a-add-trading-partner-tooltip' | translate}}"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBackForNonGasForm,
+                            {'title': 'sheet4.tr-09a-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09A_TradePartners.Partner,
+                            'emptyInstancePath': 'FGasesReporting.F4_S9_IssuedAuthQuata.tr_09A.TradePartner',
+                            'baseElement': instance.FGasesReporting.F4_S9_IssuedAuthQuata,
+                            'fieldName': 'tr_09A'});"
+                            class="btn btn-primary btn-sm"
+                            ng-disabled="instance.FGasesReporting.GeneralReportData.TransactionYear < 2015">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                            <span translate="sheet4.tr-09a-add-trading-partner"/>
+                    </button>
+                </div>
+            </td>
+            <td align="center">
+                {{instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09A.SumOfPartnerAmounts}}
+            </td>
+        </tr>
+        <tr ng-repeat="tradingPartner in instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09A_TradePartners.Partner" ng-init="partnerIndex = $index">
+            <td align="right">
+                <strong>{{tradingPartner.CompanyName}}</strong>
+                <!--<hr style="margin: 0.25em">-->
+                <div>
+                    <small ng-if="tradingPartner.isEUBased">{{tradingPartner.EUVAT}}</small>
+                    <small ng-if="!tradingPartner.isEUBased">
+                        <span translate="common.trading-partner-country"></span>
+                        <span>: {{tradingPartner.NonEUCountryOfEstablishment}} - </span>
+                        <span translate="common.trading-partner-representative-name"></span>
+                        <span>: {{tradingPartner.NonEURepresentativeName}}</span>
+                    </small>
+                </div>
+                <div>
+                    <button ng-controller="ModalController" type="button" class="btn btn-primary btn-xs" style="margin-left: 1em;"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBackForNonGasForm,
+                            {'title': 'sheet4.tr-09a-trading-partner-modal-title',
+                            'arrayToPush': instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09A_TradePartners.Partner,
+                            'index': $index,
+                            'nonEuCountries': codeList.FGasesCodelists.countries.concepts,
+                            'baseElement': instance.FGasesReporting.F4_S9_IssuedAuthQuata,
+                            'fieldName': 'tr_09A'});" >
+                        <span translate="common.edit"/>
+                    </button>
+                    <button type="button" class="btn btn-xs" style="margin-left: 1em;"
+                            ng-click="removeTradingPartner('F4_S9_IssuedAuthQuata', 'tr_09A_TradePartners', partnerIndex, 'tr_09A');">
+                        <span translate="common.remove"/>
+                    </button>
+                </div>
+            </td>
+            <td align="center">
+                <input gas-input integer="true" ng-model="instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09A.TradePartner[$parent.$parent.$index].amount"
+                       ng-if="instance.FGasesReporting.GeneralReportData.Activities['Auth']"
+                       ng-change="calculateTradingPartnerTotalAmount(instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09A);
+                                  calculate9ADependingFields();"/>
+                <div ng-if="!instance.FGasesReporting.GeneralReportData.Activities['Auth']">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span tooltip="{{'common.auth-should-be-selected' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="transaction-code">9B : </span>
+                <span translate="sheet4.tr-09b-desc"></span>
+                <div><span class="formula" translate="sheet4.tr-09b-formula"></span></div>
+            </td>
+            <td align="center">
+                {{instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09B.Amount}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="transaction-code">9C : </span>
+                <span translate="sheet4.tr-09c-desc"></span>
+                <div><span class="formula" translate="sheet4.tr-09c-formula"></span></div>
+            </td>
+            <td align="center">
+                {{instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09C.Amount}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="transaction-code">9D : </span>
+                <span translate="sheet4.tr-09d-desc"></span>
+                <div><span class="formula" translate="sheet4.tr-09d-formula"></span></div>
+            </td>
+            <td align="center">
+                {{instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09D.Amount}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="transaction-code">9E : </span>
+                <span translate="sheet4.tr-09e-desc"></span>
+                <div><span class="formula" translate="sheet4.tr-09e-formula"></span></div>
+            </td>
+            <td align="center">
+                {{instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09E.Amount}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="transaction-code">9F : </span>
+                <span class="glyphicon glyphicon-info-sign row-tooltip" tooltip-placement="right" tooltip="{{'sheet4.tr-09f-tooltip' | translate}}" ng-if="instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09F.Amount <= 100"></span>
+                <span translate="sheet4.tr-09f-desc"></span>
+                <div><span class="formula" translate="sheet4.tr-09f-formula"></span></div>
+            </td>
+            <td align="center">
+                <span>{{instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09F.Amount}}</span>
+                <div ng-if="instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09F.Amount <= 100">
+                    <span tooltip="{{'sheet4.tr-09f-warning-tooltip' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div ng-show="isTr_09COver10000()"> <!-- div for check box -->
+        <div>
+            <input type="checkbox" id="sheet4ChkVerified" ng-model="instance.FGasesReporting.F4_S9_IssuedAuthQuata.Verified"
+                   ng-required="isTr_09COver10000()"
+                   ng-disabled="!isTr_09COver10000()"/>
+            <label for="sheet4ChkVerified" style="padding-left: 1em; font-weight: bold; display:inline" translate="sheet4.verified-desc"></label>
+        </div>
+
+        <h2><span translate="sheet4.documents"></span></h2>
+        <p translate="sheet4.upload-document-text1"></p>
+        <p translate="sheet4.upload-document-text2"></p>
+        <ul ng-if="instance.FGasesReporting.F4_S9_IssuedAuthQuata.SupportingDocuments.Document.length > 0">
+            <li ng-repeat="document in instance.FGasesReporting.F4_S9_IssuedAuthQuata.SupportingDocuments.Document" class="document">
+                <a href="{{document.Url}}" target="_blank">{{document.Url}}</a>
+                <button type="button" class="btn btn-xs" style="margin-left: 1em;"
+                    ng-click="removeDocument(instance.FGasesReporting.F4_S9_IssuedAuthQuata.SupportingDocuments.Document, $index, document);">
+                    <span translate="common.remove"/>
+                </button>
+            </li>
+        </ul>
+        <p ng-if="instance.FGasesReporting.F4_S9_IssuedAuthQuata.SupportingDocuments.Document.length == 0" translate="common.no-documents"></p>
+        <br/>
+        <br/>
+        <div>
+            <strong><span translate="sheet4.upload-document">Upload new supporting document </span></strong>
+            <input type="file" nv-file-select="uploadFile('FGasesReporting.F4_S9_IssuedAuthQuata.SupportingDocuments.Document')" uploader="uploader" ng-init="configureUploader" style="display:inline; margin-left:5px;"
+                   ng-disabled="!isTr_09COver10000()"/>
+            <button type="button" class="btn btn-success btn-xs" ng-click="uploadFile('FGasesReporting.F4_S9_IssuedAuthQuata.SupportingDocuments.Document')" ng-if="uploader.queue.length == 1">
+                <span class="glyphicon glyphicon-upload"></span> Upload
+            </button>
+            <div class="progress" ng-if="uploader.queue.length == 1" ng-show="uploader.isHTML5">
+                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.queue.progress + '%' }"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div> <!-- end of div name="Sheet4Section9" -->
+
+<!-- end of html subform [ng-form="Sheet4"] -->

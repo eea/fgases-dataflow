@@ -1,0 +1,77 @@
+{
+    "registryData": {
+        "stocks": {
+            "stock": [
+                {
+                    "transactionCode": "4F",
+                    "gasId": "1",
+                    "gasName": "SF6",
+                    "amount": "8"
+                },
+                {
+                    "transactionCode": "4G",
+                    "gasId": "1",
+                    "gasName": "SF6",
+                    "amount": "9"
+                },
+                {
+                    "transactionCode": "4H",
+                    "gasId": "1",
+                    "gasName": "SF6",
+                    "amount": "10"
+                },
+                {
+                    "transactionCode": "4F",
+                    "gasId": "2",
+                    "gasName": "HFC-23 (trifluoromethane, fluoroform)",
+                    "amount": "14"
+                },
+                {
+                    "transactionCode": "4G",
+                    "gasId": "2",
+                    "gasName": "HFC-23 (trifluoromethane, fluoroform)",
+                    "amount": "14"
+                },
+                {
+                    "transactionCode": "4G",
+                    "gasId": "7",
+                    "gasName": "HFC-134a (1,1,1,2-tetrafluoroethane)",
+                    "amount": "50"
+                }
+            ]
+        },
+        "quota": {
+            "quota9A_imp": [
+                {
+                    "tradePartner": {
+                        "CompanyName": "eu1",
+                        "EUVAT": "eu-1"
+                    },
+                    "amount": 40000
+                }, {
+                    "tradePartner": {
+                        "CompanyName": "eu2",
+                        "EUVAT": "eu-2"
+                    },
+                    "amount": 25000
+                }, {
+                    "tradePartner": {
+                        "CompanyName": "non_eu1",
+                        "NonEUCountryOfEstablishment": "United States",
+                        "NonEUCountryCodeOfEstablishment": "US",
+                        "NonEUDgClimaRegCode": "12345",
+                        "NonEURepresentativeName": "eu17",
+                        "NonEURepresentativeVAT": "eu-17"
+                    },
+                    "amount": 10000
+                }
+            ],
+            "allocatedQuota": 75000,
+            "allocatedQuotaDate": "2016-12-30",
+            "availableQuota": 100000,
+            "availableQuotaDate": "2016-12-30"
+        },
+        "large": false,
+        "ner": true
+    }
+}

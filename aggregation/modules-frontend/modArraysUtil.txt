@@ -1,0 +1,25 @@
+Option Compare Database
+Option Explicit
+
+'Convert collection to array of long values
+Function collectionToArrayLong(c As Collection) As Long()
+    Dim a() As Long
+    ReDim a(0 To c.count - 1)
+    Dim i As Integer
+    For i = 1 To c.count
+        a(i - 1) = c.Item(i)
+    Next
+    collectionToArrayLong = a
+End Function
+
+'Checks if array of long numbers contains a value
+'Returns true if found, false if not
+Function containsLong(x As Long, a() As Long) As Boolean
+    Dim i As Long
+    For i = 0 To UBound(a)
+        If a(i) = x Then
+            containsLong = True
+            Exit For
+        End If
+    Next
+End Function

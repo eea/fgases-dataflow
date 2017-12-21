@@ -1,0 +1,40 @@
+Option Compare Database
+Option Explicit
+
+'Clear all rows from tbl_report_drafts. This is ok since we re-harvest all envelopes data with every re-harvest.
+Public Sub clearDraftEnvelopes(ByRef importLogs As Collection)
+    On Error GoTo catch
+    Dim error As Boolean
+    Dim cdb As DAO.database
+    Dim rs As DAO.Recordset
+    Dim year As Integer
+    Dim sql As String
+    Dim wrk As DAO.Workspace
+    
+    Set cdb = currentDb
+    Set wrk = DBEngine.Workspaces(0)
+    wrk.BeginTrans
+    
+    Set rs = cdb.OpenRecordset("SELECT reporting_year FROM sys_deadline;")
+    If Not rs.EOF Then
+        year = CInt(rs("reporting_year")) + 1
+    End If
+    GdestDb.Execute "DELETE * FROM tbl_report_drafts WHERE Year(draft_date) = " & year, dbFailOnError
+    wrk.CommitTrans
+    addImportLog importLogs, "-", "DRAFT_ENVELOPE_CLEAR", basGlobals.INFO_LOG, "Cleared draft envelopes table from destination database"
+finally:
+    On Error Resume Next
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Set wrk = Nothing
+    On Error GoTo 0
+    If error = True Then
+        err.Raise vbObjectError + 513, , "Error while re-creating draft envelopes table in destination database"
+    End If
+    Exit Sub
+catch:
+    wrk.rollback
+    error = True
+    addImportLog importLogs, "-", "DRAFT_ENVELOPE_CLEAR", basGlobals.ERROR_LOG, "Error while re-creating draft envelopes table in destination database"
+    Resume finally
+End Sub

@@ -1,0 +1,2173 @@
+<!--<h2 ng-show="validationMessages['form7'].length > 0 && instance.FGasesReporting.F7_s11EquImportTable.transactionsConfirmed"><span data-translate="form7.header_validation_errors"></span></h2>
+
+<div class="alert ng-isolate-scope alert-danger alert-dismissable" type="danger" ng-show="validationMessages['form7'].length > 0 && instance.FGasesReporting.F7_s11EquImportTable.transactionsConfirmed">
+    <div><span data-translate="submission.validation_failed"></span></div>
+</div>
+
+<table  ng-show="validationMessages['form7'].length > 0 && instance.FGasesReporting.F7_s11EquImportTable.transactionsConfirmed" class="table table-hover table-bordered" style="width: 1000px;">
+    <tr>
+        <th style="width: 100px;"><span data-translate="form7.validation_category"/></th>
+        <th style="width: 900px;"><span data-translate="form7.validation_violation"/></th>
+    </tr>
+
+
+    <tr ng-repeat="error in validationMessages['form7']">
+        <td><span data-translate="form7.{{ error.transactionLabel }}.code"></span></td><td><span data-translate="validation_messages.qc_{{ error.qccode }}.error_text"></span>&nbsp;({{ error.qccode }})</td>
+    </tr>
+
+</table>-->
+
+
+<h2><span data-translate="form7.header"></span></h2>
+<div>
+    <p><strong data-translate="form7.section11-info1"></strong></p>
+    <p><strong data-translate="form7.section11-info2"></strong></p>
+    <p><strong data-translate="form7.section11-info3"></strong></p>
+    <p><span data-translate="form7.section11-info4"></span></p>
+    <p><span data-translate="form7.section11-info5"></span></p>
+    <p><span data-translate="form7.section11-info6"></span></p>
+    <p><span data-translate="form7.section11-info7"></span></p>
+    <p><span data-translate="form7.section11-info8"></span></p>
+    <p data-translate="form7.intro"></p>
+</div>
+<h3 ng-show="!instance.FGasesReporting.F7_s11EquImportTable.transactionsConfirmed"><span data-translate="form7.header_step1"></span></h3>
+<h3 ng-show="instance.FGasesReporting.F7_s11EquImportTable.transactionsConfirmed"><span data-translate="form7.header_step2"></span></h3>
+
+<table class="table table-bordered" style="width: 1000px;" ng-show="!instance.FGasesReporting.F7_s11EquImportTable.transactionsConfirmed">
+
+
+    <tr>
+        <th style="width: 50px;"><span data-translate="form7.tr_11a.code"/></th>
+        <th style="width: 225px;"><span data-translate="form7.tr_11a.parameter"/></th>
+        <th style="width: 225px;"><span data-translate="form7.hierarchy_label.design_type"/></th><th style="width: 225px;"><span data-translate="form7.hierarchy_label.unit_type"/></th><td style="width: 225px;">&nbsp;</td><td style="width: 80px;">&nbsp;</td>
+    </tr>
+
+
+
+
+
+
+    <tr><td><span data-translate="form7.tr_11a1.code"/></td><td rowspan="14">&nbsp;</td><td rowspan="6"><span data-translate="form7.hierarchy_label.direct"/></td><td rowspan="3"><span data-translate="form7.hierarchy_label.standalone_monoblock_units"/></td><td><span data-translate="form7.hierarchy_label.moveable"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11A01');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A01"></td></tr>
+    <tr><td><span data-translate="form7.tr_11a2.code"/></td><!--<td>&nbsp;</td><td>direct</td><td>Standalone/monobloc units</td>--><td><span data-translate="form7.hierarchy_label.rooftop"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11A02');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A02"></td></tr>
+    <tr><td><span data-translate="form7.tr_11a3.code"/></td><!--<td>&nbsp;</td><td>direct</td><td>Standalone/monobloc units</td>--><td><span data-translate="form7.hierarchy_label.other"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11A03');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A03"></td></tr>
+    <tr><td><span data-translate="form7.tr_11a4.code"/></td><!--<td>&nbsp;</td><td>direct</td>--><td rowspan="2"><span data-translate="form7.hierarchy_label.single_split_units"/></td><td><span data-translate="form7.hierarchy_label.charged_3kg_or_more_refrigerant"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11A04');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A04"></td></tr>
+    <tr><td><span data-translate="form7.tr_11a5.code"/></td><!--<td>&nbsp;</td><td>direct</td><td>single split units</td>--><td><span data-translate="form7.hierarchy_label.charged_less_than_3kg_refrigerant"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11A05');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A05"></td></tr>
+    <tr><td><span data-translate="form7.tr_11a6.code"/></td><!--<td>&nbsp;</td><td>direct</td>--><td colspan="2"><span data-translate="form7.hierarchy_label.multi_split_units"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11A06');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A06"></td></tr>
+    <tr><td><span data-translate="form7.tr_11a7.code"/></td><!--<td>&nbsp;</td>--><td rowspan="6"><span data-translate="form7.hierarchy_label.indirect"/></td><td rowspan="3"><span data-translate="form7.hierarchy_label.standalone_monoblock_units"/></td><td><span data-translate="form7.hierarchy_label.domestic_use"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11A07');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A07"></td></tr>
+    <tr><td><span data-translate="form7.tr_11a8.code"/></td><!--<td>&nbsp;</td><td>indirect</td><td>Standalone/monobloc units</td>--><td><span data-translate="form7.hierarchy_label.commercial_use"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11A08');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A08"></td></tr>
+    <tr><td><span data-translate="form7.tr_11a9.code"/></td><!--<td>&nbsp;</td><td>indirect</td><td>Standalone/monobloc units</td>--><td><span data-translate="form7.hierarchy_label.other_use"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11A09');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A09"></td></tr>
+    <tr><td><span data-translate="form7.tr_11a10.code"/></td><!--<td>&nbsp;</td><td>indirect</td>--><td rowspan="3"><span data-translate="form7.hierarchy_label.split_units"/></td><td><span data-translate="form7.hierarchy_label.domestic_use"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11A10');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A10"></td></tr>
+    <tr><td><span data-translate="form7.tr_11a11.code"/></td><!--<td>&nbsp;</td><td>indirect</td><td>split units</td>--><td><span data-translate="form7.hierarchy_label.commercial_or_industrial_use"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11A11');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A11"></td></tr>
+    <tr><td><span data-translate="form7.tr_11a12.code"/></td><!--<td>&nbsp;</td><td>indirect</td><td>split units</td>--><td><span data-translate="form7.hierarchy_label.other_use"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11A12');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A12"></td></tr>
+    <tr><td><span data-translate="form7.tr_11a13.code"/></td><!--<td>&nbsp;</td>--><td rowspan="2"><span data-translate="form7.hierarchy_label.both_direct_and_indirect"/></td><td colspan="2"><span data-translate="form7.hierarchy_label.standalone_monoblock_units"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11A13');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A13"></td></tr>
+    <tr><td><span data-translate="form7.tr_11a14.code"/></td><!--<td>&nbsp;</td><td>both direct and indirect</td>--><td colspan="2"><span data-translate="form7.hierarchy_label.split_units"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11A14');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A14"></td></tr>
+
+
+
+
+
+
+    <tr>
+        <th><span data-translate="form7.tr_11b.code"/></th>
+        <th><span data-translate="form7.tr_11b.parameter"/></th>
+        <th><span data-translate="form7.hierarchy_label.design_type"/></th><th><span data-translate="form7.hierarchy_label.unit_type"/></th><td>&nbsp;</td><td>&nbsp;</td>
+    </tr>
+
+    <tr><td><span data-translate="form7.tr_11b1.code"/></td><td rowspan="11"><span data-translate="form7.hierarchy_label.stationary_equipment_for_refrigeration"/></td><td rowspan="5"><span data-translate="form7.hierarchy_label.direct"/></td><td rowspan="3"><span data-translate="form7.hierarchy_label.standalone_monoblock_units"/></td><td><span data-translate="form7.hierarchy_label.domestic_use"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11B01');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B01"></td></tr>
+    <tr><td><span data-translate="form7.tr_11b2.code"/></td><!--<td>2</td><td>direct</td><td>Standalone/monobloc units</td>--><td><span data-translate="form7.hierarchy_label.commercial_or_industrial_use"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11B02');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B02"></td></tr>
+    <tr><td><span data-translate="form7.tr_11b3.code"/></td><!--<td>2</td><td>direct</td><td>Standalone/monobloc units</td>--><td><span data-translate="form7.hierarchy_label.other_use"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11B03');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B03"></td></tr>
+    <tr><td><span data-translate="form7.tr_11b4.code"/></td><!--<td>2</td><td>direct</td>--><td rowspan="2"><span data-translate="form7.hierarchy_label.split_units"/></td><td><span data-translate="form7.hierarchy_label.commercial_or_industrial_use"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11B04');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B04"></td></tr>
+    <tr><td><span data-translate="form7.tr_11b5.code"/></td><!--<td>2</td><td>direct</td><td>split units</td>--><td><span data-translate="form7.hierarchy_label.other_use"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11B05');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B05"></td></tr>
+    <tr><td><span data-translate="form7.tr_11b6.code"/></td><!--<td>2</td>--><td rowspan="4"><span data-translate="form7.hierarchy_label.indirect"/></td><td rowspan="2"><span data-translate="form7.hierarchy_label.standalone_monoblock_units"/></td><td><span data-translate="form7.hierarchy_label.commercial_or_industrial_use"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11B06');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B06"></td></tr>
+    <tr><td><span data-translate="form7.tr_11b7.code"/></td><!--<td>2</td><td>indirect</td><td>Standalone/monobloc units</td>--><td><span data-translate="form7.hierarchy_label.other_use"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11B07');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B07"></td></tr>
+    <tr><td><span data-translate="form7.tr_11b8.code"/></td><!--<td>2</td><td>indirect</td>--><td rowspan="2"><span data-translate="form7.hierarchy_label.split_units"/></td><td><span data-translate="form7.hierarchy_label.commercial_or_industrial_use"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11B08');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B08"></td></tr>
+    <tr><td><span data-translate="form7.tr_11b9.code"/></td><!--<td>2</td><td>indirect</td><td>split units</td>--><td><span data-translate="form7.hierarchy_label.other_use"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11B09');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B09"></td></tr>
+    <tr><td><span data-translate="form7.tr_11b10.code"/></td><!--<td>2</td>--><td rowspan="2"><span data-translate="form7.hierarchy_label.both_direct_and_indirect"/></td><td colspan="2"><span data-translate="form7.hierarchy_label.standalone_monoblock_units"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11B10');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B10"></td></tr>
+    <tr><td><span data-translate="form7.tr_11b11.code"/></td><!--<td>2</td><td>both direct and indirect</td>--><td colspan="2"><span data-translate="form7.hierarchy_label.split_units"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11B11');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B11"></td></tr>
+    <tr><td><span data-translate="form7.tr_11b12.code"/></td><td rowspan="3"><span data-translate="form7.hierarchy_label.tr11b12_14"/></td><td colspan="3"><span data-translate="form7.hierarchy_label.direct"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11B12');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B12"></td></tr>
+    <tr><td><span data-translate="form7.tr_11b13.code"/></td><!--<td>2</td>--><td colspan="3"><span data-translate="form7.hierarchy_label.indirect"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11B13');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B13"></td></tr>
+    <tr><td><span data-translate="form7.tr_11b14.code"/></td><!--<td>2</td>--><td colspan="3"><span data-translate="form7.hierarchy_label.both_direct_and_indirect"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11B14');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B14"></td></tr>
+
+
+    <tr>
+        <th><span data-translate="form7.tr_11c.code"/></th>
+        <th colspan="4"><span data-translate="form7.tr_11c.parameter"/></th>
+        <td><input type="checkbox"  ng-change="form7CheckTransaction('tr_11C');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11C"></td>
+    </tr>
+
+
+
+
+    <tr>
+        <th><span data-translate="form7.tr_11d.code"/></th>
+        <th><span data-translate="form7.tr_11d.parameter"/></th>
+        <th><span data-translate="form7.hierarchy_label.design_type"/></th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+    </tr>
+
+
+    <tr><td><span data-translate="form7.tr_11d1.code"/></td><td rowspan="3">&nbsp;</td><td colspan="3"><span data-translate="form7.hierarchy_label.direct"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11D01');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11D01"></td></tr>
+    <tr><td><span data-translate="form7.tr_11d2.code"/></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.indirect"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11D02');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11D02"></td></tr>
+    <tr><td><span data-translate="form7.tr_11d3.code"/></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.both_direct_and_indirect"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11D03');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11D03"></td></tr>
+
+
+
+
+    <tr>
+        <th><span data-translate="form7.tr_11e.code"/></th>
+        <th><span data-translate="form7.tr_11e.parameter"/></th>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+    </tr>
+
+    <tr><td><span data-translate="form7.tr_11e1.code"></span></td><td rowspan="4">&nbsp;</td><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11e1"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11E01');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E01"></td></tr>
+    <tr><td><span data-translate="form7.tr_11e2.code"></span></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11e2"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11E02');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E02"></td></tr>
+    <tr><td><span data-translate="form7.tr_11e3.code"></span></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11e3"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11E03');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E03"></td></tr>
+    <tr><td><span data-translate="form7.tr_11e4.code"></span></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11e4"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11E04');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E04"></td></tr>
+
+
+    <tr>
+        <th><span data-translate="form7.tr_11f.code"/></th>
+        <th><span data-translate="form7.tr_11f.parameter"/></th>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+    </tr>
+
+
+
+    <tr><td><span data-translate="form7.tr_11f1.code"/></td><td rowspan="9">&nbsp;</td><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11f1"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11F01');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F01"></td></tr>
+    <tr><td><span data-translate="form7.tr_11f2.code"/></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11f2"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11F02');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F02"></td></tr>
+    <tr><td><span data-translate="form7.tr_11f3.code"/></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11f3"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11F03');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F03"></td></tr>
+    <tr><td><span data-translate="form7.tr_11f4.code"/></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11f4"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11F04');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F04"></td></tr>
+    <tr><td><span data-translate="form7.tr_11f5.code"/></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11f5"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11F05');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F05"></td></tr>
+    <tr><td><span data-translate="form7.tr_11f6.code"/></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11f6"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11F06');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F06"></td></tr>
+    <tr><td><span data-translate="form7.tr_11f7.code"/></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11f7"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11F07');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F07"></td></tr>
+    <tr><td><span data-translate="form7.tr_11f8.code"/></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11f8"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11F08');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F08"></td></tr>
+    <tr><td><span data-translate="form7.tr_11f9.code"/></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11f9"/></td><td><input type="checkbox" ng-change="form7CheckTransaction('tr_11F09');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F09"></td></tr>
+
+    <tr>
+        <th><span data-translate="form7.tr_11h.code"/></th>
+        <th><span data-translate="form7.tr_11h.parameter"/></th>
+        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+    </tr>
+
+    <tr><td><span data-translate="form7.tr_11h1.code"/></td><td rowspan="4">&nbsp;</td><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11h1"/></td><td>
+
+        <div ng-switch="instance.FGasesReporting.GeneralReportData.Activities['Eq-I-other']==true">
+            <input ng-switch-when="true" type="checkbox" ng-change="form7CheckTransaction('tr_11H01');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H01">
+            <div ng-switch-when="false">
+                <input type="checkbox" ng-disabled="true" ng-class="'disabled'"/>
+                <span data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+            </div>
+        </div>
+
+
+    </td></tr>
+    <tr><td><span data-translate="form7.tr_11h2.code"/></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11h2"/></td><td>
+
+        <div ng-switch="instance.FGasesReporting.GeneralReportData.Activities['Eq-I-other']==true">
+            <input ng-switch-when="true" type="checkbox" ng-change="form7CheckTransaction('tr_11H02');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H02">
+            <div ng-switch-when="false">
+                <input type="checkbox" ng-disabled="true" ng-class="'disabled'"/>
+                <span data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+            </div>
+        </div>
+    </td></tr>
+
+    <tr><td><span data-translate="form7.tr_11h3.code"/></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11h3"/></td><td>
+        <div ng-switch="instance.FGasesReporting.GeneralReportData.Activities['Eq-I-other']==true">
+            <input ng-switch-when="true" type="checkbox" ng-change="form7CheckTransaction('tr_11H03');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H03">
+            <div ng-switch-when="false">
+                <input type="checkbox" ng-disabled="true" ng-class="'disabled'"/>
+                <span data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+            </div>
+        </div>
+    </td></tr>
+
+    <tr><td><span data-translate="form7.tr_11h4.code"/></td><!--<td></td>--><td colspan="3"><span data-translate="form7.hierarchy_label.tr_11h4"/></td><td>
+
+        <div ng-switch="instance.FGasesReporting.GeneralReportData.Activities['Eq-I-other']==true">
+            <input ng-switch-when="true" type="checkbox" ng-change="form7CheckTransaction('tr_11H04');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H04">
+            <div ng-switch-when="false">
+                <input type="checkbox" ng-disabled="true" ng-class="'disabled'"/>
+                <span data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+            </div>
+        </div>
+
+    </td></tr>
+
+
+    <tr>
+        <th><span data-translate="form7.tr_11i.code"/></th>
+        <th colspan="4"><span data-translate="form7.tr_11i.parameter"/></th>
+        <td>
+
+            <div ng-switch="instance.FGasesReporting.GeneralReportData.Activities['Eq-I-other']==true">
+                <input ng-switch-when="true" type="checkbox" ng-change="form7CheckTransaction('tr_11I');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11I">
+                <div ng-switch-when="false">
+                    <input type="checkbox" ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <th><span data-translate="form7.tr_11j.code"/></th>
+        <th colspan="4"><span data-translate="form7.tr_11j.parameter"/></th>
+        <td>
+            <div ng-switch="instance.FGasesReporting.GeneralReportData.Activities['Eq-I-other']==true">
+                <input ng-switch-when="true" type="checkbox" ng-change="form7CheckTransaction('tr_11J');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11J">
+                <div ng-switch-when="false">
+                    <input type="checkbox" ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <th><span data-translate="form7.tr_11k.code"/></th>
+        <th colspan="4"><span data-translate="form7.tr_11k.parameter"/></th>
+        <td>
+            <div ng-switch="instance.FGasesReporting.GeneralReportData.Activities['Eq-I-other']==true">
+                <input ng-switch-when="true" type="checkbox" ng-change="form7CheckTransaction('tr_11K');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11K">
+                <div ng-switch-when="false">
+                    <input type="checkbox" ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <th><span data-translate="form7.tr_11l.code"/></th>
+        <th colspan="4"><span data-translate="form7.tr_11l.parameter"/></th>
+        <td>
+            <div ng-switch="instance.FGasesReporting.GeneralReportData.Activities['Eq-I-other']==true">
+                <input ng-switch-when="true" type="checkbox" ng-change="form7CheckTransaction('tr_11L');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11L">
+                <div ng-switch-when="false">
+                    <input type="checkbox" ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <th><span data-translate="form7.tr_11m.code"/></th>
+        <th colspan="4"><span data-translate="form7.tr_11m.parameter"/></th>
+        <td>
+            <div ng-switch="instance.FGasesReporting.GeneralReportData.Activities['Eq-I-other']==true">
+                <input ng-switch-when="true" type="checkbox" ng-change="form7CheckTransaction('tr_11M');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11M">
+                <div ng-switch-when="false">
+                    <input type="checkbox" ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <th><span data-translate="form7.tr_11n.code"/></th>
+        <th colspan="4"><span data-translate="form7.tr_11n.parameter"/></th>
+        <td>
+            <div ng-switch="instance.FGasesReporting.GeneralReportData.Activities['Eq-I-other']==true">
+                <input ng-switch-when="true" type="checkbox" ng-change="form7CheckTransaction('tr_11N');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11N">
+                <div ng-switch-when="false">
+                    <input type="checkbox" ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <th><span data-translate="form7.tr_11o.code"/></th>
+        <th colspan="4"><span data-translate="form7.tr_11o.parameter"/></th>
+        <td>
+            <div ng-switch="instance.FGasesReporting.GeneralReportData.Activities['Eq-I-other']==true">
+                <input ng-switch-when="true" type="checkbox" ng-change="form7CheckTransaction('tr_11O');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11O">
+                <div ng-switch-when="false">
+                    <input type="checkbox" ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <th><span data-translate="form7.tr_11p.code"/></th>
+        <th colspan="4"><span data-translate="form7.tr_11p.parameter"/></th>
+        <td>
+            <div ng-switch="instance.FGasesReporting.GeneralReportData.Activities['Eq-I-other']==true">
+                <input ng-switch-when="true" type="checkbox" ng-change="form7CheckTransaction('tr_11P');calculateForm7Totals();" ng-model="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11P">
+                <div ng-switch-when="false">
+                    <input type="checkbox" ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<table class="table table-hover table-bordered fixed-table">
+    <tr ng-show="!instance.FGasesReporting.F7_s11EquImportTable.transactionsConfirmed">
+        <td>Confirm the categories</td><td><input class="btn btn-sm btn-primary" type="button" ng-click="confirmTransactions();" value="Confirm selected categories"></td>
+    </tr>
+
+</table>
+
+<table class="table table-hover table-bordered fixed-table" ng-show="instance.FGasesReporting.F7_s11EquImportTable.transactionsConfirmed">
+
+    <colgroup>
+        <col style="width: 60px"/>
+        <col style="width: 60px"/>
+        <col style="width: 200px"/>
+        <col style="width: 150px"/><!--Explanation for category, if needed-->
+        <col class="fixed-width-gas-amount"/><!--amount of imported equipment / products per category-->
+        <col style="width: 150px"/><!--measurement unit for amount of imported equipment / products-->
+        <col class="fixed-width-gas-amount" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" />
+        <!--<col style="width: 150px"/><!--Obligatory comment if specific charge is outside of expected interval-->
+    </colgroup>
+
+    <tr>
+
+        <th rowspan="2" colspan="3"><span data-translate="form7.code_and_reporting_parameter"></span></th>
+        <th rowspan="2" ><span data-translate="form7.reporter_specify_category"></span></th>
+
+
+        <th rowspan="2"><span data-translate="form7.amount_of_importer_equipment"></span></th>
+        <!--<td><span data-translate="form7.measurement_unit_for_amount"></span></td>-->
+
+        <th ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center"  style="border-bottom: 0px; text-align: center;">
+            <div align="center" ng-switch="reportedGas.IsCustomComposition">
+                <span ng-switch-when="true">{{'common.mixture' | translate}} ({{reportedGas.Name}})</span>
+                <span ng-switch-default>{{reportedGas.Name}}</span>
+            </div>
+        </th>
+
+        <!--<td></td>-->
+
+    </tr>
+
+
+    <tr>
+        <th ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" style="border-top: 0px; text-align: center;">
+                <span data-translate="form7.unit_tonnes"></span>
+        </th>
+    </tr>
+
+    <!-- Group header row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A01
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A02
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A03
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A04
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A05
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A06
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A07
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A08
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A09
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A10
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A11
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A12
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A13
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A14
+        ">
+
+        <td><span data-translate="form7.tr_11a.code"/></td>
+        <td colspan="3"><span data-translate="form7.tr_11a.parameter"></span><br/><span class="formula" data-translate="form7.tr_11a.formula"></span></td>
+        <td>{{ instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11A.Amount }}&nbsp;<span data-translate="form7.tr_11a.unit_for_amount"></span></td>
+
+        <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">{{ instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A.Amount }}</td>
+
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A01">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11a1.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11a1.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11A01.Amount" ng-change="calculateForm7Totals();"><br/>
+            <span data-translate="form7.tr_11a1.unit"></span>
+        </td>
+        <td  rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A01.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11A1', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A01, 'Amount');" />
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+
+
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A01">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11A01.Amount }}&nbsp;<span data-translate="form7.tr_11a1.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11A01.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11A01'),  min:  getRange('tr_11A01').min, max:  getRange('tr_11A01').max, unit:  getRange('tr_11A01').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11A01"  ng-change="calculateForm7Totals();"></div>
+        </td>
+    </tr>
+
+
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A02">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11a2.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11a2.parameter"></span></td>
+
+        <td><input gas-input integer="true"ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11A02.Amount" ng-change="calculateForm7Totals();"><br/><span data-translate="form7.tr_11a2.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A02.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11A2', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A02, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A02">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11A02.Amount }}&nbsp;<span data-translate="form7.tr_11a2.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11A02.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11A02'), min: getRange('tr_11A02').min, max: getRange('tr_11A02').max, unit: getRange('tr_11A02').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11A02" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A03">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11a3.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11a3.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11a3.parameter"></span>
+            <br/>
+            <strong><span data-translate="form7.please_specify"></span>:</strong>&nbsp;<input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Category.tr_11A03"   ng-change="calculateForm7Totals();"></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11A03.Amount" ng-change="calculateForm7Totals();">
+        <br/><span data-translate="form7.tr_11a3.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A03.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11A3', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A03, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A03">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11A03.Amount }}&nbsp;<span data-translate="form7.tr_11a3.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11A03.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11A03'), min: getRange('tr_11A03').min, max: getRange('tr_11A03').max, unit: getRange('tr_11A03').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11A03" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A04">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11a4.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11a4.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11A04.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11a4.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A04.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11A4', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A04, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A04">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11A04.Amount }}&nbsp;<span data-translate="form7.tr_11a4.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11A04.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11A05'), min: getRange('tr_11A04').min, max: getRange('tr_11A04').max, unit: getRange('tr_11A04').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11A04" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A05">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11a5.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11a5.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11A05.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11a5.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A05.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11A5', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A05, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A05">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11A05.Amount }}&nbsp;<span data-translate="form7.tr_11a5.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11A05.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11A05'), min: getRange('tr_11A05').min, max: getRange('tr_11A05').max, unit: getRange('tr_11A05').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11A05" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A06">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11a6.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11a6.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11A06.Amount" ng-change="calculateForm7Totals();"><br/><span data-translate="form7.tr_11a6.unit"></span></td>
+        <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A06.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11A6', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A06, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A06">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11A06.Amount }}&nbsp;<span data-translate="form7.tr_11a6.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11A06.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11A06'), min: getRange('tr_11A06').min, max: getRange('tr_11A06').max, unit: getRange('tr_11A06').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11A06" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A07">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11a7.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11a7.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11A07.Amount" ng-change="calculateForm7Totals();"><br/>
+            <span data-translate="form7.tr_11a7.unit"></span></td>
+        <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A07.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11A7', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A07, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A07">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11A07.Amount }}&nbsp;<span data-translate="form7.tr_11a7.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11A07.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11A07'), min: getRange('tr_11A07').min, max: getRange('tr_11A07').max, unit: getRange('tr_11A07').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11A07" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A08">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11a8.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11a8.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11A08.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11a8.unit"></span></td>
+        <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A08.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11A8', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A08, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A08">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11A08.Amount }}&nbsp;<span data-translate="form7.tr_11a8.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11A08.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11A08'), min: getRange('tr_11A08').min, max: getRange('tr_11A08').max, unit: getRange('tr_11A08').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11A08" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A09">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11a9.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11a9.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11a9.parameter"></span>
+            <br/>
+            <strong><span data-translate="form7.please_specify"></span>:</strong>&nbsp;
+            <input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Category.tr_11A09"  ng-change="calculateForm7Totals();"></td>
+
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11A09.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11a9.unit"></span></td>
+        <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A09.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11A9', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A09, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A09">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11A09.Amount }}&nbsp;<span data-translate="form7.tr_11a9.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11A09.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11A09'), min: getRange('tr_11A09').min, max: getRange('tr_11A09').max, unit: getRange('tr_11A09').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11A09" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A10">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11a10.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11a10.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11A10.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11a10.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A10.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11A10', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A10, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A10">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11A10.Amount }}&nbsp;<span data-translate="form7.tr_11a10.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11A10.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11A10'), min: getRange('tr_11A10').min, max: getRange('tr_11A10').max, unit: getRange('tr_11A10').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11A10" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A11">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11a11.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11a11.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11A11.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11a11.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A11.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11A11', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A11, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'" />
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A11">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11A11.Amount }}&nbsp;<span data-translate="form7.tr_11a11.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11A11.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11A11'), min: getRange('tr_11A11').min, max: getRange('tr_11A11').max, unit: getRange('tr_11A11').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11A11" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A12">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11a12.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11a12.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11a12.parameter"></span>
+        <br/>
+        <strong><span data-translate="form7.please_specify"></span>:</strong>&nbsp;
+        <input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Category.tr_11A12"  ng-change="calculateForm7Totals();">
+        </td>
+
+
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11A12.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11a12.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A12.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11A12', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A12, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A12">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11A12.Amount }}&nbsp;<span data-translate="form7.tr_11a12.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11A12.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11A12'), min: getRange('tr_11A12').min, max: getRange('tr_11A12').max, unit: getRange('tr_11A12').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11A12" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A13">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11a13.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11a13.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11A13.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11a13.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A13.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11A13', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A13, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A13">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11A13.Amount }}&nbsp;<span data-translate="form7.tr_11a13.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11A13.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11A13'), min: getRange('tr_11A13').min, max: getRange('tr_11A13').max, unit: getRange('tr_11A13').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11A13" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A14">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11a14.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11a14.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11A14.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11a14.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A14.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11A14', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11A14, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11A14">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11A14.Amount }}&nbsp;<span data-translate="form7.tr_11a14.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11A14.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11A14'), min: getRange('tr_11A14').min, max: getRange('tr_11A14').max, unit: getRange('tr_11A14').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11A14" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+
+
+    <!-- Group header row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B01
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B02
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B03
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B04
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B05
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B06
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B07
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B08
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B09
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B10
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B11
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B12
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B13
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B14
+        ">
+
+        <td><span data-translate="form7.tr_11b.code"></span></td>
+        <td colspan="3"><span data-translate="form7.tr_11b.parameter"></span><br/><span  class="formula" data-translate="form7.tr_11b.formula"></span></td>
+        <td>{{ instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11B.Amount }}&nbsp;<span data-translate="form7.tr_11b.unit_for_amount"></span></td>
+        <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">{{ instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B.Amount }}</td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B01">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11b1.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11b1.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11B01.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11b1.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B01.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11B1', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B01, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B01">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11B01.Amount }}&nbsp;<span data-translate="form7.tr_11b1.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11B01.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11B01'), min: getRange('tr_11B01').min, max: getRange('tr_11B01').max, unit: getRange('tr_11B01').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11B01" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B02">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11b2.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11b2.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11B02.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11b2.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B02.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11B2', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B02, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B02">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11B02.Amount }}&nbsp;<span data-translate="form7.tr_11b2.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11B02.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11B02'), min: getRange('tr_11B02').min, max: getRange('tr_11B02').max, unit: getRange('tr_11B02').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11B02" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B03">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11b3.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11b3.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11b3.parameter"></span>
+            <br/>
+            <strong><span data-translate="form7.please_specify"></span>:</strong>&nbsp;
+            <input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Category.tr_11B03"  ng-change="calculateForm7Totals();"></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11B03.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11b3.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B03.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11B3', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B03, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B03">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11B03.Amount }}&nbsp;<span data-translate="form7.tr_11b3.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11B03.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11B03'),  min: getRange('tr_11B03').min, max: getRange('tr_11B03').max, unit: getRange('tr_11B03').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11B03" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B04">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11b4.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11b4.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11B04.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11b4.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B04.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11B4', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B04, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B04">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11B04.Amount }}&nbsp;<span data-translate="form7.tr_11b4.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11B04.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11B04'),  min: getRange('tr_11B04').min, max: getRange('tr_11B04').max, unit: getRange('tr_11B04').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11B04" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B05">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11b5.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11b5.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11b5.parameter"></span>
+            <br/>
+            <strong><span data-translate="form7.please_specify"></span>:</strong>&nbsp;
+            <input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Category.tr_11B05"  ng-change="calculateForm7Totals();"></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11B05.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11b5.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B05.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11B5', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B05, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B05">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11B05.Amount }}&nbsp;<span data-translate="form7.tr_11b5.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11B05.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11B05'),  min: getRange('tr_11B05').min, max: getRange('tr_11B05').max, unit: getRange('tr_11B05').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11B05" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B06">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11b6.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11b6.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11B06.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11b6.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B06.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11B6', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B06, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B06">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11B06.Amount }}&nbsp;<span data-translate="form7.tr_11b6.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11B06.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11B06'),  min: getRange('tr_11B06').min, max: getRange('tr_11B06').max, unit: getRange('tr_11B06').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11B06" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B07">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11b7.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11b7.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11b7.parameter"></span>
+
+            <br/>
+            <strong><span data-translate="form7.please_specify"></span>:</strong>&nbsp;
+            <input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Category.tr_11B07"  ng-change="calculateForm7Totals();"></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11B07.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11b7.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B07.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11B7', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B07, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B07">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11B07.Amount }}&nbsp;<span data-translate="form7.tr_11b7.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11B07.Outside"><br/>
+                <strong>
+                    <span data-translate="form7.specific_charge_range_comment" 
+                          data-translate-values="{ transaction:getForm7TransactionCode('tr_11B07'),  min: getRange('tr_11B07').min, max: getRange('tr_11B07').max, unit: getRange('tr_11B07').unit }"></span>:
+                </strong>
+                <br/>
+                    <input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11B07" ng-change="calculateForm7Totals();" />
+            </div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B08">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11b8.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11b8.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11B08.Amount" ng-change="calculateForm7Totals();"><br/>
+            <span data-translate="form7.tr_11b8.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B08.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11B8', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B08, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+
+    </tr>
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B08">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11B08.Amount }}&nbsp;<span data-translate="form7.tr_11b8.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11B08.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11B08'),  min: getRange('tr_11B08').min, max: getRange('tr_11B08').max, unit: getRange('tr_11B08').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11B08" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B09">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11b9.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11b9.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11b9.parameter"></span>
+
+            <br/>
+            <strong><span data-translate="form7.please_specify"></span>:</strong>&nbsp;
+            <input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Category.tr_11B09"  ng-change="calculateForm7Totals();"></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11B09.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11b9.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B09.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11B9', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B09, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B09">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11B09.Amount }}&nbsp;<span data-translate="form7.tr_11b9.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11B09.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11B09'),  min: getRange('tr_11B09').min, max: getRange('tr_11B09').max, unit: getRange('tr_11B09').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11B09" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B10">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11b10.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11b10.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11B10.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11b10.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B10.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11B10', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B10, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B10">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11B10.Amount }}&nbsp;<span data-translate="form7.tr_11b10.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11B10.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11B10'),  min: getRange('tr_11B10').min, max: getRange('tr_11B10').max, unit: getRange('tr_11B10').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11B10" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B11">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11b11.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11b11.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11B11.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11b11.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B11.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11B11', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B11, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B11">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11B11.Amount }}&nbsp;<span data-translate="form7.tr_11b11.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11B11.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11B11'),  min: getRange('tr_11B11').min, max: getRange('tr_11B11').max, unit: getRange('tr_11B11').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11B11" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B12">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11b12.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11b12.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11B12.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11b12.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B12.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11B12', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B12, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B12">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11B12.Amount }}&nbsp;<span data-translate="form7.tr_11b12.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11B12.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11B12'),  min: getRange('tr_11B12').min, max: getRange('tr_11B12').max, unit: getRange('tr_11B12').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11B12" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B13">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11b13.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11b13.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11B13.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11b13.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B13.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11B13', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B13, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B13">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11B13.Amount }}&nbsp;<span data-translate="form7.tr_11b13.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11B13.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11B13'),  min: getRange('tr_11B13').min, max: getRange('tr_11B13').max, unit: getRange('tr_11B13').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11B13" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B14">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11b14.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11b14.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11B14.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11b14.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B14.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11B14', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11B14, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11B14">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11B14.Amount }}&nbsp;<span data-translate="form7.tr_11b14.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11B14.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11B14'),  min: getRange('tr_11B14').min, max: getRange('tr_11B14').max, unit: getRange('tr_11B14').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11B14" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+
+
+
+    <!-- Group header row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11C">
+
+        <td rowspan="2"><span data-translate="form7.tr_11c.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11c.parameter"></span></td>
+        <td>&nbsp;</td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11C.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11c.unit"></span></td>
+
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11C.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11C', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11C, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11C">
+        <td colspan="4"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11C.Amount }}&nbsp;<span data-translate="form7.tr_11c.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11C.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11C'),  min: getRange('tr_11C').min, max: getRange('tr_11C').max, unit: getRange('tr_11C').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11C" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+
+
+
+    <!-- Group header row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11D01
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11D02
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11D03
+        ">
+
+        <td><span data-translate="form7.tr_11d.code"></span></td>
+        <td colspan="3"><span data-translate="form7.tr_11d.parameter"></span><br/><span class="formula" data-translate="form7.tr_11d.formula"></span></td>
+        <td>{{ instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11D.Amount }}&nbsp;<span data-translate="form7.tr_11d.unit_for_amount"></span></td>
+
+        <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">{{ instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11D.Amount }}</td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11D01">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11d1.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11d1.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11d1.parameter"></span>
+
+            <br/>
+            <strong><span data-translate="form7.please_specify"></span>:</strong>&nbsp;
+            <input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Category.tr_11D01"  ng-change="calculateForm7Totals();"></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11D01.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11d1.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11D01.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11D1', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11D01, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11D01">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11D01.Amount }}&nbsp;<span data-translate="form7.tr_11d1.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11D01.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11D01'),  min: getRange('tr_11D01').min, max: getRange('tr_11D01').max, unit: getRange('tr_11D01').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11D01" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11D02">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11d2.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11d2.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11d2.parameter"></span>
+
+            <br/>
+            <strong><span data-translate="form7.please_specify"></span>:</strong>&nbsp;
+            <input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Category.tr_11D02"  ng-change="calculateForm7Totals();"></td>
+
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11D02.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11d2.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11D02.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11D2', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11D02, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11D02">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11D02.Amount }}&nbsp;<span data-translate="form7.tr_11d2.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11D02.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11D02'),  min: getRange('tr_11D02').min, max: getRange('tr_11D02').max, unit: getRange('tr_11D02').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11D02" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11D03">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11d3.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11d3.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11d3.parameter"></span>
+
+            <br/>
+            <strong><span data-translate="form7.please_specify"></span>:</strong>&nbsp;
+            <input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Category.tr_11D03"  ng-change="calculateForm7Totals();"></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11D03.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11d3.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11D03.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11D3', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11D03, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11D03">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11D03.Amount }}&nbsp;<span data-translate="form7.tr_11d3.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11D03.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11D03'),  min: getRange('tr_11D03').min, max: getRange('tr_11D03').max, unit: getRange('tr_11D03').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11D03" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+
+
+
+
+    <!-- Group header row -->
+    <!-- Group header row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E01
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E02
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E03
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E04
+        ">
+
+        <td><span data-translate="form7.tr_11e.code"></span></td>
+        <td colspan="3"><span data-translate="form7.tr_11e.parameter"></span><br/><span class="formula" data-translate="form7.tr_11e.formula"></span></td>
+        <td>{{ instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11E.Amount }}&nbsp;<span data-translate="form7.tr_11e.unit_for_amount"></span></td>
+        <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">{{ instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11E.Amount }}</td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E01">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11e1.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11e1.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11E01.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11e1.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11E01.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11E1', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11E01, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E01">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11E01.Amount }}&nbsp;<span data-translate="form7.tr_11e1.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11E01.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11E01'),  min: getRange('tr_11E01').min, max: getRange('tr_11E01').max, unit: getRange('tr_11E01').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11E01" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E02">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11e2.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11e2.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11E02.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11e2.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11E02.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11E2', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11E02, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E02">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11E02.Amount }}&nbsp;<span data-translate="form7.tr_11e2.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11E02.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11E02'),  min: getRange('tr_11E02').min, max: getRange('tr_11E02').max, unit: getRange('tr_11E02').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11E02" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E03">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11e3.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11e3.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11E03.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11e3.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11E03.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11E3', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11E03, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E03">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11E03.Amount }}&nbsp;<span data-translate="form7.tr_11e3.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11E03.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11E03'),  min: getRange('tr_11E03').min, max: getRange('tr_11E03').max, unit: getRange('tr_11E03').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11E03" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E04">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11e4.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11e4.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11e4.parameter"></span>
+
+            <br/>
+            <strong><span data-translate="form7.please_specify"></span>:</strong>&nbsp;
+            <input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Category.tr_11E04"  ng-change="calculateForm7Totals();"></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11E04.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11e4.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11E04.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11E4', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11E04, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11E04">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11E04.Amount }}&nbsp;<span data-translate="form7.tr_11e4.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11E04.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11E04'),  min: getRange('tr_11E04').min, max: getRange('tr_11E04').max, unit: getRange('tr_11E04').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11E04" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+
+
+
+
+
+    <!-- Group header row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F01
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F02
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F03
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F04
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F05
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F06
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F07
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F08
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F09
+        ">
+
+        <td><span data-translate="form7.tr_11f.code"></span></td>
+        <td colspan="3"><span data-translate="form7.tr_11f.parameter"></span><br/><span class="formula" data-translate="form7.tr_11f.formula"></span></td>
+        <td>{{ instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11F.Amount }}&nbsp;<span data-translate="form7.tr_11f.unit_for_amount"></span></td>
+        <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">{{ instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F.Amount }}</td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F01">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11f1.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11f1.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11F01.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11f1.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F01.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11F1', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F01, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F01">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11F01.Amount }}&nbsp;<span data-translate="form7.tr_11f1.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11F01.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11F01'),  min: getRange('tr_11F01').min, max: getRange('tr_11F01').max, unit: getRange('tr_11F01').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11F01" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F02">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11f2.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11f2.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11F02.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11f2.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F02.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11F2', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F02, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F02">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11F02.Amount }}&nbsp;<span data-translate="form7.tr_11f2.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11F02.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11F02'),  min: getRange('tr_11F02').min, max: getRange('tr_11F02').max, unit: getRange('tr_11F02').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11F02" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F03">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11f3.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11f3.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11F03.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11f3.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F03.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11F3', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F03, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F03">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11F03.Amount }}&nbsp;<span data-translate="form7.tr_11f3.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11F03.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11F03'),  min: getRange('tr_11F03').min, max: getRange('tr_11F03').max, unit: getRange('tr_11F03').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11F03" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F04">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11f4.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11f4.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11F04.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11f4.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F04.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11F4', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F04, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F04">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11F04.Amount }}&nbsp;<span data-translate="form7.tr_11f4.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11F04.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11F04'),  min: getRange('tr_11F04').min, max: getRange('tr_11F04').max, unit: getRange('tr_11F04').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11F04" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F05">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11f5.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11f5.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11F05.Amount" ng-change="calculateForm7Totals();"
+                   ng-blur="confirmNotInWhitelist('11F5', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F05, 'Amount');">
+            <br/><span data-translate="form7.tr_11f5.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F05.Amount" ng-change="calculateForm7Totals();"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F05">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11F05.Amount }}&nbsp;<span data-translate="form7.tr_11f5.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11F05.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11F05'),  min: getRange('tr_11F05').min, max: getRange('tr_11F05').max, unit: getRange('tr_11F05').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11F05" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F06">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11f6.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11f6.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11F06.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11f6.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F06.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11F6', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F06, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F06">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11F06.Amount }}&nbsp;<span data-translate="form7.tr_11f6.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11F06.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11F06'),  min: getRange('tr_11F06').min, max: getRange('tr_11F06').max, unit: getRange('tr_11F06').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11F06" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F07">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11f7.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11f7.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11F07.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11f7.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F07.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11F7', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F07, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F07">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11F07.Amount }}&nbsp;<span data-translate="form7.tr_11f7.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11F07.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11F07'),  min: getRange('tr_11F07').min, max: getRange('tr_11F07').max, unit: getRange('tr_11F07').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11F07" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F08">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11f8.code"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11f8.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11F08.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11f8.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F08.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11F8', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F08, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F08">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11F08.Amount }}&nbsp;<span data-translate="form7.tr_11f8.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11F08.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11F08'),  min: getRange('tr_11F08').min, max: getRange('tr_11F08').max, unit: getRange('tr_11F08').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11F08" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F09">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11f9.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11f9.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11f9.parameter"></span>
+            <br/>
+            <strong><span data-translate="form7.please_specify"></span>:</strong>&nbsp;
+            <input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Category.tr_11F09"  ng-change="calculateForm7Totals();"></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11F09.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11f9.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1056fail[$index] && !qc1057fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F09.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11F9', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11F09, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1056fail[$index]" data-tooltip="{{'validation_messages.qc_1056.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                    <span ng-if="qc1057fail[$index]" data-tooltip="{{'validation_messages.qc_1057.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11F09">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11F09.Amount }}&nbsp;<span data-translate="form7.tr_11f9.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11F09.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11F09'),  min: getRange('tr_11F09').min, max: getRange('tr_11F09').max, unit: getRange('tr_11F09').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11F09" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+
+
+
+    <!-- Group header row -->
+    <tr>
+
+        <td><span data-translate="form7.tr_11g.code"></span></td>
+        <td colspan="3"><span data-translate="form7.tr_11g.parameter"></span><br/><span class="formula" data-translate="form7.tr_11g.formula"></span></td>
+        <td>{{ instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11G.Amount }} <span data-translate="form7.tr_11g.unit_for_amount"></span></td>
+
+        <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">{{ instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11G.Amount }}</td>
+
+    </tr>
+
+
+
+    <!-- Group header row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H01
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H02
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H03
+            || instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H04
+        ">
+
+        <td><span data-translate="form7.tr_11h.code"></span></td>
+        <td colspan="3"><span data-translate="form7.tr_11h.parameter"></span><br/><span class="formula" data-translate="form7.tr_11h.formula"></span></td>
+        <td>&nbsp;</td>
+
+        <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">{{ instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11H.Amount }}</td>
+
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H01">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11h1.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11h1.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11h1.parameter"></span>
+        <td><input gas-input threshold="9007199254740992" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11H01.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11h1.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1058fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11H01.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11H1', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11H01, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1058fail[$index]" data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+
+    </tr>
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H01">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11H01.Amount }}&nbsp;<span data-translate="form7.tr_11h1.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11H01.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11H01'),  min: getRange('tr_11H01').min, max: getRange('tr_11H01').max, unit: getRange('tr_11H01').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11H01" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H02">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11h2.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11h2.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11h2.parameter"></span>
+        <td><input gas-input threshold="9007199254740992" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11H02.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11h2.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1058fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11H02.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11H2', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11H02, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1058fail[$index]" data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H02">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11H02.Amount }}&nbsp;<span data-translate="form7.tr_11h2.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11H02.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11H02'),  min: getRange('tr_11H02').min, max: getRange('tr_11H02').max, unit: getRange('tr_11H02').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11H02" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H03">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11h3.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11h3.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11h3.parameter"></span>
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11H03.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11h3.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1058fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11H03.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11H3', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11H03, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1058fail[$index]" data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H03">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11H03.Amount }}&nbsp;<span data-translate="form7.tr_11h3.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11H03.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11H03'),  min: getRange('tr_11H03').min, max: getRange('tr_11H03').max, unit: getRange('tr_11H03').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11H03" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H04">
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2"><span data-translate="form7.tr_11h4.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11h4.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="2"><span data-translate="form7.tr_11h4.parameter"></span>
+
+            <br/>
+            <strong><span data-translate="form7.please_specify"></span>:</strong>&nbsp;
+            <input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Category.tr_11H04"  ng-change="calculateForm7Totals();"></td>
+
+        <td>
+
+            <input gas-input threshold="9007199254740992" integer="{{ instance.FGasesReporting.F7_s11EquImportTable.TR_11H4_Unit =='pieces' }}" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11H04.Amount" ng-change="calculateForm7Totals();">
+
+            <br/>
+            <select ng-model="instance.FGasesReporting.F7_s11EquImportTable.TR_11H4_Unit" ng-change="calculateForm7Totals();">
+                <option value=""></option>
+                <option value="cubicmetres">cubic metres</option>
+                <option value="metrictonnes">metric tonnes</option>
+                <option value="pieces">pieces</option>
+            </select>
+        </td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1058fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11H04.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11H4', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11H04, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1058fail[$index]" data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11H04">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11H04.Amount }}
+            &nbsp;<span data-translate="form7.tr_11h4.unit_of_spec_charge"></span>
+            <span ng-show="instance.FGasesReporting.F7_s11EquImportTable.TR_11H4_Unit =='cubicmetres'">cubic metres</span>
+            <span ng-show="instance.FGasesReporting.F7_s11EquImportTable.TR_11H4_Unit =='metrictonnes'">metric tonnes</span>
+            <span ng-show="instance.FGasesReporting.F7_s11EquImportTable.TR_11H4_Unit =='pieces'">pieces</span>
+
+            <div ng-show="form7specificRanges.tr_11H04_m3.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11H04_m3'),  min: getRange('tr_11H04', 'cubicmetres').min, max: getRange('tr_11H04', 'cubicmetres').max, unit: getRange('tr_11H04', 'cubicmetres').unit }"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11H04" ng-change="calculateForm7Totals();" ></div>
+            <div ng-show="form7specificRanges.tr_11H04_tonnes.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11H04_tonnes'), min: getRange('tr_11H04', 'metrictonnes').min, max: getRange('tr_11H04', 'metrictonnes').max, unit: getRange('tr_11H04', 'metrictonnes').unit }"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11H04" ng-change="calculateForm7Totals();" ></div>
+            <div ng-show="form7specificRanges.tr_11H04_pieces.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11H04_pieces'), min: getRange('tr_11H04', 'pieces').min, max: getRange('tr_11H04', 'pieces').max, unit: getRange('tr_11H04', 'pieces').unit }"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11H04" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+
+
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11I">
+        <td rowspan="2"><span data-translate="form7.tr_11i.code"></span></td>
+        <td colspan="3"><span data-translate="form7.tr_11i.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11I.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11i.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1058fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11I.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11I', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11I, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1058fail[$index]" data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11I">
+        <td colspan="4"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11I.Amount }}&nbsp;<span data-translate="form7.tr_11i.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11I.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11I'),  min: getRange('tr_11I').min, max: getRange('tr_11I').max, unit: getRange('tr_11I').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11I" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11J">
+        <td rowspan="2"><span data-translate="form7.tr_11j.code"></span></td>
+        <td colspan="3"><span data-translate="form7.tr_11j.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11J.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11j.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1058fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11J.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11J', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11J, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1058fail[$index]" data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11J">
+        <td colspan="4"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11J.Amount }}&nbsp;<span data-translate="form7.tr_11j.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11J.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11J'),  min: getRange('tr_11J').min, max: getRange('tr_11J').max, unit: getRange('tr_11J').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11J" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11K">
+        <td rowspan="2"><span data-translate="form7.tr_11k.code"></span></td>
+        <td colspan="3"><span data-translate="form7.tr_11k.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11K.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11k.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1058fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11K.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11K', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11K, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1058fail[$index]" data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11K">
+        <td colspan="4"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11K.Amount }}&nbsp;<span data-translate="form7.tr_11k.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11K.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11K'),  min: getRange('tr_11K').min, max: getRange('tr_11K').max, unit: getRange('tr_11K').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11K" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11L">
+        <td rowspan="2"><span data-translate="form7.tr_11l.code"></span></td>
+        <td colspan="3"><span data-translate="form7.tr_11l.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11L.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11l.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1058fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11L.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11L', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11L, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1058fail[$index]" data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11L">
+        <td colspan="4"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11L.Amount }}&nbsp;<span data-translate="form7.tr_11l.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11L.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11L'),  min: getRange('tr_11L').min, max: getRange('tr_11L').max, unit: getRange('tr_11L').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11L" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11M">
+        <td rowspan="2"><span data-translate="form7.tr_11m.code"></span></td>
+        <td colspan="3"><span data-translate="form7.tr_11m.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11M.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11m.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1058fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11M.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11M', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11M, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1058fail[$index]" data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11M">
+        <td colspan="4"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11M.Amount }}&nbsp;<span data-translate="form7.tr_11m.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11M.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11M'),  min: getRange('tr_11M').min, max: getRange('tr_11M').max, unit: getRange('tr_11M').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11M" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11N">
+        <td rowspan="2"><span data-translate="form7.tr_11n.code"></span></td>
+        <td colspan="3"><span data-translate="form7.tr_11n.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11N.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11n.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1058fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11N.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11N', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11N, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1058fail[$index]" data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11N">
+        <td colspan="4"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11N.Amount }}&nbsp;<span data-translate="form7.tr_11n.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11N.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11N'),  min: getRange('tr_11N').min, max: getRange('tr_11N').max, unit: getRange('tr_11N').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11N" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11O">
+        <td rowspan="2"><span data-translate="form7.tr_11o.code"></span></td>
+        <td colspan="3"><span data-translate="form7.tr_11o.parameter"></span></td>
+
+        <td><input gas-input integer="true" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11O.Amount" ng-change="calculateForm7Totals();">
+            <br/><span data-translate="form7.tr_11o.unit"></span></td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1058fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11O.Amount" ng-change="calculateForm7Totals();"
+                       ng-blur="confirmNotInWhitelist('11O', reportedGas, instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11O, 'Amount');"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1058fail[$index]" data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11O">
+        <td colspan="4"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11O.Amount }}&nbsp;<span data-translate="form7.tr_11o.unit_of_spec_charge"></span>
+            <div ng-show="form7specificRanges.tr_11O.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11O'),  min: getRange('tr_11O').min, max: getRange('tr_11O').max, unit: getRange('tr_11O').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11O" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+
+
+    <!-- Standard row -->
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11P">
+        <td rowspan="2"><span data-translate="form7.tr_11p.code"></span><span class="glyphicon glyphicon-info-sign" data-tooltip="{{'form7.tr_11p.explanation_ia' | translate}}" style="margin-left: 0.5em;"></span></td>
+        <td colspan="3"><span data-translate="form7.tr_11p.parameter"></span>
+            <br/>
+            <strong><span data-translate="form7.please_specify"></span>:</strong>&nbsp;
+            <input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Category.tr_11P" ng-change="calculateForm7Totals();"></td>
+
+        <td>
+            <input gas-input threshold="9007199254740992" integer="{{ instance.FGasesReporting.F7_s11EquImportTable.TR_11P_Unit == 'pieces' }}" ng-model="instance.FGasesReporting.F7_s11EquImportTable.AmountOfImportedEquipment.tr_11P.Amount" ng-change="calculateForm7Totals();">
+            <br/>
+            <select ng-model="instance.FGasesReporting.F7_s11EquImportTable.TR_11P_Unit" ng-change="calculateForm7Totals();">
+                <option value=""></option>
+                <option value="cubicmetres">Cubic metres</option>
+                <option value="metrictonnes">Metric tonnes</option>
+                <option value="pieces">Pieces</option>
+            </select>
+        </td>
+        <td rowspan="2" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+            <div ng-switch="!qc1058fail[$index]">
+                <input ng-switch-when="true" gas-input ng-model="instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11P.Amount" ng-change="calculateForm7Totals();"/>
+                <div ng-switch-when="false">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span ng-if="qc1058fail[$index]" data-tooltip="{{'validation_messages.qc_1058.error_text' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions.tr_11P">
+        <td colspan="3"><strong><span data-translate="form7.s2"></span>:</strong> {{ instance.FGasesReporting.F7_s11EquImportTable.SumOfAllGasesS2.tr_11P.Amount }}
+            &nbsp;<span data-translate="form7.tr_11h4.unit_of_spec_charge"></span>
+            <span ng-show="instance.FGasesReporting.F7_s11EquImportTable.TR_11P_Unit =='cubicmetres'">cubic metres</span>
+            <span ng-show="instance.FGasesReporting.F7_s11EquImportTable.TR_11P_Unit =='metrictonnes'">metric tonnes</span>
+            <span ng-show="instance.FGasesReporting.F7_s11EquImportTable.TR_11P_Unit =='pieces'">pieces</span>
+
+            <div ng-show="form7specificRanges.tr_11P_m3.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11P_m3'),  min: getRange('tr_11P', 'cubicmetres').min, max: getRange('tr_11P', 'cubicmetres').max, unit: getRange('tr_11P', 'cubicmetres').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11P" ng-change="calculateForm7Totals();" ></div>
+            <div ng-show="form7specificRanges.tr_11P_tonnes.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11P_tonnes'),  min: getRange('tr_11P', 'metrictonnes').min, max: getRange('tr_11P', 'metrictonnes').max, unit: getRange('tr_11P', 'metrictonnes').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11P" ng-change="calculateForm7Totals();" ></div>
+            <div ng-show="form7specificRanges.tr_11P_pieces.Outside"><br/><strong><span data-translate="form7.specific_charge_range_comment" data-translate-values="{ transaction:getForm7TransactionCode('tr_11P_pieces'),  min: getRange('tr_11P', 'pieces').min, max: getRange('tr_11P', 'pieces').max, unit: getRange('tr_11P', 'pieces').unit}"></span>:</strong><br/><input style="width: 300px;" ng-model="instance.FGasesReporting.F7_s11EquImportTable.Comment.tr_11P" ng-change="calculateForm7Totals();" ></div>
+        </td>
+    </tr>
+    <!-- Group header row -->
+    <tr>
+
+        <td><span data-translate="form7.tr_11q.code"></span></td>
+        <td colspan="4"><span data-translate="form7.tr_11q.parameter"></span><br/><span class="formula" data-translate="form7.tr_11q.formula"></span></td>
+
+        <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">{{ instance.FGasesReporting.F7_s11EquImportTable.Gas[$index].tr_11Q.Amount }}</td>
+
+    </tr>
+
+
+</table>
+
+
+<table class="table table-hover table-bordered fixed-table">
+    <tr ng-show="instance.FGasesReporting.F7_s11EquImportTable.transactionsConfirmed">
+        <td>Change reporting categories</td><td><input class="btn btn-sm btn-primary" type="button" ng-click="unConfirmTransactions();" value="Change categories"></td>
+    </tr>
+</table>
+
+
+<div ng-show="instance.FGasesReporting.F7_s11EquImportTable.transactionsConfirmed && instance.FGasesReporting.F7_s11EquImportTable.Totals.tr_11QSumAllGasesCO2Eq > 500 && QC2049Enabled == true">
+<h2><span data-translate="form7.documents"></span></h2>
+<p data-translate="form7.upload-document-text1"></p>
+<ul ng-if="instance.FGasesReporting.F7_s11EquImportTable.SupportingDocuments.Document.length > 0">
+    <li ng-repeat="document in instance.FGasesReporting.F7_s11EquImportTable.SupportingDocuments.Document" class="document">
+        <a href="{{document.Url}}" target="_blank">{{document.Url}}</a>
+        <button type="button" class="btn btn-xs" style="margin-left: 1em;"
+                ng-click="removeDocument(instance.FGasesReporting.F7_s11EquImportTable.SupportingDocuments.Document, $index, document); calculateForm7Totals();">
+            <span data-translate="common.remove"/>
+        </button>
+    </li>
+</ul>
+<p ng-if="instance.FGasesReporting.F7_s11EquImportTable.SupportingDocuments.Document.length == 0" data-translate="common.no-documents"></p>
+<br/>
+<br/>
+<div>
+    <strong><span data-translate="form7.upload-document"></span></strong>
+    <input type="file" nv-file-select="uploadFile('FGasesReporting.F7_s11EquImportTable.SupportingDocuments.Document')" uploader="uploader" ng-init="configureUploader" style="display:inline; margin-left:5px;"/>
+    <button type="button" class="btn btn-success btn-xs" ng-click="uploadFile('FGasesReporting.F7_s11EquImportTable.SupportingDocuments.Document'); " ng-if="uploader.queue.length == 1">
+        <span class="glyphicon glyphicon-upload"></span> Upload
+    </button>
+    <div class="progress" ng-if="uploader.queue.length == 1" ng-show="uploader.isHTML5">
+        <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+    </div>
+</div>
+</div>
+        

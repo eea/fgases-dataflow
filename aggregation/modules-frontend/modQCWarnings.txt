@@ -1,0 +1,216 @@
+Option Compare Database
+Option Explicit
+
+Private srcDb As DAO.database
+Private wrk As DAO.Workspace
+Private destDb As DAO.database
+
+Private errNum As Long
+Private errDesc As String
+Private Cstocks() As String
+
+
+Public Sub createQCTasks(ByVal reportId As String, ByVal fdbReportId As String, ByVal destDbName As String, ByRef importLogs As Collection)
+Cstocks = Split("4A, 4B, 4C, 8E", ",")
+On Error GoTo err
+
+Dim srcRs As DAO.Recordset
+Dim destRs As DAO.Recordset
+Dim qcRs As DAO.Recordset
+
+Dim transactionCode As String
+Dim qcCode As String
+Dim gasId As Integer
+Dim tradePartnerId As Long
+Dim qcTypes() As String
+Dim qcTypeString As Variant
+Dim qcType As Integer
+Dim valueId As Long
+Dim transactionId As Long
+Dim isEUBased As Boolean
+Dim EuVat As String
+Dim NonEUDgClimaRegCode As String
+Dim qc_comment As String
+Dim isCalculated As Boolean
+
+' Databases Initialization
+Set srcDb = currentDb
+Set wrk = DBEngine.Workspaces(0)
+Set destDb = wrk.OpenDatabase(destDbName)
+
+Set qcRs = srcDb.OpenRecordset("SELECT * FROM data_qc_warnings WHERE report_id = " & StrLiteral(reportId), dbOpenSnapshot)
+    If qcRs.RecordCount > 0 Then
+        Do While Not qcRs.EOF
+            transactionCode = modCommonUtil.NullOrEmptyStr(qcRs("transactionCode"))
+            qcCode = modCommonUtil.NullOrEmptyStr(qcRs("qcCode"))
+            gasId = modNumbers.getInt(qcRs("gasId"))
+            
+            isEUBased = qcRs("isEUBased")
+            EuVat = modCommonUtil.NullOrEmptyStr(qcRs("EuVAT"))
+            NonEUDgClimaRegCode = modCommonUtil.NullOrEmptyStr(qcRs("NonEUDgClimaRegCode"))
+            qc_comment = modCommonUtil.NullOrEmptyStr(qcRs("comment"))
+            
+            'get QC type from mappings table in order to use it to create a QC task on the FDB.
+            qcTypes = getQCTypes(qcCode, transactionCode, importLogs)
+            transactionId = getTransactionId(transactionCode)
+            isCalculated = modDestDbUtil.isCalculated(transactionId)
+            
+            If Not EuVat = Empty Or Not NonEUDgClimaRegCode = Empty Then
+                tradePartnerId = getCompanyIdByCodeAndVat(isEUBased, NonEUDgClimaRegCode, EuVat, importLogs)
+            End If
+        
+            If isCalculated = False Then
+                For Each qcTypeString In qcTypes
+                    qcType = modNumbers.getInt(qcTypeString)
+                    valueId = getValueId(fdbReportId, gasId, qcType, transactionId, tradePartnerId, importLogs)
+                    If (valueId = Empty And hasArrayValue(CStr(transactionCode), Cstocks)) Then
+                        valueId = createValueId(fdbReportId, gasId, transactionId, 0)
+                    End If
+                    createQCTask reportId, valueId, gasId, qcType, qc_comment, importLogs
+                Next
+            End If
+            
+            qcRs.MoveNext
+        Loop
+    End If
+        
+exit_function:
+    On Error GoTo 0
+    If Not qcRs Is Nothing Then qcRs.Close
+    Set qcRs = Nothing
+    Exit Sub
+err:
+    errNum = err.number
+    errDesc = err.Description
+    
+    addImportLog importLogs, fdbReportId, "NEW_QCTASK_ADD_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new QC task record in FDB: [" & errNum & "]" & errDesc
+    MsgBox "Error adding QC task record: " & errDesc, vbCritical
+    Resume exit_function
+End Sub
+
+Private Function getTransactionId(transactionCode As String) As Long
+    Dim trSQL As String
+    Dim trRs As DAO.Recordset
+    
+    trSQL = "SELECT Transaction_ID FROM tbl_transaction WHERE code_2015 = " & StrLiteral(transactionCode)
+    Set trRs = destDb.OpenRecordset(trSQL, dbOpenSnapshot)
+    If Not trRs.EOF Then
+        getTransactionId = modNumbers.getLong(trRs("Transaction_ID"))
+    End If
+End Function
+
+Private Sub createQCTask(fdbReportId As String, valueId As Long, gasId As Integer, typeId As Integer, qc_comment As String, ByRef importLogs As Collection)
+    Dim destRs As DAO.Recordset
+    
+    Set destRs = destDb.OpenRecordset("tbl_qc_tasks", dbOpenDynaset)
+    With destRs
+        .AddNew
+        !report_submission_no = fdbReportId
+        !value_id = IIf(valueId = Empty, Null, valueId)
+        !Gas_ID = IIf(gasId = Empty, Null, gasId)
+        !type_ID = IIf(typeId = Empty, Null, typeId)
+        !qc_comment = IIf(qc_comment = Empty, Null, qc_comment)
+        .update
+        .Close
+    End With
+    
+exit_function:
+    On Error Resume Next
+    If Not destRs Is Nothing Then destRs.Close
+    Set destRs = Nothing
+    Exit Sub
+err:
+    errNum = err.number
+    errDesc = err.Description
+    
+    addImportLog importLogs, fdbReportId, "NEW_QCTASK_ADD_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new QC task record in FDB: [" & errNum & "]" & errDesc
+    MsgBox "Error adding QC task record: " & errDesc, vbCritical
+    GoTo exit_function
+End Sub
+
+Private Function getValueId(fdbReportId As String, gasId As Integer, qcType As Integer, transactionId As Long, tradePartnerId As Long, importLogs As Collection) As Long
+    Dim valuesRs As DAO.Recordset
+    Dim valueSQL As String
+    
+    On Error GoTo err
+    valueSQL = "SELECT Value_ID " & _
+        "FROM tbl_value WHERE Report_submission_no = " & StrLiteral(fdbReportId) & _
+        " AND Transaction_ID = " & transactionId & " AND Gas_ID " & IIf(gasId = Empty, "IS Null", " = " & gasId) & " AND trade_partner_id " & IIf(tradePartnerId = Empty, "IS Null", " = " & tradePartnerId)
+    Set valuesRs = destDb.OpenRecordset(valueSQL, dbOpenSnapshot)
+    If Not valuesRs.EOF Then
+        getValueId = modNumbers.getLong(valuesRs("Value_ID"))
+    End If
+exit_function:
+    On Error Resume Next
+    If Not valuesRs Is Nothing Then valuesRs.Close
+    Set valuesRs = Nothing
+    Exit Function
+err:
+    errNum = err.number
+    errDesc = err.Description
+    
+    'addImportLog importLogs, fdbReportId, "GET_VALUE_ID_FAILED", basGlobals.ERROR_LOG, "Error when trying to retrieve Value ID from FDB: [" & errNum & "]" & errDesc
+    MsgBox "Error adding QC task record: " & errDesc, vbCritical
+    Resume exit_function
+    
+End Function
+'Finds and returns QC type using transaction and QC code.
+Private Function getQCTypes(qcCode As String, transactionCode As String, importLogs As Collection) As String()
+    Dim qcType As String
+    Dim taskRs As DAO.Recordset
+    Dim sql As String
+    Dim trCode As String
+    
+    On Error GoTo err
+    sql = "SELECT * FROM sys_fgases_qc_mappings WHERE qcCode = " & StrLiteral(qcCode) & " ORDER BY trCode DESC"
+    Set taskRs = srcDb.OpenRecordset(sql, dbOpenSnapshot)
+    Do While Not taskRs.EOF
+        ' Get QC type for specific transaction
+        trCode = modCommonUtil.NullOrEmptyStr(taskRs("trCode"))
+        qcType = modCommonUtil.NullOrEmptyStr(taskRs("qcType"))
+        If trCode = transactionCode Then
+            Exit Do
+        End If
+        taskRs.MoveNext
+    Loop
+    getQCTypes = Split(qcType, ",")
+        
+exit_function:
+    On Error Resume Next
+    If Not taskRs Is Nothing Then taskRs.Close
+    Set taskRs = Nothing
+    Exit Function
+err:
+    errNum = err.number
+    errDesc = err.Description
+    
+    'addImportLog importLogs, fdbReportId, "NEW_QCTASK_ADD_FAILED", basGlobals.ERROR_LOG, "Error when trying to create new QC task record in FDB: [" & errNum & "]" & errDesc
+    MsgBox "Error adding QC task record: " & errDesc, vbCritical
+    Resume exit_function
+End Function
+
+'Checks if an error was produced from the webform, this is used to identify if a comment is voluntary or not
+'returns true if there was an error associated, and false if not
+Public Function getQCErrorStatus(reportId As String, qcCode As String, Optional transactionCode As String = "") As Boolean
+    On Error GoTo err
+    Dim sql As String
+    Dim error As Boolean
+    Dim rs As DAO.Recordset
+    
+    Set srcDb = currentDb
+    sql = "SELECT qcCode FROM data_qc_warnings WHERE report_id = '" & reportId & "' AND qcCode = '" & qcCode & "'"
+    If Not transactionCode = Empty Then sql = sql & " AND transactionCode = '" & transactionCode & "'"
+    Set rs = srcDb.OpenRecordset(sql, dbOpenSnapshot)
+    If Not rs.EOF Then
+        getQCErrorStatus = True
+    Else
+        getQCErrorStatus = False
+    End If
+exit_function:
+    On Error GoTo 0
+    If error = True Then err.Raise vbObjectError + 513, , "Error while trying to get QC Warning status from local database"
+    Exit Function
+err:
+    error = True
+    Resume exit_function
+End Function

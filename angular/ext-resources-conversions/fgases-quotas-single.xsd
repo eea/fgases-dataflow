@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="QuotasRoot">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Quotas" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="CompanyID" type="xs:string" minOccurs="1" />
+							<xs:element name="Quota" type="xs:string" minOccurs="1" />
+							<xs:element name="allocatedQuotaDate" type="xs:date" minOccurs="1" />
+							<xs:element name="availableQuotaDate" type="xs:date" minOccurs="1" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

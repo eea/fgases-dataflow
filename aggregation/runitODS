@@ -1,0 +1,32 @@
+#!/bin/sh
+
+dumpfile="ods-extraction-`date +%F`.sql"
+rm -f $dumpfile
+
+basefile="ods-aggregation-db`date +%F`"
+accessfile="$basefile.accdb"
+zipfile="$basefile.zip"
+rm -f $accessfile
+
+obligation="http://rod.eionet.europa.eu/obligations/213"
+
+echo Grabbing files 
+/usr/bin/python grabfiles.py $obligation -r >> $dumpfile
+
+echo Store data in MS Access
+cp ODS-aggregation-db.accdb $accessfile
+java -jar sqlbatch.jar $accessfile $dumpfile
+
+#zip "$zipfile" "$accessfile"
+# Copy file to network drive
+smbclient '//clu2data/ccbr$' -A smb.auth -W eea <<EoF
+cd "/ODS/ETC ACM working area/2016 - Reporting Year 2015/Databases/Aggregation"
+put $accessfile
+EoF
+
+  
+
+#cleanup
+rm "$dumpfile"
+rm "$accessfile"
+#rm "$zipfile"

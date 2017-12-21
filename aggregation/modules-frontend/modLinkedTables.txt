@@ -1,0 +1,305 @@
+'
+' From Access 97 Developer's Handbook
+' by Litwin, Getz and Gilbert. (Sybex)
+' Copyright 1997. All Rights Reserved.
+'
+Option Compare Database   'Use database order for string comparisons
+Option Explicit
+
+Private Function CheckLink(strTable As String) As Boolean
+     
+    ' Purpose:
+    '     Checks the Link for the named table.
+    '     Based on code from Ken Getz.
+    '
+    ' From Access 97 Developer's Handbook
+    ' by Litwin, Getz and Gilbert. (Sybex)
+    ' Copyright 1997. All Rights Reserved.
+    '
+    ' In:
+    '    strTable - table to check
+    ' Out:
+    '    Return Value - True if successful; False otherwise
+    ' History:
+    '      Created 09/13/94 pel; Last Modified 07/10/96 pel
+
+    Dim varRet As Variant
+    
+    On Error Resume Next
+
+    ' Check for failure. If can't determine the name of
+    ' the first field in the table, the link must be bad.
+    varRet = currentDb.TableDefs(strTable).fields(0).name
+    If err <> 0 Then
+        CheckLink = False
+    Else
+        CheckLink = True
+    End If
+
+End Function
+
+Public Function GetDBDir() As String
+    
+    ' Purpose:
+    '     Gets the directory of the currently open database.
+    '     Based on code originally from Mike Gunderloy.
+    '
+    ' From Access 97 Developer's Handbook
+    ' by Litwin, Getz and Gilbert. (Sybex)
+    ' Copyright 1997. All Rights Reserved.
+    '
+    ' In:
+    '    None
+    ' Out:
+    '    Return Value - The name of the directory as a string
+    ' History:
+    '      Created 09/13/94 pel; Last Modified 12/20/95 pel
+
+    On Error GoTo GetDBDirErr
+
+    Dim dbCurrent As DAO.database
+    Dim strDbName As String
+    Dim strProcName As String
+
+    strProcName = "GetDBDir"
+    
+    Set dbCurrent = currentDb
+    strDbName = dbCurrent.name
+    
+    Do While Right(strDbName, 1) <> "\"
+        strDbName = Left(strDbName, Len(strDbName) - 1)
+    Loop
+
+    GetDBDir = UCase$(strDbName)
+
+GetDBDirDone:
+    On Error GoTo 0
+    Exit Function
+
+GetDBDirErr:
+    Select Case err
+    Case Else
+        MsgBox "Error#" & err.number & ": " & err.Description, _
+         vbOKOnly + vbCritical, strProcName
+        Resume GetDBDirDone
+    End Select
+
+End Function
+
+Function adhVerifyLinks(strDataDatabase As String, strSampleTable As String) As Integer
+   
+    ' Purpose:
+    '     Check status of Links and relinks if broken.
+    '     If broken, first try the current database directory.
+    '     If that fails, present user with file open dialog.
+    '
+    ' From Access 97 Developer's Handbook
+    ' by Litwin, Getz and Gilbert. (Sybex)
+    ' Copyright 1997. All Rights Reserved.
+    '
+    ' In:
+    '     strDataDatabase - Name of backend data database
+    '     strSampleTable  - Name of a linked table to check
+    ' Out:
+    '     Return Value - True if successful; False otherwise
+    ' History:
+    '      Created 09/13/94 pel; Last Modified 12/20/95 pel
+
+    On Error GoTo adhVerifyLinksErr
+
+    Dim varReturn As Variant
+    Dim strDBDir As String
+    Dim strMsg As String
+    Dim db As DAO.database
+    Dim varFileName As Variant
+    Dim tdf As DAO.TableDef, tdfFE As DAO.TableDef, tdfFENew As DAO.TableDef
+    Dim intI As Integer
+    Dim intNumTables As Integer
+    Dim strProcName As String
+    Dim strFilter As String
+    Dim lngFlags As Long
+    Dim dbData As DAO.database, wsp As Workspace
+    
+    Set db = currentDb
+    varReturn = SysCmd(acSysCmdSetStatus, "Initialising back-end links...")
+
+    strProcName = "adhVerifyLinks"
+
+    ' Verify Links using one sample table.
+    varReturn = CheckLink(strSampleTable)
+
+    If varReturn Then
+        adhVerifyLinks = True
+        GoTo adhVerifyLinksDone
+    End If
+    
+    ' Get name of folder where application database is located
+    strDBDir = GetDBDir()
+    
+    If (Dir$(strDBDir & strDataDatabase) <> "") Then
+        ' Data database found in current directory.
+        varFileName = strDBDir & strDataDatabase
+    Else
+        ' Let user find data database using common dialog
+        strMsg = "The required back-end '" & strDataDatabase & _
+         "' could not be found."
+        strMsg = strMsg & " You can use the next dialog box " & _
+         "to locate the file on your system."
+        strMsg = strMsg & " If you cannot find this file or " & _
+         "are unsure what to do choose CANCEL"
+        strMsg = strMsg & " at the next screen and call the " & _
+         "database administrator."
+        MsgBox strMsg, vbOKOnly + vbCritical, "Databases are not linked"
+
+        ' Display Open File dialog using the adhCommonFileOpenSave
+        ' function in the basCommonfile module
+        strFilter = adhAddFilterItem( _
+         strFilter, "Access (*.mdb)", "*.mdb")
+        lngFlags = adhOFN_HIDEREADONLY Or _
+         adhOFN_HIDEREADONLY Or adhOFN_NOCHANGEDIR
+    
+'        If bDemo = True Then
+          varFileName = adhCommonFileOpenSave( _
+            OpenFile:=True, _
+            Filter:=strFilter, _
+            flags:=lngFlags, _
+            DialogTitle:="Locate backend")
+'        Else
+'          varFileName = adhCommonFileOpenSave( _
+'            OpenFile:=True, _
+'            Filter:=strFilter, _
+'            Flags:=lngFlags, _
+'            DialogTitle:="Locate auditdat.mdb")
+'        End If
+        
+        If IsNull(varFileName) Then
+            ' User pressed Cancel.
+            strMsg = "You can't run  functionality of this tool until you can locate '" _
+             & strDataDatabase & "'."
+            MsgBox strMsg, vbOKOnly + vbCritical, "Back-end links not established"
+            adhVerifyLinks = False
+            GoTo adhVerifyLinksDone
+        Else
+            varFileName = adhTrimNull(varFileName)
+        End If
+    End If
+    
+    'Rebuild Links. Check for number of tables first.
+'    Set db = CurrentDb
+'    intNumTables = db.TableDefs.COUNT
+'    varReturn = SysCmd(acSysCmdInitMeter, "Relinking tables", _
+'     intNumTables)
+    
+'    ' Loop through all tables.
+'    ' Reattach those with nonzero-length Connect strings.
+'    intI = 0
+'    For Each tdf In db.TableDefs
+'        ' If connect is blank, its not an Linked table
+'        If Len(tdf.Connect) > 0 Then
+'            intI = intI + 1
+'            tdf.Connect = ";DATABASE=" & varFileName
+    
+'            ' The RefreshLink might fail if the new path
+'            ' isn't OK. So trap errors inline.
+'            On Error Resume Next
+'            tdf.RefreshLink
+'            'If one link bad, return False
+'            If Err <> 0 Then
+'                adhVerifyLinks = False
+'                GoTo adhVerifyLinksDone
+'            End If
+'        End If
+
+'        varReturn = SysCmd(acSysCmdUpdateMeter, intI + 1)
+'    Next tdf
+
+'DS mod: look in back-end for tables, because if linked tables have been
+'deleted from front end, there won't be any tabledefs for the back-end tables
+
+    varReturn = SysCmd(acSysCmdSetStatus, "Opening back-end...")
+    Set dbData = DBEngine.Workspaces(0).OpenDatabase(varFileName)
+    intNumTables = dbData.TableDefs.count
+    varReturn = SysCmd(acSysCmdClearStatus)
+    varReturn = SysCmd(acSysCmdInitMeter, "Relinking tables", _
+     intNumTables)
+    
+    ' Loop through all tables.
+    ' Reattach, but ignore system tables.
+    intI = 0
+    For Each tdf In dbData.TableDefs
+      
+      ' If not a system table
+      If Left(tdf.name, 4) <> "MSys" Then
+        
+        'delete any existing front-end tabledef if there is one
+        For Each tdfFE In db.TableDefs
+          If tdfFE.name = tdf.name Then
+            DoCmd.DeleteObject acTable, tdf.name
+            Exit For
+          End If
+        Next tdfFE
+        'recreate front-end tabledef
+        Set tdfFENew = db.CreateTableDef(tdf.name)
+        intI = intI + 1
+        tdfFENew.Connect = ";DATABASE=" & varFileName
+        tdfFENew.SourceTableName = tdf.name
+        db.TableDefs.Append tdfFENew
+        
+        ' The RefreshLink might fail if the new path
+        ' isn't OK. So trap errors inline.
+        On Error Resume Next
+        tdfFENew.RefreshLink
+        'If one link bad, return False
+        If err <> 0 Then
+            adhVerifyLinks = False
+            GoTo adhVerifyLinksDone
+        End If
+      End If
+
+      varReturn = SysCmd(acSysCmdUpdateMeter, intI + 1)
+    Next tdf
+
+    adhVerifyLinks = True
+  
+    
+    'gvarFileName(glngBackendCount) = varFileName
+    
+    
+'    Set dbData = DBEngine.Workspaces(0).OpenDatabase(varFileName)
+'    strReplicaID = CStr(dbData.ReplicaID)
+'    strDMID = CStr(dbData.DesignMasterID)
+'    strBackend = dbData.NAME
+'    dbData.Close
+    
+adhVerifyLinksDone:
+    On Error Resume Next
+    varReturn = SysCmd(acSysCmdRemoveMeter)
+    On Error GoTo 0
+    Exit Function
+
+adhVerifyLinksErr:
+    Select Case err
+    Case Else
+        MsgBox "Error#" & err.number & ": " & err.Description, _
+         vbOKOnly + vbCritical, strProcName
+    End Select
+    Resume adhVerifyLinksDone
+End Function
+
+Public Sub gBreakLinks()
+'break table links
+Dim db As DAO.database, tdf As DAO.TableDef
+Dim attrib As String, strName As String
+
+Set db = currentDb
+For Each tdf In db.TableDefs
+  attrib = (tdf.Attributes And dbAttachedTable)
+  If attrib Then
+    strName = tdf.name
+    db.Execute "DROP TABLE [" & strName & "]"
+  End If
+Next tdf
+
+'Call DeleteSWMSOrphanTables
+'Call DeleteGWMSOrphanTables
+End Sub

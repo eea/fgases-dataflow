@@ -1,0 +1,152 @@
+<!-- html subform [ng-form="CompanyInfo"] for intro tab -->
+<!--<h2><span translate="generals"></span></h2>-->
+<h2><span translate="company-info.info"></span></h2>
+    <div class="row">
+        <span class="col-md-2"><label translate="company-info.name"></label></span>
+        <span class="col-md-3">{{instance.FGasesReporting.GeneralReportData.Company.CompanyName}}</span>
+        <span class="col-md-1"><label translate="company-info.contact-tel"></label></span>
+        <span class="col-md-1">{{instance.FGasesReporting.GeneralReportData.Company.Telephone}}</span>
+        <span class="col-md-1"><label translate="company-info.website"></label></span>
+        <span class="col-md-3">{{instance.FGasesReporting.GeneralReportData.Company.Website}}</span>
+    </div>
+    <div class="row">
+        <span class="col-md-1"><label translate="company-info.address-street"></label></span>
+        <span class="col-md-2">{{instance.FGasesReporting.GeneralReportData.Company.PostalAddress.StreetAddress}}</span>
+        <span class="col-md-1"><label translate="company-info.address-number"></label></span>
+        <span class="col-md-1">{{instance.FGasesReporting.GeneralReportData.Company.PostalAddress.Number}}</span>
+        <span class="col-md-1"><label translate="company-info.address-postcode"></label></span>
+        <span class="col-md-1">{{instance.FGasesReporting.GeneralReportData.Company.PostalAddress.PostalCode}}</span>
+        <span class="col-md-1"><label translate="company-info.address-city"></label></span>
+        <span class="col-md-1">{{instance.FGasesReporting.GeneralReportData.Company.PostalAddress.City}}</span>
+        <span class="col-md-1" ng-show="instance.FGasesReporting.GeneralReportData.Company.Country.Type == 'EU_TYPE'"><label translate="company-info.eu-country"></label></span>
+        <span class="col-md-1" ng-show="instance.FGasesReporting.GeneralReportData.Company.Country.Type != 'EU_TYPE'"><label translate="company-info.non-eu-country"></label></span>
+        <span class="col-md-2">{{instance.FGasesReporting.GeneralReportData.Company.Country.Name}}</span>
+    </div>
+<div class="row">
+    <span class="col-md-3"><label translate="company-info.vat"></label></span>
+    <span class="col-md-4">{{instance.FGasesReporting.GeneralReportData.Company.VATNumber}}</span>
+</div>
+<div ng-show="instance.FGasesReporting.GeneralReportData.Company.Country.Type == 'NONEU_TYPE'">
+    <h2><span translate="company-info.eu-legal-representative"></span></h2>
+    <div class="row">
+        <span class="col-md-3"><label translate="company-info.eu-vat"></label></span>
+        <span class="col-md-4">{{instance.FGasesReporting.GeneralReportData.Company.EuLegalRepresentativeCompany.VATNumber}}</span>
+    </div>
+    <div class="row">
+        <span class="col-md-2"><label translate="company-info.eu-legal-representative-name"></label></span>
+        <span class="col-md-3">{{instance.FGasesReporting.GeneralReportData.Company.EuLegalRepresentativeCompany.CompanyName}}</span>
+        <span class="col-md-1"><label translate="company-info.contact-tel"></label></span>
+        <span class="col-md-1">{{instance.FGasesReporting.GeneralReportData.Company.EuLegalRepresentativeCompany.Telephone}}</span>
+        <span class="col-md-1"><label translate="company-info.website"></label></span>
+        <span class="col-md-3">{{instance.FGasesReporting.GeneralReportData.Company.EuLegalRepresentativeCompany.Website}}</span>
+    </div>
+    <div class="row">
+        <span class="col-md-1"><label translate="company-info.address-street"></label></span>
+        <span class="col-md-2">{{instance.FGasesReporting.GeneralReportData.Company.EuLegalRepresentativeCompany.PostalAddress.StreetAddress}}</span>
+        <span class="col-md-1"><label translate="company-info.address-number"></label></span>
+        <span class="col-md-1">{{instance.FGasesReporting.GeneralReportData.Company.EuLegalRepresentativeCompany.PostalAddress.Number}}</span>
+        <span class="col-md-1"><label translate="company-info.address-postcode"></label></span>
+        <span class="col-md-1">{{instance.FGasesReporting.GeneralReportData.Company.EuLegalRepresentativeCompany.PostalAddress.PostalCode}}</span>
+        <span class="col-md-1"><label translate="company-info.address-city"></label></span>
+        <span class="col-md-1">{{instance.FGasesReporting.GeneralReportData.Company.EuLegalRepresentativeCompany.PostalAddress.City}}</span>
+        <span class="col-md-1" ng-show="instance.FGasesReporting.GeneralReportData.Company.EuLegalRepresentativeCompany.Country.Type == 'EU_TYPE'"><label translate="company-info.eu-country"></label></span>
+        <span class="col-md-1" ng-show="instance.FGasesReporting.GeneralReportData.Company.EuLegalRepresentativeCompany.Country.Type != 'EU_TYPE'"><label translate="company-info.non-eu-country"></label></span>
+        <span class="col-md-2">{{instance.FGasesReporting.GeneralReportData.Company.EuLegalRepresentativeCompany.Country.Name}}</span>
+    </div>
+    <div class="row">
+        <span class="col-md-3"><label translate="company-info.eu-legal-representative-contact"></label></span>
+        <span class="col-md-2">{{instance.FGasesReporting.GeneralReportData.Company.EuLegalRepresentativeCompany.ContactPerson.FirstName}} {{instance.FGasesReporting.GeneralReportData.Company.EuLegalRepresentativeCompany.ContactPerson.LastName}}</span>
+        <span class="col-md-3"><label translate="company-info.eu-legal-representative-email"></label></span>
+        <span class="col-md-2">{{instance.FGasesReporting.GeneralReportData.Company.EuLegalRepresentativeCompany.ContactPerson.Email}}</span>
+    </div>
+</div>
+<h2><span translate="company-info.contact-info"></span></h2>
+<div class="row" ng-repeat="person in instance.FGasesReporting.GeneralReportData.Company.ContactPersons.ContactPerson">
+    <span class="col-md-1"><label translate="company-info.contact-first-name"></label></span>
+    <span class="col-md-2">{{person.FirstName}}</span>
+    <span class="col-md-1"><label translate="company-info.contact-last-name"></label></span>
+    <span class="col-md-2">{{person.LastName}}</span>
+    <span class="col-md-1"><label translate="company-info.contact-email"></label></span>
+    <span class="col-md-2">{{person.Email}}</span>
+</div>
+<br/>
+
+<div style="margin-top: 1em;" ng-show="instance.FGasesReporting.GeneralReportData.Company['@status'] == 'incomplete'">
+    <button type="button" ng-click="confirmCompanyInfo()" class="btn btn-sm btn-primary">
+        <span>Confirm</span>
+    </button>
+    <button type="button" ng-click="modifyCompanyInfo()" class="btn btn-sm btn-warning">
+        <span>Modify</span>
+    </button>
+</div>
+
+<div class="alert alert-success" ng-show="instance.FGasesReporting.GeneralReportData.Company['@status'] == 'infoconfirmed' || instance.FGasesReporting.GeneralReportData.Company['@status'] == 'confirmed'"><strong>Confirmed!</strong> <span translate="company-info.details-confirmed"></span></div>
+<div class="alert alert-danger" ng-show="instance.FGasesReporting.GeneralReportData.Company['@status'] == 'modified'"><strong>Not confirmed!</strong> <span translate="company-info.details-modified"></span></div>
+
+<div ng-show="instance.FGasesReporting.GeneralReportData.Company['@status'] == 'modified'">
+    <button type="button" ng-click="loadCompanyData(instance.FGasesReporting.GeneralReportData.CompanyId);instance.FGasesReporting.GeneralReportData.Company['@status']='incomplete';companyInfoConfirmed = false" class="btn btn-sm btn-primary">
+        <span class="glyphicon glyphicon-refresh"></span>
+        <span translate="company-info.details-reload"></span>
+    </button>
+</div>
+<div ng-show="instance.FGasesReporting.GeneralReportData.Company['@status'] == 'infoconfirmed' || instance.FGasesReporting.GeneralReportData.Company['@status'] == 'confirmed'">
+<h2><span translate="company-info.affiliation-header"></span></h2>
+<div>
+    <div><span translate="company-info.affiliation-intro"></span></div>
+    <div style="margin-top: 0.5em; margin-bottom: 0.5em;">
+        <button ng-controller="ModalController" tooltip="{{'company-info.affiliation-add-tooltip' | translate}}"
+                ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'company-info.affiliation-modal-title',
+                            'arrayToPush': instance.FGasesReporting.GeneralReportData.Company.Affiliations.Affiliation});"
+                class="btn btn-primary btn-sm"  ng-if="instance.FGasesReporting.GeneralReportData.Company['@status'] != 'confirmed'">
+            <span class="glyphicon glyphicon-plus-sign"></span>
+            <span translate="company-info.affiliation-add"/>
+        </button>
+    </div>
+    <div><span translate="company-info.number-of-affiliations"></span>: {{instance.FGasesReporting.GeneralReportData.Company.Affiliations.Affiliation.length}}</div>
+    <div class="row" ng-repeat="affiliation in instance.FGasesReporting.GeneralReportData.Company.Affiliations.Affiliation" ng-init="partnerIndex = $index">
+        <div>
+            <strong style="margin-right: 0.5em;">{{affiliation.CompanyName}}</strong>
+            <small ng-if="affiliation.isEUBased">
+                <span translate="common.trading-partner-vat-no"></span>
+                <span>: {{affiliation.EUVAT}}</span>
+            </small>
+            <small ng-if="!affiliation.isEUBased">
+                <span translate="common.trading-partner-country"></span>
+                <span>: {{affiliation.NonEUCountryOfEstablishment}}, </span>
+                <span translate="common.trading-partner-representative-name"></span>
+                <span>: {{affiliation.NonEURepresentativeName}}</span>
+            </small>
+        </div>
+        <div>
+            <button ng-controller="ModalController" type="button" class="btn btn-primary btn-xs" style="margin-left: 1em;" ng-if="instance.FGasesReporting.GeneralReportData.Company['@status'] != 'confirmed'"
+                    ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPartnerModalWindowCloseCallBack,
+                            {'title': 'company-info.affiliation-modal-title',
+                            'arrayToPush': instance.FGasesReporting.GeneralReportData.Company.Affiliations.Affiliation,
+                            'index': $index,
+                            'nonEuCountries': codeList.FGasesCodelists.countries.concepts});" >
+                <span translate="common.edit"/>
+            </button>
+            <button type="button" class="btn btn-xs" style="margin-left: 1em;" ng-if="instance.FGasesReporting.GeneralReportData.Company['@status'] != 'confirmed'"
+                    ng-click="remove(instance.FGasesReporting.GeneralReportData.Company.Affiliations.Affiliation, $index, affiliation);">
+                <span translate="common.remove"/>
+            </button>
+        </div>
+    </div>
+</div>
+
+    <div style="margin-top: 2em;" ng-show="instance.FGasesReporting.GeneralReportData.Company['@status'] == 'infoconfirmed'">
+        <button type="button" ng-click="instance.FGasesReporting.GeneralReportData.Company['@status'] = 'confirmed'; gotoTab('Activities');" class="btn btn-sm btn-primary" ng-disabled="instance.FGasesReporting.GeneralReportData.Company.Affiliations.Affiliation.length > 0 ">
+            <span translate="company-info.affiliation-nothing-to-report"></span>
+        </button>
+        <button type="button" ng-click="instance.FGasesReporting.GeneralReportData.Company['@status'] = 'confirmed'" class="btn btn-sm btn-primary" ng-disabled="instance.FGasesReporting.GeneralReportData.Company.Affiliations.Affiliation.length == 0 ">
+            <span translate="company-info.affiliation-confirm"></span>
+        </button>
+    </div>
+    <div class="alert alert-success" ng-show="instance.FGasesReporting.GeneralReportData.Company['@status'] == 'confirmed' && instance.FGasesReporting.GeneralReportData.Company.Affiliations.Affiliation.length == 0"><strong>Confirmed!</strong> <span translate="company-info.affiliation-confirmed-nothing"></span></div>
+    <div class="alert alert-success" ng-show="instance.FGasesReporting.GeneralReportData.Company['@status'] == 'confirmed' && instance.FGasesReporting.GeneralReportData.Company.Affiliations.Affiliation.length > 0"><strong>Confirmed!</strong> <span translate="company-info.affiliation-confirmed-message"></span></div>
+    <button type="button" ng-click="instance.FGasesReporting.GeneralReportData.Company['@status'] = 'infoconfirmed'" class="btn btn-sm btn-primary" ng-if="instance.FGasesReporting.GeneralReportData.Company['@status'] == 'confirmed'">
+        <span translate="company-info.affiliation-edit"></span>
+    </button>
+
+</div>

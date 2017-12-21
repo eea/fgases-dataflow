@@ -1,0 +1,178 @@
+<!-- html subform [ng-form="ActivitiesSelection"] for activities & gases tab -->
+<h2><span translate="intro.reporting-info"></span></h2>
+<table class="intro-table">
+    <tr>
+        <td>
+            <span translate="intro.reporting-year"></span>
+            <span class="glyphicon glyphicon-info-sign row-tooltip" tooltip="{{'intro.reporting-year-tooltip' | translate}}"></span>
+        </td>
+        <td>
+            <select name="ReportingYear" required
+                    ng-init="initTransactionYear()"
+                    ng-model="instance.FGasesReporting.GeneralReportData.TransactionYear"
+                    ng-change="yearSelectionChanged();"
+                    ng-options="year as year for year in reportingYears()" ng-disabled="false"></select>
+        </td>
+       <!--<div class="invalid-msg" error-mapper watch-view="ActivitiesSelection.ReportingYear" errors-to-show='["required"]'></div>-->
+    </tr>
+</table>
+<h2><span translate="activities.heading"></span></h2>
+<table class="table table-hover table-bordered" id="activities-table">
+    <tr>
+        <td colspan="2">
+            <input name="EuProducer" ng-model="instance.FGasesReporting.GeneralReportData.Activities['P']" type="checkbox" ng-disabled="true">
+            <span style="padding-left: 1em;" translate="activities.producer"></span>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-left: 3em;">
+            <input name="EuProducerHFC" ng-model="instance.FGasesReporting.GeneralReportData.Activities['P-HFC']" type="checkbox"
+                   ng-disabled="instance.FGasesReporting.GeneralReportData.Activities['NIL-Report'] || instance.FGasesReporting.GeneralReportData.Company.Country.Type != 'EU_TYPE'"
+                   ng-change="updateActivityUpperCB('P', ['P-HFC', 'P-other']); activitySelectionChanged('P-HFC');" id="act-EuProducerHFC">
+        </td>
+        <td>
+            <span class="glyphicon glyphicon-warning-sign row-tooltip" tooltip="{{'activities.company-should-be-eu-type' | translate}}"
+                  ng-if="instance.FGasesReporting.GeneralReportData.Company.Country.Type != 'EU_TYPE'"></span>
+            <label translate="activities.producer-hfc" for="act-EuProducerHFC"></label>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-left: 3em;">
+            <input name="EuProducerOther" ng-model="instance.FGasesReporting.GeneralReportData.Activities['P-other']" type="checkbox"
+                   ng-disabled="instance.FGasesReporting.GeneralReportData.Activities['NIL-Report'] || instance.FGasesReporting.GeneralReportData.Company.Country.Type != 'EU_TYPE'"
+                   ng-change="updateActivityUpperCB('P', ['P-HFC', 'P-other']); activitySelectionChanged('P-other');" id="act-EuProducerOther">
+        </td>
+        <td>
+            <span class="glyphicon glyphicon-warning-sign row-tooltip" tooltip="{{'activities.company-should-be-eu-type' | translate}}"
+                  ng-if="instance.FGasesReporting.GeneralReportData.Company.Country.Type != 'EU_TYPE'"></span>
+            <label translate="activities.producer-other" for="act-EuProducerOther"></label>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input name="EuImporterBulk" ng-model="instance.FGasesReporting.GeneralReportData.Activities['I']" type="checkbox" ng-disabled="true">
+            <span style="padding-left: 1em;" translate="activities.importer-bulk"></span>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-left: 3em;">
+            <input name="EuImporterBulkHFC" ng-model="instance.FGasesReporting.GeneralReportData.Activities['I-HFC']" type="checkbox"
+                   ng-disabled="instance.FGasesReporting.GeneralReportData.Activities['NIL-Report']"
+                   ng-change="updateActivityUpperCB('I', ['I-HFC', 'I-other']); activitySelectionChanged('I-HFC');" id="act-EuImporterBulkHFC">
+        </td>
+        <td><label translate="activities.importer-bulk-hfc" for="act-EuImporterBulkHFC"></label></td>
+    </tr>
+    <tr>
+        <td style="padding-left: 3em;">
+            <input name="EuImporterBulkOther" ng-model="instance.FGasesReporting.GeneralReportData.Activities['I-other']" type="checkbox"
+                   ng-disabled="instance.FGasesReporting.GeneralReportData.Activities['NIL-Report']"
+                   ng-change="updateActivityUpperCB('I', ['I-HFC', 'I-other']); activitySelectionChanged('I-other');" id="act-EuImporterBulkOther">
+        </td>
+        <td><label translate="activities.importer-bulk-other" for="act-EuImporterBulkOther"></label></td>
+    </tr>
+    <tr>
+        <td>
+            <input name="EuExporterBulk" ng-model="instance.FGasesReporting.GeneralReportData.Activities['E']" type="checkbox"
+                   ng-disabled="instance.FGasesReporting.GeneralReportData.Activities['NIL-Report']" id="act-EuExporterBulk"
+                   ng-change="activitySelectionChanged('E');">
+        </td>
+        <td><label translate="activities.exporter-bulk" for="act-EuExporterBulk"></label></td>
+    </tr>
+    <tr>
+        <td>
+            <input name="EuFeedstockUser" ng-model="instance.FGasesReporting.GeneralReportData.Activities['FU']" type="checkbox"
+                   ng-disabled="instance.FGasesReporting.GeneralReportData.Activities['NIL-Report'] || instance.FGasesReporting.GeneralReportData.Company.Country.Type != 'EU_TYPE'" id="act-EuFeedstockUser"
+                   ng-change="activitySelectionChanged('FU');">
+        </td>
+        <td>
+            <span class="glyphicon glyphicon-warning-sign row-tooltip" tooltip="{{'activities.company-should-be-eu-type' | translate}}"
+                  ng-if="instance.FGasesReporting.GeneralReportData.Company.Country.Type != 'EU_TYPE'"></span>
+            <label translate="activities.feedstock-user" for="act-EuFeedstockUser"></label>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input name="EuDestructionCompany" ng-model="instance.FGasesReporting.GeneralReportData.Activities['D']" type="checkbox"
+                   ng-disabled="instance.FGasesReporting.GeneralReportData.Activities['NIL-Report'] || instance.FGasesReporting.GeneralReportData.Company.Country.Type != 'EU_TYPE'" id="act-EuDestructionCompany"
+                   ng-change="activitySelectionChanged('D');">
+        </td>
+        <td>
+            <span class="glyphicon glyphicon-warning-sign row-tooltip" tooltip="{{'activities.company-should-be-eu-type' | translate}}"
+                  ng-if="instance.FGasesReporting.GeneralReportData.Company.Country.Type != 'EU_TYPE'"></span>
+            <label translate="activities.destruction-company" for="act-EuDestructionCompany"></label>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2"><strong><span translate="activities.manufacturer-containing-fgases"></span></strong></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p><span translate="activities.manufacturer-containing-fgases-info-text"></span></p>
+            <p><span translate="activities.manufacturer-containing-fgases-info-text2"></span></p>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input name="EuImporterFGases" ng-model="instance.FGasesReporting.GeneralReportData.Activities['Eq-I']" type="checkbox" ng-disabled="true">
+            <span style="padding-left: 1em;" translate="activities.importer-fgases"></span>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-left: 3em;">
+            <input name="EuImporterFGasesHFC" ng-model="instance.FGasesReporting.GeneralReportData.Activities['Eq-I-RACHP-HFC']" type="checkbox"
+                   ng-disabled="instance.FGasesReporting.GeneralReportData.Activities['NIL-Report']"
+                   ng-change="updateActivityUpperCB('Eq-I', ['Eq-I-RACHP-HFC', 'Eq-I-other']); activitySelectionChanged('Eq-I-RACHP-HFC'); changeSection11Activities();" id="act-EuImporterFGasesHFC">
+        </td>
+        <td><label translate="activities.importer-fgases-hfc" for="act-EuImporterFGasesHFC"></label></td>
+    </tr>
+    <tr>
+        <td style="padding-left: 3em;">
+            <input name="EuImporterFGasesOther" ng-model="instance.FGasesReporting.GeneralReportData.Activities['Eq-I-other']" type="checkbox"
+                   ng-disabled="instance.FGasesReporting.GeneralReportData.Activities['NIL-Report']"
+                   ng-change="updateActivityUpperCB('Eq-I', ['Eq-I-RACHP-HFC', 'Eq-I-other']); activitySelectionChanged('Eq-I-other'); changeSection11Activities();" id="act-EuImporterFGasesOther">
+        </td>
+        <td><label translate="activities.importer-fgases-other" for="act-EuImporterFGasesOther"></label></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input name="UndertakingAuthorisation" ng-model="instance.FGasesReporting.GeneralReportData.Activities['Auth']" type="checkbox"
+                    ng-disabled="instance.FGasesReporting.GeneralReportData.Activities['NIL-Report'] || instance.FGasesReporting.GeneralReportData.TransactionYear < 2015"
+                    ng-change="instance.FGasesReporting.GeneralReportData.Activities['Auth-NER'] = instance.FGasesReporting.GeneralReportData.Activities['Auth'] == false ? false : instance.FGasesReporting.GeneralReportData.Activities['Auth-NER']"
+                    id="act-UndertakingAuthorisation">
+            <span class="glyphicon glyphicon-warning-sign row-tooltip" tooltip="{{'activities.undertaking-authorisation-transaction-year-tooltip' | translate}}"
+                  ng-if="instance.FGasesReporting.GeneralReportData.TransactionYear < 2015"></span>
+            <label translate="activities.undertaking-authorisation" for="act-UndertakingAuthorisation"></label>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-left: 3em;">
+            <input name="UndertakingAuthorisationNER" ng-model="instance.FGasesReporting.GeneralReportData.Activities['Auth-NER']" type="checkbox"
+                   ng-disabled="!instance.FGasesReporting.GeneralReportData.Activities['Auth']"
+                    id="act-UndertakingAuthorisationNER">
+        </td>
+        <td>
+            <span class="glyphicon glyphicon-warning-sign row-tooltip" tooltip="{{'activities.undertaking-authorisation-ner-disabled-tooltip' | translate}}"
+                  ng-if="!instance.FGasesReporting.GeneralReportData.Activities['Auth']"></span>
+            <label translate="activities.undertaking-authorisation-ner" for="act-UndertakingAuthorisationNER"></label>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p><strong><span translate="activities.nil-report-heading"></span></strong></p>
+            <p><strong><span translate="activities.nil-report-desc"></span></strong></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input name="NILReport" ng-model="instance.FGasesReporting.GeneralReportData.Activities['NIL-Report']" type="checkbox"
+                    ng-disabled="instance.FGasesReporting.GeneralReportData.Activities['P'] ||
+                    instance.FGasesReporting.GeneralReportData.Activities['I'] ||
+                    instance.FGasesReporting.GeneralReportData.Activities['E'] ||
+                    instance.FGasesReporting.GeneralReportData.Activities['FU'] ||
+                    instance.FGasesReporting.GeneralReportData.Activities['D'] ||
+                    instance.FGasesReporting.GeneralReportData.Activities['Eq-I'] ||
+                    instance.FGasesReporting.GeneralReportData.Activities['Auth']" id="act-NILReport">
+        </td>
+        <td><label translate="activities.nil-report" for="act-NILReport"></label></td>
+    </tr>
+</table>

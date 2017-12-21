@@ -1,0 +1,12 @@
+[cdr]
+server: http://cdrtest.eionet.europa.eu/
+username: username
+password: secret
+released: 1
+testdata: 0
+obligation: http://rod.eionet.europa.eu/obligations/669
+
+[ftp]
+server: ftp.eea.europa.eu
+username: eeaftp
+password:

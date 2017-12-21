@@ -1,0 +1,244 @@
+Option Compare Database
+Option Explicit
+Public Const XML_HEADER = "<?xml version=""1.0"" encoding=""utf-8""?>"
+Public Const XML_NS = " xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"""
+Public Const XML_LANG = " xml:lang=""en"""
+
+Public Const XML_FOOTER = ""
+Public Const XML_ENCODING = "UTF-8"
+Public Const XML_REPORTS_COUNT = "N" ' "1" or "N"
+
+Public Const XML_ROOT_TAG = "FGases"
+Public Const XML_GAS_TAG = "Gas"
+Public Const XML_GAS_ID_TAG = "GasId"
+Public Const XML_COMPONENT_ID_TAG = "ComponentId"
+Public Const XML_GAS_CODE_TAG = "Code"
+Public Const XML_GAS_Name_TAG = "Name"
+Public Const XML_GAS_GROUP_ID_TAG = "GasGroupId"
+Public Const XML_GAS_GROUP_NAME_TAG = "GasGroupName"
+Public Const XML_ISBLEND_TAG = "IsBlend"
+Public Const XML_ISSHORTLISTED_TAG = "IsShortlisted"
+Public Const XML_ISCUSTOM_TAG = "IsCustom"
+Public Const XML_BLENDCOMPOSITION_TAG = "BlendComposition"
+Public Const XML_BLENDCOMPONENTS_TAG = "BlendComponents"
+Public Const XML_COMPONENT_TAG = "Component"
+Public Const XML_PERCENTAGE_TAG = "Percentage"
+Public Const XML_GWP_AR4_100_TAG = "GWP_AR4_100"
+Public Const XML_GWP_AR4_HFC_TAG = "GWP_AR4_HFC"
+Public Const XML_GWP_AR4_AnnexIV_TAG = "GWP_AR4_AnnexIV"
+Dim gasesDb As database
+
+Sub ExportGasesXML2015(strFileName As String, strDbFileName As String)
+    Dim objStream
+    Dim rs As Recordset
+    Dim rs2 As Recordset
+    Dim rs3 As Recordset
+    Dim iTab As Integer
+    Dim gasId As Integer
+    Dim gasName As String
+    Dim blendId As Integer
+    Dim blendComposition As String
+    
+    On Error GoTo err_exp
+    
+    Set gasesDb = OpenDatabase(strDbFileName)
+    
+    Set rs = gasesDb.OpenRecordset("SELECT g.Gas_ID, g.Gas_Group, g.gas_name_display, g.gas_name_IA, Blend, shortlisted, GG_name, custom, gwp.GWP_AR4_HFC, gwp.GWP_AR4_AnnexIV FROM (tbl_gases AS g LEFT JOIN tbl_gas_groups AS gg ON g.Gas_group=gg.GG_id ) LEFT JOIN qryBlendGWP AS gwp ON g.Gas_ID=gwp.Gas_ID WHERE g.gas_name_IA <> 'HFC' ORDER BY g.sortkey, g.Gas_Group, g.Gas_ID", dbOpenSnapshot)
+    Set rs2 = gasesDb.OpenRecordset("SELECT bc.Gas_ID as Gas_ID, bc.Percentage, c.Component_ID as Component_ID, c.comp_group, c.component_name_display, c.component_name_IA, c.GWP_AR4_100, GG_name " & _
+            "FROM (tbl_components c INNER JOIN tbl_blendcomposition bc ON c.Component_ID = bc.Component_ID) LEFT JOIN tbl_gas_groups ON c.comp_group=tbl_gas_groups.GG_id order by bc.Component_ID", dbOpenSnapshot)
+    Set rs3 = gasesDb.OpenRecordset("SELECT Component_ID, Comp_Group, component_name_display, component_name_IA, GG_name, GWP_AR4_100 FROM tbl_components LEFT JOIN tbl_gas_groups ON tbl_components.Comp_group=tbl_gas_groups.GG_id ORDER BY Comp_Group, Component_ID", dbOpenSnapshot)
+
+    Set objStream = CreateObject("ADODB.Stream")
+    objStream.Open
+    objStream.position = 0
+    objStream.Charset = "UTF-8"
+    objStream.Type = 2
+    
+    iTab = 1
+    
+    objStream.WriteText XML_HEADER & vbNewLine
+    objStream.WriteText "<" & XML_ROOT_TAG & ">" & vbNewLine
+    
+    Do While rs.EOF = False
+        objStream.WriteText TabsXML(iTab) & XmlElementStart(XML_GAS_TAG) & vbNewLine
+        iTab = iTab + 1
+        gasId = NullStr(rs("Gas_ID"))
+        blendComposition = ""
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_GAS_ID_TAG, NullStr(rs("Gas_ID"))) & vbNewLine
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_GAS_CODE_TAG, NullStr(rs("gas_name_IA"))) & vbNewLine
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_GAS_Name_TAG, NullStr(rs("gas_name_display"))) & vbNewLine
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_GAS_GROUP_ID_TAG, NullStr(rs("Gas_Group"))) & vbNewLine
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_GAS_GROUP_NAME_TAG, NullStr(rs("GG_name"))) & vbNewLine
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_GWP_AR4_HFC_TAG, CorrectValueFormating(NullStr(rs("GWP_AR4_HFC")), dbDecimal)) & vbNewLine
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_GWP_AR4_AnnexIV_TAG, CorrectValueFormating(NullStr(rs("GWP_AR4_AnnexIV")), dbDecimal)) & vbNewLine
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_ISSHORTLISTED_TAG, LCase(NullStr(rs("shortlisted")))) & vbNewLine
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_ISCUSTOM_TAG, LCase(NullStr(rs("custom")))) & vbNewLine
+        
+        'If Mid(gasName, 1, 4) = "Mix:" Then
+        '    gasName = "Preparation" & Mid(gasName, 4)
+        'End If
+        'objStream.WriteText TabsXML(iTab) & XmlTag(XML_GAS_CODE_TAG, gasName, "desc=""""") & vbNewLine
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_ISBLEND_TAG, LCase(NullStr(rs("Blend")))) & vbNewLine
+        'If rs("Blend") = "True" Then
+            objStream.WriteText TabsXML(iTab) & XmlElementStart(XML_BLENDCOMPONENTS_TAG) & vbNewLine
+            iTab = iTab + 1
+            rs2.MoveFirst
+            Do While rs2.EOF = False
+                If rs2("Gas_ID") = gasId Then
+                    objStream.WriteText TabsXML(iTab) & XmlElementStart(XML_COMPONENT_TAG) & vbNewLine
+                    iTab = iTab + 1
+                    objStream.WriteText TabsXML(iTab) & XmlTag(XML_COMPONENT_ID_TAG, NullStr(rs2("Component_ID"))) & vbNewLine
+                    objStream.WriteText TabsXML(iTab) & XmlTag(XML_GAS_CODE_TAG, NullStr(rs2("component_name_IA"))) & vbNewLine
+                    objStream.WriteText TabsXML(iTab) & XmlTag(XML_GAS_Name_TAG, NullStr(rs2("component_name_display"))) & vbNewLine
+                    objStream.WriteText TabsXML(iTab) & XmlTag(XML_GAS_GROUP_ID_TAG, NullStr(rs2("comp_Group"))) & vbNewLine
+                    objStream.WriteText TabsXML(iTab) & XmlTag(XML_GAS_GROUP_NAME_TAG, NullStr(rs2("GG_name"))) & vbNewLine
+                    If rs2("comp_Group") = 1 Then
+                        objStream.WriteText TabsXML(iTab) & XmlTag(XML_GWP_AR4_HFC_TAG, CorrectValueFormating(NullStr(rs2("GWP_AR4_100")), dbDecimal)) & vbNewLine
+                    Else
+                        objStream.WriteText TabsXML(iTab) & XmlTag(XML_GWP_AR4_HFC_TAG, "0") & vbNewLine
+                    End If
+                    objStream.WriteText TabsXML(iTab) & XmlTag(XML_GWP_AR4_AnnexIV_TAG, CorrectValueFormating(NullStr(rs2("GWP_AR4_100")), dbDecimal)) & vbNewLine
+                    objStream.WriteText TabsXML(iTab) & XmlTag(XML_PERCENTAGE_TAG, CorrectValueFormating(rs2("Percentage") * 100, dbDecimal)) & vbNewLine
+                    iTab = iTab - 1
+                    objStream.WriteText TabsXML(iTab) & XmlElementEnd(XML_COMPONENT_TAG) & vbNewLine
+                    blendComposition = blendComposition + NullStr(rs2("component_name_IA")) & ": " & CorrectValueFormating(rs2("Percentage") * 100, dbDecimal) & "%; "
+                End If
+            rs2.MoveNext
+            Loop
+            iTab = iTab - 1
+            If Len(blendComposition) > 0 And Right(blendComposition, 1) = " " Then
+                blendComposition = Left(blendComposition, Len(blendComposition) - 1)
+            End If
+            objStream.WriteText TabsXML(iTab) & XmlElementEnd(XML_BLENDCOMPONENTS_TAG) & vbNewLine
+            If rs("Blend") = "True" Then
+                objStream.WriteText TabsXML(iTab) & XmlTag(XML_BLENDCOMPOSITION_TAG, blendComposition) & vbNewLine
+            End If
+        'End If
+        iTab = iTab - 1
+        objStream.WriteText TabsXML(iTab) & XmlElementEnd(XML_GAS_TAG) & vbNewLine
+        rs.MoveNext
+    Loop
+    Do While rs3.EOF = False
+        objStream.WriteText TabsXML(iTab) & XmlElementStart(XML_COMPONENT_TAG) & vbNewLine
+        iTab = iTab + 1
+        
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_COMPONENT_ID_TAG, NullStr(rs3("Component_ID"))) & vbNewLine
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_GAS_CODE_TAG, NullStr(rs3("component_name_IA"))) & vbNewLine
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_GAS_Name_TAG, NullStr(rs3("component_name_display"))) & vbNewLine
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_GAS_GROUP_ID_TAG, NullStr(rs3("comp_Group"))) & vbNewLine
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_GAS_GROUP_NAME_TAG, NullStr(rs3("GG_name"))) & vbNewLine
+        If rs3("comp_Group") = 1 Then
+            objStream.WriteText TabsXML(iTab) & XmlTag(XML_GWP_AR4_HFC_TAG, NullStr(rs3("GWP_AR4_100"))) & vbNewLine
+        Else
+            objStream.WriteText TabsXML(iTab) & XmlTag(XML_GWP_AR4_HFC_TAG, "0") & vbNewLine
+        End If
+        objStream.WriteText TabsXML(iTab) & XmlTag(XML_GWP_AR4_AnnexIV_TAG, NullStr(rs3("GWP_AR4_100"))) & vbNewLine
+    
+        iTab = iTab - 1
+        objStream.WriteText TabsXML(iTab) & XmlElementEnd(XML_COMPONENT_TAG) & vbNewLine
+        rs3.MoveNext
+    Loop
+    objStream.WriteText XmlElementEnd(XML_ROOT_TAG)
+    
+    objStream.SaveToFile strFileName, 2
+    
+    GoTo exit_exp
+    
+err_exp:
+    MsgBox "Error exporting gases to XML: " & err.Description
+    GoTo exit_exp
+exit_exp:
+On Error Resume Next
+    If objStream Is Not Null And Not objStream Is Nothing Then
+        objStream.Close
+    End If
+    If Not rs Is Nothing Then
+        rs.Close
+    End If
+    If Not rs2 Is Nothing Then
+        rs2.Close
+    End If
+    If Not rs3 Is Nothing Then
+        rs3.Close
+    End If
+    If Not gasesDb Is Nothing Then
+        gasesDb.Close
+    End If
+    Set rs = Nothing
+    Set rs2 = Nothing
+    Set rs3 = Nothing
+    Set objStream = Nothing
+    Set gasesDb = Nothing
+    
+End Sub
+
+Public Function XmlEncode(ByVal strXml As String) As String
+On Error GoTo xmle_Err:
+    XmlEncode = strXml
+    
+    Dim strTmp As String
+    
+    strTmp = strXml
+    strTmp = Replace(strTmp, "&", "&amp;")
+    strTmp = Replace(strTmp, "<", "&lt;")
+    strTmp = Replace(strTmp, ">", "&gt;")
+    strTmp = Replace(strTmp, """", "&quot;")
+    strTmp = Replace(strTmp, "'", "&amp;")
+    
+    XmlEncode = strTmp
+    
+    Exit Function
+xmle_Err:
+    
+End Function
+
+
+' returns tabs
+Public Function TabsXML(intTabCount As Integer) As String
+    Dim i As Integer
+    Dim strTab As String
+    For i = 1 To intTabCount
+        strTab = strTab & "    "
+    Next
+    TabsXML = strTab
+End Function
+
+Public Function XmlTag(strTagName As String, strValue As String, Optional sAttr As String) As String
+    XmlTag = XmlElementStart(strTagName, sAttr) & XmlEncode(strValue) & XmlElementEnd(strTagName)
+End Function
+Public Function XmlElementStart(strElemName As String, Optional sAttr As String) As String
+    XmlElementStart = "<" & strElemName
+    If Len(sAttr) > 0 Then
+        XmlElementStart = XmlElementStart & " " & sAttr
+    End If
+    XmlElementStart = XmlElementStart & ">"
+End Function
+Public Function XmlElementEnd(strElemName As String) As String
+    XmlElementEnd = "</" & strElemName & ">"
+End Function
+Public Function XmlEmptyElement(strElemName As String) As String
+    XmlEmptyElement = "<" & strElemName & "/>"
+End Function
+
+' returns empty string or given default if given parameter is null
+Public Function NullStr(str As Variant, Optional strDef As String = "") As String
+    NullStr = IIf(IsNull(str), strDef, str)
+End Function
+
+Public Function NullInt(i As Variant, Optional iDef As Integer = 0) As Integer
+    NullInt = IIf(IsNull(i), iDef, i)
+End Function
+
+
+Function CorrectValueFormating(ByVal varValue As Variant, ByVal intDataType As Integer) As String
+    
+    Select Case intDataType
+        Case dbDecimal
+            CorrectValueFormating = CStr(varValue)
+            Do While CorrectValueFormating Like "*,*"
+               CorrectValueFormating = Left(CorrectValueFormating, InStr(1, CorrectValueFormating, ",") - 1) & "." & Mid(CorrectValueFormating, InStr(1, CorrectValueFormating, ",") + 1)
+            Loop
+        Case Else
+            CorrectValueFormating = CStr(varValue)
+    End Select
+End Function

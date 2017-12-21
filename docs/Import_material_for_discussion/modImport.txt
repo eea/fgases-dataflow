@@ -1,0 +1,461 @@
+Attribute VB_Name = "modImport"
+Option Compare Database
+
+Private connExcel As New ADODB.Connection
+Private connAccess As New ADODB.Connection
+Private rst As New ADODB.Recordset
+Private reportRowNumber As Integer
+Private reportFileNumber As Integer
+Private errortext As String
+Private Const MAXCOLS = 20
+Private Const DATEFORMAT = "dd/mm/yyyy"
+
+
+
+
+Sub pcImport(ByRef rstDateinamen() As String, ByRef myReportData() As Collection)
+    Dim intAnzahl As Integer
+    Dim rstExcel As New ADODB.Recordset
+    Dim rstAccess As New ADODB.Recordset
+    Set connAccess = CurrentProject.Connection
+    reportFileNumber = 0
+    For Each myfilename In rstDateinamen
+    
+        reportRowNumber = 0
+        
+        '***Connection zur Exceltabelle
+        With connExcel
+            .Provider = "Microsoft.ACE.OLEDB.12.0"
+            .ConnectionString = "Data Source=" & myfilename & ";Extended Properties=""Excel 12.0;IMEX=1;HDR=YES;"""
+            .CursorLocation = adUseClient
+            .Open
+        End With
+        
+        On Error GoTo ErrorNotValidExcelFileRstExcel
+        rstExcel.Open "SELECT * FROM [Importinterface$]", connExcel
+        On Error GoTo ErrorNotValidExcelFileRstAccess
+        '***Connection zur Accesstabelle
+        rstAccess.Open "main_report", connAccess, adOpenDynamic, adLockOptimistic
+        On Error GoTo ErrorNotValidExcelFile
+        Do While rstExcel.EOF = False
+            Dim actorId As Integer, companyId As Integer, countryId As Integer, transactionId As Integer, gasId As Integer, blendId As Integer, valueT As Double
+            Dim companyNo As String, valueTString As String, descriptionS As String, descriptionPC As String, reportStatus As String, transactionyear As String, coProducer As String
+            Dim submissiondate As Date, submissiondatestr As String
+            Dim myrow As Range
+            Dim isValid As Boolean, isVisible As Boolean, rowIgnored As Boolean, isExportForSupply As Boolean
+            Dim fileParts() As String
+            Dim myRealFileName As String
+            fileParts = Split(myfilename, "\")
+            myRealFileName = fileParts(UBound(fileParts))
+            rowIgnored = False
+            
+            ' generate Values to import
+            If Not IsNull(rstExcel!Actor_ID) Or Not rstExcel!Actor_ID = "" Then
+                actorId = Val(rstExcel!Actor_ID)
+            End If
+            
+            
+            If Not IsNull(rstExcel!Transaction_ID) Or Not rstExcel!Transaction_ID = "" Then
+                transactionId = Val(rstExcel!Transaction_ID)
+            End If
+            If Not IsNull(rstExcel!Blend_ID) Or Not rstExcel!Blend_ID = "" Then
+                blendId = Val(rstExcel!Blend_ID)
+            End If
+            If Not IsNull(rstExcel!gas_id) Or Not rstExcel!gas_id = "" Then
+                gasId = Val(rstExcel!gas_id)
+            End If
+            If Not IsNull(rstExcel!coProducer) Or Not rstExcel!coProducer = "" Then
+                coProducer = rstExcel!coProducer
+            End If
+                      
+            If Not IsNull(rstExcel!Value_t) Then
+                valueTString = Replace(rstExcel!Value_t, " ", "")
+            End If
+                      
+            If valueTString = "" Then
+                valueT = 0
+                rowIgnored = True
+                errortext = "No value"
+            Else
+                valueT = CDbl(valueTString)
+            End If
+            
+            If Not IsNull(rstExcel!Transaction_year) Or Not rstExcel!Transaction_year = "" Then
+                transactionyear = rstExcel!Transaction_year
+                If Val(transactionyear) < 2000 Then
+                    errortext = "Transaction_year is invalid."
+                    GoTo wrongData
+                End If
+            Else
+                errortext = "Transaction_year is invalid."
+                GoTo wrongData
+            End If
+                                             
+            If Not IsNull(rstExcel!Company_No) Or Not rstExcel!Company_No = "" Then
+                companyNo = rstExcel!Company_No
+            End If
+            
+
+            If Not IsNull(rstExcel!descriptionS) Or Not rstExcel!descriptionS = "" Then
+                descriptionS = rstExcel!descriptionS
+            End If
+            
+            If Not IsNull(rstExcel!Description_preparation_composition) Or Not rstExcel!Description_preparation_composition = "" Then
+                descriptionPC = rstExcel!Description_preparation_composition
+            End If
+            
+            If Not IsNull(rstExcel!Report_submissiondate) Then
+                submissiondatestr = Replace(rstExcel!Report_submissiondate, " ", "")
+            End If
+            
+            
+            If isDateValid(submissiondatestr) Then
+                submissiondate = CDate(Replace(submissiondatestr, ".", "/"))
+            End If
+            
+            If Not IsNull(rstExcel!visible) And rstExcel!visible = "yes" Then
+                isVisible = True
+            Else
+                isVisible = False
+            End If
+            
+            'If Not IsNull(rstExcel!Mandatory) And rstExcel!Mandatory = "yes" Then
+            '    isMandatory = True
+            'Else
+            '    isMandatory = False
+            'End If
+            
+            If Not IsNull(rstExcel!Export_for_Supply_Flag) And rstExcel!Export_for_Supply_Flag = "yes" Then
+                isExportForSupply = True
+            Else
+                isExportForSupply = False
+            End If
+            
+            
+            If Not IsNull(rstExcel!Status_Tier2) Or Not rstExcel!Status_Tier2 = "" Then
+                reportStatus = rstExcel!Status_Tier2
+            Else
+                reportStatus = "not checked"
+            End If
+            
+            If Not IsNull(rstExcel!Import_data) Then
+                If rstExcel!Import_data = "no" Then
+                    rowIgnored = True
+                    errortext = "import_data=no"
+                End If
+            End If
+            
+            
+            isValid = checkForDatabase(actorId, transactionId, transactionyear, gasId, 0)
+            
+            If isValid And Not rowIgnored Then
+            
+            
+                ' get Company
+                
+                If existElementInDB("companies", "Company_No", companyNo) Then
+                        companyId = fcCompanyID(companyNo)
+                Else
+                    errortext = "Company doesnt exists."
+                    GoTo wrongData
+                End If
+                
+                
+                
+                
+                ' insert Report
+                
+                If reportExists(myRealFileName, gasId, transactionId, transactionyear) Then
+                    errortext = "Report exists in Database"
+                    GoTo wrongData
+                Else
+                
+                
+                    ' insert Status
+                    On Error GoTo ErrorDBInsertStatus
+                    If Not existElementInDB("tbl_StatusSubmission", "Report_submission_no", myRealFileName) Then
+                        InitTable ("tbl_StatusSubmission")
+                        rst.AddNew "Report_submission_no", myRealFileName
+                        With rst
+                            .Fields("Status_Tier2").Value = reportStatus
+                            .Update
+                        End With
+                        rst.Close
+                    Else
+                        InitTable ("tbl_StatusSubmission")
+                        rst.Close
+                        rst.Source = "SELECT * FROM tbl_StatusSubmission WHERE Report_submission_no='" & myRealFileName & "'"
+                        rst.Open
+                        rst.MoveFirst
+                        If Not rst.EOF Then
+                            rst!Status_Tier2 = reportStatus
+                        End If
+                        rst.Update
+                        rst.Close
+                    End If
+                    On Error GoTo ErrorDBInsertReport
+                    ' insert Report
+                    rstAccess.AddNew                                                            'neuen Ds anhängen
+                    rstAccess!Company_ID = companyId                   'Daten aus Exceltabelle in Felder schreiben
+                    rstAccess!Actor_ID = actorId
+                    rstAccess!Transaction_ID = transactionId
+                    rstAccess!Report_submission_no = myRealFileName
+                    If Not coProducer = "" Then
+                        rstAccess!coProducer = coProducer
+                    End If
+                    If Not IsNull(submissiondate) Then
+                        rstAccess!Report_submissiondate = submissiondate
+                    End If
+                    rstAccess!Transaction_year = transactionyear
+                    rstAccess!gas_id = gasId
+                    'If Not blendId = 0 Then
+                    '    rstAccess!Blend_ID = blendId
+                    'End If
+                    
+                    If Not descriptionS = "" And Len(descriptionS) < 255 Then
+                        rstAccess!descriptionS = descriptionS
+                    ElseIf Len(descriptionS) > 254 Then
+                        errortext = "DescriptionS too long"
+                    End If
+                    If Not descriptionPC = "" And Len(descriptionPC) < 255 Then
+                        rstAccess!Description_preparation_composition = descriptionPC
+                    ElseIf Len(descriptionPC) > 254 Then
+                        errortext = "DescriptionPC too long"
+                    End If
+                    rstAccess!Value_t = valueT
+                    rstAccess!visible = isVisible
+                    'rstAccess!Mandatory = isMandatory
+                    rstAccess!Export_for_Supply_Flag = isExportForSupply
+                    On Error GoTo ErrorDatabase
+                    rstAccess.Update
+                End If
+                
+                
+                
+                                                                           'zum nächsten Ds
+            End If
+wrongData:
+            rstExcel.MoveNext
+            generateErrorMessages myReportData
+            reportRowNumber = reportRowNumber + 1
+        Loop
+        rstExcel.Close
+        connExcel.Close
+        rstAccess.Close
+        GoTo NextForPosition
+ErrorNotValidExcelFile:
+        errortext = "Not a valid Excel File " & myfilename
+        generateErrorMessages myReportData
+        rstExcel.Close
+        connExcel.Close
+        rstAccess.Close
+        GoTo NextForPosition
+ErrorNotValidExcelFileRstExcel:
+        errortext = "Not a valid Excel File " & myfilename
+        generateErrorMessages myReportData
+        connExcel.Close
+        GoTo NextForPosition
+ErrorDatabase:
+        errortext = Err.Number & ": " & Err.Description
+        generateErrorMessages myReportData
+        GoTo ErrorDBInsertReport
+ErrorNotValidExcelFileRstAccess:
+        errortext = "Not a valid Excel File " & myfilename
+        generateErrorMessages myReportData
+        rstExcel.Close
+        connExcel.Close
+NextForPosition:
+        reportFileNumber = reportFileNumber + 1
+    Next
+        
+    connAccess.Close
+    Set connExcel = Nothing
+    Set connAccess = Nothing
+    Set rstExcel = Nothing
+    Set rstAccess = Nothing
+    Exit Sub
+
+
+ErrorDBInsertCompany:
+    connAccess.Close
+    Set connExcel = Nothing
+    Set connAccess = Nothing
+    Set rstExcel = Nothing
+    Set rstAccess = Nothing
+    MsgBox ("Error when trying to create new Company in DB")
+    Exit Sub
+    
+ErrorDBInsertReport:
+    connAccess.Close
+    Set connExcel = Nothing
+    Set connAccess = Nothing
+    Set rstExcel = Nothing
+    Set rstAccess = Nothing
+    MsgBox ("Error when trying to create new Report in DB")
+    Exit Sub
+    
+ErrorDBInsertStatus:
+    connAccess.Close
+    Set connExcel = Nothing
+    Set connAccess = Nothing
+    Set rstExcel = Nothing
+    Set rstAccess = Nothing
+    MsgBox ("Error when trying to create new Status in DB")
+    Exit Sub
+    
+End Sub
+
+Private Sub InitTable(tblName As String)
+On Error GoTo ErrorHandling3
+    If rst.State = adStateOpen Then
+        rst.Close
+    End If
+    Set rst.ActiveConnection = connAccess 'aktive Verbindung zuweisen
+  
+    rst.LockType = adLockOptimistic
+
+    rst.Source = "Select * From " & tblName 'ganze Tabelle
+
+    rst.Open 'Tabelle öffnen
+    Exit Sub
+ErrorHandling3:
+    Debug.Print ("Error in Sub InitTable in Line " & Erl & ":")
+    Debug.Print ("[" & Err.Number & "]" & Err.Description)
+    Debug.Print ("SQL Query: " & rst.Source)
+    If rst.State = adStateOpen Then
+        rst.Close
+    End If
+End Sub
+
+
+Private Function checkForDatabase(actorId As Integer, transactionId As Integer, transactionyear As String, gasId As Integer, blendId As Integer) As Boolean
+    If Not existElementInDB("actor", "actor_ID", actorId) Then
+        checkForDatabase = False
+        errortext = "Actor with ID " & actorId & " does not exist."
+    ElseIf Not existElementInDB("transaction", "Transaction_ID", transactionId) Then
+        checkForDatabase = False
+        errortext = "Transaction with ID " & transactionId & " does not exist."
+    ElseIf Not existElementInDB("gases", "Gas_ID", gasId) Then
+        checkForDatabase = False
+        errortext = "Gas with ID " & gasId & " does not exist."
+    ElseIf Not existElementInDB("blends", "Blend_ID", blendId) Then
+        If blendId = 0 Then
+            checkForDatabase = True
+        Else
+            checkForDatabase = False
+            errortext = "Blend with ID " & blendId & " does not exist."
+        End If
+    ElseIf transactionyear = "" Then
+        checkForDatabase = False
+        errortext = "TransactionYear darf nicht leer sein"
+    Else
+        checkForDatabase = True
+    End If
+    
+End Function
+
+Private Function isDateValid(strdate As String) As Boolean
+    Dim myparts() As String
+    myparts = Split(strdate, "/")
+    myparts2 = Split(strdate, ".")
+    
+    If (UBound(myparts) - LBound(myparts) + 1) = 3 Then
+        If Len(myparts(0)) = 2 And Len(myparts(1)) = 2 And Len(myparts(2)) = 4 Then
+            isDateValid = True
+            Exit Function
+        End If
+    End If
+    If (UBound(myparts2) - LBound(myparts2) + 1) = 3 Then
+        If Len(myparts2(0)) = 2 And Len(myparts2(1)) = 2 And Len(myparts2(2)) = 4 Then
+            isDateValid = True
+            Exit Function
+        End If
+    End If
+    isDateValid = False
+End Function
+
+Private Function existElementInDB(tablename, fieldname, fieldvalue) As Boolean
+On Error GoTo ErrorHandling5
+    Dim tempDelimiter As String
+    tempDelimiter = ""
+    
+    If TypeName(fieldvalue) = "String" Then
+        tempDelimiter = "'"
+    End If
+    
+    
+    If rst.State = adStateOpen Then
+        rst.Close
+    End If
+    Set rst.ActiveConnection = connAccess 'aktive Verbindung zuweisen
+    rst.LockType = adLockOptimistic
+    rst.Source = "SELECT Count(*) AS anzahl FROM [" & tablename & "] WHERE [" & fieldname & "] = " & tempDelimiter & fieldvalue & tempDelimiter
+    rst.Open 'Tabelle öffnen
+    If rst!anzahl <= 0 Then
+        existElementInDB = False
+    Else
+        existElementInDB = True
+    End If
+    rst.Close
+    Exit Function
+ErrorHandling5:
+    Debug.Print ("Error in Sub existElementInDB in Line " & Erl & ":")
+    Debug.Print ("[" & Err.Number & "]" & Err.Description)
+    Debug.Print ("SQL Query: " & rst.Source)
+    If rst.State = adStateOpen Then
+        rst.Close
+    End If
+    existElementInDB = False
+End Function
+
+Private Function reportExists(sub_no As String, gas_id As Integer, trans_id As Integer, trans_year As String) As Boolean
+    On Error GoTo ErrorHandling6
+    If rst.State = adStateOpen Then
+        rst.Close
+    End If
+    Set rst.ActiveConnection = connAccess 'aktive Verbindung zuweisen
+    rst.LockType = adLockOptimistic
+    rst.Source = "SELECT Count(*) AS anzahl FROM main_report WHERE Report_submission_no='" & sub_no & "' AND Gas_ID=" & gas_id & " AND Transaction_ID=" & trans_id & " AND Transaction_year='" & trans_year & "'"
+    rst.Open 'Tabelle öffnen
+    If rst!anzahl <= 0 Then
+        reportExists = False
+    Else
+        reportExists = True
+    End If
+    rst.Close
+    Exit Function
+ErrorHandling6:
+    Debug.Print ("Error in Sub existElementInDB in Line " & Erl & ":")
+    Debug.Print ("[" & Err.Number & "]" & Err.Description)
+    Debug.Print ("SQL Query: " & rst.Source)
+    If rst.State = adStateOpen Then
+        rst.Close
+    End If
+    reportExists = False
+End Function
+
+
+Private Sub generateErrorMessages(ByRef myReportData() As Collection)
+    If errortext = "" Or errortext = "import_data=no" Or errortext = "No value" Then
+        'myReportData(reportFileNumber).Add ("Row " & reportRowNumber + 1 & ": OK")
+    Else
+        myReportData(reportFileNumber).Add ("Row " & reportRowNumber + 1 & ": " & errortext)
+    End If
+    errortext = ""
+End Sub
+
+
+Function fcCompanyID(CompName)  'ermittelt für Company_name die zugehörige ID aus Tabelle Companies
+    Dim rst As New Recordset
+    Dim conn As New Connection
+    Set conn = CurrentProject.Connection
+    CompName = Trim(CompName)
+    rst.Open "SELECT * FROM companies WHERE Company_No='" & CompName & "'", conn
+    fcCompanyID = rst!Company_ID
+    rst.Close
+    conn.Close
+    Set conn = Nothing
+    Set rst = Nothing
+End Function
+
+

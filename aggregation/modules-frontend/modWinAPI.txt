@@ -1,0 +1,9 @@
+Option Compare Database
+Option Explicit
+
+'This module is about having advanced functions that might be needed in development.
+#If VBA7 Then
+    Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal miliseconds As Long)
+#Else
+    Declare Sub Sleep Lib "kernel32" (ByVal miliseconds As Long)
+#End If

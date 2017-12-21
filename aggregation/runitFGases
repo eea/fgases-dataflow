@@ -1,0 +1,33 @@
+#!/bin/sh
+
+dumpfile="fgases-extraction-`date +%F`.sql"
+rm -f $dumpfile
+
+basefile="fgases-aggregation-db`date +%F`"
+accessfile="$basefile.accdb"
+#zipfile="$basefile.zip"
+
+rm -f $accessfile
+
+obligation="http://rod.eionet.europa.eu/obligations/713"
+
+echo Grabbing files 
+python grabfiles.py $obligation -r >> $dumpfile
+
+echo Store data in MS Access
+
+cp FGases-aggregation-db.accdb $accessfile
+java -jar sqlbatch.jar $accessfile $dumpfile
+
+#zip "$zipfile" "$accessfile"
+# Copy file to network drive
+smbclient '//clu2data/ccbr$' -A smb.auth -W eea <<EoF
+cd "/F-gases/ETC ACM working area/2016 - transaction year 2015/04 Database/04_fgas_aggregation_db"
+put $accessfile
+EoF
+
+#cleanup
+mv "$dumpfile" previousdump.sql
+#rm "$dumpfile"
+rm "$accessfile"
+#rm "$zipfile"

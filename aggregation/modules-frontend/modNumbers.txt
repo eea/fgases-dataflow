@@ -1,0 +1,22 @@
+Option Compare Database
+Option Explicit
+' Converts Variant to Integer
+Public Function getInt(str As Variant) As Integer
+    If (Not IsNull(str) And IsNumeric(str)) Then
+        getInt = CInt(str)
+    End If
+End Function
+
+' Converts Variant to Integer
+Public Function getLong(str As Variant) As Long
+    If (Not IsNull(str) And IsNumeric(str)) Then
+        getLong = CLng(str)
+    End If
+End Function
+
+' Converts Variant to Double
+Public Function getDouble(str As Variant) As Double
+    If (Not IsNull(str) And IsNumeric(str)) Then
+        getDouble = CDbl(str)
+    End If
+End Function

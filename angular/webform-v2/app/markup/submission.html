@@ -1,0 +1,345 @@
+<h2><span data-translate="submission.header"></span></h2>
+
+
+<div class="alert ng-isolate-scope alert-danger alert-dismissable" type="danger" ng-show="!formTotalValidated">
+    <div><span data-translate="submission.validation_failed"></span></div>
+</div>
+
+<div class="alert alert-success ng-scope" ng-show="formTotalValidated && instance.FGasesReporting.GeneralReportData['@status'] == 'incomplete'">
+    <span data-translate="submission.ready_for_submission"></span>
+</div>
+
+<div class="" ng-show="instance.FGasesReporting.GeneralReportData['@status'] == 'incomplete'">
+    <strong><span data-translate="submission.close_text"></span></strong>
+    <button type="button" ng-click="submitReport()" class="btn btn-sm btn-success" ng-show="formTotalValidated"><span data-translate="submission.submit_button"></span></button>
+    <button type="button" ng-click="submitReport()" class="btn btn-sm btn-warning" ng-show="!formTotalValidated"><span data-translate="submission.submit_button"></span></button>
+</div>
+
+<div class="alert alert-success ng-scope" ng-show="instance.FGasesReporting.GeneralReportData['@status'] == 'completed'">
+    <span data-translate="submission.reopen-text"></span> <button type="button" ng-click="reopenReport();gotoTab('Intro')" class="btn btn-sm btn-primary"><span data-translate="submission.reopen_button"></span></button>
+</div>
+
+<!-- TODO validation message display code can be iterate on valSubCat-->
+
+<h2 ng-show="validationMessages['general'].length > 0"><span data-translate="submission.general_errors"></span></h2>
+
+<table  ng-show="validationMessages['general'].length > 0" class="table table-hover table-bordered" style="width: 1000px;">
+    <tr>
+        <th style="width: 250px;"><span data-translate="submission.column-error-category-header"></span></th>
+        <th style="width: 100px;"><span data-translate="form7.validation_category"/></th>
+        <th style="width: 900px;"><span data-translate="form7.validation_violation"/></th>
+    </tr>
+
+    <tr ng-repeat="error in validationMessages['general']">
+        <td style="width: 100px;"><span class="{{ viewModel.submission.getErrorCategoryClass(error) }}">{{ viewModel.submission.getErrorCategoryName(error) }}</span></td>
+        <td>
+            <span>{{ error.transactionLabel }}</span>
+        </td>
+        <td>
+            <span ng-switch="error.message == null">
+                <span ng-switch-when = "true"><span data-translate="validation_messages.qc_{{ error.qccode }}.error_text"></span></span>
+                <span ng-switch-when = "false">{{ error.message }}</span>
+            </span>
+            &nbsp;({{ error.qccode }})
+        </td>
+    </tr>
+
+</table>
+
+
+<h2 ng-show="validationMessages['activities'].length > 0">
+    <span data-translate="submission.activities_errors"></span>
+    <a href="#" ng-click="gotoTab('Activities');"><span class="glyphicon glyphicon-new-window" data-tooltip="{{'common.go-to-tab' | translate}}"></span></a>
+</h2>
+
+<table  ng-show="validationMessages['activities'].length > 0" class="table table-hover table-bordered" style="width: 1000px;">
+    <tr>
+        <th style="width: 250px;"><span data-translate="submission.column-error-category-header"></span></th>
+        <th style="width: 100px;"><span data-translate="form7.validation_category"/></th>
+        <th style="width: 900px;"><span data-translate="form7.validation_violation"/></th>
+    </tr>
+
+    <tr ng-repeat="error in validationMessages['activities']">
+        <td style="width: 100px;"><span class="{{ viewModel.submission.getErrorCategoryClass(error) }}">{{ viewModel.submission.getErrorCategoryName(error) }}</span></td>
+        <td>
+            <span data-translate="common.transaction"> </span>
+            <span>{{ error.transactionLabel }}</span>
+        </td>
+        <td><span>{{ error.message }}</span>&nbsp;({{ error.qccode }})</td>
+    </tr>
+
+</table>
+
+
+<h2 ng-show="validationMessages['gases'].length > 0">
+    <span data-translate="submission.gases_errors"></span>
+    <a href="#" ng-click="gotoTab('Gases');"><span class="glyphicon glyphicon-new-window" data-tooltip="{{'common.go-to-tab' | translate}}"></span></a>
+</h2>
+
+<table  ng-show="validationMessages['gases'].length > 0" class="table table-hover table-bordered" style="width: 1000px;">
+    <tr>
+        <th style="width: 250px;"><span data-translate="submission.column-error-category-header"></span></th>
+        <th style="width: 100px;"><span data-translate="form7.validation_category"/></th>
+        <th style="width: 900px;"><span data-translate="form7.validation_violation"/></th>
+    </tr>
+
+    <tr ng-repeat="error in validationMessages['gases']">
+        <td style="width: 100px;"><span class="{{ viewModel.submission.getErrorCategoryClass(error) }}">{{ viewModel.submission.getErrorCategoryName(error) }}</span></td>
+        <td>
+            <span>{{ error.transactionLabel }}</span>
+        </td>
+        <td><span>{{ error.message }}</span>&nbsp;({{ error.qccode }})</td>
+    </tr>
+
+</table>
+
+
+<h2 ng-show="validationMessages['sheet1'].length > 0">
+    <span data-translate="submission.sheet1_errors"> </span>
+    <a href="#" ng-click="gotoTab('Sheet1');"><span class="glyphicon glyphicon-new-window" data-tooltip="{{'common.go-to-tab' | translate}}"></span></a>
+</h2>
+<table  ng-show="validationMessages['sheet1'].length > 0" class="table table-hover table-bordered" style="width: 1000px;">
+    <tr>
+        <th style="width: 250px;"><span data-translate="submission.column-error-category-header"></span></th>
+        <th style="width: 100px;"><span data-translate="form7.validation_category"/></th>
+        <th style="width: 900px;"><span data-translate="form7.validation_violation"/></th>
+    </tr>
+    <tr ng-repeat="error in validationMessages['sheet1']">
+        <td style="width: 100px;"><span class="{{ viewModel.submission.getErrorCategoryClass(error) }}">{{ viewModel.submission.getErrorCategoryName(error) }}</span></td>
+        <td>
+            <span data-translate="common.transaction"> </span>
+            <span>{{ error.transactionLabel }}</span>
+            <span ng-if="validGasIndexForValidationMessage(error)">
+                <span> - </span>
+                <span data-translate="common.gas"> </span>
+                <span>{{instance.FGasesReporting.ReportedGases[error.gasIndex].Name}}</span>
+            </span>
+        </td>
+        <td>
+            <span ng-switch="error.message == null">
+                <span ng-switch-when = "true"><span data-translate="validation_messages.qc_{{ error.qccode }}.error_text"></span></span>
+                <span ng-switch-when = "false">{{ error.message }}</span>
+            </span>
+            &nbsp;({{ error.qccode }})
+        </td>
+    </tr>
+</table>
+
+
+<h2 ng-show="validationMessages['sheet2'].length > 0">
+    <span data-translate="submission.sheet2_errors"></span>
+    <a href="#" ng-click="gotoTab('Sheet2');"><span class="glyphicon glyphicon-new-window" data-tooltip="{{'common.go-to-tab' | translate}}"></span></a>
+</h2>
+<table  ng-show="validationMessages['sheet2'].length > 0" class="table table-hover table-bordered" style="width: 1000px;">
+    <tr>
+        <th style="width: 250px;"><span data-translate="submission.column-error-category-header"></span></th>
+        <th style="width: 100px;"><span data-translate="form7.validation_category"/></th>
+        <th style="width: 900px;"><span data-translate="form7.validation_violation"/></th>
+    </tr>
+    <tr ng-repeat="error in validationMessages['sheet2']">
+        <td style="width: 100px;"><span class="{{ viewModel.submission.getErrorCategoryClass(error) }}">{{ viewModel.submission.getErrorCategoryName(error) }}</span></td>
+        <td>
+            <span data-translate="common.transaction"> </span>
+            <span>{{ error.transactionLabel }}</span>
+            <span ng-if="validGasIndexForValidationMessage(error)">
+                <span> - </span>
+                <span data-translate="common.gas"> </span>
+                <span>{{instance.FGasesReporting.ReportedGases[error.gasIndex].Name}}</span>
+            </span>
+        </td>
+        <td>
+            <span ng-switch="error.message == null">
+                <span ng-switch-when = "true"><span data-translate="validation_messages.qc_{{ error.qccode }}.error_text"></span></span>
+                <span ng-switch-when = "false">{{ error.message }}</span>
+            </span>
+            &nbsp;({{ error.qccode }})
+        </td>
+    </tr>
+</table>
+
+
+<h2 ng-show="validationMessages['sheet3'].length > 0">
+    <span data-translate="submission.sheet3_errors"></span>
+    <a href="#" ng-click="gotoTab('Sheet3');"><span class="glyphicon glyphicon-new-window" data-tooltip="{{'common.go-to-tab' | translate}}"></span></a>
+</h2>
+<table  ng-show="validationMessages['sheet3'].length > 0" class="table table-hover table-bordered" style="width: 1000px;">
+    <tr>
+        <th style="width: 250px;"><span data-translate="submission.column-error-category-header"></span></th>
+        <th style="width: 100px;"><span data-translate="form7.validation_category"/></th>
+        <th style="width: 900px;"><span data-translate="form7.validation_violation"/></th>
+    </tr>
+    <tr ng-repeat="error in validationMessages['sheet3']">
+        <td style="width: 100px;"><span class="{{ viewModel.submission.getErrorCategoryClass(error) }}">{{ viewModel.submission.getErrorCategoryName(error) }}</span></td>
+        <td>
+            <span data-translate="common.transaction"> </span>
+            <span>{{ error.transactionLabel }}</span>
+            <span ng-if="validGasIndexForValidationMessage(error)">
+                <span> - </span>
+                <span data-translate="common.gas"> </span>
+                <span>{{instance.FGasesReporting.ReportedGases[error.gasIndex].Name}}</span>
+            </span>
+        </td>
+        <td>
+            <span ng-switch="error.message == null">
+                <span ng-switch-when = "true"><span data-translate="validation_messages.qc_{{ error.qccode }}.error_text"></span></span>
+                <span ng-switch-when = "false">{{ error.message }}</span>
+            </span>
+            &nbsp;({{ error.qccode }})
+        </td>
+    </tr>
+</table>
+
+
+<h2 ng-show="validationMessages['sheet4'].length > 0">
+    <span data-translate="submission.sheet4_errors"></span>
+    <a href="#" ng-click="gotoTab('Sheet4');"><span class="glyphicon glyphicon-new-window" data-tooltip="{{'common.go-to-tab' | translate}}"></span></a>
+</h2>
+
+<table  ng-show="validationMessages['sheet4'].length > 0" class="table table-hover table-bordered" style="width: 1000px;">
+    <tr>
+        <th style="width: 250px;"><span data-translate="submission.column-error-category-header"></span></th>
+        <th style="width: 100px;"><span data-translate="form7.validation_category"/></th>
+        <th style="width: 900px;"><span data-translate="form7.validation_violation"/></th>
+    </tr>
+
+    <tr ng-repeat="error in validationMessages['sheet4']">
+        <td style="width: 100px;"><span class="{{ viewModel.submission.getErrorCategoryClass(error) }}">{{ viewModel.submission.getErrorCategoryName(error) }}</span></td>
+        <td>
+            <span data-translate="common.transaction"> </span>
+            <span>{{ error.transactionLabel }}</span>
+            <span ng-if="validGasIndexForValidationMessage(error)">
+                <span> - </span>
+                <span data-translate="common.gas"> </span>
+                <span>{{instance.FGasesReporting.ReportedGases[error.gasIndex].Name}}</span>
+            </span>
+        </td>
+        <td>
+            <span ng-switch="error.message == null">
+                <span ng-switch-when = "true"><span data-translate="validation_messages.qc_{{ error.qccode }}.error_text"></span></span>
+                <span ng-switch-when = "false">{{ error.message }}</span>
+            </span>
+            &nbsp;({{ error.qccode }})
+        </td>
+    </tr>
+
+</table>
+
+<h2 ng-show="validationMessages['sheet5'].length > 0">
+    <span data-translate="submission.sheet5_errors"> </span>
+    <a href="#" ng-click="gotoTab('Sheet5');"><span class="glyphicon glyphicon-new-window" data-tooltip="{{'common.go-to-tab' | translate}}"></span></a>
+</h2>
+<table  ng-show="validationMessages['sheet5'].length > 0" class="table table-hover table-bordered" style="width: 1000px;">
+    <tr>
+        <th style="width: 250px;"><span data-translate="submission.column-error-category-header"></span></th>
+        <th style="width: 100px;"><span data-translate="form7.validation_category"/></th>
+        <th style="width: 900px;"><span data-translate="form7.validation_violation"/></th>
+    </tr>
+
+    <tr ng-repeat="error in validationMessages['sheet5']">
+        <td style="width: 100px;"><span class="{{ viewModel.submission.getErrorCategoryClass(error) }}">{{ viewModel.submission.getErrorCategoryName(error) }}</span></td>
+        <td>
+            <span data-translate="common.transaction"> </span>
+            <span>{{ error.transactionLabel }}</span>
+            <span ng-if="validGasIndexForValidationMessage(error)">
+                <span> - </span>
+                <span data-translate="common.gas"> </span>
+                <span>{{instance.FGasesReporting.ReportedGases[error.gasIndex].Name}}</span>
+            </span>
+        </td>
+        <td>
+            <span ng-switch="error.message == null">
+                <span ng-switch-when = "true"><span data-translate="validation_messages.qc_{{ error.qccode }}.error_text"></span></span>
+                <span ng-switch-when = "false">{{ error.message }}</span>
+            </span>
+            &nbsp;({{ error.qccode }})
+        </td>
+    </tr>
+
+</table>
+
+<h2 ng-show="validationMessages['sheet6'].length > 0">
+    <span data-translate="submission.sheet6_errors"> </span>
+    <a href="#" ng-click="gotoTab('Sheet6');"><span class="glyphicon glyphicon-new-window" data-tooltip="{{'common.go-to-tab' | translate}}"></span></a>
+</h2>
+<table  ng-show="validationMessages['sheet6'].length > 0" class="table table-hover table-bordered" style="width: 1000px;">
+    <tr>
+        <th style="width: 250px;"><span data-translate="submission.column-error-category-header"></span></th>
+        <th style="width: 100px;"><span data-translate="form7.validation_category"/></th>
+        <th style="width: 900px;"><span data-translate="form7.validation_violation"/></th>
+    </tr>
+
+    <tr ng-repeat="error in validationMessages['sheet6']">
+        <td style="width: 100px;"><span class="{{ viewModel.submission.getErrorCategoryClass(error) }}">{{ viewModel.submission.getErrorCategoryName(error) }}</span></td>
+        <td>
+            <span data-translate="common.transaction"> </span>
+            <span>{{ error.transactionLabel }}</span>
+            <span ng-if="validGasIndexForValidationMessage(error)">
+                <span> - </span>
+                <span data-translate="common.gas"> </span>
+                <span>{{instance.FGasesReporting.ReportedGases[error.gasIndex].Name}}</span>
+            </span>
+        </td>
+        <td>
+            <span ng-switch="error.message == null">
+                <span ng-switch-when = "true"><span data-translate="validation_messages.qc_{{ error.qccode }}.error_text"></span></span>
+                <span ng-switch-when = "false">{{ error.message }}</span>
+            </span>
+            &nbsp;({{ error.qccode }})
+        </td>
+    </tr>
+
+</table>
+
+<h2 ng-show="validationMessages['form7'].length > 0">
+    <span data-translate="submission.form7_errors"> </span>
+    <a href="#" ng-click="gotoTab('Sheet7');"><span class="glyphicon glyphicon-new-window" data-tooltip="{{'common.go-to-tab' | translate}}"></span></a>
+</h2>
+
+<table  ng-show="validationMessages['form7'].length > 0" class="table table-hover table-bordered" style="width: 1000px;">
+    <tr>
+        <th style="width: 250px;"><span data-translate="submission.column-error-category-header"></span></th>
+        <th style="width: 100px;"><span data-translate="form7.validation_category"/></th>
+        <th style="width: 900px;"><span data-translate="form7.validation_violation"/></th>
+    </tr>
+
+    <tr ng-repeat="error in validationMessages['form7']">
+        <td style="width: 100px;"><span class="{{ viewModel.submission.getErrorCategoryClass(error) }}">{{ viewModel.submission.getErrorCategoryName(error) }}</span></td>
+        <td>
+            <span ng-show="{{ error.transactionLabel == null }}" data-translate="common.transaction">&nbsp;</span>
+            <span ng-show="{{ error.transactionLabel != null }}" data-translate="common.transaction"> </span>
+            <span ng-show="{{ error.transactionLabel != null }}" data-translate="form7.{{ error.transactionLabel }}.code"></span>
+        </td>
+        <td>
+            <span ng-switch="error.message == null">
+                <span ng-switch-when = "true"><span data-translate="validation_messages.qc_{{ error.qccode }}.error_text"></span></span>
+                <span ng-switch-when = "false">{{ error.message }}</span>
+            </span>
+            &nbsp;({{ error.qccode }})
+        </td>
+    </tr>
+
+</table>
+
+
+
+
+<h2 ng-show="validationMessages['unusualGasesG1'].length > 0">
+    <span data-translate="submission.unusualGases"></span>
+</h2>
+<table  ng-show="validationMessages['unusualGasesG1'].length > 0" class="table table-hover table-bordered" style="width: 1000px;">
+    <tr>
+        <th style="width: 80px;"><span data-translate="form7.validation_category"/></th>
+        <th style="width: 200px;"><span data-translate="form7.gas"/></th>
+        <th style="width: 900px;"><span data-translate="form7.warning_description"/></th>
+    </tr>
+
+    <tr ng-repeat="error in validationMessages['unusualGasesG1']">
+        <td>{{error.transactionLabel }}</td>
+        <td>
+            <span ng-if="validGasIndexForValidationMessage(error)">
+                <span>{{instance.FGasesReporting.ReportedGases[error.gasIndex].Name}}</span>
+            </span>
+        </td>
+        <td><span data-translate="validation_messages.qc_1400_submission.error_text"  data-translate-values="{gas: instance.FGasesReporting.ReportedGases[error.gasIndex].Name, code: error.transactionLabel}"></span></td>
+    </tr>
+</table>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FGasesReporting>
+	<F5_S10_Auth_NER>
+		<SumOfAllHFCsS1>
+			<tr_10A>
+				<Amount>2</Amount>
+				<TradePartnerID>TradePartner_1447946262603</TradePartnerID>
+			</tr_10A>
+			<tr_10A>
+				<Amount>2</Amount>
+				<TradePartnerID>TradePartner_1447946266898</TradePartnerID>
+			</tr_10A>
+		</SumOfAllHFCsS1>
+		<SumOfAllHFCsS2>
+			<tr_10A>
+				<Amount>15475</Amount>
+				<TradePartnerID>TradePartner_1447946262603</TradePartnerID>
+			</tr_10A>
+			<tr_10A>
+				<Amount>15475</Amount>
+				<TradePartnerID>TradePartner_1447946266898</TradePartnerID>
+			</tr_10A>
+		</SumOfAllHFCsS2>
+		<tr_10A_TradePartners>
+			<Partner>
+				<PartnerId>TradePartner_1447946262603</PartnerId>
+				<CompanyName>EEA</CompanyName>
+				<isEUBased>true</isEUBased>
+				<EUVAT>12345</EUVAT>
+				<NonEUCountryOfEstablishment />
+				<NonEUCountryCodeOfEstablishment />
+				<NonEUDgClimaRegCode />
+				<NonEURepresentativeName />
+				<NonEURepresentativeVAT />
+
+			</Partner>
+			<Partner>
+				<PartnerId>TradePartner_1447946266898</PartnerId>
+				<CompanyName>EWX</CompanyName>
+				<isEUBased>true</isEUBased>
+				<EUVAT>4321</EUVAT>
+				<NonEUCountryOfEstablishment />
+				<NonEUCountryCodeOfEstablishment />
+				<NonEUDgClimaRegCode />
+				<NonEURepresentativeName />
+				<NonEURepresentativeVAT />
+			</Partner>
+		</tr_10A_TradePartners>
+		<SupportingDocuments>
+			<tr_10A>
+				<Document></Document>
+				<TradePartnerID>TradePartner_1447946262603</TradePartnerID>
+			</tr_10A>
+			<tr_10A>
+				<TradePartnerID>TradePartner_1447946266898</TradePartnerID>
+			</tr_10A>
+		</SupportingDocuments>
+		<Gas>
+			<GasCode>2</GasCode>
+			<tr_10A>
+				<Code>10A</Code>
+				<Unit />
+				<Comment />
+				<TradePartner>
+					<Comment />
+					<TradePartnerID>TradePartner_1447946262603</TradePartnerID>
+					<amount>12</amount>
+				</TradePartner>
+				<TradePartner>
+					<Comment />
+					<TradePartnerID>TradePartner_1447946266898</TradePartnerID>
+					<amount>1</amount>
+				</TradePartner>
+			</tr_10A>
+		</Gas>
+		<Gas>
+			<GasCode>3</GasCode>
+			<tr_10A>
+				<Code>10A</Code>
+				<Unit />
+				<Comment />
+				<TradePartner>
+					<Comment />
+					<TradePartnerID>TradePartner_1447946262603</TradePartnerID>
+					<amount>1</amount>
+				</TradePartner>
+				<TradePartner>
+					<Comment />
+					<TradePartnerID>TradePartner_1447946266898</TradePartnerID>
+					<amount>1</amount>
+				</TradePartner>
+			</tr_10A>
+		</Gas>
+	</F5_S10_Auth_NER>
+</FGasesReporting>

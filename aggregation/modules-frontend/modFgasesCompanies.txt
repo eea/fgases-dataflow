@@ -1,0 +1,60 @@
+Option Compare Database
+Option Explicit
+
+Private Const LARGE_COMPANIES_2016 = "9410,9411,9413,9428,9450,9457,9461,9475,9478,9503,9505,9506,9511,9545,9654,9844,10003,10008,10011,10038,10080,14207,14571"
+Public largeCompaniesIds() As Long
+Private db As DAO.database
+
+'Fetches all large companies internal ids and sets global largeCompanies object in order to be used in other modules
+Public Sub populateLargeCompaniesIds()
+On Error GoTo err
+    Dim col As New Collection
+    Dim rs As DAO.Recordset
+    Dim sql As String
+    
+    Set db = currentDb
+    
+    sql = "SELECT id_internal FROM tbl_companies_map WHERE portal_code IN (" & LARGE_COMPANIES_2016 & ")"
+    Set rs = db.OpenRecordset(sql, dbOpenSnapshot)
+    Do While Not rs.EOF
+        col.Add modNumbers.getLong(rs("id_internal"))
+        rs.MoveNext
+    Loop
+    Dim count As Integer
+    count = rs.RecordCount
+    largeCompaniesIds = modArraysUtil.collectionToArrayLong(col)
+exit_function:
+On Error Resume Next
+    If Not rs Is Nothing Then rs.Close
+    Set col = Nothing
+    Set rs = Nothing
+    Set db = Nothing
+    Exit Sub
+err:
+    Resume exit_function
+End Sub
+
+' Fetches the company internal id using only name and country as arguments
+Public Function getCompanyIdByNameAndCountry(ByVal companyName As String, ByVal NonEUCountry As String) As Long
+    On Error GoTo catch
+    Dim rs As DAO.Recordset
+    Dim sql As String
+    
+    sql = "SELECT m.ID_internal as Company_ID FROM tbl_companies_map AS m INNER JOIN tbl_companies_data AS d ON m.valid_dataset=d.Dataset_ID " & _
+          "WHERE d.company_name_full = " & StrLiteral(companyName) & " AND m.country_id = " & StrLiteral(NonEUCountry)
+    Set rs = GdestDb.OpenRecordset(sql, dbOpenSnapshot)
+    If Not rs.EOF Then
+        getCompanyIdByNameAndCountry = modNumbers.getLong(rs(0))
+    Else
+        err.Raise vbObjectError + 513, , "Trading partner ID not found"
+    End If
+finally:
+    On Error Resume Next
+    If Not rs Is Nothing Then rs.Close
+    Set rs = Nothing
+    Exit Function
+catch:
+    getCompanyIdByNameAndCountry = 0
+    'add logging here
+    Resume finally
+End Function

@@ -1,0 +1,1817 @@
+
+{
+    "FGasesReporting": {
+        "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+        "@xml:lang": "en",
+        "@xsi:noNamespaceSchemaLocation": "http://dd.eionet.europa.eu/schemas/fgases-2015/FGasesReporting.xsd",
+        "GeneralReportData": {
+            "@status": "incomplete",
+            "Company": {
+                "@status": "incomplete",
+                "CompanyId": null,
+                "CompanyName": null,
+                "PostalAddress": {
+                    "StreetAddress": null,
+                    "Number": null,
+                    "PostalCode": null,
+                    "City": null
+                },
+                "Country": {
+                    "Code": null,
+                    "Type": null,
+                    "Name": null
+                },
+                "Website": null,
+                "Telephone": null,
+                "VATNumber": null,
+                "ContactPersons": {
+                    "ContactPerson": {
+                        "UserName": null,
+                        "FirstName": null,
+                        "LastName": null,
+                        "Email": null
+                    }
+                },
+                "EuLegalRepresentativeCompany": {
+                    "CompanyId": null,
+                    "CompanyName": null,
+                    "PostalAddress": {
+                        "StreetAddress": null,
+                        "Number": null,
+                        "PostalCode": null,
+                        "City": null
+                    },
+                    "Country": {
+                        "Code": null,
+                        "Type": null,
+                        "Name": null
+                    },
+                    "Website": null,
+                    "Telephone": null,
+                    "VATNumber": null,
+                    "ContactPerson": {
+                        "FirstName": null,
+                        "LastName": null,
+                        "Email": null
+                    }
+                },
+                "Former_CompanyId_2104": null,
+                "Affiliations": {
+                    "Affiliation": {
+                        "CompanyName": null,
+                        "isEUBased": null,
+                        "EUVAT": null,
+                        "NonEUCountryOfEstablishment": null,
+                        "NonEUCountryCodeOfEstablishment": null,
+                        "NonEUDgClimaRegCode": null,
+                        "NonEURepresentativeName": null,
+                        "NonEURepresentativeVAT": null
+                    }
+                }
+            },
+            "SubmissionDate": null,
+            "TransactionYear": null,
+            "Activities": {
+                "P": null,
+                "P-HFC": null,
+                "P-other": null,
+                "I": null,
+                "I-HFC": null,
+                "I-other": null,
+                "E": null,
+                "FU": null,
+                "D": null,
+                "Eq-I": null,
+                "Eq-I-RACHP-HFC": null,
+                "Eq-I-other": null,
+                "auth": null,
+                "auth-NER": null,
+                "NIL-Report": null
+            },
+            "HFCs": {
+                "GasName": null
+            },
+            "PFCs": {
+                "GasName": null
+            },
+            "SF6": {
+                "GasName": null
+            },
+            "UnsaturatedHFCsHCFC": {
+                "GasName": null
+            },
+            "FluorinatedEthersAlcohols": {
+                "GasName": null
+            },
+            "OtherPrefluorinatedCompounds": {
+                "GasName": null
+            },
+            "CommonlyUsedMixtures": {
+                "GasName": null
+            }
+        },
+        "ReportedGases": null,
+        "F1_S1_4_ProdImpExp": {
+            "tr_01C_TradePartners": {
+                "Partner": null
+            },
+            "Totals": {
+                "tr_01ASumAllGases": null,
+                "tr_01ASumAllGasesCO2Eq": null,
+                "tr_01ASumRothAllGases": null,
+                "tr_01ASumRothAllGasesCO2Eq": null,
+                "tr_02ASumAllGases": null,
+                "tr_02ASumAllGasesCO2Eq": null,
+                "tr_02ASumRothAllGases": null,
+                "tr_02ASumRothAllGasesCO2Eq": null,
+                "tr_03ASumAllGases": null,
+                "tr_03ASumAllGasesCO2Eq": null,
+                "tr_03ASumRothAllGases": null,
+                "tr_03ASumRothAllGasesCO2Eq": null
+            },
+            "Gas": {
+                "GasCode": null,
+                "tr_01A": {
+                    "Code": "01A",
+                    "Amount": null
+                },
+                "tr_01B": {
+                    "Code": "01B",
+                    "Amount": null,
+                    "Comment": null
+                },
+                "tr_01C": {
+                    "Code": "01C",
+                    "SumOfPartnerAmounts": null,
+                    "Unit": null,
+                    "Comment": null,
+                    "TradePartner": {
+                        "TradePartnerID": null,
+                        "amount": null,
+                        "Comment": null
+                    }
+                },
+                "tr_01D": {
+                    "Code": "01D",
+                    "Amount": null
+                },
+                "tr_01E": {
+                    "Code": "01E",
+                    "Amount": null
+                },
+                "tr_01F": {
+                    "Code": "01F",
+                    "Amount": null
+                },
+                "tr_01G": {
+                    "Code": "01G",
+                    "Amount": null
+                },
+                "tr_01H": {
+                    "Code": "01H",
+                    "Amount": null
+                },
+                "tr_01I": {
+                    "Code": "01I",
+                    "Amount": null
+                },
+                "tr_01J": {
+                    "Code": "01J",
+                    "Amount": null
+                },
+                "tr_01K": {
+                    "Code": "01K",
+                    "Amount": null
+                },
+                "tr_02A": {
+                    "Code": "02A",
+                    "Amount": null
+                },
+                "tr_02B": {
+                    "Code": "02B",
+                    "Amount": null
+                },
+                "tr_03A": {
+                    "Code": "03A",
+                    "Amount": null
+                },
+                "tr_03B": {
+                    "Code": "03B",
+                    "Amount": null
+                },
+                "tr_03C": {
+                    "Code": "03C",
+                    "Amount": null
+                },
+                "tr_03D": {
+                    "Code": "03D",
+                    "Amount": null
+                },
+                "tr_03E": {
+                    "Code": "03E",
+                    "Amount": null
+                },
+                "tr_03F": {
+                    "Code": "03F",
+                    "Amount": null
+                },
+                "tr_04A": {
+                    "Code": "04A",
+                    "Amount": null,
+                    "Comment": null
+                },
+                "tr_04B": {
+                    "Code": "04B",
+                    "Amount": null,
+                    "Comment": null
+                },
+                "tr_04C": {
+                    "Code": "04C",
+                    "Amount": null
+                },
+                "tr_04D": {
+                    "Code": "04D",
+                    "Amount": null
+                },
+                "tr_04E": {
+                    "Code": "04E",
+                    "Amount": null
+                },
+                "tr_04F": {
+                    "Code": "04F",
+                    "Amount": null
+                },
+                "tr_04G": {
+                    "Code": "04G",
+                    "Amount": null,
+                    "Comment": null
+                },
+                "tr_04H": {
+                    "Code": "04H",
+                    "Amount": null,
+                    "Comment": null
+                },
+                "tr_04I": {
+                    "Code": "04I",
+                    "Amount": null
+                },
+                "tr_04J": {
+                    "Code": "04J",
+                    "Amount": null
+                },
+                "tr_04K": {
+                    "Code": "04K",
+                    "Amount": null
+                },
+                "tr_04L": {
+                    "Code": "04L",
+                    "Amount": null
+                },
+                "tr_04M": {
+                    "Code": "04M",
+                    "Amount": null
+                }
+            }
+        },
+        "F2_S5_exempted_HFCs": {
+            "tr_05A_TradePartners": {
+                "Partner": null
+            },
+            "tr_05B_TradePartners": {
+                "Partner": null
+            },
+            "tr_05C_TradePartners": {
+                "Partner": null
+            },
+            "tr_05D_TradePartners": {
+                "Partner": null
+            },
+            "tr_05E_TradePartners": {
+                "Partner": null
+            },
+            "tr_05F_TradePartners": {
+                "Partner": null
+            },
+            "tr_05R_TradePartners": {
+                "Partner": null
+            },
+            "Totals": {
+                "tr_05CSumAllGases": null,
+                "tr_05CSumAllGasesCO2Eq": null
+            },
+            "Gas": {
+                "GasCode": null,
+                "tr_05A": {
+                    "Code": "05A",
+                    "SumOfPartnerAmounts": null,
+                    "Unit": null,
+                    "Comment": null,
+                    "TradePartner": {
+                        "TradePartnerID": null,
+                        "amount": null,
+                        "Comment": null
+                    }
+                },
+                "tr_05B": {
+                    "Code": "05B",
+                    "SumOfPartnerAmounts": null,
+                    "Unit": null,
+                    "Comment": null,
+                    "TradePartner": {
+                        "TradePartnerID": null,
+                        "amount": null,
+                        "Comment": null
+                    }
+                },
+                "tr_05C": {
+                    "Code": "05C",
+                    "SumOfPartnerAmounts": null,
+                    "Unit": null,
+                    "Comment": null,
+                    "TradePartner": {
+                        "TradePartnerID": null,
+                        "amount": null,
+                        "Comment": null
+                    }
+                },
+                "tr_05D": {
+                    "Code": "05D",
+                    "SumOfPartnerAmounts": null,
+                    "Unit": null,
+                    "Comment": null,
+                    "TradePartner": {
+                        "TradePartnerID": null,
+                        "amount": null,
+                        "Comment": null
+                    }
+                },
+                "tr_05E": {
+                    "Code": "05E",
+                    "SumOfPartnerAmounts": null,
+                    "Unit": null,
+                    "Comment": null,
+                    "TradePartner": {
+                        "TradePartnerID": null,
+                        "amount": null,
+                        "Comment": null
+                    }
+                },
+                "tr_05F": {
+                    "Code": "05F",
+                    "SumOfPartnerAmounts": null,
+                    "Unit": null,
+                    "Comment": null,
+                    "TradePartner": {
+                        "TradePartnerID": null,
+                        "amount": null,
+                        "Comment": null
+                    }
+                },
+                "tr_05G": {
+                    "Code": "05G",
+                    "Amount": null
+                },
+                "tr_05H": {
+                    "Code": "05H",
+                    "Amount": null
+                },
+                "tr_05I": {
+                    "Code": "05I",
+                    "Amount": null
+                },
+                "tr_05J": {
+                    "Code": "05J",
+                    "Amount": null
+                },
+                "tr_05R": {
+                    "Code": "05R",
+                    "SumOfPartnerAmounts": null,
+                    "Unit": null,
+                    "Comment": null,
+                    "TradePartner": {
+                        "TradePartnerID": null,
+                        "amount": null,
+                        "Comment": null
+                    }
+                }
+            },
+            "SumOfAllHFCsS1": {
+                "tr_05G": "\n      ",
+                "tr_05H": {
+                    "Code": "05H",
+                    "Amount": null
+                },
+                "tr_05I": "\n      ",
+                "tr_05J": "\n      "
+            },
+            "SumOfAllHFCsS2": {
+                "tr_05G": "\n      ",
+                "tr_05H": {
+                    "Code": "05H",
+                    "Amount": null
+                },
+                "tr_05I": "\n      ",
+                "tr_05J": "\n      "
+            }
+        },
+        "F3A_S6A_IA_HFCs": {
+            "Gas": {
+                "GasCode": null,
+                "tr_06A": {
+                    "Code": "06A",
+                    "Amount": null
+                },
+                "tr_06B": {
+                    "Code": "06B",
+                    "Amount": null
+                },
+                "tr_06C": {
+                    "Code": "06C",
+                    "Amount": null
+                },
+                "tr_06D": {
+                    "Code": "06D",
+                    "Amount": null
+                },
+                "tr_06E": {
+                    "Code": "06E",
+                    "Amount": null
+                },
+                "tr_06F": {
+                    "Code": "06F",
+                    "Amount": null
+                },
+                "tr_06G": {
+                    "Code": "06G",
+                    "Amount": null
+                },
+                "tr_06H": {
+                    "Code": "06H",
+                    "Amount": null
+                },
+                "tr_06I": {
+                    "Code": "06I",
+                    "Amount": null
+                },
+                "tr_06J": {
+                    "Code": "06J",
+                    "Amount": null
+                },
+                "tr_06K": {
+                    "Code": "06K",
+                    "Amount": null
+                },
+                "tr_06L": {
+                    "Code": "06L",
+                    "Amount": null,
+                    "Comment": null
+                },
+                "tr_06M": {
+                    "Code": "06M",
+                    "Amount": null
+                },
+                "tr_06N": {
+                    "Code": "06N",
+                    "Amount": null
+                },
+                "tr_06O": {
+                    "Code": "06O",
+                    "Amount": null
+                },
+                "tr_06P": {
+                    "Code": "06P",
+                    "Amount": null
+                },
+                "tr_06Q": {
+                    "Code": "06Q",
+                    "Amount": null
+                },
+                "tr_06R": {
+                    "Code": "06R",
+                    "Amount": null
+                },
+                "tr_06S": {
+                    "Code": "06S",
+                    "Amount": null
+                },
+                "tr_06T": {
+                    "Code": "06T",
+                    "Amount": null
+                },
+                "tr_06U": {
+                    "Code": "06U",
+                    "Amount": null
+                },
+                "tr_06V": {
+                    "Code": "06V",
+                    "Amount": null
+                },
+                "tr_06W": {
+                    "Code": "06W",
+                    "Amount": null
+                },
+                "tr_06X": {
+                    "Code": "06X",
+                    "Amount": null
+                }
+            }
+        },
+        "F4_S9_IssuedAuthQuata": {
+            "tr_09A_imp_TradePartners": {
+                "Partner": null
+            },
+            "tr_09A_add_TradePartners": {
+                "Partner": null
+            },
+            "tr_09A_TradePartners": {
+                "Partner": null
+            },
+            "tr_09A_imp": {
+                "Code": "09A_imp",
+                "SumOfPartnerAmounts": null,
+                "Unit": null,
+                "Comment": null,
+                "TradePartner": {
+                    "TradePartnerID": null,
+                    "amount": null,
+                    "Comment": null
+                }
+            },
+            "tr_09A_add": {
+                "Code": "09A_add",
+                "SumOfPartnerAmounts": null,
+                "Unit": null,
+                "Comment": null,
+                "TradePartner": {
+                    "TradePartnerID": null,
+                    "amount": null,
+                    "Comment": null
+                }
+            },
+            "tr_09A": {
+                "Code": "09A",
+                "SumOfPartnerAmounts": null,
+                "Unit": null,
+                "Comment": null,
+                "TradePartner": {
+                    "TradePartnerID": null,
+                    "amount": null,
+                    "Comment": null
+                }
+            },
+            "tr_09A_Registry":{
+                "Code": "09A_Registry",
+                "Amount": null
+            },
+            "tr_09B": {
+                "Code": "09B",
+                "Amount": null
+            },
+            "tr_09C": {
+                "Code": "09C",
+                "Amount": null
+            },
+            "tr_09D": {
+                "Code": "09D",
+                "Amount": null
+            },
+            "tr_09E": {
+                "Code": "09E",
+                "Amount": null
+            },
+            "tr_09F": {
+                "Code": "09F",
+                "Amount": null
+            },
+            "tr_09G": {
+                "Code": "09G",
+                "Amount": null
+            },
+            "Verified": null,
+            "SupportingDocuments": {
+                "Document": {
+                    "Url": null,
+                    "title": null
+                }
+            }
+        },
+        "F6_FUDest": {
+            "Gas": {
+                "GasCode": null,
+                "tr_07A": {
+                    "Code": "07A",
+                    "Amount": null,
+                    "Comment": null
+                },
+                "tr_08A": {
+                    "Code": "08A",
+                    "Amount": null
+                },
+                "tr_08B": {
+                    "Code": "08B",
+                    "Amount": null
+                },
+                "tr_08C": {
+                    "Code": "08C",
+                    "Amount": null
+                },
+                "tr_08D": {
+                    "Code": "08D",
+                    "Amount": null
+                },
+                "tr_08E": {
+                    "Code": "08E",
+                    "Amount": null
+                },
+                "tr_08F": {
+                    "Code": "08F",
+                    "Amount": null
+                }
+            },
+            "Totals": {
+                "tr_07ASumAllGases": null,
+                "tr_07ASumAllGasesCO2Eq": null,
+                "tr_07ASumRothAllGases": null,
+                "tr_07ASumRothAllGasesCO2Eq": null,
+                "tr_08DSumAllGases": null,
+                "tr_08DSumAllGasesCO2Eq": null,
+                "tr_08DSumRothAllGases": null,
+                "tr_08DSumRothAllGasesCO2Eq": null
+            }
+        },
+        "F5_S10_Auth_NER": {
+            
+            "Gas": {
+                "GasCode": null,
+                "tr_10A": {
+                    "Code": "10A",
+                    "SumOfPartnerAmounts": [],
+                    "Unit": null,
+                    "Comment": null,
+                    "TradePartner": {
+                        "TradePartnerID": null,
+                        "amount": null,
+                        "Comment": null
+                    }
+                }
+            },
+            "SupportingDocuments": {
+              "tr_10A": []
+            },
+            "SumOfAllHFCsS1": {
+              "tr_10A": []
+            },
+            "SumOfAllHFCsS2": {
+              "tr_10A": []
+            },
+            "tr_10A_TradePartners": {
+              "Partner": []
+            }
+        },
+        "F7_s11EquImportTable": {
+            "transactionsConfirmed": false,
+            "UISelectedTransactions": {
+                "tr_11A01": false,
+                "tr_11A02": false,
+                "tr_11A03": false,
+                "tr_11A04": false,
+                "tr_11A05": false,
+                "tr_11A06": false,
+                "tr_11A07": false,
+                "tr_11A08": false,
+                "tr_11A09": false,
+                "tr_11A10": false,
+                "tr_11A11": false,
+                "tr_11A12": false,
+                "tr_11A13": false,
+                "tr_11A14": false,
+                "tr_11B01": false,
+                "tr_11B02": false,
+                "tr_11B03": false,
+                "tr_11B04": false,
+                "tr_11B05": false,
+                "tr_11B06": false,
+                "tr_11B07": false,
+                "tr_11B08": false,
+                "tr_11B09": false,
+                "tr_11B10": false,
+                "tr_11B11": false,
+                "tr_11B12": false,
+                "tr_11B13": false,
+                "tr_11B14": false,
+                "tr_11C": false,
+                "tr_11D01": false,
+                "tr_11D02": false,
+                "tr_11D03": false,
+                "tr_11E01": false,
+                "tr_11E02": false,
+                "tr_11E03": false,
+                "tr_11E04": false,
+                "tr_11F01": false,
+                "tr_11F02": false,
+                "tr_11F03": false,
+                "tr_11F04": false,
+                "tr_11F05": false,
+                "tr_11F06": false,
+                "tr_11F07": false,
+                "tr_11F08": false,
+                "tr_11F09": false,
+                "tr_11H01": false,
+                "tr_11H02": false,
+                "tr_11H03": false,
+                "tr_11H04": false,
+                "tr_11I": false,
+                "tr_11J": false,
+                "tr_11K": false,
+                "tr_11L": false,
+                "tr_11M": false,
+                "tr_11N": false,
+                "tr_11O": false,
+                "tr_11P": false
+            },
+            "Category": {
+                "tr_11A03": null,
+                "tr_11A09": null,
+                "tr_11A12": null,
+                "tr_11B03": null,
+                "tr_11B05": null,
+                "tr_11B07": null,
+                "tr_11B09": null,
+                "tr_11D01": null,
+                "tr_11D02": null,
+                "tr_11D03": null,
+                "tr_11E04": null,
+                "tr_11F09": null,
+                "tr_11H01": null,
+                "tr_11H02": null,
+                "tr_11H03": null,
+                "tr_11H04": null,
+                "tr_11P": null
+            },
+            "Comment": {
+                "tr_11A01": null,
+                "tr_11A02": null,
+                "tr_11A03": null,
+                "tr_11A04": null,
+                "tr_11A05": null,
+                "tr_11A06": null,
+                "tr_11A07": null,
+                "tr_11A08": null,
+                "tr_11A09": null,
+                "tr_11A10": null,
+                "tr_11A11": null,
+                "tr_11A12": null,
+                "tr_11A13": null,
+                "tr_11A14": null,
+                "tr_11B01": null,
+                "tr_11B02": null,
+                "tr_11B03": null,
+                "tr_11B04": null,
+                "tr_11B05": null,
+                "tr_11B06": null,
+                "tr_11B07": null,
+                "tr_11B08": null,
+                "tr_11B09": null,
+                "tr_11B10": null,
+                "tr_11B11": null,
+                "tr_11B12": null,
+                "tr_11B13": null,
+                "tr_11B14": null,
+                "tr_11C": null,
+                "tr_11D01": null,
+                "tr_11D02": null,
+                "tr_11D03": null,
+                "tr_11E01": null,
+                "tr_11E02": null,
+                "tr_11E03": null,
+                "tr_11E04": null,
+                "tr_11F01": null,
+                "tr_11F02": null,
+                "tr_11F03": null,
+                "tr_11F04": null,
+                "tr_11F05": null,
+                "tr_11F06": null,
+                "tr_11F07": null,
+                "tr_11F08": null,
+                "tr_11F09": null,
+                "tr_11H01": null,
+                "tr_11H02": null,
+                "tr_11H03": null,
+                "tr_11H04": null,
+                "tr_11I": null,
+                "tr_11J": null,
+                "tr_11K": null,
+                "tr_11L": null,
+                "tr_11M": null,
+                "tr_11N": null,
+                "tr_11O": null,
+                "tr_11P": null
+            },
+            "TR_11P_Unit": null,
+            "TR_11H4_Unit": null,
+            "Gas": {
+                "GasCode": null,
+                "tr_11A": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A05": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A06": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A07": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A08": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A09": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A10": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A11": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A12": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A13": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A14": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B05": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B06": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B07": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B08": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B09": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B10": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B11": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B12": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B13": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B14": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11C": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11D": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11D01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11D02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11D03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F05": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F06": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F07": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F08": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F09": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11G": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11I": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11J": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11K": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11L": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11M": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11N": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11O": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11P": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11Q": {
+                    "Code": null,
+                    "Amount": null
+                }
+            },
+            "AmountOfImportedEquipment": {
+                "tr_11A": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A05": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A06": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A07": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A08": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A09": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A10": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A11": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A12": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A13": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A14": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B05": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B06": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B07": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B08": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B09": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B10": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B11": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B12": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B13": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B14": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11C": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11D": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11D01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11D02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11D03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F05": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F06": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F07": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F08": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F09": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11G": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11I": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11J": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11K": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11L": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11M": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11N": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11O": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11P": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11Q": {
+                    "Code": null,
+                    "Amount": null
+                }
+            },
+            "SumOfAllGasesS1": {
+                "tr_11A01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A05": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A06": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A07": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A08": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A09": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A10": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A11": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A12": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A13": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A14": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B05": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B06": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B07": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B08": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B09": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B10": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B11": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B12": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B13": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B14": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11C": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11D01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11D02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11D03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F05": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F06": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F07": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F08": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F09": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11G": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11I": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11J": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11K": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11L": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11M": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11N": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11O": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11P": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11Q": {
+                    "Code": null,
+                    "Amount": null
+                }
+            },
+            "SumOfAllGasesS2": {
+                "tr_11A01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A05": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A06": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A07": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A08": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A09": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A10": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A11": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A12": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A13": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11A14": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B05": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B06": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B07": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B08": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B09": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B10": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B11": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B12": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B13": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11B14": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11C": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11D01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11D02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11D03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11E04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F05": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F06": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F07": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F08": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11F09": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H01": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H02": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H03": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11H04": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11I": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11J": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11K": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11L": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11M": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11N": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11O": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11P": {
+                    "Code": null,
+                    "Amount": null
+                },
+                "tr_11Q": {
+                    "Code": null,
+                    "Amount": null
+                }
+            },
+            "Totals": {
+                "tr_11GSumAllGasesCO2Eq": null,
+                "tr_11QSumAllGasesCO2Eq": null
+            },
+            "SupportingDocuments": {
+                "Document": {
+                    "Url": null,
+                    "Title": null
+                }
+            }
+        }
+    }
+}

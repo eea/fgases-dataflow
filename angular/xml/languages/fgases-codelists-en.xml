@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FGasesCodelists>
+    <Languages>
+        <item>
+            <code>bg</code>
+            <label>Български (bg)</label>
+        </item>
+        <item>
+            <code>es</code>
+            <label>Español (es)</label>
+        </item>
+        <item>
+            <code>cs</code>
+            <label>Čeština (cs)</label>
+        </item>
+        <item>
+            <code>da</code>
+            <label>Dansk (da)</label>
+        </item>
+        <item>
+            <code>de</code>
+            <label>Deutsch (de)</label>
+        </item>
+        <item>
+            <code>et</code>
+            <label>Eesti (et)</label>
+        </item>
+        <item>
+            <code>el</code>
+            <label>ελληνικά (el)</label>
+        </item>
+        <item>
+            <code>en</code>
+            <label>English (en)</label>
+        </item>
+        <item>
+            <code>fr</code>
+            <label>Français (fr)</label>
+        </item>
+        <item>
+            <code>hr</code>
+            <label>Hrvatski (hr)</label>
+        </item>
+        <item>
+            <code>it</code>
+            <label>Italiano (it)</label>
+        </item>
+        <item>
+            <code>lv</code>
+            <label>Latviešu valoda (lv)</label>
+        </item>
+        <item>
+            <code>lt</code>
+            <label>Lietuvių kalba (lt)</label>
+        </item>
+        <item>
+            <code>hu</code>
+            <label>Magyar (hu)</label>
+        </item>
+        <item>
+            <code>hr</code>
+            <label>Hrvatski (hr)</label>
+        </item>
+        <item>
+            <code>mt</code>
+            <label>Malti (mt)</label>
+        </item>
+        <item>
+            <code>nl</code>
+            <label>Nederlands (nl)</label>
+        </item>
+        <item>
+            <code>pl</code>
+            <label>Polski (pl)</label>
+        </item>
+        <item>
+            <code>pt</code>
+            <label>Português (pt)</label>
+        </item>
+        <item>
+            <code>ro</code>
+            <label>Română (ro)</label>
+        </item>
+        <item>
+            <code>sk</code>
+            <label>Slovenčina (sk)</label>
+        </item>
+        <item>
+            <code>sl</code>
+            <label>Slovenščina (sl)</label>
+        </item>
+        <item>
+            <code>fi</code>
+            <label>Suomi (fi)</label>
+        </item>
+        <item>
+            <code>sv</code>
+            <label>Svenska (sv)</label>
+        </item>
+    </Languages>
+</FGasesCodelists>
