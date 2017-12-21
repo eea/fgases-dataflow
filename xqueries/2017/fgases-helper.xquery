@@ -2,9 +2,9 @@ xquery version "1.0" encoding "UTF-8";
 
 module namespace fgases = 'http://converters.eionet.europa.eu/fgases/helper';
 
-import module namespace cutil = "http://converters.eionet.europa.eu/fgases/cutil" at "fgases-common-util-2015.xquery";
+import module namespace cutil = "http://converters.eionet.europa.eu/fgases/cutil" at "fgases-common-util-2017.xquery";
 
-declare variable $fgases:gas-list := doc('../angular/xml/fgases-gases-2015.xml');
+declare variable $fgases:gas-list := doc('../../angular/xml/fgases-gases-2015.xml');
 
 declare function fgases:get-gas-by-id($gasId as xs:string)
 as element(Gas)
@@ -165,7 +165,7 @@ as xs:double
         return cutil:numberIfEmpty($sum, 0)
 };
 
-declare function fgases:is-section-4-applicable-gas($report, $reportedGas as element(ReportedGases))
+declare function fgases:is-section-4-applicable-gas($report, $reportedGas as element(ReportedGases)?)
 as xs:boolean
 {
     fgases:is-I($report) or fgases:is-P($report) or not(fgases:contains-HFC($reportedGas))

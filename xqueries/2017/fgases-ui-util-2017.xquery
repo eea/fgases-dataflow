@@ -17,7 +17,7 @@ module namespace uiutil = "http://converters.eionet.europa.eu/fgases/ui";
 declare namespace i18n = "http://namespaces.zope.org/i18n";
 
 (: Common utility methods :)
-import module namespace cutil = "http://converters.eionet.europa.eu/fgases/cutil" at "fgases-common-util-2015.xquery";
+import module namespace cutil = "http://converters.eionet.europa.eu/fgases/cutil" at "fgases-common-util-2017.xquery";
 (:~ Constant for error level messages. :)
 declare variable $uiutil:ERROR_LEVEL as xs:string :=  "ERROR";
 (:~ Constant for compliance error level messages. :)

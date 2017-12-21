@@ -20,9 +20,9 @@ declare namespace xmlconv="http://converters.eionet.europa.eu/fgases";
 (: namespace for BDR localisations :)
 declare namespace i18n = "http://namespaces.zope.org/i18n";
 (: Common utility methods :)
-import module namespace cutil = "http://converters.eionet.europa.eu/fgases/cutil" at "fgases-common-util-2015.xquery";
+import module namespace cutil = "http://converters.eionet.europa.eu/fgases/cutil" at "fgases-common-util-2017.xquery";
 (: UI utility methods for build HTML formatted QA result:)
-import module namespace uiutil = "http://converters.eionet.europa.eu/fgases/ui" at "fgases-ui-util-2015.xquery";
+import module namespace uiutil = "http://converters.eionet.europa.eu/fgases/ui" at "fgases-ui-util-2017.xquery";
 (:===================================================================:)
 (: Variable given as an external parameter by the QA service:)
 (:===================================================================:)
@@ -32,7 +32,7 @@ declare variable $source_url as xs:string external;
 :)
 declare variable $source_url as xs:string external;
 
-declare variable $SCHEMA as xs:string := "http://dd.eionet.europa.eu/schemas/fgases-2015/FGasesReporting.xsd";
+declare variable $SCHEMA as xs:string := "http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd";
 declare variable $REPORT_TYPE as xs:string := "F-Gases";
 declare variable $HELPDESK_EMAIL as xs:string := "f-gases.reporting@eea.europa.eu";
 
