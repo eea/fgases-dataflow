@@ -1,0 +1,7 @@
+.idea/
+FGasesReporting.xsd
+angular/webform-v2/app/bower_components/
+angular/webform-v2/node_modules/
+angular/webform-v2/package-lock.json
+initial.xsd
+

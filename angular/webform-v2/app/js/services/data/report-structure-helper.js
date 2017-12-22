@@ -12,7 +12,7 @@
             };
             
             ReportStructureHelper.prototype.getGasIncludingSheets = function() {
-                return ["F1_S1_4_ProdImpExp", "F2_S5_exempted_HFCs", "F3A_S6A_IA_HFCs", "F6_FUDest", "F7_s11EquImportTable", "F5_S10_Auth_NER"];
+                return ["F1_S1_4_ProdImpExp", "F2_S5_exempted_HFCs", "F3A_S6A_IA_HFCs", "F6_FUDest", "F7_s11EquImportTable", "F5_S10_Auth_NER", "F8_S12"];
             };
             
             ReportStructureHelper.prototype.getTradePartnerTransactions = function() {
@@ -30,10 +30,11 @@
                         "tr_05A_TradePartners", "tr_05B_TradePartners", "tr_05C_TradePartners", "tr_05D_TradePartners", 
                         "tr_05E_TradePartners", "tr_05F_TradePartners", "tr_05R_TradePartners"
                     ],
-                    F5_S10_Auth_NER: ["tr_10A_TradePartners"]
+                    F5_S10_Auth_NER: ["tr_10A_TradePartners"],
+                    F8_S12: ["tr_12A_POMPartners", "tr_12A_EXPPartners", "tr_12A_TradePartners"]
                 };
             };
-            
+
             return new ReportStructureHelper();
         }
     ]);

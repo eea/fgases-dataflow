@@ -4,6 +4,7 @@
     angular.module('FGases.controllers').controller('TradingPartnerModalInstanceController', function($rootScope, $scope, $modalInstance, modalData, modalExtras, FormConstants, dataRepository, objectUtil, arrayUtil, stringUtil) {
         $scope.tradePartnerModalTitle = modalExtras && typeof modalExtras.title !== 'undefined' ? modalExtras.title : 'common.trade-partner-modal-title';
         $scope.isMinimalDialog = modalExtras && modalExtras.isMinimalDialog;
+        $scope.yearField = modalExtras && modalExtras.yearField;
         
         if (!angular.isDefined(modalExtras.arrayToPush)){
             alert("Trade Partner array is not defined, data entered may be lost.");

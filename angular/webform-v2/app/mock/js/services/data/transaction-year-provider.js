@@ -15,7 +15,7 @@
             
             TransactionYearProvider.prototype.getValidTransactionYears = function() {
                 var years = [];
-                
+
                 for (var year = 2015; year <= this._maxTransactionYear(); year++) {
                     years.push(year);
                 }
@@ -24,7 +24,7 @@
             };
             
             TransactionYearProvider.prototype._maxTransactionYear = function() {
-                return 2016;
+                return 2017;
             };
             
             return new TransactionYearProvider();

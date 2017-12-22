@@ -426,6 +426,9 @@
                     if ($scope.isTabVisible(FormConstants.TabIds[9])) {
                         $scope.calculateForm7Totals();
                     }
+                    if ($scope.isTabVisible(FormConstants.TabIds[10])) {
+                        $scope.reCalculateSheet8();
+                    }
                 } else {
                     //select again
                     $scope.instance.FGasesReporting.GeneralReportData.Activities[activity] = true;
@@ -1069,6 +1072,49 @@
                 }
             }
         };//end of function tradingPartnerModalWindowCloseCallBack
+
+        //Callback function for transaction modal window
+        $scope.transactionModalWindowCloseCallBack = function (results) {
+            if (results.index > -1) {
+                results.modalExtras.arrayToPush.splice(results.index, 1, results.tempPartnerDefinition);
+            } else {
+                var gascode;
+                for (var i = 0; i < results.modalExtras.gasArray.length; i++) {
+                    gascode = results.modalExtras.gasArray[i].GasCode;
+                    // var copyOfEmptyInstance = clone($scope.getInstanceByPath('emptyInstance', results.modalExtras.emptyInstancePath));
+
+                    // if (results.transactions[gascode].Amount !="0") {
+                    results.modalExtras.gasArray[i][results.modalExtras.fieldName].Transactions.push(results.transactions[gascode]);
+                    // }
+                }
+            }
+
+        };//end of function transactionPartnerModalWindowCloseCallBack
+
+
+        //Callback function for transaction modal window
+        $scope.tradingPOMEXPPartnerModalWindowCloseCallBack = function (results) {
+            if (results.index > -1) {
+                results.modalExtras.arrayToPush.splice(results.index, 1, results.tempPartnerDefinition);
+            } else {
+                var tx_p_type;
+                results.modalExtras.arrayToPush.push(results.tempPartnerDefinition);
+                if (results.modalExtras.emptyInstancePath) {
+                    if (results.modalExtras.partnerType == 'POMPartners') {
+                        tx_p_type = 'POM'
+                    } else {
+                        tx_p_type = 'Exporter'
+                    }
+                    var copyOfEmptyInstance = clone($scope.getInstanceByPath('emptyInstance', results.modalExtras.emptyInstancePath));
+                    copyOfEmptyInstance.TradePartnerID = results.tempPartnerDefinition.PartnerId;
+                    for (var i = 0; i < results.modalExtras.gasArray.length; i++) {
+                        results.modalExtras.gasArray[i][results.modalExtras.fieldName][results.modalExtras.partnerType].push(clone(copyOfEmptyInstance));
+                        results.modalExtras.gasArray[i][results.modalExtras.fieldName].Transactions[results.modalExtras.txid[results.modalExtras.gasArray[i].GasCode]][tx_p_type].TradePartnerID = results.tempPartnerDefinition.PartnerId;
+                        results.modalExtras.gasArray[i][results.modalExtras.fieldName].Transactions[results.modalExtras.txid[results.modalExtras.gasArray[i].GasCode]][tx_p_type].Year = results.tempPartnerDefinition.year;
+                    }
+                }
+            }
+        };//end of function transactionPartnerModalWindowCloseCallBack
 
         $scope.tradingPartnerModalWindowCloseCallBackForSheet5 = function (results) {
             $scope.tradingPartnerModalWindowCloseCallBack(results);
@@ -2003,7 +2049,7 @@
 
         //it would be good to use same ids with tabs,
         // zykaerv: append to the end if new cat
-        $scope.valSubCat = ['general', 'activities', 'gases', 'sheet1', 'sheet2', 'sheet3', 'sheet4', 'sheet5', 'sheet6', 'form7', ];
+        $scope.valSubCat = ['general', 'activities', 'gases', 'sheet1', 'sheet2', 'sheet3', 'sheet4', 'sheet5', 'sheet6', 'form7', "sheet8"];
         $scope.errors = {};
         $scope.validationMessages = {};
 
@@ -3784,6 +3830,8 @@
                 case 'Sheet6':
                     return subMainCondition && ($scope.instance.FGasesReporting.GeneralReportData.Activities['FU'] || $scope.instance.FGasesReporting.GeneralReportData.Activities['D']);
                 case 'Sheet7':
+                    return subMainCondition && ($scope.instance.FGasesReporting.GeneralReportData.Activities['Eq-I']);
+                case 'Sheet8':
                     return subMainCondition && ($scope.instance.FGasesReporting.GeneralReportData.Activities['Eq-I']);
                 default:
                     return true;

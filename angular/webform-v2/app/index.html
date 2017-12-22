@@ -49,6 +49,7 @@
     <script type="text/javascript" src="js/controllers/mixture-definition-modal-instance.js"></script>
     <script type="text/javascript" src="js/controllers/trading-partner-modal-instance.js"></script>
     <script type="text/javascript" src="js/controllers/confirm-comment-dialog-controller.js"></script>
+    <script type="text/javascript" src="js/controllers/transaction-add-edit-modal-instance.js"></script>
     <script type="text/javascript" src="js/directives/focus-me.js"></script>
     <script type="text/javascript" src="js/directives/gas-input.js"></script>
     <script type="text/javascript" src="js/directives/static-include.js"></script>
@@ -91,6 +92,7 @@
     <script type="text/javascript" src="js/viewmodel/view-model-sheet5.js"></script>
     <script type="text/javascript" src="js/viewmodel/view-model-sheet6.js"></script>
     <script type="text/javascript" src="js/viewmodel/view-model-sheet7.js"></script>
+    <script type="text/javascript" src="js/viewmodel/view-model-sheet8.js"></script>
     <script type="text/javascript" src="js/viewmodel/view-model.js"></script>
     <script type="text/javascript" src="mock/js/services/data/data-proxy.js"></script>
     <script type="text/javascript" src="mock/js/services/data/transaction-year-provider.js"></script>
@@ -257,6 +259,17 @@
                 <div ng-form="Sheet7" static-include="markup/Form7_tab_contents.html"></div>
                 <!--ant-includes
                 <div ng-form="Sheet7" static-include="Form7_tab_contents.html"></div>
+                ant-includes-->
+            </li>
+        </div>
+        <div ng-class="{'invalidTab' : isInvalidTab('Sheet8')}"
+             ng-if="isTabVisible('Sheet8')" >
+            <!-- TODO tooltips or bootstrap hint can be added for a summary to user about reporting sheet -->
+            <li tab heading="VIII – Amount of hydrofluorocarbons charged into the
+imported equipment (section 12)" active="tabs[getTabIndex('Sheet8')].active" ng-controller="TabController" ng-click="onTabChange('Sheet8')">
+                <div ng-form="Sheet8" static-include="markup/sheet8_tab_contents.html"></div>
+                <!--ant-includes
+                <div ng-form="Sheet8" static-include="sheet8_tab_contents.html"></div>
                 ant-includes-->
             </li>
         </div>
@@ -448,6 +461,13 @@
                                    ng-class="(!isEUBasedClicked || tempPartnerDefinition.isEUBased) ? 'disabled' : 'enabled'" required style="margin-left: 0.5em;" />
                         </td>
                     </tr>
+                    <tr ng-if="yearField">
+                        <td><span data-translate="common.trading-partner-year"></span></td>
+                        <td>
+                            <input type="text" ng-model="tempPartnerDefinition.year"
+                            style="margin-left: 0.5em;" />
+                        </td>
+                    </tr>
                 </table>
             </div>
             <div>
@@ -467,6 +487,113 @@
             </div>
             <div class="modal-body">
                 <textarea ng-model="commentValue" focus-me></textarea>
+            </div>
+            <div>
+                <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="remove(alerts, $index, alert)"><span data-translate="{{alert.msg}}"></span></alert>
+            </div>
+            <div class="modal-footer">
+                <span><button class="btn btn-primary" ng-click="ok()" tooltip="{{'common.save-changes' | translate}}"><span data-translate="common.ok"/></button></span>
+                <span><button class="btn btn-default" ng-click="cancel()" tooltip="{{'common.discard-changes' | translate}}"><span data-translate="common.cancel"/></button></span>
+            </div>
+        </script>
+    </div>
+    <div ng-controller="ModalController">
+        <script type="text/ng-template" id="TransactionAddEditModal.html">
+            <div class="modal-header">
+                <h3 class="modal-title"><span data-translate="{{transactionAddEditModalTitle}}"/></h3>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover table-bordered">
+                    <tr>
+                        <th class="fixed-width-gas-transaction"><span data-translate="common.sheet-transactions-header"></span></th>
+                        <th ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                            <div align="center" ng-switch="reportedGas.IsCustomComposition">
+                                <span ng-switch-when="true">{{'common.mixture' | translate}} ({{reportedGas.Name}})</span>
+                                <span ng-switch-default>{{reportedGas.Name}}</span>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                            <div align="center"><span data-translate="common.unit"></span></div>
+                        </th>
+
+                    </tr>
+                    <tr>
+                         <td>
+                            <span data-translate="common.transaction"></span>
+                            <div>
+                                <div>
+                                    <label>POM:</label>
+                                    <button 
+                                        ng-if="has_partner('POM') == false"
+                                        ng-controller="ModalController"
+                                        data-tooltip="{{'common.add' | translate}}"
+                                        ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPOMEXPPartnerModalWindowCloseCallBack,
+                                                    {'title': 'sheet8.tr-12a-trading-partner-modal-title-pom',
+                                                    'arrayToPush': instance.FGasesReporting.F8_S12.tr_12A_POMPartners.Partner,
+                                                    'emptyInstancePath': 'FGasesReporting.F8_S12.Gas.tr_12A.POMTradePartner.TradePartner',
+                                                    'gasArray': instance.FGasesReporting.F8_S12.Gas,
+                                                    'fieldName': 'tr_12A',
+                                                    'partnerType': 'POMPartners',
+                                                    'txid': txid,
+                                                    'transactions': cur_tx,
+                                                    'yearField': true});"
+                                        class="btn btn-primary btn-sm">
+                                        <span class="glyphicon glyphicon-plus-sign"></span>
+                                        <span data-translate="common.add"/>
+                                    </button>
+
+                                    <span ng-if="has_partner('POM')">
+                                        {{ get_partner_name('POM') }}
+                                    </span>
+
+                                </div>
+                                <div>
+                                    <label>Exporter:</label>
+                                    <button 
+                                        ng-if="has_partner('Exporter') == false"
+                                        ng-controller="ModalController"
+                                        data-tooltip="{{'common.add' | translate}}"
+                                        ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPOMEXPPartnerModalWindowCloseCallBack,
+                                                    {'title': 'sheet8.tr-12a-trading-partner-modal-title-exporter',
+                                                    'arrayToPush': instance.FGasesReporting.F8_S12.tr_12A_EXPPartners.Partner,
+                                                    'gasArray': instance.FGasesReporting.F8_S12.Gas,
+                                                    'emptyInstancePath': 'FGasesReporting.F8_S12.Gas.tr_12A.EXPTradePartner.TradePartner',
+                                                    'fieldName': 'tr_12A',
+                                                    'partnerType': 'EXPPartners',
+                                                    'txid': txid,
+                                                    'transactions': cur_tx,
+                                                    'yearField': true});"
+                                        class="btn btn-primary btn-sm">
+                                        <span class="glyphicon glyphicon-plus-sign"></span>
+                                        <span data-translate="common.add"/>
+                                    </button>
+                                    <span ng-if="has_partner('Exporter')">
+                                        {{ get_partner_name('Exporter') }}
+                                    </span>
+                                </div>
+                        </td>
+                        <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                            <input gas-input ng-model="transactions[reportedGas.GasId][txid[reportedGas.GasId]].Amount"
+                                   ng-if="transactions[reportedGas.GasId][txid[reportedGas.GasId]].POM.TradePartnerID && transactions[reportedGas.GasId][txid[reportedGas.GasId]].Exporter.TradePartnerID"/>
+                            <div>
+                                <button ng-controller="ModalController" data-tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
+                                            ng-click="open('lg', 'CommentAddEditModal.html', 'CommentAddEditModalInstanceController', transactions[reportedGas.GasId][txid[reportedGas.GasId]]);"
+                                            class="glyphicon glyphicon-comment" ></button>
+                                    <span ng-if="transactions[reportedGas.GasId][txid[reportedGas.GasId]].Comment"
+                                          data-tooltip="{{transactions[reportedGas.GasId][txid[reportedGas.GasId]].Comment}}">
+                                        {{transactions[reportedGas.GasId][txid[reportedGas.GasId]].Comment | limitTo:commentLimit}} ...
+                                </span>
+                            </div>
+                            <div ng-if="!transactions[reportedGas.GasId][txid[reportedGas.GasId]].POM.TradePartnerID || !transactions[reportedGas.GasId][txid[reportedGas.GasId]].Exporter.TradePartnerID"
+                                <input ng-disabled="true" ng-class="'disabled'"/>
+                                <span data-tooltip="{{'sheet8.tr-12a-disabled-tooltip' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
             <div>
                 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="remove(alerts, $index, alert)"><span data-translate="{{alert.msg}}"></span></alert>
