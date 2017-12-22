@@ -24,17 +24,165 @@
         </tr>
         <tr>
             <td>
-                <span class="transaction-code">6A : </span>
-                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06a-tooltip' | translate}}"></span>
-                <span data-translate="sheet3.tr-06a-desc"></span>
+                <span class="transaction-code">6X : </span>
+                <span data-translate="sheet3.tr-06x-desc"></span>
+                <div><span class="formula" data-translate="sheet3.tr-06x-formula"></span></div>
             </td>
             <td ng-repeat="(gasIndex, reportedGas) in instance.FGasesReporting.ReportedGases | orderBy: gasIndex" align="center">
-                <div ng-if="!isUnspecifiedMix(reportedGas)">
-                    <input gas-input id="{{'tr_06A_' + reportedGas.GasId}}"
-                           ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06A.Amount"
-                           ng-change="doCalculationForFields($index, ['tr_06W']);"/>
-                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06A', 'gasIndex': gasIndex}:true" data-tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
+                <div id="{{'tr_06X_' + reportedGas.GasId}}">
+                    <span>{{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06X.Amount}}</span>
+                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06X', 'gasIndex': gasIndex}:true" data-tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
                 </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="transaction-code">6W : </span>
+                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06w-tooltip' | translate}}"></span>
+                <span data-translate="sheet3.tr-06w-desc"></span>
+                <div><span class="formula" data-translate="sheet3.tr-06w-formula"></span></div>
+            </td>
+            <td ng-repeat="(gasIndex, reportedGas) in instance.FGasesReporting.ReportedGases | orderBy: gasIndex" align="center">
+                <div id="{{'tr_06W_' + reportedGas.GasId}}">
+                    <span>{{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06W.Amount}}</span>
+                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06W', 'gasIndex': gasIndex}:true" data-tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="transaction-code">6V : </span>
+                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06v-tooltip' | translate}}"></span>
+                <span data-translate="sheet3.tr-06v-desc"></span>
+            </td>
+            <td ng-repeat="(gasIndex, reportedGas) in instance.FGasesReporting.ReportedGases | orderBy: gasIndex" align="center">
+                <input gas-input allow-negative="true" ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06V.Amount"
+                       ng-change="doCalculationForFields($index, ['tr_06W']);" ng-blur="mandatoryCommentForTr06V($index);" />
+                <div align="left" ng-show="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06V.Amount">
+                    <button ng-controller="ModalController" data-tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
+                            ng-click="openCommentModalForTr06V($index);"
+                            class="glyphicon glyphicon-comment" ></button>
+                    <span ng-if="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06V.Comment"
+                          data-tooltip="{{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06V.Comment}}">
+                        {{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06V.Comment | limitTo:commentLimit}} ...
+                    </span>
+                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06V', 'gasIndex': gasIndex}:true" data-tooltip="{{validationMessage.message != null ? validationMessage.message : 'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="transaction-code">6U : </span>
+                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06u-tooltip' | translate}}"></span>
+                <span data-translate="sheet3.tr-06u-desc"></span>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06U.Amount"
+                       ng-change="doCalculationForFields($index, ['tr_06W']);" ng-blur="mandatoryCommentForTr06U($index);" />
+                <div align="left" ng-show="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06U.Amount">
+                    <button ng-controller="ModalController" data-tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
+                            ng-click="openCommentModalForTr06U($index);"
+                            class="glyphicon glyphicon-comment" ></button>
+                    <span ng-if="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06U.Comment"
+                          data-tooltip="{{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06U.Comment}}">
+                        {{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06U.Comment | limitTo:commentLimit}} ...
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="transaction-code">6T : </span>
+                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06t-tooltip' | translate}}"></span>
+                <span data-translate="sheet3.tr-06t-desc"></span>
+            </td>
+            <td ng-repeat="(gasIndex, reportedGas) in instance.FGasesReporting.ReportedGases | orderBy: gasIndex" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06T.Amount"
+                       ng-change="doCalculationForFields($index, ['tr_06W']);" ng-blur="mandatoryCommentForTr06T($index);" />
+                <div align="left" ng-show="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06T.Amount">
+                    <button ng-controller="ModalController" data-tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
+                            ng-click="openCommentModalForTr06T($index);"
+                            class="glyphicon glyphicon-comment" ></button>
+                    <span ng-if="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06T.Comment"
+                          data-tooltip="{{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06T.Comment}}">
+                        {{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06T.Comment | limitTo:commentLimit}} ...
+                    </span>
+                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06T', 'gasIndex': gasIndex}:true" data-tooltip="{{validationMessage.message != null ? validationMessage.message : 'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="transaction-code">6S : </span><span data-translate="sheet3.tr-06s-desc"></span></td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06S.Amount"
+                       ng-change="doCalculationForFields($index, ['tr_06W']);"
+                       ng-blur="confirmNotInWhitelist('6S', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06S, 'Amount');"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="transaction-code">6R : </span><span data-translate="sheet3.tr-06r-desc"></span></td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06R.Amount"
+                       ng-change="doCalculationForFields($index, ['tr_06W']);"
+                       ng-blur="confirmNotInWhitelist('6R', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06R, 'Amount');"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="transaction-code">6Q : </span><span data-translate="sheet3.tr-06q-desc"></span></td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06Q.Amount"
+                       ng-change="doCalculationForFields($index, ['tr_06W']);"
+                       ng-blur="confirmNotInWhitelist('6Q', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06Q, 'Amount');"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="transaction-code">6P : </span><span data-translate="sheet3.tr-06p-desc"></span></td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06P.Amount"
+                       ng-change="doCalculationForFields($index, ['tr_06W']);"
+                       ng-blur="confirmNotInWhitelist('6P', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06P, 'Amount');"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="transaction-code">6O : </span><span data-translate="sheet3.tr-06o-desc"></span></td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06O.Amount"
+                       ng-change="doCalculationForFields($index, ['tr_06W']);"
+                       ng-blur="confirmNotInWhitelist('6O', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06O, 'Amount');"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="transaction-code">6N : </span><span data-translate="sheet3.tr-06n-desc"></span></td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06N.Amount"
+                       ng-change="doCalculationForFields($index, ['tr_06W']);"
+                       ng-blur="confirmNotInWhitelist('6N', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06N, 'Amount');"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
                 <div ng-if="isUnspecifiedMix(reportedGas)">
                     <input ng-disabled="true" ng-class="'disabled'"/>
                     <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
@@ -43,30 +191,17 @@
         </tr>
         <tr>
             <td>
-                <span class="transaction-code">6B : </span>
-                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06b-tooltip' | translate}}"></span>
-                <span data-translate="sheet3.tr-06b-desc"></span>
-            </td>
-            <td ng-repeat="(gasIndex, reportedGas) in instance.FGasesReporting.ReportedGases | orderBy: gasIndex" align="center">
-                <input gas-input id="{{'tr_06B_' + reportedGas.GasId}}"
-                       ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06B.Amount"
-                       ng-change="doCalculationForFields($index, ['tr_06W']);"/>
-                <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06B', 'gasIndex': gasIndex}:true" data-tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="transaction-code">6C : </span>
-                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06c-tooltip' | translate}}"></span>
-                <span data-translate="sheet3.tr-06c-desc"></span>
+                <span class="transaction-code">6M : </span>
+                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06m-tooltip' | translate}}"></span>
+                <span data-translate="sheet3.tr-06m-desc"></span>
             </td>
             <td ng-repeat="(gasIndex, reportedGas) in instance.FGasesReporting.ReportedGases | orderBy: gasIndex" align="center">
                 <div ng-if="!isUnspecifiedMix(reportedGas)">
-                    <input gas-input id="{{'tr_06C_' + reportedGas.GasId}}"
-                           ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06C.Amount"
+                    <input gas-input id="{{'tr_06M_' + reportedGas.GasId}}"
+                           ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06M.Amount"
                            ng-change="doCalculationForFields($index, ['tr_06W']);"
-                           ng-blur="confirmNotInWhitelist('6C', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06C, 'Amount');"/>
-                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06C', 'gasIndex': gasIndex}:true" data-tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
+                           ng-blur="confirmNotInWhitelist('6M', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06M, 'Amount');"/>
+                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06M', 'gasIndex': gasIndex}:true" data-tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
                 </div>
                 <div ng-if="isUnspecifiedMix(reportedGas)">
                     <input ng-disabled="true" ng-class="'disabled'"/>
@@ -75,11 +210,41 @@
             </td>
         </tr>
         <tr>
-            <td><span class="transaction-code">6D : </span><span data-translate="sheet3.tr-06d-desc"></span></td>
+            <td>
+                <span class="transaction-code">6L : </span>
+                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06l-tooltip' | translate}}"></span>
+                <span data-translate="sheet3.tr-06l-desc"></span>
+            </td>
+            <td ng-repeat="(gasIndex, reportedGas) in instance.FGasesReporting.ReportedGases | orderBy: gasIndex" align="center">
+                <div ng-if="!isUnspecifiedMix(reportedGas)">
+                    <input gas-input id="{{'tr_06L_' + reportedGas.GasId}}"
+                           ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06L.Amount"
+                           ng-change="doCalculationForFields($index, ['tr_06W']);"
+                           ng-blur="mandatoryCommentForTr06L($index);"
+                    />
+                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06L', 'gasIndex': gasIndex}:true" data-tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
+                </div>
+                <div align="left" ng-show="isPositiveNumber(instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06L.Amount)">
+                    <button ng-controller="ModalController" data-tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
+                            ng-click="openCommentModalForTr06L($index);"
+                            class="glyphicon glyphicon-comment" ></button>
+                    <span ng-if="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06L.Comment"
+                          data-tooltip="{{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06L.Comment}}">
+                        {{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06L.Comment | limitTo:commentLimit}} ...
+                    </span>
+                </div>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="transaction-code">6K : </span><span data-translate="sheet3.tr-06k-desc"></span></td>
             <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
-                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06D.Amount"
+                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06K.Amount"
                        ng-change="doCalculationForFields($index, ['tr_06W']);"
-                       ng-blur="confirmNotInWhitelist('6D', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06D, 'Amount');"
+                       ng-blur="confirmNotInWhitelist('6K', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06K, 'Amount');"
                        ng-if="!isUnspecifiedMix(reportedGas)"/>
                 <div ng-if="isUnspecifiedMix(reportedGas)">
                     <input ng-disabled="true" ng-class="'disabled'"/>
@@ -88,50 +253,11 @@
             </td>
         </tr>
         <tr>
-            <td><span class="transaction-code">6E : </span><span data-translate="sheet3.tr-06e-desc"></span></td>
+            <td><span class="transaction-code">6J : </span><span data-translate="sheet3.tr-06j-desc"></span></td>
             <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
-                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06E.Amount"
-                       ng-blur="confirmNotInWhitelist('6E', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06E, 'Amount');"
+                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06J.Amount"
                        ng-change="doCalculationForFields($index, ['tr_06W']);"
-                       ng-if="!isUnspecifiedMix(reportedGas)"/>
-                <div ng-if="isUnspecifiedMix(reportedGas)">
-                    <input ng-disabled="true" ng-class="'disabled'"/>
-                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td><span class="transaction-code">6F : </span><span data-translate="sheet3.tr-06f-desc"></span></td>
-            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
-                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06F.Amount"
-                       ng-blur="confirmNotInWhitelist('6F', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06F, 'Amount');"
-                       ng-change="doCalculationForFields($index, ['tr_06W']);"
-                       ng-if="!isUnspecifiedMix(reportedGas)"/>
-                <div ng-if="isUnspecifiedMix(reportedGas)">
-                    <input ng-disabled="true" ng-class="'disabled'"/>
-                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td><span class="transaction-code">6G : </span><span data-translate="sheet3.tr-06g-desc"></span></td>
-            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
-                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06G.Amount"
-                       ng-change="doCalculationForFields($index, ['tr_06W']);"
-                       ng-blur="confirmNotInWhitelist('6G', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06G, 'Amount');"
-                       ng-if="!isUnspecifiedMix(reportedGas)"/>
-                <div ng-if="isUnspecifiedMix(reportedGas)">
-                    <input ng-disabled="true" ng-class="'disabled'"/>
-                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td><span class="transaction-code">6H : </span><span data-translate="sheet3.tr-06h-desc"></span></td>
-            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
-                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06H.Amount"
-                       ng-change="doCalculationForFields($index, ['tr_06W']);"
-                       ng-blur="confirmNotInWhitelist('6H', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06H, 'Amount');"
+                       ng-blur="confirmNotInWhitelist('6J', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06J, 'Amount');"
                        ng-if="!isUnspecifiedMix(reportedGas)"/>
                 <div ng-if="isUnspecifiedMix(reportedGas)">
                     <input ng-disabled="true" ng-class="'disabled'"/>
@@ -160,11 +286,11 @@
             </td>
         </tr>
         <tr>
-            <td><span class="transaction-code">6J : </span><span data-translate="sheet3.tr-06j-desc"></span></td>
+            <td><span class="transaction-code">6H : </span><span data-translate="sheet3.tr-06h-desc"></span></td>
             <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
-                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06J.Amount"
+                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06H.Amount"
                        ng-change="doCalculationForFields($index, ['tr_06W']);"
-                       ng-blur="confirmNotInWhitelist('6J', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06J, 'Amount');"
+                       ng-blur="confirmNotInWhitelist('6H', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06H, 'Amount');"
                        ng-if="!isUnspecifiedMix(reportedGas)"/>
                 <div ng-if="isUnspecifiedMix(reportedGas)">
                     <input ng-disabled="true" ng-class="'disabled'"/>
@@ -173,11 +299,50 @@
             </td>
         </tr>
         <tr>
-            <td><span class="transaction-code">6K : </span><span data-translate="sheet3.tr-06k-desc"></span></td>
+            <td><span class="transaction-code">6G : </span><span data-translate="sheet3.tr-06g-desc"></span></td>
             <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
-                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06K.Amount"
+                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06G.Amount"
                        ng-change="doCalculationForFields($index, ['tr_06W']);"
-                       ng-blur="confirmNotInWhitelist('6K', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06K, 'Amount');"
+                       ng-blur="confirmNotInWhitelist('6G', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06G, 'Amount');"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="transaction-code">6F : </span><span data-translate="sheet3.tr-06f-desc"></span></td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06F.Amount"
+                       ng-blur="confirmNotInWhitelist('6F', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06F, 'Amount');"
+                       ng-change="doCalculationForFields($index, ['tr_06W']);"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="transaction-code">6E : </span><span data-translate="sheet3.tr-06e-desc"></span></td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06E.Amount"
+                       ng-blur="confirmNotInWhitelist('6E', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06E, 'Amount');"
+                       ng-change="doCalculationForFields($index, ['tr_06W']);"
+                       ng-if="!isUnspecifiedMix(reportedGas)"/>
+                <div ng-if="isUnspecifiedMix(reportedGas)">
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="transaction-code">6D : </span><span data-translate="sheet3.tr-06d-desc"></span></td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
+                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06D.Amount"
+                       ng-change="doCalculationForFields($index, ['tr_06W']);"
+                       ng-blur="confirmNotInWhitelist('6D', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06D, 'Amount');"
                        ng-if="!isUnspecifiedMix(reportedGas)"/>
                 <div ng-if="isUnspecifiedMix(reportedGas)">
                     <input ng-disabled="true" ng-class="'disabled'"/>
@@ -187,27 +352,17 @@
         </tr>
         <tr>
             <td>
-                <span class="transaction-code">6L : </span>
-                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06l-tooltip' | translate}}"></span>
-                <span data-translate="sheet3.tr-06l-desc"></span>
+                <span class="transaction-code">6C : </span>
+                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06c-tooltip' | translate}}"></span>
+                <span data-translate="sheet3.tr-06c-desc"></span>
             </td>
             <td ng-repeat="(gasIndex, reportedGas) in instance.FGasesReporting.ReportedGases | orderBy: gasIndex" align="center">
                 <div ng-if="!isUnspecifiedMix(reportedGas)">
-                    <input gas-input id="{{'tr_06L_' + reportedGas.GasId}}"
-                           ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06L.Amount"
+                    <input gas-input id="{{'tr_06C_' + reportedGas.GasId}}"
+                           ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06C.Amount"
                            ng-change="doCalculationForFields($index, ['tr_06W']);"
-                           ng-blur="mandatoryCommentForTr06L($index);"
-                           />
-                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06L', 'gasIndex': gasIndex}:true" data-tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
-                </div>
-                <div align="left" ng-show="isPositiveNumber(instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06L.Amount)">
-                    <button ng-controller="ModalController" data-tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
-                            ng-click="openCommentModalForTr06L($index);"
-                            class="glyphicon glyphicon-comment" ></button>
-                    <span ng-if="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06L.Comment"
-                          data-tooltip="{{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06L.Comment}}">
-                        {{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06L.Comment | limitTo:commentLimit}} ...
-                    </span>
+                           ng-blur="confirmNotInWhitelist('6C', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06C, 'Amount');"/>
+                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06C', 'gasIndex': gasIndex}:true" data-tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
                 </div>
                 <div ng-if="isUnspecifiedMix(reportedGas)">
                     <input ng-disabled="true" ng-class="'disabled'"/>
@@ -217,188 +372,33 @@
         </tr>
         <tr>
             <td>
-                <span class="transaction-code">6M : </span>
-                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06m-tooltip' | translate}}"></span>
-                <span data-translate="sheet3.tr-06m-desc"></span>
+                <span class="transaction-code">6B : </span>
+                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06b-tooltip' | translate}}"></span>
+                <span data-translate="sheet3.tr-06b-desc"></span>
+            </td>
+            <td ng-repeat="(gasIndex, reportedGas) in instance.FGasesReporting.ReportedGases | orderBy: gasIndex" align="center">
+                <input gas-input id="{{'tr_06B_' + reportedGas.GasId}}"
+                       ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06B.Amount"
+                       ng-change="doCalculationForFields($index, ['tr_06W']);"/>
+                <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06B', 'gasIndex': gasIndex}:true" data-tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="transaction-code">6A : </span>
+                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06a-tooltip' | translate}}"></span>
+                <span data-translate="sheet3.tr-06a-desc"></span>
             </td>
             <td ng-repeat="(gasIndex, reportedGas) in instance.FGasesReporting.ReportedGases | orderBy: gasIndex" align="center">
                 <div ng-if="!isUnspecifiedMix(reportedGas)">
-                    <input gas-input id="{{'tr_06M_' + reportedGas.GasId}}"
-                           ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06M.Amount"
-                           ng-change="doCalculationForFields($index, ['tr_06W']);"
-                           ng-blur="confirmNotInWhitelist('6M', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06M, 'Amount');"/>
-                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06M', 'gasIndex': gasIndex}:true" data-tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
+                    <input gas-input id="{{'tr_06A_' + reportedGas.GasId}}"
+                           ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06A.Amount"
+                           ng-change="doCalculationForFields($index, ['tr_06W']);"/>
+                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06A', 'gasIndex': gasIndex}:true" data-tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
                 </div>
                 <div ng-if="isUnspecifiedMix(reportedGas)">
                     <input ng-disabled="true" ng-class="'disabled'"/>
                     <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td><span class="transaction-code">6N : </span><span data-translate="sheet3.tr-06n-desc"></span></td>
-            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
-                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06N.Amount"
-                       ng-change="doCalculationForFields($index, ['tr_06W']);"
-                       ng-blur="confirmNotInWhitelist('6N', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06N, 'Amount');"
-                       ng-if="!isUnspecifiedMix(reportedGas)"/>
-                <div ng-if="isUnspecifiedMix(reportedGas)">
-                    <input ng-disabled="true" ng-class="'disabled'"/>
-                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td><span class="transaction-code">6O : </span><span data-translate="sheet3.tr-06o-desc"></span></td>
-            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
-                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06O.Amount"
-                       ng-change="doCalculationForFields($index, ['tr_06W']);"
-                       ng-blur="confirmNotInWhitelist('6O', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06O, 'Amount');"
-                       ng-if="!isUnspecifiedMix(reportedGas)"/>
-                <div ng-if="isUnspecifiedMix(reportedGas)">
-                    <input ng-disabled="true" ng-class="'disabled'"/>
-                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td><span class="transaction-code">6P : </span><span data-translate="sheet3.tr-06p-desc"></span></td>
-            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
-                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06P.Amount"
-                       ng-change="doCalculationForFields($index, ['tr_06W']);"
-                       ng-blur="confirmNotInWhitelist('6P', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06P, 'Amount');"
-                       ng-if="!isUnspecifiedMix(reportedGas)"/>
-                <div ng-if="isUnspecifiedMix(reportedGas)">
-                    <input ng-disabled="true" ng-class="'disabled'"/>
-                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td><span class="transaction-code">6Q : </span><span data-translate="sheet3.tr-06q-desc"></span></td>
-            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
-                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06Q.Amount"
-                       ng-change="doCalculationForFields($index, ['tr_06W']);"
-                       ng-blur="confirmNotInWhitelist('6Q', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06Q, 'Amount');"
-                       ng-if="!isUnspecifiedMix(reportedGas)"/>
-                <div ng-if="isUnspecifiedMix(reportedGas)">
-                    <input ng-disabled="true" ng-class="'disabled'"/>
-                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td><span class="transaction-code">6R : </span><span data-translate="sheet3.tr-06r-desc"></span></td>
-            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
-                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06R.Amount"
-                       ng-change="doCalculationForFields($index, ['tr_06W']);"
-                       ng-blur="confirmNotInWhitelist('6R', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06R, 'Amount');"
-                       ng-if="!isUnspecifiedMix(reportedGas)"/>
-                <div ng-if="isUnspecifiedMix(reportedGas)">
-                    <input ng-disabled="true" ng-class="'disabled'"/>
-                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td><span class="transaction-code">6S : </span><span data-translate="sheet3.tr-06s-desc"></span></td>
-            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
-                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06S.Amount"
-                       ng-change="doCalculationForFields($index, ['tr_06W']);"
-                       ng-blur="confirmNotInWhitelist('6S', reportedGas, instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06S, 'Amount');"
-                       ng-if="!isUnspecifiedMix(reportedGas)"/>
-                <div ng-if="isUnspecifiedMix(reportedGas)">
-                    <input ng-disabled="true" ng-class="'disabled'"/>
-                    <span data-tooltip="{{'common.no-unspecified-mix' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="transaction-code">6T : </span>
-                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06t-tooltip' | translate}}"></span>
-                <span data-translate="sheet3.tr-06t-desc"></span>
-            </td>
-            <td ng-repeat="(gasIndex, reportedGas) in instance.FGasesReporting.ReportedGases | orderBy: gasIndex" align="center">
-                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06T.Amount"
-                       ng-change="doCalculationForFields($index, ['tr_06W']);" ng-blur="mandatoryCommentForTr06T($index);" />
-                <div align="left" ng-show="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06T.Amount">
-                    <button ng-controller="ModalController" data-tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
-                            ng-click="openCommentModalForTr06T($index);"
-                            class="glyphicon glyphicon-comment" ></button>
-                    <span ng-if="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06T.Comment"
-                          data-tooltip="{{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06T.Comment}}">
-                        {{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06T.Comment | limitTo:commentLimit}} ...
-                    </span>
-                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06T', 'gasIndex': gasIndex}:true" data-tooltip="{{validationMessage.message != null ? validationMessage.message : 'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="transaction-code">6U : </span>
-                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06u-tooltip' | translate}}"></span>
-                <span data-translate="sheet3.tr-06u-desc"></span>
-            </td>
-            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">
-                <input gas-input ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06U.Amount"
-                       ng-change="doCalculationForFields($index, ['tr_06W']);" ng-blur="mandatoryCommentForTr06U($index);" />
-                <div align="left" ng-show="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06U.Amount">
-                    <button ng-controller="ModalController" data-tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
-                            ng-click="openCommentModalForTr06U($index);"
-                            class="glyphicon glyphicon-comment" ></button>
-                    <span ng-if="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06U.Comment"
-                          data-tooltip="{{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06U.Comment}}">
-                        {{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06U.Comment | limitTo:commentLimit}} ...
-                    </span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="transaction-code">6V : </span>
-                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06v-tooltip' | translate}}"></span>
-                <span data-translate="sheet3.tr-06v-desc"></span>
-            </td>
-            <td ng-repeat="(gasIndex, reportedGas) in instance.FGasesReporting.ReportedGases | orderBy: gasIndex" align="center">
-                <input gas-input allow-negative="true" ng-model="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06V.Amount"
-                       ng-change="doCalculationForFields($index, ['tr_06W']);" ng-blur="mandatoryCommentForTr06V($index);" />
-                <div align="left" ng-show="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06V.Amount">
-                    <button ng-controller="ModalController" data-tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
-                            ng-click="openCommentModalForTr06V($index);"
-                            class="glyphicon glyphicon-comment" ></button>
-                    <span ng-if="instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06V.Comment"
-                          data-tooltip="{{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06V.Comment}}">
-                        {{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06V.Comment | limitTo:commentLimit}} ...
-                    </span>
-                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06V', 'gasIndex': gasIndex}:true" data-tooltip="{{validationMessage.message != null ? validationMessage.message : 'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="transaction-code">6W : </span>
-                <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet3.tr-06w-tooltip' | translate}}"></span>
-                <span data-translate="sheet3.tr-06w-desc"></span>
-                <div><span class="formula" data-translate="sheet3.tr-06w-formula"></span></div>
-            </td>
-            <td ng-repeat="(gasIndex, reportedGas) in instance.FGasesReporting.ReportedGases | orderBy: gasIndex" align="center">
-                <div id="{{'tr_06W_' + reportedGas.GasId}}">
-                    <span>{{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06W.Amount}}</span>
-                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06W', 'gasIndex': gasIndex}:true" data-tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="transaction-code">6X : </span>
-                <span data-translate="sheet3.tr-06x-desc"></span>
-                <div><span class="formula" data-translate="sheet3.tr-06x-formula"></span></div>
-            </td>
-            <td ng-repeat="(gasIndex, reportedGas) in instance.FGasesReporting.ReportedGases | orderBy: gasIndex" align="center">
-                <div id="{{'tr_06X_' + reportedGas.GasId}}">
-                    <span>{{instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[$index].tr_06X.Amount}}</span>
-                    <span ng-repeat="validationMessage in validationMessages.sheet3 | filter:{'transaction': 'tr_06X', 'gasIndex': gasIndex}:true" data-tooltip="{{'validation_messages.qc_' + validationMessage.qccode + '.error_text' | translate}}" class="glyphicon glyphicon-exclamation-sign row-tooltip"></span>
                 </div>
             </td>
         </tr>
