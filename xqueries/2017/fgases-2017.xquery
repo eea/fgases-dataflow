@@ -1603,7 +1603,7 @@ declare function xmlconv:qc2501($report as element(FGasesReporting))
 as element(div)*
 {
     let $err_text := "The amount reported in (1C_a)
-    should be lower or equal as the amount reported in (1A).
+    cannot be greater than the amount reported in (1A).
     Please revise your data."
     let $err_flag :=
         for $gas in $report/F1_S1_4_ProdImpExp/Gas
@@ -1623,28 +1623,25 @@ as element(div)*
             $xmlconv:BLOCKER, count($err_flag)>0, $err_flag, "Invalid gases are: ")
 };
 
-(:declare function xmlconv:qc2502($report as element(FGasesReporting))
+declare function xmlconv:qc21350($report as element(FGasesReporting))
 as element(div)*
 {
-    let $err_text := "The amount reported in (1C_a)
-    should be lower or equal as the amount reported in (1A).
+    let $err_text := "The amount reported in (tr_12B_11G)
+    should equal with amount reported in (tr_11GSumAllGasesCO2Eq).
     Please revise your data."
-    let $err_flag :=
-        for $gas in $report/F1_S1_4_ProdImpExp/Gas
-            let $tr01Ca_amount := $gas/tr_01Ca/Amount
-            let $tr01A_amount := $gas/tr_01A/Amount
-            let $ok := (
-                xs:double($tr01Ca_amount) <= xs:double($tr01A_amount)
-                and
-                    $tr01Ca_amount castable as xs:double
-                and
-                    $tr01A_amount castable as xs:double
-            )
-            where not($ok)
-                return data($report/ReportedGases[GasId = $gas/GasCode]/Name)
-    return uiutil:buildRuleResult("2501", "1Ca", $err_text,
-            $xmlconv:BLOCKER, count($err_flag)>0, $err_flag, "Invalid gases are: ")
-};:)
+    let $tr_12B_11G_amount := data($report/F8_S12/Totals/tr_12B_11G)
+    let $tr_11GSumAllGasesCO2Eq_amount := data($report/F7_s11EquImportTable/Totals/tr_11GSumAllGasesCO2Eq)
+    let $ok := if (
+        $tr_12B_11G_amount castable as xs:double
+        and
+        $tr_11GSumAllGasesCO2Eq_amount castable as xs:double)
+        then
+            xs:double($tr_12B_11G_amount) = xs:double($tr_11GSumAllGasesCO2Eq_amount)
+        else
+            false()
+    return uiutil:buildRuleResult("21350", "tr_12B_11G", $err_text,
+            $xmlconv:BLOCKER, not($ok), (), "")
+};
 
 declare function xmlconv:_compose-qc2056-error-message($report as element(FGasesReporting), $stock as element(stock))
 as xs:string
@@ -1860,6 +1857,7 @@ as element(div)
     let $r2055 := xmlconv:qc2055($doc)
     let $r2056 := xmlconv:qc2056($doc)
     let $r2501 := xmlconv:qc2501($doc)
+    let $r21350 := xmlconv:qc21350($doc)
 
 
 
@@ -1985,6 +1983,7 @@ as element(div)
         {$r2055}
         {$r2056}
         {$r2501}
+        {$r21350}
     </div>
 
 };

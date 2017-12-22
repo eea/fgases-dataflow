@@ -2329,7 +2329,7 @@
 			</tr_11Q>
 		</SumOfAllGasesS2>
 		<Totals>
-			<tr_11GSumAllGasesCO2Eq></tr_11GSumAllGasesCO2Eq>
+			<tr_11GSumAllGasesCO2Eq>12345</tr_11GSumAllGasesCO2Eq>
 			<tr_11QSumAllGasesCO2Eq></tr_11QSumAllGasesCO2Eq>
 		</Totals>
 		<SupportingDocuments>
