@@ -77,6 +77,7 @@
             {"id":"Sheet5",           "active" : false},
             {"id":"Sheet6",           "active" : false},
             {"id":"Sheet7",           "active" : false},
+            {"id":"Sheet8",           "active" : false},
             {"id":"Submission",       "active" : false}
         ]);
         //, {"id":"Debug",            "active" : false}
@@ -117,6 +118,7 @@
             "Sheet5",
             "Sheet6",
             "Sheet7",
+            "Sheet8",
             "Submission"
         ]
     });// end of constant definitions

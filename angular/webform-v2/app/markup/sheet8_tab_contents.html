@@ -1,0 +1,68 @@
+<!-- html subform [ng-form="Sheet8"] -->
+<div data-name="Sheet8Section12">
+    <h2><span data-translate="sheet8.section12-heading"></span></h2>
+    <p><span data-translate="sheet8.section12-info1"></span></p>
+    <p><span data-translate="sheet8.section12-info2"></span></p>
+    <p><span data-translate="sheet8.section12-info3"></span></p>
+    <table class="table table-hover table-bordered fixed-table">
+        <colgroup>
+            <col class="fixed-width-gas-transaction"/>
+            <col class="fixed-width-gas-amount" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" ng-if="containsHFC(reportedGas)"/>
+        </colgroup>
+        <tr>
+            <th class="fixed-width-gas-transaction"><span data-translate="common.sheet-transactions-header"></span></th>
+            <th ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                <div align="center" ng-switch="reportedGas.IsCustomComposition">
+                    <span ng-switch-when="true">{{'common.mixture' | translate}} ({{reportedGas.Name}})</span>
+                    <span ng-switch-default>{{reportedGas.Name}}</span>
+                </div>
+            </th>
+        </tr>
+        <tr>
+            <th></th>
+            <th ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+                <div align="center"><span data-translate="common.unit"></span></div>
+            </th>
+        </tr>
+        <!-- Field 12A Start -->
+        <tr>
+            <td>
+                <div id="tr_12A">
+                    <span class="transaction-code">12A : </span>
+                    <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet8.tr-12a-tooltip' | translate}}"></span>
+                    <span data-translate="sheet8.tr-12a-desc"></span>
+                    <div><span data-translate="sheet8.tr-12a-add-transaction-tooltip"></span></div>
+                    <div ng-repeat="gas in instance.FGasesReporting.F8_S12.Gas">
+                        <div ng-repeat="transaction in gas.tr_12A.Transactions">{{gas.GasCode}}: Transaction: #{{$index}} - {{transaction.Amount}}</div>
+                    </div>
+                    <div>
+                        <button 
+                            ng-controller="ModalController"
+                            data-tooltip="{{'sheet8.tr-12a-add-transaction-tooltip' | translate}}"
+                            ng-click="open('lg', 'TransactionAddEditModal.html', 'TransactionAddEditModalInstanceController', {}, transactionModalWindowCloseCallBack,
+                                    {'title': 'sheet8.tr-12a-trading-partner-modal-title',
+                                     'arrayToPush': instance.FGasesReporting.F8_S12.tr_12A_Transactions.Transaction,
+                                     'emptyInstancePath': 'FGasesReporting.F8_S12.Gas.tr_12A.Transaction',
+                                     'gasArray': instance.FGasesReporting.F8_S12.Gas,
+                                     'gases': instance.FGasesReporting.ReportedGases,
+                                     'reportedGas': reportedGas,
+                                     'fieldName': 'tr_12A',
+                                     'POM': instance.FGasesReporting.F8_S12.tr_12A_POMPartners,
+                                     'Exporter': instance.FGasesReporting.F8_S12.tr_12A_EXPPartners});"
+                            class="btn btn-primary btn-sm">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        <span data-translate="sheet8.tr-12a-add-transaction"/>
+                    </div>
+                <div ng-repeat="transaction in instance.FGasesReporting.F8_S12.Gas.tr_12A.Transactions | orderBy: $index">
+                  <strong>{{$index}}</strong>
+                </div>
+            </td>
+        </tr>
+            </td>
+        </tr>
+    </table>
+</div>
+
+    <!-- end of div name="Sheet8Section12" -->
+<!-- end of html subform [ng-form="Sheet8"] -->
+

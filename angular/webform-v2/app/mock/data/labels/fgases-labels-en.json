@@ -23,6 +23,7 @@
         },
         "common": {
             "add-explanation":"Add Explanation",
+            "add": "Add",
             "delete-value":"Delete Value",
             "remove": "Remove",
             "ok": "OK",
@@ -90,7 +91,8 @@
             "gas-input-thousand-separator-error": "Please use points, not commas, as decimal separators, and do not enter any thousand separators in your values.",
             "gas-input-mmt-threshold-violation": "Caution: You are entering a number above 1000. Please make sure you report in units of metric tonnes, not in kilograms. \n\nRevise data by pressing \"Cancel\", Confirm data by pressing \"OK\".",
             "gas-input-mmt-threshold-violation-dissmiss-dialog": "Don't show this confirmation again.",
-            "stocks-auto-import-info": "The 1st January stocks data for gas {{ gasName }} were automatically pasted into section 4A/B/C based on the 31st December stocks data reported last year in section 4F/G/H. You have the option to edit those numbers."
+            "stocks-auto-import-info": "The 1st January stocks data for gas {{ gasName }} were automatically pasted into section 4A/B/C based on the 31st December stocks data reported last year in section 4F/G/H. You have the option to edit those numbers.",
+            "trading-partner-year": "Year"
         },
         "company-info": {
             "info": "Organisation details",
@@ -1052,6 +1054,24 @@
             "upload-document": "Upload new supporting document",
             "upload-document-text1": "Please upload additional information material transparently documenting the reported F-gas amounts, for example based on numbers of imported equipment and specific charges.",
             "noCategoySelected": "No category selected."
+        },
+        "sheet8": {
+            "section12-heading":"SECTION 12: TBD",
+            "section12-info1": "Amount of hydrofluorocarbons charged into the imported equipment, released by customs for free circulation in the Union, for which the hydrofluorocarbons had previously been exported from the Union and which had been subject to the hydrofluorocarbon quota limitation for placing on the Union market. ",
+            "section12-info2": "The hydrofluorocarbon exporting undertaking/s and the year/s of export shall be specified..",
+            "section12-info3": "The undertaking/s having placed the hydrofluorocarbons on the Union market for the first time and the year/s of that placing on the market shall be specified.",
+            "tr-12a-desc": "Quantity imported into the Union for destruction",
+            "tr-12a-tooltip": "The undertaking/s carrying out the destruction shall be specified.",
+            "tr-12a-add-transaction-tooltip": "Add a new transaction",
+            "tr-12a-add-transaction": "Add transaction",
+            "tr-12a-trading-partner-modal-title": "Add Trading Partner",
+            "tr-12a-add-trading-partner": "Add a Trading Partner",
+            "tr-12a-add-trading-partner-tooltip": "If You want to report in this transaction, you can add trading partner(s) with this button",
+            "tr-12a-add-pom": "Add POM",
+            "tr-12a-add-pom-tooltip": "",
+            "tr-12a-disabled-tooltip": "Please add POM and Exporter first",
+            "tr-12a-trading-partner-modal-title-pom": "Add Trading Partner (POM)",
+            "tr-12a-trading-partner-modal-title-exporter": "Add Trading Partner (Exporter)"
         },
         "validation_messages": {
             "qc_1400": {

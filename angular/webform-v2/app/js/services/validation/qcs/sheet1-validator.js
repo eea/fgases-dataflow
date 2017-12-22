@@ -226,11 +226,10 @@
                         var gasAmounts02A = viewModel.sheet1.section2.getGasAmounts('tr_02A');
                         var that = this;
                         arrayUtil.forEach(gasAmounts02A, function (gasAmount02A) {
-                            var v02A = numericUtil.toNum(gasAmount02A.amount, 0);
                             var v09F = numericUtil.toNum(amount09F, 0);
                             var v09G = numericUtil.toNum(amount09G, 0);
                             
-                            if (v02A > 0 && v09F > 0 && v09G === 0){
+                            if (v09F > 0 && v09G === 0){
                                 var flag = sheetValidationObjectFactory.createQcFlag('2A', that.qccode, gasAmount02A.id, null, "9F: " + v09F);
                                 result.flags.push(flag);
                             }

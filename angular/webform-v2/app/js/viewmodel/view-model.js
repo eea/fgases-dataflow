@@ -3,12 +3,12 @@
     angular.module('FGases.viewmodel').factory('viewModel', [
         
         'ViewModelObjectBase', 'ViewModelActivities', 'ViewModelSheet1', 'ViewModelSheet2','ViewModelSheet3',
-        'ViewModelSheet4', 'ViewModelSheet5', 'ViewModelSheet6', 'ViewModelSheet7', 'ViewModelSubmission',
+        'ViewModelSheet4', 'ViewModelSheet5', 'ViewModelSheet6', 'ViewModelSheet7', 'ViewModelSheet8','ViewModelSubmission',
         'tradePartnerCompanyMatcher', 'objectUtil', 'arrayUtil',
         
         function(ViewModelObjectBase, ViewModelActivities, ViewModelSheet1, ViewModelSheet2, ViewModelSheet3,
-                    ViewModelSheet4, ViewModelSheet5, ViewModelSheet6, ViewModelSheet7, ViewModelSubmission,
-                    tradePartnerCompanyMatcher, objectUtil, arrayUtil) {
+                    ViewModelSheet4, ViewModelSheet5, ViewModelSheet6, ViewModelSheet7, ViewModelSheet8,
+                    ViewModelSubmission, tradePartnerCompanyMatcher, objectUtil, arrayUtil) {
                 
             function ViewModel() {
                 ViewModelObjectBase.call(this, null);
@@ -20,6 +20,7 @@
                 this.sheet5 = new ViewModelSheet5(this);
                 this.sheet6 = new ViewModelSheet6(this);
                 this.sheet7 = new ViewModelSheet7(this);
+                this.sheet8 = new ViewModelSheet8(this);
                 this.submission = new ViewModelSubmission(this);
                 this._stocks = [];
                 this._stocksSuccessfullyRetrieved = false;

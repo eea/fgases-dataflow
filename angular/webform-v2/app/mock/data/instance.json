@@ -414,6 +414,91 @@
                 "tr_05J": "\n      "
             }
         },
+        "F8_S12": {
+            "Gases": {
+                "Gas": [],
+                "POM": [],
+                "EXP": []
+            },
+            "Gas": {
+                "GasCode": null,
+                "tr_12A": {
+                    "Code": "12A",
+                    "SumOfPartnerAmounts": null,
+                    "Unit": null,
+                    "TradePartner": {
+                        "TradePartnerID": null,
+                        "amount": null,
+                        "Comment": null
+                    },
+                    "POMTradePartner": {
+                        "TradePartner": {
+                            "TradePartnerID": null,
+                            "GasCode": null,
+                            "Year": null,
+                            "amount": null,
+                            "Comment": null
+                        }
+                    },
+                    "EXPTradePartner": {
+                        "TradePartner": {
+                            "TradePartnerID": null,
+                            "GasCode": null,
+                            "Year": null,
+                            "amount": null,
+                            "Comment": null
+                        }
+                    },
+                    "POMPartners": [],
+                    "EXPPartners": [],
+                    "Transactions": [],
+                    "Transaction": {
+                        "Amount": null,
+                        "Exporter": {
+                            "TradePartnerID": null,
+                            "Year": null
+                        },
+                        "POM": {
+                            "TradePartnerID": null,
+                            "Year": null
+                        },
+                        "Comment": null
+                    }
+                }
+            },
+            "tr_12A_TradePartners": {
+                "Partner": null
+            },
+            "tr_12A_POMPartners": {
+                "Partner": null
+            },
+            "tr_12A_EXPPartners": {
+                "Partner": null
+            },
+            "tr_12A_Transactions": {
+                "Transaction": []
+            },
+            "tr_12A_POM": {
+                "Code": "12A_POM",
+                "TradePartner": {
+                    "TradePartnerID": null,
+                    "GasCode": null,
+                    "Year": null,
+                    "amount": null,
+                    "Comment": null
+                }
+            },
+            "tr_12A_EXP": {
+                "Code": "12A_EXP",
+                "TradePartner": {
+                    "TradePartnerID": null,
+                    "GasCode": null,
+                    "Year": null,
+                    "amount": null,
+                    "Comment": null
+                }
+            }
+        },
         "F3A_S6A_IA_HFCs": {
             "Gas": {
                 "GasCode": null,

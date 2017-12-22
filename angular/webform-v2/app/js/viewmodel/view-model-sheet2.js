@@ -84,7 +84,6 @@
             
             ViewModelSheet2Section5.prototype._getTrOwnTradePartner = function(transactionPartners) {
                 var root = this.getRoot();
-                
                 return arrayUtil.selectSingle(transactionPartners, function(tradePartner) {
                     return root.isOwnCompany(tradePartner);
                 });
