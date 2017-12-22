@@ -151,7 +151,7 @@
 			<GasCode>2</GasCode>
 			<tr_01A>
 				<Code>01A</Code>
-				<Amount></Amount>
+				<Amount>15</Amount>
 			</tr_01A>
 			<tr_01B>
 				<Code>01B</Code>
@@ -164,6 +164,10 @@
 				<Unit></Unit>
 				<Comment></Comment>
 			</tr_01C>
+			<tr_01Ca>
+				<Code>01Ca</Code>
+				<Amount>14.14</Amount>
+			</tr_01Ca>
 			<tr_01D>
 				<Code>01D</Code>
 				<Amount>0.000</Amount>
@@ -302,6 +306,10 @@
 				<Unit></Unit>
 				<Comment></Comment>
 			</tr_01C>
+			<tr_01Ca>
+				<Code>01Ca</Code>
+				<Amount>150b</Amount>
+			</tr_01Ca>
 			<tr_01D>
 				<Code>01D</Code>
 				<Amount>0.000</Amount>

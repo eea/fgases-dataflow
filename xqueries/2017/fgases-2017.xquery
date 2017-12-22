@@ -1609,14 +1609,21 @@ as element(div)*
         for $gas in $report/F1_S1_4_ProdImpExp/Gas
             let $tr01Ca_amount := $gas/tr_01Ca/Amount
             let $tr01A_amount := $gas/tr_01A/Amount
-            let $ok := $tr01Ca_amount <= $tr01A_amount
+            let $ok := if (
+                $tr01Ca_amount castable as xs:double
+                and
+                $tr01A_amount castable as xs:double)
+                then
+                    xs:double($tr01Ca_amount) <= xs:double($tr01A_amount)
+                else
+                    false()
             where not($ok)
                 return data($report/ReportedGases[GasId = $gas/GasCode]/Name)
     return uiutil:buildRuleResult("2501", "1Ca", $err_text,
             $xmlconv:BLOCKER, count($err_flag)>0, $err_flag, "Invalid gases are: ")
 };
 
-declare function xmlconv:qc2502($report as element(FGasesReporting))
+(:declare function xmlconv:qc2502($report as element(FGasesReporting))
 as element(div)*
 {
     let $err_text := "The amount reported in (1C_a)
@@ -1626,12 +1633,18 @@ as element(div)*
         for $gas in $report/F1_S1_4_ProdImpExp/Gas
             let $tr01Ca_amount := $gas/tr_01Ca/Amount
             let $tr01A_amount := $gas/tr_01A/Amount
-            let $ok := $tr01Ca_amount <= $tr01A_amount
+            let $ok := (
+                xs:double($tr01Ca_amount) <= xs:double($tr01A_amount)
+                and
+                    $tr01Ca_amount castable as xs:double
+                and
+                    $tr01A_amount castable as xs:double
+            )
             where not($ok)
                 return data($report/ReportedGases[GasId = $gas/GasCode]/Name)
     return uiutil:buildRuleResult("2501", "1Ca", $err_text,
             $xmlconv:BLOCKER, count($err_flag)>0, $err_flag, "Invalid gases are: ")
-};
+};:)
 
 declare function xmlconv:_compose-qc2056-error-message($report as element(FGasesReporting), $stock as element(stock))
 as xs:string
