@@ -57,8 +57,8 @@
             "mixture": "Mixture",
             "sheet-transactions-header": "Transactions/(metric tonnes)",
             "sheet-transactions-header-metric-co2eq": "Transactions/(t CO2-equivalents)",
-            "unit": "unit: t",
-            "unit-co2eq": "unit: t CO2e",
+            "unit": "tonnes (total)",
+            "unit-co2eq": "tonnes (total) CO2e",
             "comment-add-modal-title": "Add Comment",
             "comment-edit-modal-title": "Edit Comment",
             "add-edit-comment-tooltip": "Add/Edit Comment",
@@ -230,7 +230,7 @@
             "tr-01d-formula": "[1D = 1B + 1C]",
             "tr-01e-desc": "Production available for sale",
             "tr-01e-formula": "[1E = 1A - 1D]",
-            "tr-01f-desc": "Total amount of produced mixtures placed on the EU market for the first time.",
+            "tr-01f-desc": "Total amount of mixtures that were blended in the EU and placed on the EU market for the first time.",
             "tr-01f-tooltip": "Quantities reported here should not include imported mixtures placed on the EU market for the first time, as reported in section 4M. ('Mixture' means a fluid composed of two or more substances, at least one of which is a substance listed in Annex I or in Annex II of Regulation (EU) No 517/2014.)",
             "tr-01g-desc": "Thereof: mixtures produced using other mixtures in the blending process",
             "tr-01h-desc": "Thereof: mixtures produced without using other mixtures in the blending process",
@@ -241,7 +241,7 @@
             "voluntarily-tooltip": "Data may be voluntarily reported for consistency checking.",
             "tr-01k-desc": "Total EU sales (as determined from entries in all sections)",
             "tr-01k-formula": "[1K = 1A - 1B - 1C + 1I + 2A - 3A + 4A - 4F - 7A]",
-            "tr-01k-tooltip": "In case  1K does not equal 1J for all gases, reporters a re encouraged to identify the reason.",
+            "tr-01k-tooltip": "In case  1K does not equal 1J for all gases, reporters are encouraged to identify the reason.",
             "section2-heading": "Section 2: TO BE FILLED IN BY IMPORTERS OF GASES",
             "section2-info1": "Quantities shall be reported in metric tonnes with accuracy to the third decimal place, separately for each gas listed in Annex I or Annex II to Regulation (EU) No 517/2014, for mixtures containing at least one of those gases or for each gas or mixture contained in imported pre-blended polyols.",
             "section2-info2": "Only bulk imports shall be reported here, including quantities shipped alongside equipment for the purpose of charging that equipment after import, but not quantities contained in equipment. Imports of gases contained in products or equipment may be subject to reporting in reporting section 11. ",
@@ -351,7 +351,7 @@
         "sheet3": {
             "section6-heading": "Section 6: CATEGORIES OF APPLICATION OF GASES FOR THE EU MARKET, TO BE FILLED IN BY PRODUCERS AND IMPORTERS OF GASES",
             "section6-info1": "Quantities shall be reported in metric tonnes with accuracy to the third decimal place, separately for each gas listed in Annex I or Annex II to Regulation (EU) No 517/2014 or mixture containing at least one of those gases.",
-            "tr-06a-desc": "Export",
+            "tr-06a-desc": "Export [Only bulk exports: Do not include amounts used for charging products or equipment intended for export.]",
             "tr-06a-tooltip": "For hydrofluorocarbons, the amount reported here [6A] shall be the same amount or higher as that reported in reporting section 5 as supplied directly to undertakings for export out of the Union, where those quantities were not subsequently made available to any other party within the Union, prior to export [5C].",
             "tr-06b-desc": "Destruction",
             "tr-06b-tooltip": "For hydrofluorocarbons, the amount reported here [6B] shall be the same amount or higher as that reported in reporting section 5 as imported into the Union for destruction [5A].",
@@ -489,7 +489,7 @@
             "s3": "S3 unit of specific charge",
             "obligatory_comment": "Specific charge is outside of expected interval, please explain",
             "specific_charge_range_comment":"Specific charge is outside of expected interval ({{ min }} - {{ max }} {{ unit }}), please explain",
-            "unit_tonnes": "unit: t",
+            "unit_tonnes": "tonnes (total)",
             "cubicmetres": "cubic metres",
             "metrictonnes": "metric tonnes",
             "pieces": "pieces of product or equipment",
@@ -819,7 +819,7 @@
             },
             "tr_11d": {
                 "code": "11D",
-                "parameter": "Stationary heating/air conditioning including heat pumps as well as refrigeration (HACR) equipment for any other purposes",
+                "parameter": "Stationary heating/air conditioning including dehumidifiers, heat-pumps, as well as refrigeration (HACR) equipment for any other purposes",
                 "formula": "[11D = 11D1 + 11D2 + 11D3]",
                 "unit_for_amount": "pieces of equipment"
             },
@@ -943,7 +943,7 @@
             },
             "tr_11f9": {
                 "code": "11F9",
-                "parameter": "Any other mobile air conditioning equipment",
+                "parameter": "Any other mobile air conditioning equipment.\n                Note: This section is intended for vehicles and vehicle systems only. Moveable air-conditioning equipment for buildings belongs in section 11A1, dehumidifiers in 11D.",
                 "explanation_ia": "The equipment type/s shall be specified.",
                 "unit": "pieces of equipment",
                 "unit_of_spec_charge": "kg of fluorinated gas per piece of equipment"
@@ -1039,7 +1039,7 @@
             },
             "tr_11p": {
                 "code": "11P",
-                "parameter": "Other products and equipment containing gases listed in Annex I or Annex II of Regulation (EU) No. 517/2014\n                Note: Refrigeration, air conditioning and heat pump equipment referred to in Article 14 of Regulation (EU) No. 517/2014 shall not be reported here, but in an appropriate category of sections 11A-F (above).",
+                "parameter": "Other products and equipment containing gases listed in Annex I or Annex II of Regulation (EU) No. 517/2014\n                Note: Refrigeration, air conditioning and heat pump equipment must be reported in an appropriate category of sections 11A-F (above).\n               Vehicles with air-conditioning systems and air-conditioning systems for vehicles: Please see 11F. Dehumidifiers: Please see section 11D.",
                 "explanation_ia": "The product or equipment category/ies shall be specified.\n                The measurement unit can be either volume, weight or pieces of product/equipment.\n                (next to quantities of contained fluorinated gases in units of metric tonnes)",
                 "unit": "cubic metres / metric tonnes / pieces of product or equipment",
                 "unit_of_spec_charge": "kg of fluorinated gas per "
