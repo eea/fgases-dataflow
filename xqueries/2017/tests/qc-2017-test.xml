@@ -2343,14 +2343,14 @@
 		<Gas>
 			<GasCode>gascode123 test</GasCode>
 			<tr_12A>
-				<Code>123</Code>
+				<Code>5rt</Code>
 				<SumOfPartnersAmount>5000</SumOfPartnersAmount>
 				<Unit>kg</Unit>
 			</tr_12A>
 		</Gas>
 		<Totals>
-			<tr_12B_11G>12345</tr_12B_11G>
-			<tr_12C>4444</tr_12C>
+			<tr_12B_11G>1234</tr_12B_11G>
+			<tr_12C>7345</tr_12C>
 		</Totals>
 		<tr_12A_TradePartners>
 
@@ -2360,12 +2360,15 @@
 		<Totals>
 			<tr_13B>
 				<Code>3rt</Code>
+				<Amount>123</Amount>
 			</tr_13B>
 			<tr_13C>
 				<Code>5rt</Code>
+				<Amount>4567</Amount>
 			</tr_13C>
 			<tr_13D>
 				<Code>6rt</Code>
+				<Amount>4321</Amount>
 			</tr_13D>
 		</Totals>
 		<Verified>true</Verified>

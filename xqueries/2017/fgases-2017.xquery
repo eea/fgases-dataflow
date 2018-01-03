@@ -764,6 +764,29 @@ as element(div)* {
   return uiutil:buildRuleResult("2043", "6X", $err_text, $xmlconv:BLOCKER, count($err_flag)>0, $err_flag, "Invalid gases are: ")
 };
 
+declare function xmlconv:qc20430($doc as element())
+as element(div)* {
+    let $err_text := "The totals calculated in 6X must match the formula 6x=1E+2A-2B-3B+4B-4G+4K.
+    Please check amounts reported for production, imports, exports,
+    and stocks (sections 1 to 4)."
+
+    let $err_flag :=
+        for $gas in $doc/F3A_S6A_IA_HFCs/Gas
+        let $tr_01E_amount := cutil:numberIfEmpty(data($doc/F1_S1_4_ProdImpExp/Gas[GasCode = $gas/GasCode]/tr_01E/Amount), 0)
+        let $tr_02A_amount := cutil:numberIfEmpty(data($doc/F1_S1_4_ProdImpExp/Gas[GasCode = $gas/GasCode]/tr_02A/Amount), 0)
+        let $tr_02B_amount := cutil:numberIfEmpty(data($doc/F1_S1_4_ProdImpExp/Gas[GasCode = $gas/GasCode]/tr_02B/Amount), 0)
+        let $tr_03B_amount := cutil:numberIfEmpty(data($doc/F1_S1_4_ProdImpExp/Gas[GasCode = $gas/GasCode]/tr_03B/Amount), 0)
+        let $tr_04B_amount := cutil:numberIfEmpty(data($doc/F1_S1_4_ProdImpExp/Gas[GasCode = $gas/GasCode]/tr_04B/Amount), 0)
+        let $tr_04G_amount := cutil:numberIfEmpty(data($doc/F1_S1_4_ProdImpExp/Gas[GasCode = $gas/GasCode]/tr_04G/Amount), 0)
+        let $tr_04K_amount := cutil:numberIfEmpty(data($doc/F1_S1_4_ProdImpExp/Gas[GasCode = $gas/GasCode]/tr_04K/Amount), 0)
+        where $gas/tr_06X/Amount != $tr_01E_amount + $tr_02A_amount - $tr_02B_amount - $tr_03B_amount +
+                $tr_04B_amount - $tr_04G_amount + $tr_04K_amount
+        return data($doc/ReportedGases[GasId = $gas/GasCode]/Name)
+
+    return uiutil:buildRuleResult("20430", "6X", $err_text, $xmlconv:BLOCKER,
+            count($err_flag) > 0, $err_flag, "Invalid gases are: ")
+};
+
 declare function xmlconv:qc2048($report as element())
 as element(div)* {
     let $errorText := "Please explain the equipment category."
@@ -1626,8 +1649,8 @@ as element(div)*
 declare function xmlconv:qc21350($report as element(FGasesReporting))
 as element(div)*
 {
-    let $err_text := "The amount reported in (tr_12B_11G)
-    should equal with amount reported in (tr_11GSumAllGasesCO2Eq).
+    let $err_text := "The amount reported in (12B)
+    should be equal with amount reported in (11G).
     Please revise your data."
     let $tr_12B_11G_amount := data($report/F8_S12/Totals/tr_12B_11G)
     let $tr_11GSumAllGasesCO2Eq_amount := data($report/F7_s11EquImportTable/Totals/tr_11GSumAllGasesCO2Eq)
@@ -1639,8 +1662,105 @@ as element(div)*
             xs:double($tr_12B_11G_amount) = xs:double($tr_11GSumAllGasesCO2Eq_amount)
         else
             false()
-    return uiutil:buildRuleResult("21350", "tr_12B_11G", $err_text,
-            $xmlconv:BLOCKER, not($ok), (), "")
+    return uiutil:buildRuleResult("21350", "12B", $err_text,
+            $xmlconv:BLOCKER, not($ok),
+            ("12B = " || $tr_12B_11G_amount || ", 11G = " || $tr_11GSumAllGasesCO2Eq_amount),
+            "Formula expected 12B=11G"
+    )
+};
+
+declare function xmlconv:qc21351($report as element(FGasesReporting))
+as element(div)*
+{
+    let $err_text := "The amount reported in (12C)
+    should be equal with amount reported in (12B) minus sum of (12A).
+    Please revise your data."
+    let $tr_12C_amount := data($report/F8_S12/Totals/tr_12C)
+    let $tr_12B_11G_amount := data($report/F8_S12/Totals/tr_12B_11G)
+    let $tr_12A_amount := data($report/F8_S12/Gas/tr_12A/SumOfPartnersAmount)
+    let $ok := if (
+        $tr_12C_amount castable as xs:double
+        and
+        $tr_12B_11G_amount castable as xs:double
+        and
+        $tr_12A_amount castable as xs:double)
+        then
+            xs:double($tr_12C_amount) = xs:double($tr_12B_11G_amount) - xs:double($tr_12A_amount)
+        else
+            false()
+    return uiutil:buildRuleResult("21351", "12C", $err_text,
+            $xmlconv:BLOCKER, not($ok),
+            ("12C = " || $tr_12C_amount || ", 12B = " || $tr_12B_11G_amount || ", sum(12A) = " || $tr_12A_amount),
+            "Formula expected 12C=12B-SUM(12A)"
+    )
+};
+
+declare function xmlconv:qc21352($report as element(FGasesReporting))
+as element(div)*
+{
+    let $err_text := "The amount reported in (13B)
+    should be equal with amount reported in (12B).
+    Please revise your data."
+    let $tr_13B_amount := data($report/F9_S13/Totals/tr_13B/Amount)
+    let $tr_12B_11G_amount := data($report/F8_S12/Totals/tr_12B_11G)
+    let $ok := if (
+        $tr_13B_amount castable as xs:double
+        and
+        $tr_12B_11G_amount castable as xs:double)
+        then
+            xs:double($tr_13B_amount) = xs:double($tr_12B_11G_amount)
+        else
+            false()
+    return uiutil:buildRuleResult("21352", "13B", $err_text,
+            $xmlconv:BLOCKER, not($ok),
+            ("13B = " || $tr_13B_amount || ", 12B = " || $tr_12B_11G_amount),
+            "Formula expected 13B=SUM(12B)"
+    )
+};
+declare function xmlconv:qc21353($report as element(FGasesReporting))
+as element(div)*
+{
+    let $err_text := "The amount reported in (13C)
+    should be equal with amount reported in (12A).
+    Please revise your data."
+    let $tr_13C_amount := data($report/F9_S13/Totals/tr_13C/Amount)
+    let $code := data($report/F9_S13/Totals/tr_13C/Code)
+    let $tr_12A_amount := data($report/F8_S12/Gas/tr_12A[Code = $code]/SumOfPartnersAmount)
+    let $ok := if (
+        $tr_13C_amount castable as xs:double
+        and
+        $tr_12A_amount castable as xs:double)
+        then
+            xs:double($tr_13C_amount) = xs:double($tr_12A_amount)
+        else
+            false()
+    return uiutil:buildRuleResult("21353", "13C", $err_text,
+            $xmlconv:BLOCKER, not($ok),
+            ("13C = " || $tr_13C_amount || ", 12A = " || $tr_12A_amount),
+            "Formula expected 13C=SUM(12A) "
+    )
+};
+declare function xmlconv:qc21354($report as element(FGasesReporting))
+as element(div)*
+{
+    let $err_text := "The amount reported in (13D)
+    should be equal with amount reported in (12C).
+    Please revise your data."
+    let $tr_13D_amount := data($report/F9_S13/Totals/tr_13D/Amount)
+    let $tr_12C_amount := data($report/F8_S12/Totals/tr_12C)
+    let $ok := if (
+        $tr_13D_amount castable as xs:double
+        and
+        $tr_12C_amount castable as xs:double)
+        then
+            xs:double($tr_13D_amount) = xs:double($tr_12C_amount)
+        else
+            false()
+    return uiutil:buildRuleResult("21354", "13D", $err_text,
+            $xmlconv:BLOCKER, not($ok),
+            ("13D = " || $tr_13D_amount || ", 12C = " || $tr_12C_amount),
+            "Formula expected 13D=SUM(12C) "
+    )
 };
 
 declare function xmlconv:_compose-qc2056-error-message($report as element(FGasesReporting), $stock as element(stock))
@@ -1858,6 +1978,11 @@ as element(div)
     let $r2056 := xmlconv:qc2056($doc)
     let $r2501 := xmlconv:qc2501($doc)
     let $r21350 := xmlconv:qc21350($doc)
+    let $r21351 := xmlconv:qc21351($doc)
+    let $r21352 := xmlconv:qc21352($doc)
+    let $r21353 := xmlconv:qc21353($doc)
+    let $r21354 := xmlconv:qc21354($doc)
+    let $r20430 := xmlconv:qc20430($doc)
 
 
 
@@ -1984,6 +2109,11 @@ as element(div)
         {$r2056}
         {$r2501}
         {$r21350}
+        {$r21351}
+        {$r21352}
+        {$r21353}
+        {$r21354}
+        {$r20430}
     </div>
 
 };
