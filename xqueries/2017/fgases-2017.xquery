@@ -154,7 +154,7 @@ as element(div)? {
         else 
             let $transactionYear := string(data($doc/GeneralReportData/TransactionYear))
             let $actualTransactionYears :=
-                for $actualYear in 2015 to fn:year-from-date(fn:current-date()) - 1
+                for $actualYear in 2017 to fn:year-from-date(fn:current-date()) - 1
                 return string($actualYear)
             let $year_err_flag := not($transactionYear = $actualTransactionYears)
             let $year_err_msg_template := "The data in the submitted envelope refers to a year for which reporting is no longer possible ([year]). If you loaded your previous year's report in order to use it this year, please open the form in order to adjust the year and revise the values, even if your numbers may be identical to last year."  
@@ -516,7 +516,9 @@ as element(div)* {
             let $tr_4B := cutil:numberIfEmpty($gas/tr_04B/amount, 0)
             let $errorType := if(fn:string-length($gas/tr_04G/Comment) > 0) then $xmlconv:WARNING else $xmlconv:BLOCKER
         where
-            fgases:is-section-4-applicable-gas($report, $reportedGas) and $tr_4G > 0 and not($tr_4G <= sum(($tr_1E, $tr_2A, $tr_4B)))
+            fgases:is-section-4-applicable-gas($report, $reportedGas)
+            and $tr_4G > 0
+            and not($tr_4G <= sum(($tr_1E, $tr_2A, $tr_4B)))
         return uiutil:buildRuleResult("2024", "4G" , $err_text, $errorType, true(), (),"")
 };
 
@@ -1204,7 +1206,12 @@ declare function xmlconv:qc2403($doc as element()) as element(div)* {
         let $tr09F := cutil:if-number($doc/F4_S9_IssuedAuthQuata/tr_09F/Amount, 0)
         let $tr09G := cutil:if-number($doc/F4_S9_IssuedAuthQuata/tr_09G/Amount, 0)
         return
-            if($tr09F <= $tr09G) then
+            if(
+                $tr09F <= $tr09G
+                and
+                $tr09F >= 100
+            )
+            then
                 ()
             else
                 uiutil:buildRuleResult("2403", "09F", $err_text, $xmlconv:COMPLIANCE, true(), (), "")
@@ -1563,6 +1570,9 @@ as element(div)*
     if (empty($report/F1_S1_4_ProdImpExp)) then
         ()
     else
+        let $isP := cutil:is-activity-selected($report/GeneralReportData/Activities/P)
+        let $isI := cutil:is-activity-selected($report/GeneralReportData/Activities/I)
+        let $isE := cutil:is-activity-selected($report/GeneralReportData/Activities/E)
         let $transactionId := string($transaction/id)
         let $stockTransactionCode := string($transaction/stockCode)
         let $gasAmounts := fgases:get-gas-amounts($report/F1_S1_4_ProdImpExp, $transactionId)
@@ -1578,7 +1588,13 @@ as element(div)*
                     let $stockAmount := xs:decimal($stock/amount)
                     return
                         if ( cutil:getZeroIfNotNumber(string($amount)) < $stockAmount - 0.5) then
-                            let $errorLevel := if (fgases:has-comment-of-gas-amount($gasAmount)) then $xmlconv:WARNING else $xmlconv:BLOCKER
+                            let $errorLevel :=
+                                if(
+                                    fgases:has-comment-of-gas-amount($gasAmount)
+                                    or
+                                    $isE
+                                )
+                                then $xmlconv:WARNING else $xmlconv:BLOCKER
                             let $errorMsg := xmlconv:_compose-qc2055-error-message($report, $transaction, $stock, $errorLevel)
                             return uiutil:buildRuleResult("2055", string($transaction/label), $errorMsg, $errorLevel, true(), (), "")
                         else
@@ -1595,7 +1611,7 @@ as xs:string
 {
     let $msgTemplate :=
         if ($errorLevel = $xmlconv:BLOCKER) then
-            "Stocks reported for [gas] on 1 Jan [transaction_year] (field [field_code]) are significantly below the corresponding stocks reported on 31 Dec of the previous year ([stock_value]; refer to [stock_field_code] in report on [previous_year]). Please revise your data or provide an explanation in section [field_code]."
+            'Stocks reported for [gas] on 1 Jan [transaction_year] (field [field_code]) are significantly below the corresponding stocks reported on 31 Dec of the previous year ([stock_value]; refer to [stock_field_code] in report on [previous_year]). Please revise your data or provide an explanation in section [field_code]. You may need to select "Importer" in the activity selection in order to access section 4.'
         else
             "Stocks reported for [gas] on 1 Jan [transaction_year] (field [field_code]) are significantly below the corresponding stocks reported on 31 Dec of the previous year ([stock_value]; refer to [stock_field_code] in report on [previous_year]). The comment provided will be considered during quality control."
     let $gasName := string(fgases:get-reported-gas-by-id($report, string($stock/gasId))/Name)
