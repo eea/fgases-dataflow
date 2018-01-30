@@ -1201,7 +1201,7 @@ declare function xmlconv:qc2044($doc as element()) as element(div)* {
 
 declare function xmlconv:qc2403($doc as element()) as element(div)* {
     (: QC_2403 :)
-    let $err_text := "Based on the reported numbers, your available HFC quota (9G) may not suffice to cover the non-exempted HFC amounts that were placed on the market (9F). Please check your reported data in order to avoid erroneous reporting. Note that the European Commission (DG CLIMA) will assess your company’s quota compliance in co-operation with your Member State’s competent authorities. Failure to comply may result in reductions in future quota allocation and in penalties according to national law of the Member State concerned. "
+    let $err_text := "Based on the reported numbers, your available HFC quota (9G) may not suffice to cover the amount of HFCs that was placed on the market. Please check your reported data in order to avoid erroneous reporting. Note that the European Commission (DG CLIMA) will assess your company’s quota compliance in co-operation with your Member State’s competent authorities. Failure to comply may result in reductions in future quota allocation and in penalties according to national law of the Member State concerned."
     return
         let $tr09F := cutil:if-number($doc/F4_S9_IssuedAuthQuata/tr_09F/Amount, 0)
         let $tr09G := cutil:if-number($doc/F4_S9_IssuedAuthQuata/tr_09G/Amount, 0)
@@ -1214,7 +1214,7 @@ declare function xmlconv:qc2403($doc as element()) as element(div)* {
             then
                 ()
             else
-                uiutil:buildRuleResult("2403", "09F", $err_text, $xmlconv:COMPLIANCE, true(), (), "")
+                uiutil:buildRuleResult("2403", "09F", $err_text, $xmlconv:WARNING, true(), (), "")
 };
 
 declare function xmlconv:qc24031($doc as element()) as element(div)* {
