@@ -510,15 +510,15 @@ as element(div)* {
     return
         for $gas in $report/F1_S1_4_ProdImpExp/Gas
             let $reportedGas := fgases:get-reported-gas-by-id($report, $gas/GasCode)
-            let $tr_4G := cutil:numberIfEmpty($gas/tr_04G/amount, 0)
-            let $tr_1E := cutil:numberIfEmpty($gas/tr_01E/amount, 0)
-            let $tr_2A := cutil:numberIfEmpty($gas/tr_02A/amount, 0)
-            let $tr_4B := cutil:numberIfEmpty($gas/tr_04B/amount, 0)
+            let $tr_4G := cutil:numberIfEmpty($gas/tr_04G/Amount, 0)
+            let $tr_1E := cutil:numberIfEmpty($gas/tr_01E/Amount, 0)
+            let $tr_2A := cutil:numberIfEmpty($gas/tr_02A/Amount, 0)
+            let $tr_4B := cutil:numberIfEmpty($gas/tr_04B/Amount, 0)
             let $errorType := if(fn:string-length($gas/tr_04G/Comment) > 0) then $xmlconv:WARNING else $xmlconv:BLOCKER
         where
             fgases:is-section-4-applicable-gas($report, $reportedGas)
             and $tr_4G > 0
-            and not($tr_4G <= sum(($tr_1E, $tr_2A, $tr_4B)))
+            and not($tr_4G <= round-half-to-even(sum(($tr_1E, $tr_2A, $tr_4B)), 3))
         return uiutil:buildRuleResult("2024", "4G" , $err_text, $errorType, true(), (),"")
 };
 
