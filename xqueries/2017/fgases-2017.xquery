@@ -1671,20 +1671,27 @@ as element(div)*
     let $err_text := "The amount reported in (12B)
     should be equal with amount reported in (11G).
     Please revise your data."
-    let $tr_12B_11G_amount := data($report/F8_S12/Totals/tr_12B_11G)
-    let $tr_11GSumAllGasesCO2Eq_amount := data($report/F7_s11EquImportTable/Totals/tr_11GSumAllGasesCO2Eq)
-    let $ok := if (
-        $tr_12B_11G_amount castable as xs:double
-        and
-        $tr_11GSumAllGasesCO2Eq_amount castable as xs:double)
-        then
-            xs:double($tr_12B_11G_amount) = xs:double($tr_11GSumAllGasesCO2Eq_amount)
-        else
-            false()
+
+    let $err_flag :=
+        for $elem in $report/F8_S12/Gas
+        let $tr_12B_amount := data($elem/Totals/tr_12B)
+        let $tr_11G_amount := data($report/F7_s11EquImportTable/Gas[GasCode = $elem/GasCode]/tr_11G/Amount)
+        let $ok := if (
+            $tr_12B_amount castable as xs:double
+            and
+            $tr_11G_amount castable as xs:double)
+            then
+                xs:double($tr_12B_amount) = xs:double($tr_11G_amount)
+            else
+                false()
+        return
+            if($ok)
+            then ()
+            else data($report/ReportedGases[GasId = $elem/GasCode]/Name)
+
     return uiutil:buildRuleResult("21200", "12B", $err_text,
-            $xmlconv:BLOCKER, not($ok),
-            ("12B = " || $tr_12B_11G_amount || ", 11G = " || $tr_11GSumAllGasesCO2Eq_amount),
-            "Formula expected 12B=11G"
+            $xmlconv:BLOCKER, count($err_flag)>0,
+            $err_flag, "Invalid gases are: "
     )
 };
 
@@ -1694,23 +1701,29 @@ as element(div)*
     let $err_text := "The amount reported in (12C)
     should be equal with amount reported in (12B) minus sum of (12A).
     Please revise your data."
-    let $tr_12C_amount := data($report/F8_S12/Totals/tr_12C)
-    let $tr_12B_11G_amount := data($report/F8_S12/Totals/tr_12B_11G)
-    let $tr_12A_amount := data($report/F8_S12/Gas/tr_12A/SumOfPartnersAmount)
-    let $ok := if (
-        $tr_12C_amount castable as xs:double
-        and
-        $tr_12B_11G_amount castable as xs:double
-        and
-        $tr_12A_amount castable as xs:double)
-        then
-            xs:double($tr_12C_amount) = xs:double($tr_12B_11G_amount) - xs:double($tr_12A_amount)
-        else
-            false()
+
+    let $err_flag :=
+        for $elem in $report/F8_S12/Gas
+        let $tr_12C_amount := data($elem/Totals/tr_12C)
+        let $tr_12B_amount := data($elem/Totals/tr_12B)
+        let $tr_12A_amount := data($elem/tr_12A/SumOfPartnersAmount)
+        let $ok := if (
+            $tr_12C_amount castable as xs:double
+            and
+            $tr_12B_amount castable as xs:double
+            and
+            $tr_12A_amount castable as xs:double)
+            then
+                xs:double($tr_12C_amount) = xs:double($tr_12B_amount) - xs:double($tr_12A_amount)
+            else
+                false()
+        return
+            if($ok)
+            then ()
+            else data($report/ReportedGases[GasId = $elem/GasCode]/Name)
     return uiutil:buildRuleResult("21201", "12C", $err_text,
-            $xmlconv:BLOCKER, not($ok),
-            ("12C = " || $tr_12C_amount || ", 12B = " || $tr_12B_11G_amount || ", sum(12A) = " || $tr_12A_amount),
-            "Formula expected 12C=12B-SUM(12A)"
+           $xmlconv:BLOCKER, count($err_flag)>0,
+            $err_flag, "Invalid gases are: "
     )
 };
 
@@ -1721,18 +1734,20 @@ as element(div)*
     should be equal with amount reported in (12B).
     Please revise your data."
     let $tr_13B_amount := data($report/F9_S13/Totals/tr_13B/Amount)
-    let $tr_12B_11G_amount := data($report/F8_S12/Totals/tr_12B_11G)
+    let $tr_12B_total_amount := sum($report/F8_S12/Gas/Totals/cutil:numberIfEmpty(tr_12B, 0))
+    let $asd := trace($tr_13B_amount, "tr_13B_amount: ")
+    let $asd := trace($tr_12B_total_amount, "tr_12B_total_amount: ")
     let $ok := if (
         $tr_13B_amount castable as xs:double
         and
-        $tr_12B_11G_amount castable as xs:double)
+        $tr_12B_total_amount castable as xs:double)
         then
-            xs:double($tr_13B_amount) = xs:double($tr_12B_11G_amount)
+            xs:double($tr_13B_amount) = xs:double($tr_12B_total_amount)
         else
             false()
     return uiutil:buildRuleResult("21303", "13B", $err_text,
             $xmlconv:BLOCKER, not($ok),
-            ("13B = " || $tr_13B_amount || ", 12B = " || $tr_12B_11G_amount),
+            ("13B = " || $tr_13B_amount || ", 12B = " || $tr_12B_total_amount),
             "Formula expected 13B=SUM(12B)"
     )
 };
@@ -1743,19 +1758,18 @@ as element(div)*
     should be equal with amount reported in (12A).
     Please revise your data."
     let $tr_13C_amount := data($report/F9_S13/Totals/tr_13C/Amount)
-    let $code := data($report/F9_S13/Totals/tr_13C/Code)
-    let $tr_12A_amount := data($report/F8_S12/Gas/tr_12A[Code = $code]/SumOfPartnersAmount)
+    let $tr_12A_total_amount := sum($report/F8_S12/Gas/tr_12A/cutil:numberIfEmpty(SumOfPartnersAmount, 0))
     let $ok := if (
         $tr_13C_amount castable as xs:double
         and
-        $tr_12A_amount castable as xs:double)
+        $tr_12A_total_amount castable as xs:double)
         then
-            xs:double($tr_13C_amount) = xs:double($tr_12A_amount)
+            xs:double($tr_13C_amount) = xs:double($tr_12A_total_amount)
         else
             false()
     return uiutil:buildRuleResult("21301", "13C", $err_text,
             $xmlconv:BLOCKER, not($ok),
-            ("13C = " || $tr_13C_amount || ", 12A = " || $tr_12A_amount),
+            ("13C = " || $tr_13C_amount || ", 12A = " || $tr_12A_total_amount),
             "Formula expected 13C=SUM(12A) "
     )
 };
@@ -1765,19 +1779,19 @@ as element(div)*
     let $err_text := "The amount reported in (13D)
     should be equal with amount reported in (12C).
     Please revise your data."
-    let $tr_13D_amount := data($report/F9_S13/Totals/tr_13D/Amount)
-    let $tr_12C_amount := data($report/F8_S12/Totals/tr_12C)
+    let $tr_13D_total_amount := data($report/F9_S13/Totals/tr_13D/Amount)
+    let $tr_12C_amount := sum($report/F8_S12/Gas/Totals/cutil:numberIfEmpty(tr_12C, 0))
     let $ok := if (
-        $tr_13D_amount castable as xs:double
+        $tr_13D_total_amount castable as xs:double
         and
         $tr_12C_amount castable as xs:double)
         then
-            xs:double($tr_13D_amount) = xs:double($tr_12C_amount)
+            xs:double($tr_13D_total_amount) = xs:double($tr_12C_amount)
         else
             false()
     return uiutil:buildRuleResult("21304", "13D", $err_text,
             $xmlconv:BLOCKER, not($ok),
-            ("13D = " || $tr_13D_amount || ", 12C = " || $tr_12C_amount),
+            ("13D = " || $tr_13D_total_amount || ", 12C = " || $tr_12C_amount),
             "Formula expected 13D=SUM(12C) "
     )
 };

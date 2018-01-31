@@ -1276,7 +1276,7 @@
 			</tr_11F09>
 			<tr_11G>
 				<Code></Code>
-				<Amount></Amount>
+				<Amount>1234</Amount>
 			</tr_11G>
 			<tr_11H>
 				<Code></Code>
@@ -2341,20 +2341,30 @@
 	</F7_s11EquImportTable>
 	<F8_S12>
 		<Gas>
-			<GasCode>gascode123 test</GasCode>
+			<GasCode>2</GasCode>
 			<tr_12A>
 				<Code>5rt</Code>
-				<SumOfPartnersAmount>5000</SumOfPartnersAmount>
+				<SumOfPartnersAmount>2324</SumOfPartnersAmount>
 				<Unit>kg</Unit>
 			</tr_12A>
+			<Totals>
+				<tr_12B>12324</tr_12B>
+				<tr_12C>10000</tr_12C>
+			</Totals>
 		</Gas>
-		<Totals>
-			<tr_12B_11G>1234</tr_12B_11G>
-			<tr_12C>7345</tr_12C>
-		</Totals>
-		<tr_12A_TradePartners>
-
-		</tr_12A_TradePartners>
+		<Gas>
+			<GasCode>2</GasCode>
+			<tr_12A>
+				<Code>5rt</Code>
+				<SumOfPartnersAmount>2324</SumOfPartnersAmount>
+				<Unit>kg</Unit>
+			</tr_12A>
+			<Totals>
+				<tr_12B>5678</tr_12B>
+				<tr_12C>857</tr_12C>
+			</Totals>
+		</Gas>
+		<tr_12A_TradePartners></tr_12A_TradePartners>
 	</F8_S12>
 	<F9_S13>
 		<Totals>
