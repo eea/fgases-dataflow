@@ -8,19 +8,19 @@
     <link type="text/css" rel="stylesheet" media="screen" href="//www.eionet.europa.eu/styles/eionet2007/screen.css" title="Eionet 2007 style" />
     <link rel="stylesheet" type="text/css" href="//www.eionet.europa.eu/styles/eionet2007/print.css" media="print" />
     <link rel="stylesheet" type="text/css" href="//www.eionet.europa.eu/styles/eionet2007/handheld.css" media="handheld" />
-    
+
     <!--[if IE 8]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.6/es5-shim.map"></script>
     <![endif]-->
-    
+
     <!--[if lte IE 9]>
     <script type="text/javascript">
         window['isIE9'] = true;
     </script>
     <![endif]-->
-    
+
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
-    
+
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-translate/angular-translate.js"></script>
@@ -30,7 +30,7 @@
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script src="bower_components/angular-elastic/elastic.js"></script>
     <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
-    
+
     <script src="scripts/multiselect.js"></script>
     <script src="scripts/navigation-blocker.js"></script>
     <script src="scripts/language-changer.js"></script>
@@ -39,9 +39,9 @@
     <script src="scripts/error-mapper.js"></script>
     <script src="scripts/notification/notification.js"></script>
     <link rel="stylesheet" href="scripts/notification/notification.css" />
-    
+
     <link rel="stylesheet" href="css/webform.css" />
-    
+
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/controllers/questionnaire.js"></script>
     <script type="text/javascript" src="js/controllers/modal.js"></script>
@@ -49,7 +49,8 @@
     <script type="text/javascript" src="js/controllers/mixture-definition-modal-instance.js"></script>
     <script type="text/javascript" src="js/controllers/trading-partner-modal-instance.js"></script>
     <script type="text/javascript" src="js/controllers/confirm-comment-dialog-controller.js"></script>
-    <script type="text/javascript" src="js/controllers/transaction-add-edit-modal-instance.js"></script>
+    <script type="text/javascript" src="js/controllers/sheet8ctrl.js"></script>
+    <script type="text/javascript" src="js/controllers/sheet9ctrl.js"></script>
     <script type="text/javascript" src="js/directives/focus-me.js"></script>
     <script type="text/javascript" src="js/directives/gas-input.js"></script>
     <script type="text/javascript" src="js/directives/static-include.js"></script>
@@ -82,6 +83,8 @@
     <script type="text/javascript" src="js/services/validation/qcs/sheet4-validator.js"></script>
     <script type="text/javascript" src="js/services/validation/qcs/sheet5-validator.js"></script>
     <script type="text/javascript" src="js/services/validation/qcs/sheet6-validator.js"></script>
+    <script type="text/javascript" src="js/services/validation/qcs/sheet8-validator.js"></script>
+    <script type="text/javascript" src="js/services/validation/qcs/sheet9-validator.js"></script>
     <script type="text/javascript" src="js/viewmodel/view-model-activities.js"></script>
     <script type="text/javascript" src="js/viewmodel/view-model-submission.js"></script>
     <script type="text/javascript" src="js/viewmodel/view-model-object-base.js"></script>
@@ -93,32 +96,33 @@
     <script type="text/javascript" src="js/viewmodel/view-model-sheet6.js"></script>
     <script type="text/javascript" src="js/viewmodel/view-model-sheet7.js"></script>
     <script type="text/javascript" src="js/viewmodel/view-model-sheet8.js"></script>
+    <script type="text/javascript" src="js/viewmodel/view-model-sheet9.js"></script>
     <script type="text/javascript" src="js/viewmodel/view-model.js"></script>
     <script type="text/javascript" src="mock/js/services/data/data-proxy.js"></script>
     <script type="text/javascript" src="mock/js/services/data/transaction-year-provider.js"></script>
-    
+
     <!--ant-includes
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css" />
-    
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular-animate.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.1.0/angular-translate.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate-loader-static-files/2.1.0/angular-translate-loader-static-files.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.2/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-elastic/2.3.3/elastic.min.js"></script>
-    
+
     <script type="text/javascript" src="promise-tracker.js"></script>
     <script type="text/javascript" src="promise-tracker-http-interceptor.js"></script>
     <script type="text/javascript" src="angular-file-upload.min.js"></script>
-    
+
     <link rel="stylesheet" href="webform.css" />
     <link rel="stylesheet" href="notification.css" />
-    
+
     <script type="text/javascript" src="app.js"></script>
-    
+
     ant-includes-->
-    
+
 </head>
 <body id="beginning" class="fullscreen">
     <div class="ng-modal-overlay animate-show" ng-show="showInfo || $parent.loadingTracker.active()"></div>
@@ -232,7 +236,7 @@
                 ant-includes-->
             </li>
         </div>
-        <div ng-class="{'invalidTab' : isInvalidTab('Sheet5')}" 
+        <div ng-class="{'invalidTab' : isInvalidTab('Sheet5')}"
              ng-if="isTabVisible('Sheet5')">
             <li tab heading="V – Physical Supplies for Authorisations for NER Quota Holders (section 10)" active="tabs[getTabIndex('Sheet5')].active" ng-controller="TabController" ng-click="onTabChange('Sheet5')">
                 <div >
@@ -273,7 +277,17 @@ imported equipment (section 12)" active="tabs[getTabIndex('Sheet8')].active" ng-
                 ant-includes-->
             </li>
         </div>
-        <div ng-class="{'invalidTab' : isInvalidTab('Submission')}" 
+        <div ng-class="{'invalidTab' : isInvalidTab('Sheet9')}"
+             ng-if="isTabVisible('Sheet9')" >
+            <!-- TODO tooltips or bootstrap hint can be added for a summary to user about reporting sheet -->
+            <li tab heading="IX - Preliminary compliance assessment for equipment imports (section 13)" active="tabs[getTabIndex('Sheet9')].active" ng-controller="TabController" ng-click="onTabChange('Sheet9')">
+                <div ng-form="Sheet9" static-include="markup/sheet9_tab_contents.html"></div>
+                <!--ant-includes
+                <div ng-form="Sheet9" static-include="sheet9_tab_contents.html"></div>
+                ant-includes-->
+            </li>
+        </div>
+        <div ng-class="{'invalidTab' : isInvalidTab('Submission')}"
 		     ng-if="isTabVisible('Submission')">
             <li tab heading="Finish" active="tabs[getTabIndex('Submission')].active" ng-controller="TabController" ng-click="onTabChange('Submission')">
                 <div ng-form="Submission" static-include="markup/submission.html"></div>
@@ -322,7 +336,7 @@ imported equipment (section 12)" active="tabs[getTabIndex('Sheet8')].active" ng-
                             <span class="{{ validationMessages[valSubCat[getActiveTabIndex() - 1]][getValMsgIndex()].isBlocker ? 'glyphicon glyphicon-exclamation-sign' : 'glyphicon glyphicon-warning-sign' }}" aria-hidden="true"></span>
                             <a href="#" class="alert-link" ng-click="goToValidationMessageCause(validationMessages[valSubCat[getActiveTabIndex() - 1]][getValMsgIndex()]);">
                                 <span data-translate="common.transaction"> </span>
-                                <span ng-switch="getActiveTabIndex() == valSubCat.length">
+                                <span ng-switch="tabs[getActiveTabIndex()].id === 'Sheet7'"><!-- I don't know why this is here, it used to check for the last tab, but two extra have been added since then -->
                                     <span ng-switch-when="true">{{'form7.' + validationMessages[valSubCat[getActiveTabIndex() - 1]][getValMsgIndex()].transactionLabel + '.code' | translate}}</span>
                                     <span ng-switch-default>{{validationMessages[valSubCat[getActiveTabIndex() - 1]][getValMsgIndex()].transactionLabel}}</span>
                                 </span>
@@ -435,9 +449,9 @@ imported equipment (section 12)" active="tabs[getTabIndex('Sheet8')].active" ng-
                             <input ng-if="isMinimalDialog" type="text" ng-model="tempPartnerDefinition.NonEUDgClimaRegCode"
                                    ng-disabled="true"
                                    ng-class="'disabled'" style="margin-left: 0.5em;" />
-                            <input ng-if="!isMinimalDialog" type="text" ng-model="tempPartnerDefinition.NonEUDgClimaRegCode" 
+                            <input ng-if="!isMinimalDialog" type="text" ng-model="tempPartnerDefinition.NonEUDgClimaRegCode"
                                    ng-disabled="!isEUBasedClicked || tempPartnerDefinition.isEUBased"
-                                   ng-class="(!isEUBasedClicked || tempPartnerDefinition.isEUBased) ? 'disabled' : 'enabled'" 
+                                   ng-class="(!isEUBasedClicked || tempPartnerDefinition.isEUBased) ? 'disabled' : 'enabled'"
                                    style="margin-left: 0.5em;" required />
                         </td>
                     </tr>
@@ -447,7 +461,7 @@ imported equipment (section 12)" active="tabs[getTabIndex('Sheet8')].active" ng-
                             <input ng-if="isMinimalDialog" type="text" ng-model="tempPartnerDefinition.NonEURepresentativeName"
                                    ng-disabled="true"
                                    ng-class="'disabled'" style="margin-left: 0.5em;" />
-                            <input ng-if="!isMinimalDialog" type="text" ng-model="tempPartnerDefinition.NonEURepresentativeName" 
+                            <input ng-if="!isMinimalDialog" type="text" ng-model="tempPartnerDefinition.NonEURepresentativeName"
                                    ng-disabled="!isEUBasedClicked || tempPartnerDefinition.isEUBased"
                                    ng-class="(!isEUBasedClicked || tempPartnerDefinition.isEUBased) ? 'disabled' : 'enabled'" required style="margin-left: 0.5em;" />
                         </td>
@@ -456,13 +470,13 @@ imported equipment (section 12)" active="tabs[getTabIndex('Sheet8')].active" ng-
                             <input ng-if="isMinimalDialog" type="text" ng-model="tempPartnerDefinition.NonEURepresentativeVAT"
                                    ng-disabled="true"
                                    ng-class="'disabled'" style="margin-left: 0.5em;" />
-                            <input ng-if="!isMinimalDialog" type="text" ng-model="tempPartnerDefinition.NonEURepresentativeVAT" 
+                            <input ng-if="!isMinimalDialog" type="text" ng-model="tempPartnerDefinition.NonEURepresentativeVAT"
                                    ng-disabled="!isEUBasedClicked || tempPartnerDefinition.isEUBased"
                                    ng-class="(!isEUBasedClicked || tempPartnerDefinition.isEUBased) ? 'disabled' : 'enabled'" required style="margin-left: 0.5em;" />
                         </td>
                     </tr>
                     <tr ng-if="yearField">
-                        <td><span data-translate="common.trading-partner-year"></span></td>
+                        <td><span data-translate="{{tradePartnerModalYearFieldLabel}}"/></td>
                         <td>
                             <input type="text" ng-model="tempPartnerDefinition.year"
                             style="margin-left: 0.5em;" />
@@ -472,7 +486,7 @@ imported equipment (section 12)" active="tabs[getTabIndex('Sheet8')].active" ng-
             </div>
             <div>
                 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="remove(alerts, $index, alert)"><span data-translate="{{alert.msg}}"></span></alert>
-                <alert ng-repeat="alert in warnings" type="{{alert.type}}" close="remove(warnings, $index, alert)"><span data-translate="{{alert.msg}}"></span></alert>
+                <alert ng-if="alerts.length <= 0" ng-repeat="alert in warnings" type="{{alert.type}}" close="remove(warnings, $index, alert)"><span data-translate="{{alert.msg}}"></span></alert>
             </div>
             <div class="modal-footer">
                 <span><button class="btn btn-primary" ng-click="ok()" tooltip="{{'common.save-changes' | translate}}"><span data-translate="common.ok"/></button></span>
@@ -487,113 +501,6 @@ imported equipment (section 12)" active="tabs[getTabIndex('Sheet8')].active" ng-
             </div>
             <div class="modal-body">
                 <textarea ng-model="commentValue" focus-me></textarea>
-            </div>
-            <div>
-                <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="remove(alerts, $index, alert)"><span data-translate="{{alert.msg}}"></span></alert>
-            </div>
-            <div class="modal-footer">
-                <span><button class="btn btn-primary" ng-click="ok()" tooltip="{{'common.save-changes' | translate}}"><span data-translate="common.ok"/></button></span>
-                <span><button class="btn btn-default" ng-click="cancel()" tooltip="{{'common.discard-changes' | translate}}"><span data-translate="common.cancel"/></button></span>
-            </div>
-        </script>
-    </div>
-    <div ng-controller="ModalController">
-        <script type="text/ng-template" id="TransactionAddEditModal.html">
-            <div class="modal-header">
-                <h3 class="modal-title"><span data-translate="{{transactionAddEditModalTitle}}"/></h3>
-            </div>
-            <div class="modal-body">
-                <table class="table table-hover table-bordered">
-                    <tr>
-                        <th class="fixed-width-gas-transaction"><span data-translate="common.sheet-transactions-header"></span></th>
-                        <th ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
-                            <div align="center" ng-switch="reportedGas.IsCustomComposition">
-                                <span ng-switch-when="true">{{'common.mixture' | translate}} ({{reportedGas.Name}})</span>
-                                <span ng-switch-default>{{reportedGas.Name}}</span>
-                            </div>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
-                            <div align="center"><span data-translate="common.unit"></span></div>
-                        </th>
-
-                    </tr>
-                    <tr>
-                         <td>
-                            <span data-translate="common.transaction"></span>
-                            <div>
-                                <div>
-                                    <label>POM:</label>
-                                    <button 
-                                        ng-if="has_partner('POM') == false"
-                                        ng-controller="ModalController"
-                                        data-tooltip="{{'common.add' | translate}}"
-                                        ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPOMEXPPartnerModalWindowCloseCallBack,
-                                                    {'title': 'sheet8.tr-12a-trading-partner-modal-title-pom',
-                                                    'arrayToPush': instance.FGasesReporting.F8_S12.tr_12A_POMPartners.Partner,
-                                                    'emptyInstancePath': 'FGasesReporting.F8_S12.Gas.tr_12A.POMTradePartner.TradePartner',
-                                                    'gasArray': instance.FGasesReporting.F8_S12.Gas,
-                                                    'fieldName': 'tr_12A',
-                                                    'partnerType': 'POMPartners',
-                                                    'txid': txid,
-                                                    'transactions': cur_tx,
-                                                    'yearField': true});"
-                                        class="btn btn-primary btn-sm">
-                                        <span class="glyphicon glyphicon-plus-sign"></span>
-                                        <span data-translate="common.add"/>
-                                    </button>
-
-                                    <span ng-if="has_partner('POM')">
-                                        {{ get_partner_name('POM') }}
-                                    </span>
-
-                                </div>
-                                <div>
-                                    <label>Exporter:</label>
-                                    <button 
-                                        ng-if="has_partner('Exporter') == false"
-                                        ng-controller="ModalController"
-                                        data-tooltip="{{'common.add' | translate}}"
-                                        ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPOMEXPPartnerModalWindowCloseCallBack,
-                                                    {'title': 'sheet8.tr-12a-trading-partner-modal-title-exporter',
-                                                    'arrayToPush': instance.FGasesReporting.F8_S12.tr_12A_EXPPartners.Partner,
-                                                    'gasArray': instance.FGasesReporting.F8_S12.Gas,
-                                                    'emptyInstancePath': 'FGasesReporting.F8_S12.Gas.tr_12A.EXPTradePartner.TradePartner',
-                                                    'fieldName': 'tr_12A',
-                                                    'partnerType': 'EXPPartners',
-                                                    'txid': txid,
-                                                    'transactions': cur_tx,
-                                                    'yearField': true});"
-                                        class="btn btn-primary btn-sm">
-                                        <span class="glyphicon glyphicon-plus-sign"></span>
-                                        <span data-translate="common.add"/>
-                                    </button>
-                                    <span ng-if="has_partner('Exporter')">
-                                        {{ get_partner_name('Exporter') }}
-                                    </span>
-                                </div>
-                        </td>
-                        <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
-                            <input gas-input ng-model="transactions[reportedGas.GasId][txid[reportedGas.GasId]].Amount"
-                                   ng-if="transactions[reportedGas.GasId][txid[reportedGas.GasId]].POM.TradePartnerID && transactions[reportedGas.GasId][txid[reportedGas.GasId]].Exporter.TradePartnerID"/>
-                            <div>
-                                <button ng-controller="ModalController" data-tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
-                                            ng-click="open('lg', 'CommentAddEditModal.html', 'CommentAddEditModalInstanceController', transactions[reportedGas.GasId][txid[reportedGas.GasId]]);"
-                                            class="glyphicon glyphicon-comment" ></button>
-                                    <span ng-if="transactions[reportedGas.GasId][txid[reportedGas.GasId]].Comment"
-                                          data-tooltip="{{transactions[reportedGas.GasId][txid[reportedGas.GasId]].Comment}}">
-                                        {{transactions[reportedGas.GasId][txid[reportedGas.GasId]].Comment | limitTo:commentLimit}} ...
-                                </span>
-                            </div>
-                            <div ng-if="!transactions[reportedGas.GasId][txid[reportedGas.GasId]].POM.TradePartnerID || !transactions[reportedGas.GasId][txid[reportedGas.GasId]].Exporter.TradePartnerID"
-                                <input ng-disabled="true" ng-class="'disabled'"/>
-                                <span data-tooltip="{{'sheet8.tr-12a-disabled-tooltip' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
             </div>
             <div>
                 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="remove(alerts, $index, alert)"><span data-translate="{{alert.msg}}"></span></alert>

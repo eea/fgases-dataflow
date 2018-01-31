@@ -3,7 +3,7 @@
     "FGasesReporting": {
         "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
         "@xml:lang": "en",
-        "@xsi:noNamespaceSchemaLocation": "http://dd.eionet.europa.eu/schemas/fgases-2015/FGasesReporting.xsd",
+        "@xsi:noNamespaceSchemaLocation": "http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd",
         "GeneralReportData": {
             "@status": "incomplete",
             "Company": {
@@ -415,43 +415,12 @@
             }
         },
         "F8_S12": {
-            "Gases": {
-                "Gas": [],
-                "POM": [],
-                "EXP": []
-            },
             "Gas": {
                 "GasCode": null,
                 "tr_12A": {
                     "Code": "12A",
-                    "SumOfPartnerAmounts": null,
+                    "SumOfPartnersAmount": null,
                     "Unit": null,
-                    "TradePartner": {
-                        "TradePartnerID": null,
-                        "amount": null,
-                        "Comment": null
-                    },
-                    "POMTradePartner": {
-                        "TradePartner": {
-                            "TradePartnerID": null,
-                            "GasCode": null,
-                            "Year": null,
-                            "amount": null,
-                            "Comment": null
-                        }
-                    },
-                    "EXPTradePartner": {
-                        "TradePartner": {
-                            "TradePartnerID": null,
-                            "GasCode": null,
-                            "Year": null,
-                            "amount": null,
-                            "Comment": null
-                        }
-                    },
-                    "POMPartners": [],
-                    "EXPPartners": [],
-                    "Transactions": [],
                     "Transaction": {
                         "Amount": null,
                         "Exporter": {
@@ -462,42 +431,43 @@
                             "TradePartnerID": null,
                             "Year": null
                         },
-                        "Comment": null
+                        "Comment": null,
+                        "TransactionID": null
                     }
+                },
+                "Totals": {
+                    "tr_12B": null,
+                    "tr_12C": null
                 }
             },
             "tr_12A_TradePartners": {
                 "Partner": null
-            },
-            "tr_12A_POMPartners": {
-                "Partner": null
-            },
-            "tr_12A_EXPPartners": {
-                "Partner": null
-            },
-            "tr_12A_Transactions": {
-                "Transaction": []
-            },
-            "tr_12A_POM": {
-                "Code": "12A_POM",
-                "TradePartner": {
-                    "TradePartnerID": null,
-                    "GasCode": null,
-                    "Year": null,
-                    "amount": null,
-                    "Comment": null
-                }
-            },
-            "tr_12A_EXP": {
-                "Code": "12A_EXP",
-                "TradePartner": {
-                    "TradePartnerID": null,
-                    "GasCode": null,
-                    "Year": null,
-                    "amount": null,
-                    "Comment": null
-                }
             }
+        },
+        "F9_S13": {
+            "AuthBalance": {
+                "Code": null,
+                "Amount": null,
+                "Unit": "CO2e"
+            },
+            "Totals": {
+                "tr_13B": {
+                    "Code": "tr_13B",
+                    "Amount": null,
+                    "Unit": "CO2e"
+                },
+                "tr_13C": {
+                    "Code": "tr_13C",
+                    "Amount": null,
+                    "Unit": "CO2e"
+                },
+                "tr_13D": {
+                    "Code": "tr_13D",
+                    "Amount": null,
+                    "Unit": "CO2e"
+                }
+            },
+            "Verified": null
         },
         "F3A_S6A_IA_HFCs": {
             "Gas": {
@@ -725,7 +695,7 @@
             }
         },
         "F5_S10_Auth_NER": {
-            
+
             "Gas": {
                 "GasCode": null,
                 "tr_10A": {

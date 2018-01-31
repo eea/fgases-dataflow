@@ -21,6 +21,7 @@
     </intro>
     <common>
         <add-explanation>Add Explanation</add-explanation>
+        <add>Add</add>
         <delete-value>Delete Value</delete-value>
         <remove>Remove</remove>
         <ok>OK</ok>
@@ -48,7 +49,8 @@
         <trading-partner-must-be-eu>Only EU-based companies can be named as trade partners for this transaction.</trading-partner-must-be-eu>
         <trading-partner-own-vat>It seems as if you entered your own company's VAT number here. Please specify the VAT no. of a third party. Own exports of own imports or own production should be reported in section 3B, sheet I.</trading-partner-own-vat>
         <trading-partner-own-id>It seems as if you entered your own company's portal code here. Please specify the portal code of a third party. Own exports of own imports or own production should be reported in section 3B, sheet I.</trading-partner-own-id>
-
+        <trading-partner-year>Year</trading-partner-year>
+        <trading-partner-year-error>Please specify a valid year between 2015 and the current transaction year.</trading-partner-year-error>
         <comment-should-contain-alpha-numeric-characters>Comment must have at least one Latin character and be at least 2 characters.</comment-should-contain-alpha-numeric-characters>
         <click-to-enable>Click to enable</click-to-enable>
         <other>Other</other>
@@ -334,7 +336,7 @@
         <tr-05i-desc>Total quantities of exempted uses of hydrofluorocarbons</tr-05i-desc>
         <tr-05i-formula>[5I = sum(5A) + sum(5B) + sum(5C_exempted) + sum(5D) + sum(5E)]</tr-05i-formula>
         <tr-05j-desc>Calculated amount of hydrofluorocarbons physically placed on the market, excluding exempted uses</tr-05j-desc>
-        <tr-05j-formula>[5J = max ( 5H - 5I , 0 )]</tr-05j-formula>
+        <tr-05j-formula>[5J = ( 5H - 5I )]</tr-05j-formula>
         <voluntary-reporting>Voluntary Reporting</voluntary-reporting>
         <tr-05r-desc>Quantities supplied directly to undertakings for manufacturing of equipment in the Union, where such equipment is subsequently directly exported out of the Union</tr-05r-desc>
         <voluntarily-tooltip>Data may be voluntarily reported for consistency checking.</voluntarily-tooltip>
@@ -1150,7 +1152,61 @@
 
         <noCategoySelected>No category selected.</noCategoySelected>
     </form7>
-
+    <sheet8>
+        <section12-heading>Section 12: TO BE FILLED IN BY IMPORTERS OF REFRIGERATION, AIR CONDITIONING OR HEAT PUMP EQUIPMENT CHARGED WITH HYDROFLUOROCARBONS, WHERE THE HYDROFLUOROCARBONS CONTAINED IN THE IMPORTED EQUIPMENT HAD PREVIOUSLY BEEN EXPORTED FROM THE UNION AND ACQUIRED BY MANUFACTURERS  OF EQUIPMENT DIRECTLY FROM THE EXPORTING UNDERTAKING, AND HAD BEEN SUBJECT TO THE HYDROFLUOROCARBON QUOTA LIMITATION FOR PLACING ON THE UNION MARKET</section12-heading>
+        <section12-info1>Quantities shall be reported in metric tonnes with accuracy to the third decimal place, separately for each hydrofluorocarbon (gases listed in Section 1 of Annex I to Regulation (EU) No 517/2014 or mixture containing at least one of those gases).</section12-info1>
+        <tr-12a-desc>Amount of hydrofluorocarbons charged into the imported equipment, released by customs for free circulation in the EU, for which the hydrofluorocarbons had previously been exported from the Union and which had been subject to the hydrofluorocarbon quota limitation for placing on the Union market</tr-12a-desc>
+        <tr-12a-tooltip>The HFC exporting undertaking/s and the year/s of export shall be specified. The undertaking/s having placed the hydrofluorocarbons on the Union market for the first time and the year/s of that placing on the market shall be specified.</tr-12a-tooltip>
+        <tr-12a-add-transaction-tooltip>Add a new transaction</tr-12a-add-transaction-tooltip>
+        <tr-12a-add-transaction>Add transaction</tr-12a-add-transaction>
+        <tr-12a-trading-partner-modal-title>Add Trading Partner</tr-12a-trading-partner-modal-title>
+        <tr-12a-add-trading-partner>Add a Trading Partner</tr-12a-add-trading-partner>
+        <tr-12a-add-trading-partner-tooltip>If You want to report in this transaction, you can add trading partner(s) with this button</tr-12a-add-trading-partner-tooltip>
+        <tr-12a-add-pom>Add POM</tr-12a-add-pom>
+        <tr-12a-add-pom-tooltip>Add POM</tr-12a-add-pom-tooltip>
+        <tr-12a-trading-partner-modal-year-pom>Year of first placing on the EU market (POM)</tr-12a-trading-partner-modal-year-pom>
+        <tr-12a-add-exp>Add Exporter</tr-12a-add-exp>
+        <tr-12a-add-exp-tooltip>Add Exporter</tr-12a-add-exp-tooltip>
+        <tr-12a-disabled-tooltip>Please add POM and Exporter first</tr-12a-disabled-tooltip>
+        <tr-12a-trading-partner-modal-title-pom>Add Trading Partner (POM)</tr-12a-trading-partner-modal-title-pom>
+        <tr-12a-trading-partner-modal-title-exporter>Add Trading Partner (Exporter)</tr-12a-trading-partner-modal-title-exporter>
+        <tr-12a-trading-partner-modal-year-exporter>Year of export</tr-12a-trading-partner-modal-year-exporter>
+        <tr-12a-pom-year-error>Year of first placing on the EU market cannot be after year of export</tr-12a-pom-year-error>
+        <tr-12a-exp-year-error>Year of export cannot be before the year of first placing on the EU market</tr-12a-exp-year-error>
+        <tr-12a-disabled-add-transaction-tooltip>Please add at least one HFC Gas first</tr-12a-disabled-add-transaction-tooltip>
+        <tr-12b-tooltip>Please notice that the parameters 12B and 12C are values automatically calculated from the reporting data provided by you. These parameters are included in the BDR envelope as a service to companies and allow them to make a preliminary check towards their compliance with Article 14 of the F-Gas Regulation already at the stage of reporting. The disclosure of these values does not constitute a legal notification of compliance which will be established by the European Commission only at a later time when all relevant data is available, which includes, in particular, the verification document referred to in Article 19(5) of Regulation (EU) No 517/2014 and in Article 3(2) of Commission Implementing Regulation (EU) 2016/879.</tr-12b-tooltip>
+        <tr-12b-desc>Total hydrofluorocarbons placed on the market in refrigeration, air conditioning or heat pump equipment</tr-12b-desc>
+        <tr-12b-formula>[12B=11G]</tr-12b-formula>
+        <tr-12c-tooltip>Please notice that the parameters 12B and 12C are values automatically calculated from the reporting data provided by you. These parameters are included in the BDR envelope as a service to companies and allow them to make a preliminary check towards their compliance with Article 14 of the F-Gas Regulation already at the stage of reporting. The disclosure of these values does not constitute a legal notification of compliance which will be established by the European Commission only at a later time when all relevant data is available, which includes, in particular, the verification document referred to in Article 19(5) of Regulation (EU) No 517/2014 and in Article 3(2) of Commission Implementing Regulation (EU) 2016/879.</tr-12c-tooltip>
+        <tr-12c-desc>Calculated amount of imported hydrofluorocarbons in need of authorisation to use HFC quota</tr-12c-desc>
+        <tr-12c-formula>[12C=12B-SUM(12A)]</tr-12c-formula>
+        <tr-12a-duplicate-tx-error>The same pair (POM/year - Exporter/year) has been used for another transaction. Duplicate transactions are disallowed</tr-12a-duplicate-tx-error>
+        <tr-12a-pom-label>Company which first placed the HFCs on the EU market</tr-12a-pom-label>
+        <tr-12a-exp-label>Exporter</tr-12a-exp-label>
+        <validation_category>Category</validation_category>
+        <validation_violation>Violation description</validation_violation>
+        <tr_12C>
+            <code>12C</code>
+        </tr_12C>
+    </sheet8>
+    <sheet9>
+      <section13-heading>SECTION 13: Preliminary compliance assessment for equipment imports</section13-heading>
+      <section13-info>Applicable for the first time to reporting on activities in 2017 (due by 31 March 2018).</section13-info>
+      <tr-header-unit>Amount of HFCs unit t CO2e</tr-header-unit>
+      <tr-13a-desc>Available authorisations, including delegations of authorisations  (automatically imported from the HFC registry)</tr-13a-desc>
+      <tr-13a-tooltip>For your convenience, available authorisations (including delegations of authorisations) as duly registered in the HFC registry by the date indicated below have been imported into the reporting form (13A) Date of HFC registry extract for 13A [YYYY-MM-DD]: (Date supplied by DG CLIMA with the data)</tr-13a-tooltip>
+      <tr-13a-disclaimer>Please notice that the parameters 13B to 13D are values automatically calculated from the reporting data provided by you, and considering information from the HFC registry on available autorisations. These parameters are included in the BDR envelope as a service to companies and allow them to make a preliminary check towards their compliance with Article 14 of the F-Gas Regulation already at the stage of reporting. The disclosure of these values does not constitute a legal notification of compliance which will be established by the European Commission only at a later time when all relevant data is available, which includes, in particular, the verification document referred to in Article 3(2) of Commission Implementing Regulation (EU) 2016/879.</tr-13a-disclaimer>
+      <tr-13b-desc>Total hydrofluorocarbons placed on the market in refrigeration, air conditioning or heat pump equipment.</tr-13b-desc>
+      <tr-13b-formula>[13B=Sum(12B)]</tr-13b-formula>
+      <tr-13c-desc>Calculated use of previously exported hyrdofluorocarbons for charging imported equipment</tr-13c-desc>
+      <tr-13c-formula>[13C=Sum(12A)]</tr-13c-formula>
+      <tr-13d-desc>Calculated amount of imported hydrofluorocarbons in need of authorisation to use HFC quota</tr-13d-desc>
+      <tr-13d-formula>[13D=Sum(12C)]</tr-13d-formula>
+      <tr-verified-desc>I take note of the obligation under Article 19(5) of Regulation (EU) No 517/2014 and Article 3 of Commission Implementing Regulation (EU) 2016/879 to submit a verification document by 31 March at YYY (Internet location to be specified).</tr-verified-desc>
+      <tr-verified-condition>Tickbox enabled if 13B >= 100 t CO2-eq</tr-verified-condition>
+      <validation_category>Category</validation_category>
+      <validation_violation>Violation description</validation_violation>
+    </sheet9>
     <validation_messages>
         <qc_1400>
             <error_text>Please confirm the use of {{gas}} for {{code}}.</error_text>
@@ -1171,7 +1227,7 @@
         <qc_1403_06T>
             <error_text>Please describe the 'other' intended application (6T) for {{ gasName }} in a comment.</error_text>
         </qc_1403_06T>
-        
+
         <qc_1403_06U>
             <error_text>Please give an explanation for reporting leakage (6U) of {{ gasName }} in a comment.</error_text>
         </qc_1403_06U>
@@ -1689,10 +1745,30 @@
         <qc_2411>
             <error_text>The values reported for equipment imports (11Q) and bulk imports (2A) of {{ gasName }} are very close to each other. Please note that 2A should only contain imports in bulk and not those F-gases that are contained in imported equipment. Your report may be followed up to avoid any issues of double counting.</error_text>
         </qc_2411>
-        
+
         <qc_2501>
             <error_text>The webform was unable to fetch some company related data that are crucial for the validation process of your report. You will not be able to finalise the questionnaire until that data is available. Please save your work, close the webform and try again later. We apologise for the inconvenience.</error_text>
         </qc_2501>
+
+        <qc_21201>
+            <error_text>Reported amounts in 12A (re-import in equipment) exceed the amounts placed on the market in imported refrigeration, air conditioning and heatpump equipment (reported in section 11A-F; see total in 12B) for {{gas}}. Please add a comment in section 12A for {{gas}} to explain why this is plausible.</error_text>
+        </qc_21201>
+
+        <qc_21202>
+            <warning_text>Reported amounts in 12A (re-import in equipment) exceed the amounts placed on the market in imported refrigeration, air conditioning and heatpump equipment (12B) for {{gas}}. Your explanation given in section 12A will be assessed for plausibility.</warning_text>
+            <comment>Tonnes of {{gas}} 12C &lt; 0</comment>
+        </qc_21202>
+
+        <qc_21301>
+          <error_text>Reported amounts in 12A (re-import in equipment) exceed the amounts placed on the market in imported refrigeration, air conditioning and heatpump equipment (reported in section 11A-F; see total in 12B), if converted into CO2e for all HFCs. This is not plausible. Please double-check your data reported in sections 11A-11F and/or 12A and correct where appropriate. Keep in mind that incorrect reporting in sections 11A-11F and/or 12A  may distort the automatic preliminary calculation of authorisation demand in section 13D of this report.</error_text>
+          <comment>Grand total GWP 12C &lt; 0 (13C > 13B)</comment>
+        </qc_21301>
+        <qc_21302>
+          <error_text>Authorisations available in the HFC registry (13A) do not cover the demand for authorisations (13D; determined from your data in 11A-F and 12A). Please check your data in 11A-11F and/or 12A to avoid errors. Note that the European Commission (DG CLIMA) will assess your company’s quota/authorisation compliance in co-operation with your Member State’s competent authorities. Failure to comply may result in penalties according to national law of the Member State concerned.</error_text>
+        </qc_21302>
+        <qc_21303>
+          <error_text>Your data indicates that you placed more than 100t of CO2 equivalents in refrigeration, air conditioning, or heat pump equipment on the market. To proceed, please acknowledge your obligation to submit a verification document in section 13, and submit that document in time.</error_text>
+        </qc_21303>
 
         <unusualGasesG1>
             <part1>is an unusual gas for the application of</part1>
@@ -1726,8 +1802,10 @@
         <sheet5_errors>Validation errors on form V – Physical Supplies for Authorisations for NER Quota Holders (section 10)</sheet5_errors>
         <sheet6_errors>Validation errors on form VI – Feedstock Use and Destruction (sections 7-8)</sheet6_errors>
         <form7_errors>Validation errors on form VII – Import of Products/Equipment containing F-gases (section 11)</form7_errors>
+        <sheet8_errors>Validation errors on form VIII – Amount of hydrofluorocarbons charged into the imported equipment (section 12)</sheet8_errors>
+        <sheet9_errors>Validation errors on form IX – Preliminary compliance assessment for equipment imports (section 13)</sheet9_errors>
         <unusualGases>Warning - unusual choice of gases for reported categories</unusualGases>
-        
+
         <column-error-category-header>Validation error category</column-error-category-header>
         <error-level-blocker>Blocking error</error-level-blocker>
         <error-level-warning>Potential error</error-level-warning>

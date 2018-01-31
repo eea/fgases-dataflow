@@ -7,7 +7,7 @@ BUILD_DIR = 'build'
 DEST_DIR = 'dist'
 DEST_ZIP_FILE = DEST_DIR + '/out.zip'
 PROJECT_META_FILE = 'webform-project-export.metadata'
-PROD_SCHEMA_URL = 'http://dd.eionet.europa.eu/schemas/fgases-2015/FGasesReporting.xsd'
+PROD_SCHEMA_URL = 'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd'
 
 
 def createFormFileMetadata(filename, isTestDeployment, projectName):
@@ -41,13 +41,15 @@ def resolveXmlSchemaFile(isTestDeployment, projectName):
     return PROD_SCHEMA_URL
 
 def composeTestSchemaUrl(projectName):
-    fileTemplate = "http://%(webqHost)s/download/project/%(projectName)s/file/FGasesReporting2015.xsd"
-    templateArgs = { 
-        'webqHost': resolveWebQHost(True), 
-        'projectName' : projectName
-    }
-    
-    return fileTemplate % templateArgs
+    # fileTemplate = "http://%(webqHost)s/download/project/%(projectName)s/file/FGasesReporting2017.xsd"
+    # templateArgs = { 
+    #     'webqHost': resolveWebQHost(True), 
+    #     'projectName' : projectName
+    # }
+    # return fileTemplate % templateArgs
+
+    # Return the production schema for now
+    return PROD_SCHEMA_URL
 
 def resolveWebQHost(isTestDeployment):
     if isTestDeployment:
@@ -96,7 +98,7 @@ def copyResources(isTestDeployment, projectName):
 
 def listTestResources():
     return [
-        '../schema/FGasesReporting2015.xsd',
+        '../schema/FGasesReporting2017.xsd',
         '../xml/fgases-company-info-test.json',
         '../xml/fgases-company-reg-code-test.json',
         '../xml/fgases-company-vat-test.json'

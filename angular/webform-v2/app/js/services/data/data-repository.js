@@ -2,9 +2,9 @@
 (function() {
     // get instance data and save instance data
     angular.module('FGases.services.data').factory('dataRepository', [
-    
+
         '$rootScope', '$http', 'FormConstants', 'dataProxy', 'jsonNormalizer', 'objectUtil', 'arrayUtil', 'numericUtil', 'stringUtil',
-    
+
         function($rootScope, $http, FormConstants, dataProxy, jsonNormalizer, objectUtil, arrayUtil, numericUtil, stringUtil) {
             var codeLists = {};
             //var fgasesVocabularySetBaseUri = "http://localhost:8080/datadict/vocabulary/fgases/"; //DD_VOCABULARY_BASE_URI + 'fgases/';
@@ -27,7 +27,8 @@
 
             return {
                 _registryDataPerYear: { },
-                
+                _authorisationData: null,
+
                 getInstance: function() {
                     return dataProxy.getInstance();
                 },
@@ -129,14 +130,14 @@
                         objectUtil.call(onSuccess, this._registryDataPerYear[transactionYear]);
                         return;
                     }
-                    
+
                     var that = this;
                     dataProxy.getRegistryData(companyId, transactionYear, function(data) {
                         if (objectUtil.isNull(data.registryData)) {
                             objectUtil.call(onError);
                             return;
                         }
-                        
+
                         var registryData = {
                             stocks: that._fixStocks(data.registryData),
                             quota: that._fixQuota(data.registryData),
@@ -145,6 +146,22 @@
                         };
                         that._registryDataPerYear[transactionYear] = registryData;
                         objectUtil.call(onSuccess, registryData);
+                    }, onError);
+                },
+                getAuthorisationData: function(companyId, onSuccess, onError) {
+                    if (!objectUtil.isNull(this._authorisationData)) {
+                        objectUtil.call(onSuccess, this._authorisationData);
+                        return;
+                    }
+                    var that = this;
+                    dataProxy.getAuthorisationData(companyId, function(data) {
+                        if (objectUtil.isNull(data)) {
+                            objectUtil.call(onError);
+                            return;
+                        }
+
+                        that._authorisationData = data.authorisation;
+                        objectUtil.call(onSuccess, data);
                     }, onError);
                 },
                 _fixStocks: function(companyData) {
@@ -166,7 +183,7 @@
                     quota.allocatedQuotaDate = companyData.quota.allocatedQuotaDate;
                     quota.availableQuota = numericUtil.toNum(companyData.quota.availableQuota); // 9G
                     quota.availableQuotaDate = companyData.quota.availableQuotaDate;
-                    
+
                     jsonNormalizer.normalizeArrayProperty(companyData.quota, 'quota9A_imp');
                     quota.quota9A_imp = companyData.quota.quota9A_imp;
                     var baseDate = Date.now();
@@ -177,7 +194,7 @@
                         quotaEntry.tradePartner.isEUBased = !stringUtil.isBlank(quotaEntry.tradePartner.EUVAT);
                         quotaEntry.tradePartner.QCWarning = [];
                     });
-                    
+
                     return quota;
                 },
                 _fixLargeStatus: function(companyData) {

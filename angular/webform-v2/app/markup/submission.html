@@ -320,8 +320,63 @@
 
 </table>
 
+<h2 ng-show="validationMessages['sheet8'].length > 0">
+    <span data-translate="submission.sheet8_errors"> </span>
+    <a href="#" ng-click="gotoTab('Sheet8');"><span class="glyphicon glyphicon-new-window" data-tooltip="{{'common.go-to-tab' | translate}}"></span></a>
+</h2>
 
+<table  ng-show="validationMessages['sheet8'].length > 0" class="table table-hover table-bordered" style="width: 1000px;">
+    <tr>
+        <th style="width: 250px;"><span data-translate="submission.column-error-category-header"></span></th>
+        <th style="width: 100px;"><span data-translate="sheet8.validation_category"/></th>
+        <th style="width: 900px;"><span data-translate="sheet8.validation_violation"/></th>
+    </tr>
 
+    <tr ng-repeat="error in validationMessages['sheet8']">
+        <td style="width: 100px;"><span class="{{ viewModel.submission.getErrorCategoryClass(error) }}">{{ viewModel.submission.getErrorCategoryName(error) }}</span></td>
+        <td>
+            <span ng-show="{{ error.transactionLabel == null }}" data-translate="common.transaction">&nbsp;</span>
+            <span ng-show="{{ error.transactionLabel != null }}" data-translate="common.transaction"> </span>
+            <span ng-show="{{ error.transactionLabel != null }}" data-translate="sheet8.{{ error.transactionLabel }}.code"></span>
+        </td>
+        <td>
+            <span ng-switch="error.message == null">
+                <span ng-switch-when = "true"><span data-translate="validation_messages.qc_{{ error.qccode }}.error_text"></span></span>
+                <span ng-switch-when = "false">{{ error.message }}</span>
+            </span>
+            &nbsp;({{ error.qccode }})
+        </td>
+    </tr>
+
+</table>
+
+<h2 ng-show="validationMessages['sheet9'].length > 0">
+    <span data-translate="submission.sheet9_errors"> </span>
+    <a href="#" ng-click="gotoTab('Sheet9');"><span class="glyphicon glyphicon-new-window" data-tooltip="{{'common.go-to-tab' | translate}}"></span></a>
+</h2>
+
+<table  ng-show="validationMessages['sheet9'].length > 0" class="table table-hover table-bordered" style="width: 1000px;">
+    <tr>
+        <th style="width: 250px;"><span data-translate="submission.column-error-category-header"></span></th>
+        <th style="width: 100px;"><span data-translate="sheet9.validation_category"/></th>
+        <th style="width: 900px;"><span data-translate="sheet9.validation_violation"/></th>
+    </tr>
+
+    <tr ng-repeat="error in validationMessages['sheet9']">
+        <td style="width: 100px;"><span class="{{ viewModel.submission.getErrorCategoryClass(error) }}">{{ viewModel.submission.getErrorCategoryName(error) }}</span></td>
+        <td>
+            <span>{{ error.transactionLabel }}</span>
+        </td>
+        <td>
+            <span ng-switch="error.message == null">
+                <span ng-switch-when = "true"><span data-translate="validation_messages.qc_{{ error.qccode }}.error_text"></span></span>
+                <span ng-switch-when = "false">{{ error.message }}</span>
+            </span>
+            &nbsp;({{ error.qccode }})
+        </td>
+    </tr>
+
+</table>
 
 <h2 ng-show="validationMessages['unusualGasesG1'].length > 0">
     <span data-translate="submission.unusualGases"></span>

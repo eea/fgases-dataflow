@@ -17,18 +17,18 @@
         'FGases.helper',
         'pascalprecht.translate'
     ]);
-    
+
     angular.module('FGases.filters', [
         'FGases.services.util'
     ]);
-    
+
     angular.module('FGases.viewmodel', [
         'FGases.services.util',
         'FGases.services.data',
         'FGases.services.validation.qcs',
         'FGases.helper'
     ]);
-    
+
     angular.module('FGases.controllers', [
         'FGases.services.util',
         'FGases.services.ui',
@@ -36,14 +36,14 @@
         'ui.bootstrap',
         'pascalprecht.translate'
     ]);
-    
+
     angular.module('FGases.directives', [
         'FGases.services.util',
         'FGases.services.validation',
         'FGases.services.ui',
         'pascalprecht.translate'
     ]);
-    
+
     var app = angular.module('FGases', [
         'FGases.filters',
         'FGases.directives',
@@ -62,7 +62,7 @@
         'monospaced.elastic',
         'notifications',
         'angularFileUpload']);
-        
+
     app.run(function($rootScope, promiseTracker, $location, tabService, errorMapperService) {
         $rootScope.loadingTracker = promiseTracker({});
         tabService.setTabs([
@@ -78,6 +78,7 @@
             {"id":"Sheet6",           "active" : false},
             {"id":"Sheet7",           "active" : false},
             {"id":"Sheet8",           "active" : false},
+            {"id":"Sheet9",           "active" : false},
             {"id":"Submission",       "active" : false}
         ]);
         //, {"id":"Debug",            "active" : false}
@@ -119,6 +120,7 @@
             "Sheet6",
             "Sheet7",
             "Sheet8",
+            "Sheet9",
             "Submission"
         ]
     });// end of constant definitions
@@ -271,14 +273,14 @@ function getWeightedHFCGWP(componentsForGWP){
 
 function getWeightedFullHfcGwp(components) {
     var gwpComponents = components instanceof Array ? components : [ components ];
-    
+
     for (var i = 0; i < gwpComponents.length; i++) {
         // if gas is HFC or contains at least one HFC
         if (gwpComponents[i].GWP_AR4_HFC) {
             return getWeightedGWP(components);
         }
     }
-    
+
     return 0;
 }
 

@@ -39,23 +39,33 @@
                 return this.getRoot().getDataSource().FGasesReporting.F8_S12;
             };
 
-            ViewModelSheet8Section12.prototype.getTr12ATransactions = function() {
-                return this._getTrOwnTransactions(this.getSectionData().tr_12A_Transactions);
-            };
-            ViewModelSheet8Section12.prototype.getTr12AOwnTradePartner = function() {
-                return this._getTrOwnTradePartner(this.getSectionData().tr_12A_TradePartners.Partner);
-            };
-            ViewModelSheet8Section12.prototype.getTr12APOM = function() {
-                return this._getTrOwnTradePartner(this.getSectionData().tr_12A_POMS.POM);
+            ViewModelSheet8Section12.prototype.getGasesWithProblem12C = function() {
+                var result = [];
+                var gasArray = this.getSectionData().Gas;
+                for (var i=0; i < gasArray.length; i++) {
+                    if (gasArray[i].Totals) {
+                        if (parseInt(gasArray[i].Totals.tr_12C) < 0) {
+                            result.push(gasArray[i].GasCode);
+                        }
+                    }
+                }
+                return result;
             };
 
-            ViewModelSheet8Section12.prototype._getTrOwnTransactionsTradePartner = function(transaction) {
-                var root = this.getRoot();
-                
-                return arrayUtil.selectSingle(transactionPartners, function(tradePartner) {
-                    return root.isOwnCompany(tradePartner);
-                });
+            ViewModelSheet8Section12.prototype.hasCommentsForGasId = function(gasId) {
+                var gasArray = this.getSectionData().Gas;
+                for (var i=0; i < gasArray.length; i++) {
+                    if (gasArray[i].GasCode == gasId) {
+                        for (var j=0; j < gasArray[i].tr_12A.Transaction.length; j++) {
+                            if (gasArray[i].tr_12A.Transaction[j].Comment) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
             };
+
             return ViewModelSheet8Section12;
         }
     ]);

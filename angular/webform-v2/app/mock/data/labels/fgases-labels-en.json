@@ -51,6 +51,7 @@
             "trading-partner-must-be-eu": "Only EU-based companies can be named as trade partners for this transaction.",
             "trading-partner-own-vat": "It seems as if you entered your own company's VAT number here. Please specify the VAT no. of a third party. Own exports of own imports or own production should be reported in section 3B, sheet I.",
             "trading-partner-own-id": "It seems as if you entered your own company's portal code here. Please specify the portal code of a third party. Own exports of own imports or own production should be reported in section 3B, sheet I.",
+            "trading-partner-year-error": "Please specify a valid year between 2015 and the current transaction year.",
             "comment-should-contain-alpha-numeric-characters": "Comment must have at least one Latin character and be at least 2 characters.",
             "click-to-enable": "Click to enable",
             "other": "Other",
@@ -333,7 +334,7 @@
             "tr-05i-desc": "Total quantities of exempted uses of hydrofluorocarbons",
             "tr-05i-formula": "[5I = sum(5A) + sum(5B) + sum(5C_exempted) + sum(5D) + sum(5E)]",
             "tr-05j-desc": "Calculated amount of hydrofluorocarbons physically placed on the market, excluding exempted uses",
-            "tr-05j-formula": "[5J = max ( 5H - 5I , 0 )]",
+            "tr-05j-formula": "[5J = ( 5H - 5I )]",
             "voluntary-reporting": "Voluntary Reporting",
             "tr-05r-desc": "Quantities supplied directly to undertakings for manufacturing of equipment in the Union, where such equipment is subsequently directly exported out of the Union",
             "voluntarily-tooltip": "Data may be voluntarily reported for consistency checking.",
@@ -1056,22 +1057,59 @@
             "noCategoySelected": "No category selected."
         },
         "sheet8": {
-            "section12-heading":"SECTION 12: TBD",
-            "section12-info1": "Amount of hydrofluorocarbons charged into the imported equipment, released by customs for free circulation in the Union, for which the hydrofluorocarbons had previously been exported from the Union and which had been subject to the hydrofluorocarbon quota limitation for placing on the Union market. ",
-            "section12-info2": "The hydrofluorocarbon exporting undertaking/s and the year/s of export shall be specified..",
-            "section12-info3": "The undertaking/s having placed the hydrofluorocarbons on the Union market for the first time and the year/s of that placing on the market shall be specified.",
-            "tr-12a-desc": "Quantity imported into the Union for destruction",
-            "tr-12a-tooltip": "The undertaking/s carrying out the destruction shall be specified.",
+            "section12-heading":"Section 12: TO BE FILLED IN BY IMPORTERS OF REFRIGERATION, AIR CONDITIONING OR HEAT PUMP EQUIPMENT CHARGED WITH HYDROFLUOROCARBONS, WHERE THE HYDROFLUOROCARBONS CONTAINED IN THE IMPORTED EQUIPMENT HAD PREVIOUSLY BEEN EXPORTED FROM THE UNION AND ACQUIRED BY MANUFACTURERS  OF EQUIPMENT DIRECTLY FROM THE EXPORTING UNDERTAKING, AND HAD BEEN SUBJECT TO THE HYDROFLUOROCARBON QUOTA LIMITATION FOR PLACING ON THE UNION MARKET",
+            "section12-info1": "Quantities shall be reported in metric tonnes with accuracy to the third decimal place, separately for each hydrofluorocarbon (gases listed in Section 1 of Annex I to Regulation (EU) No 517/2014 or mixture containing at least one of those gases).",
+            "tr-12a-desc": "Amount of hydrofluorocarbons charged into the imported equipment, released by customs for free circulation in the EU, for which the hydrofluorocarbons had previously been exported from the Union and which had been subject to the hydrofluorocarbon quota limitation for placing on the Union market",
+            "tr-12a-tooltip": "The HFC exporting undertaking/s and the year/s of export shall be specified. The undertaking/s having placed the hydrofluorocarbons on the Union market for the first time and the year/s of that placing on the market shall be specified.",
             "tr-12a-add-transaction-tooltip": "Add a new transaction",
             "tr-12a-add-transaction": "Add transaction",
             "tr-12a-trading-partner-modal-title": "Add Trading Partner",
             "tr-12a-add-trading-partner": "Add a Trading Partner",
             "tr-12a-add-trading-partner-tooltip": "If You want to report in this transaction, you can add trading partner(s) with this button",
+            "tr-12a-trading-partner-modal-year-pom": "Year of first placing on the EU market (POM)",
             "tr-12a-add-pom": "Add POM",
-            "tr-12a-add-pom-tooltip": "",
+            "tr-12a-add-pom-tooltip": "Add POM",
+            "tr-12a-add-exp": "Add Exporter",
+            "tr-12a-add-exp-tooltip": "Add Exporter",
             "tr-12a-disabled-tooltip": "Please add POM and Exporter first",
             "tr-12a-trading-partner-modal-title-pom": "Add Trading Partner (POM)",
-            "tr-12a-trading-partner-modal-title-exporter": "Add Trading Partner (Exporter)"
+            "tr-12a-trading-partner-modal-title-exporter": "Add Trading Partner (Exporter)",
+            "tr-12a-trading-partner-modal-year-exporter": "Year of export",
+            "tr-12a-pom-year-error": "Year of first placing on the EU market cannot be after year of export",
+            "tr-12a-exp-year-error": "Year of export cannot be before the year of first placing on the EU market",
+            "tr-12a-disabled-add-transaction-tooltip": "Please add at least one HFC Gas first",
+            "tr-12b-tooltip": "Please notice that the parameters 12B and 12C are values automatically calculated from the reporting data provided by you. These parameters are included in the BDR envelope as a service to companies and allow them to make a preliminary check towards their compliance with Article 14 of the F-Gas Regulation already at the stage of reporting. The disclosure of these values does not constitute a legal notification of compliance which will be established by the European Commission only at a later time when all relevant data is available, which includes, in particular, the verification document referred to in Article 19(5) of Regulation (EU) No 517/2014 and in Article 3(2) of Commission Implementing Regulation (EU) 2016/879.",
+            "tr-12b-desc": "Total hydrofluorocarbons placed on the market in refrigeration, air conditioning or heat pump equipment",
+            "tr-12b-formula": "[12B=11G]",
+            "tr-12c-tooltip": "Please notice that the parameters 12B and 12C are values automatically calculated from the reporting data provided by you. These parameters are included in the BDR envelope as a service to companies and allow them to make a preliminary check towards their compliance with Article 14 of the F-Gas Regulation already at the stage of reporting. The disclosure of these values does not constitute a legal notification of compliance which will be established by the European Commission only at a later time when all relevant data is available, which includes, in particular, the verification document referred to in Article 19(5) of Regulation (EU) No 517/2014 and in Article 3(2) of Commission Implementing Regulation (EU) 2016/879.",
+            "tr-12c-desc": "Calculated amount of imported hydrofluorocarbons in need of authorisation to use HFC quota",
+            "tr-12c-formula": "[12C=12B-SUM(12A)]",
+            "tr-12a-duplicate-tx-error": "The same pair (POM/year - Exporter/year) has been used for another transaction. Duplicate transactions are disallowed",
+            "tr-12a-pom-label": "Company which first placed the HFCs on the EU market",
+            "tr-12a-exp-label": "Exporter",
+            "validation_category": "Category",
+            "validation_violation": "Violation description",
+            "tr_12C": {
+                  "code": "12C"
+            }
+        },
+        "sheet9": {
+            "section13-heading": "SECTION 13: Preliminary compliance assessment for equipment imports",
+            "section13-info": "Applicable for the first time to reporting on activities in 2017 (due by 31 March 2018).",
+            "tr-header-unit": "Amount of HFCs unit t CO2e",
+            "tr-13a-desc": "Available authorisations, including delegations of authorisations  (automatically imported from the HFC registry)",
+            "tr-13a-tooltip": "For your convenience, available authorisations (including delegations of authorisations) as duly registered in the HFC registry by the date indicated below have been imported into the reporting form (13A) Date of HFC registry extract for 13A [YYYY-MM-DD]: (Date supplied by DG CLIMA with the data)",
+            "tr-13a-disclaimer": "Please notice that the parameters 13B to 13D are values automatically calculated from the reporting data provided by you, and considering information from the HFC registry on available autorisations. These parameters are included in the BDR envelope as a service to companies and allow them to make a preliminary check towards their compliance with Article 14 of the F-Gas Regulation already at the stage of reporting. The disclosure of these values does not constitute a legal notification of compliance which will be established by the European Commission only at a later time when all relevant data is available, which includes, in particular, the verification document referred to in Article 3(2) of Commission Implementing Regulation (EU) 2016/879.",
+            "tr-13b-desc": "Total hydrofluorocarbons placed on the market in refrigeration, air conditioning or heat pump equipment.",
+            "tr-13b-formula": "[13B=Sum(12B)]",
+            "tr-13c-desc": "Calculated use of previously exported hyrdofluorocarbons for charging imported equipment",
+            "tr-13c-formula": "[13C=Sum(12A)]",
+            "tr-13d-desc": "Calculated amount of imported hydrofluorocarbons in need of authorisation to use HFC quota",
+            "tr-13d-formula": "[13D=Sum(12C)]",
+            "tr-verified-desc": "I take note of the obligation under Article 19(5) of Regulation (EU) No 517/2014 and Article 3 of Commission Implementing Regulation (EU) 2016/879 to submit a verification document by 31 March at YYY (Internet location to be specified).",
+            "tr-verified-condition": "Tickbox enabled if 13B >= 100 t CO2-eq",
+            "validation_category": "Category",
+            "validation_violation": "Violation description"
         },
         "validation_messages": {
             "qc_1400": {
@@ -1552,6 +1590,23 @@
             "qc_2501": {
                 "error_text": "The webform was unable to fetch some company related data that are crucial for the validation process of your report. You will not be able to finalise the questionnaire until that data is available. Please save your work, close the webform and try again later. We apologise for the inconvenience."
             },
+            "qc_21201": {
+                  "error_text": "Reported amounts in 12A (re-import in equipment) exceed the amounts placed on the market in imported refrigeration, air conditioning and heatpump equipment (reported in section 11A-F; see total in 12B) for {{gas}}. Please add a comment in section 12A for {{gas}} to explain why this is plausible."
+            },
+            "qc_21202": {
+                  "warning_text": "Reported amounts in 12A (re-import in equipment) exceed the amounts placed on the market in imported refrigeration, air conditioning and heatpump equipment (12B) for {{gas}}. Your explanation given in section 12A will be assessed for plausibility.",
+                  "comment": "Tonnes of {{gas}} 12C < 0"
+            },
+            "qc_21301": {
+                  "error_text": "Reported amounts in 12A (re-import in equipment) exceed the amounts placed on the market in imported refrigeration, air conditioning and heatpump equipment (reported in section 11A-F; see total in 12B), if converted into CO2e for all HFCs. This is not plausible. Please double-check your data reported in sections 11A-11F and/or 12A and correct where appropriate. Keep in mind that incorrect reporting in sections 11A-11F and/or 12A  may distort the automatic preliminary calculation of authorisation demand in section 13D of this report.",
+                  "comment": "Grand total GWP 12C < 0 (13C > 13B)"
+            },
+            "qc_21302": {
+                  "error_text": "Authorisations available in the HFC registry (13A) do not cover the demand for authorisations (13D; determined from your data in 11A-F and 12A). Please check your data in 11A-11F and/or 12A to avoid errors. Note that the European Commission (DG CLIMA) will assess your company’s quota/authorisation compliance in co-operation with your Member State’s competent authorities. Failure to comply may result in penalties according to national law of the Member State concerned."
+            },
+            "qc_21303": {
+                  "error_text": "Your data indicates that you placed more than 100t of CO2 equivalents in refrigeration, air conditioning, or heat pump equipment on the market. To proceed, please acknowledge your obligation to submit a verification document in section 13, and submit that document in time."
+            },
             "unusualGasesG1": {
                 "part1": "is an unusual gas for the application of",
                 "part2": "Continue with"
@@ -1580,6 +1635,8 @@
             "sheet5_errors": "Validation errors on form V – Physical Supplies for Authorisations for NER Quota Holders (section 10)",
             "sheet6_errors": "Validation errors on form VI – Feedstock Use and Destruction (sections 7-8)",
             "form7_errors": "Validation errors on form VII – Import of Products/Equipment containing F-gases (section 11)",
+            "sheet8_errors": "Validation errors on form VIII – Amount of hydrofluorocarbons charged into the imported equipment (section 12)",
+            "sheet9_errors": "Validation errors on form IX – Preliminary compliance assessment for equipment imports (section 13)",
             "unusualGases": "Warning - unusual choice of gases for reported categories",
             "column-error-category-header": "Validation error category",
             "error-level-blocker": "Blocking error",

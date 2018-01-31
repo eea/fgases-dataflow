@@ -1,0 +1,3 @@
+The Python/MS Access aggregation process is no longer used,
+instead FME is used.
+

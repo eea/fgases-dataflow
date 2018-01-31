@@ -1,7 +1,7 @@
 Option Compare Database
 Option Explicit
 
-Private Const LARGE_COMPANIES_2016 = "9410,9411,9413,9428,9450,9457,9461,9475,9478,9503,9505,9506,9511,9545,9654,9844,10003,10008,10011,10038,10080,14207,14571,14806,20194"
+Private Const LARGE_COMPANIES = "9410,9411,9413,9428,9450,9457,9461,9475,9478,9503,9505,9506,9511,9545,9654,9844,10003,10008,10011,10038,10080,14207,14571,14806,20194"
 Public largeCompaniesIds() As Long
 Private db As DAO.database
 
@@ -14,7 +14,7 @@ On Error GoTo err
     
     Set db = currentDb
     
-    sql = "SELECT id_internal FROM tbl_companies_map WHERE portal_code IN (" & LARGE_COMPANIES_2016 & ")"
+    sql = "SELECT id_internal FROM tbl_companies_map WHERE portal_code IN (" & LARGE_COMPANIES & ")"
     Set rs = db.OpenRecordset(sql, dbOpenSnapshot)
     Do While Not rs.EOF
         col.Add modNumbers.getLong(rs("id_internal"))

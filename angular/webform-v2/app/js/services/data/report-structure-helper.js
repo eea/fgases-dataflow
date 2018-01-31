@@ -31,7 +31,7 @@
                         "tr_05E_TradePartners", "tr_05F_TradePartners", "tr_05R_TradePartners"
                     ],
                     F5_S10_Auth_NER: ["tr_10A_TradePartners"],
-                    F8_S12: ["tr_12A_POMPartners", "tr_12A_EXPPartners", "tr_12A_TradePartners"]
+                    F8_S12: ["tr_12A_TradePartners"]
                 };
             };
 

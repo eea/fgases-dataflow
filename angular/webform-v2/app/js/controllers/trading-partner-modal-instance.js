@@ -5,7 +5,9 @@
         $scope.tradePartnerModalTitle = modalExtras && typeof modalExtras.title !== 'undefined' ? modalExtras.title : 'common.trade-partner-modal-title';
         $scope.isMinimalDialog = modalExtras && modalExtras.isMinimalDialog;
         $scope.yearField = modalExtras && modalExtras.yearField;
-        
+        $scope.tradePartnerModalYearFieldLabel = modalExtras && typeof modalExtras.yearFieldLabel !== 'undefined' ? modalExtras.yearFieldLabel : 'common.trading-partner-year';
+        $scope.allowDuplicates = modalExtras && typeof modalExtras.allowDuplicates !== 'undefined' ? modalExtras.allowDuplicates : false;
+
         if (!angular.isDefined(modalExtras.arrayToPush)){
             alert("Trade Partner array is not defined, data entered may be lost.");
         }
@@ -34,6 +36,10 @@
                         break;
                     }
                 }
+            }
+            if (angular.isDefined(modalExtras.yearField)){
+                var year = pd.year ? pd.year : modalExtras.yearValue;
+                $scope.tempPartnerDefinition.year = parseInt(year, 10);
             }
             $scope.isEUBasedClicked = true;
         }else{
@@ -179,7 +185,7 @@
                 }
 
                 //Now check if company is in previously defined trade partner list. QC 2097
-                if ($scope.tempPartnerDefinition.isEUBased && !vatProblemFound){
+                if ($scope.tempPartnerDefinition.isEUBased && !vatProblemFound && !$scope.allowDuplicates){
                     var tradePartnersArray = modalExtras.arrayToPush;
                     if (tradePartnersArray != null && tradePartnersArray.length > 0){
                         var indexToSkip = angular.isDefined(modalExtras.index) ? modalExtras.index : -1;
@@ -191,6 +197,71 @@
                                 $scope.alerts.push(alert);
                             }
                         }
+                    }
+                }
+
+                if (angular.isDefined(modalExtras.yearField)){
+                    var year = $scope.tempPartnerDefinition.year;
+                    var tx_year = $scope.instance.FGasesReporting.GeneralReportData.TransactionYear
+                    if(isNaN(year) || year < 2015|| year > tx_year) {
+                        $scope.alerts.push({
+                            'type': 'danger',
+                            'msg': 'common.trading-partner-year-error'
+                        });
+                    }
+                    var yearOk = true;
+                    var duplicate_tx = false;
+                    var year_error_messages = {
+                        'POM': 'sheet8.tr-12a-pom-year-error',
+                        'Exporter': 'sheet8.tr-12a-exp-year-error'
+                    };
+                    var pair = [];
+                    var pairs = $scope.get_transactions_pairs(modalExtras.txid);
+                    // QC11201 & QC21212
+                    for (var i = 0; i < modalExtras.gasArray.length; i++) {
+                        for (var j = 0; j < modalExtras.gasArray[i].tr_12A.Transaction.length; j++) {
+                            if (modalExtras.gasArray[i].tr_12A.Transaction[j].TransactionID == modalExtras.txid[modalExtras.gasArray[i].GasCode]) {
+                                if (
+                                    (modalExtras.partnerType == 'POM' && year > parseInt(modalExtras.gasArray[i].tr_12A.Transaction[j].Exporter.Year)) ||
+                                    (modalExtras.partnerType == 'Exporter' && year < parseInt(modalExtras.gasArray[i].tr_12A.Transaction[j].POM.Year))
+                                    ) {
+                                        yearOk = false;
+                                        alert_msg = year_error_messages[modalExtras.partnerType];
+                                }
+                                pair = [];
+                                if (modalExtras.partnerType == 'POM') {
+                                    if (modalExtras.gasArray[i].tr_12A.Transaction[j].Exporter.TradePartnerID) {
+                                        pair = {'POM': $scope.tempPartnerDefinition.CompanyName,
+                                                'POMYear': parseInt($scope.tempPartnerDefinition.year),
+                                                'EXP': $scope.get_partner('Exporter', modalExtras.gasArray[i].tr_12A.Transaction[j].Exporter.TradePartnerID).partner.CompanyName,
+                                                'EXPYear': parseInt(modalExtras.gasArray[i].tr_12A.Transaction[j].Exporter.Year)};
+                                    }
+                                } else {
+                                    if (modalExtras.gasArray[i].tr_12A.Transaction[j].POM.TradePartnerID) {
+                                        pair = {'POM': $scope.get_partner('POM', modalExtras.gasArray[i].tr_12A.Transaction[j].POM.TradePartnerID).partner.CompanyName,
+                                                'POMYear': parseInt(modalExtras.gasArray[i].tr_12A.Transaction[j].POM.Year),
+                                                'EXP': $scope.tempPartnerDefinition.CompanyName,
+                                                'EXPYear': parseInt($scope.tempPartnerDefinition.year)};
+                                    }
+                                }
+                                if(pairs[modalExtras.gasArray[i].GasCode].indexOf(JSON.stringify(pair)) !== -1) {
+                                  duplicate_tx = true;
+                                }
+                            }
+
+                        }
+                    }
+                    if (!yearOk) {
+                        $scope.alerts.push({
+                            'type': 'danger',
+                            'msg': alert_msg
+                        });
+                    }
+                    if (duplicate_tx) {
+                        $scope.alerts.push({
+                            'type': 'danger',
+                            'msg': 'sheet8.tr-12a-duplicate-tx-error'
+                        })
                     }
                 }
             }
@@ -217,7 +288,7 @@
                             return;
                         }
                         
-                        if ($scope.tempPartnerDefinition.NonEUCountryOfEstablishment['@id'] === tradePartner.NonEUCountryCodeOfEstablishment) {
+                        if ($scope.tempPartnerDefinition.NonEUCountryOfEstablishment['@id'] === tradePartner.NonEUCountryCodeOfEstablishment && !$scope.allowDuplicates) {
                             $scope.alerts.push({
                                 type: 'danger',
                                 msg: 'common.trading-partner-already-exist'
@@ -251,7 +322,7 @@
                         if (tradePartnersArray != null && tradePartnersArray.length > 0){
                             var indexToSkip = angular.isDefined(modalExtras.index) ? modalExtras.index : -1;
                             for (var i = 0; i < tradePartnersArray.length; i++){
-                                if (i != indexToSkip && $scope.tempPartnerDefinition.NonEUDgClimaRegCode == tradePartnersArray[i].NonEUDgClimaRegCode){
+                                if (i != indexToSkip && $scope.tempPartnerDefinition.NonEUDgClimaRegCode == tradePartnersArray[i].NonEUDgClimaRegCode && !$scope.allowDuplicates){
                                     var alert = {};
                                     alert.type = 'danger';
                                     alert.msg = 'common.trading-partner-already-exist';

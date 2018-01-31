@@ -1,0 +1,67 @@
+<!-- html subform [ng-form="Sheet9"] -->
+<div data-name="Sheet9Section13" ng-controller="Sheet9Ctrl">
+  <h2><span data-translate="sheet9.section13-heading"></span></h2>
+  <p><span data-translate="sheet9.section13-info"></span></p>
+
+  <table class="table table-hover table-bordered fixed-table">
+    <colgroup>
+      <col class="fixed-width-cell-centered-large" />
+      <col class="fixed-width-cell-centered-large" />
+    </colgroup>
+    <tr>
+      <td>
+        <span class="transaction-code">13A : </span>
+        <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet9.tr-13a-tooltip' | translate}}"></span>
+        <span data-translate="sheet9.tr-13a-desc"></span>
+      </td>
+      <td class="text-center">{{ tr_13a() }}</td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <span class="transaction-code">Disclaimer</span>
+        <span data-translate="sheet9.tr-13a-disclaimer"></span>
+      </td>
+    </tr>
+    <tr>
+      <th></th>
+      <th class="text-center"><span data-translate="sheet9.tr-header-unit"></span></th>
+    <tr>
+      <td>
+        <span class="transaction-code">13B : </span>
+        <span data-translate="sheet9.tr-13b-desc"></span>
+        <span class="formula" data-translate="sheet9.tr-13b-formula"></span>
+      </td>
+      <td class="text-center"><span>{{ tr_13b() | thousandSeparator }}</span></td>
+    </tr>
+    <tr>
+      <td>
+        <span class="transaction-code">13C : </span>
+        <span data-translate="sheet9.tr-13c-desc"></span>
+        <span class="formula" data-translate="sheet9.tr-13c-formula"></span>
+      </td>
+      <td class="text-center"><span>{{ tr_13c() | thousandSeparator }}</span></td>
+    </tr>
+    <tr>
+      <td>
+        <span class="transaction-code">13D : </span>
+        <span data-translate="sheet9.tr-13d-desc"></span>
+        <span class="formula" data-translate="sheet9.tr-13d-formula"></span>
+      </td>
+      <td class="text-center"><span>{{ tr_13d() | thousandSeparator }}</span></td>
+    </tr>
+    <tr ng-switch="instance.FGasesReporting.F9_S13.Totals.tr_13B.Amount >= 100">
+      <td colspan="2">
+        <label>
+          <input ng-switch-when="true" type="checkbox" ng-model="instance.FGasesReporting.F9_S13.Verified" />
+          <input ng-switch-when="false" type="checkbox" ng-disabled="true" ng-class="'disabled'" />
+          <span ng-switch-when="false" data-tooltip="{{'sheet9.tr-verified-condition' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+          <span data-translate="sheet9.tr-verified-desc"></span>
+        </label>
+      </td>
+    </tr>
+  </table>
+</div>
+
+  <!-- end of div name="Sheet9Section13" -->
+<!-- end of html subform [ng-form="Sheet9"] -->
+

@@ -1,10 +1,17 @@
 <!-- html subform [ng-form="Sheet8"] -->
-<div data-name="Sheet8Section12">
+<div data-name="Sheet8Section12" ng-controller="Sheet8Ctrl">
     <h2><span data-translate="sheet8.section12-heading"></span></h2>
     <p><span data-translate="sheet8.section12-info1"></span></p>
-    <p><span data-translate="sheet8.section12-info2"></span></p>
-    <p><span data-translate="sheet8.section12-info3"></span></p>
-    <table class="table table-hover table-bordered fixed-table">
+    <table class="table table-hover table-bordered fixed-table"
+           ng-init="init({
+               'emptyInstancePath': 'FGasesReporting.F8_S12.Gas.tr_12A.Transaction',
+               'gasArray': instance.FGasesReporting.F8_S12.Gas,
+               'gases': instance.FGasesReporting.ReportedGases,
+               'fieldName': 'tr_12A',
+               'Partners': instance.FGasesReporting.F8_S12.tr_12A_TradePartners,
+               's11Array': instance.FGasesReporting.F7_s11EquImportTable.Gas
+           })"
+           >
         <colgroup>
             <col class="fixed-width-gas-transaction"/>
             <col class="fixed-width-gas-amount" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" ng-if="containsHFC(reportedGas)"/>
@@ -26,39 +33,171 @@
         </tr>
         <!-- Field 12A Start -->
         <tr>
-            <td>
+            <td colspan="{{txids.length > 0 ? 1 : filteredReportedGasesForHFCLength + 1}}">
                 <div id="tr_12A">
                     <span class="transaction-code">12A : </span>
                     <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet8.tr-12a-tooltip' | translate}}"></span>
                     <span data-translate="sheet8.tr-12a-desc"></span>
                     <div><span data-translate="sheet8.tr-12a-add-transaction-tooltip"></span></div>
-                    <div ng-repeat="gas in instance.FGasesReporting.F8_S12.Gas">
-                        <div ng-repeat="transaction in gas.tr_12A.Transactions">{{gas.GasCode}}: Transaction: #{{$index}} - {{transaction.Amount}}</div>
-                    </div>
                     <div>
                         <button 
-                            ng-controller="ModalController"
                             data-tooltip="{{'sheet8.tr-12a-add-transaction-tooltip' | translate}}"
-                            ng-click="open('lg', 'TransactionAddEditModal.html', 'TransactionAddEditModalInstanceController', {}, transactionModalWindowCloseCallBack,
-                                    {'title': 'sheet8.tr-12a-trading-partner-modal-title',
-                                     'arrayToPush': instance.FGasesReporting.F8_S12.tr_12A_Transactions.Transaction,
-                                     'emptyInstancePath': 'FGasesReporting.F8_S12.Gas.tr_12A.Transaction',
-                                     'gasArray': instance.FGasesReporting.F8_S12.Gas,
-                                     'gases': instance.FGasesReporting.ReportedGases,
-                                     'reportedGas': reportedGas,
-                                     'fieldName': 'tr_12A',
-                                     'POM': instance.FGasesReporting.F8_S12.tr_12A_POMPartners,
-                                     'Exporter': instance.FGasesReporting.F8_S12.tr_12A_EXPPartners});"
+                            data-tap-disabled="false"
+                            ng-click="add_transaction()"
+                            ng-disabled="filteredReportedGasesForHFCLength === 0"
                             class="btn btn-primary btn-sm">
                         <span class="glyphicon glyphicon-plus-sign"></span>
                         <span data-translate="sheet8.tr-12a-add-transaction"/>
+                        </button>
+                        <span ng-if="filteredReportedGasesForHFCLength === 0"
+                            data-tooltip="{{'sheet8.tr-12a-disabled-add-transaction-tooltip' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
                     </div>
-                <div ng-repeat="transaction in instance.FGasesReporting.F8_S12.Gas.tr_12A.Transactions | orderBy: $index">
+                <div ng-repeat="transaction in instance.FGasesReporting.F8_S12.Gas.tr_12A.Transaction | orderBy: $index">
                   <strong>{{$index}}</strong>
                 </div>
             </td>
-        </tr>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center"
+                ng-if="txids.length > 0 && containsHFC(reportedGas)">
+                <div id="{{'tr_12A_' + reportedGas.GasId}}">{{instance.FGasesReporting.F8_S12.Gas[$index].tr_12A.SumOfPartnersAmount}}</div>
             </td>
+        </tr>
+        <tr ng-repeat="(txidx, transaction) in txids">
+            <td align="right">
+                <span data-translate="common.transaction"></span>
+                <span> #{{ $index + 1}}</span>
+                <button type="button" class="btn btn-xs" style="margin-left: 1em;"
+                        ng-click="remove_transaction(transaction);">
+                    <span data-translate="common.remove"/>
+                </button>
+                <div>
+                    <div>
+                        <label><span data-translate="sheet8.tr-12a-pom-label"></label>
+                        <button 
+                            ng-if="has_partner('POM', transaction) == false"
+                            ng-controller="ModalController"
+                            data-tooltip="{{'common.add' | translate}}"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPOMEXPPartnerModalWindowCloseCallBack,
+                                        {'title': 'sheet8.tr-12a-trading-partner-modal-title-pom',
+                                        'arrayToPush': instance.FGasesReporting.F8_S12.tr_12A_TradePartners.Partner,
+                                        'emptyInstancePath': 'FGasesReporting.F8_S12.Gas.tr_12A.Transaction.POM',
+                                        'gasArray': instance.FGasesReporting.F8_S12.Gas,
+                                        'fieldName': 'tr_12A',
+                                        'partnerType': 'POM',
+                                        'txid': transaction,
+                                        'yearField': true,
+                                        'yearFieldLabel': 'sheet8.tr-12a-trading-partner-modal-year-pom',
+                                        'allowDuplicates': true,
+                                        'nonEuCountries': codeList.FGasesCodelists.countries.concepts});"
+                            class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-plus-sign"></span>
+                            <span data-translate="common.add"/>
+                        </button>
+
+                        <span ng-if="has_partner('POM', transaction)" ng-init="partnerID = get_tx_partner('POM', transaction).partner.PartnerId">
+                            <strong>{{ get_tx_partner('POM', transaction).partner.CompanyName }}</strong> - {{ get_tx_partner('POM', transaction).year }}
+                        <button ng-controller="ModalController" type="button" class="btn btn-primary btn-xs" style="margin-left: 1em;"
+                                ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPOMEXPPartnerModalWindowCloseCallBack,
+                                {'title': 'sheet8.tr-12a-trading-partner-modal-title-pom',
+                                'arrayToPush': instance.FGasesReporting.F8_S12.tr_12A_TradePartners.Partner,
+                                'gasArray': instance.FGasesReporting.F8_S12.Gas,
+                                'index': get_partner('POM', partnerID).index,
+                                'fieldName': 'tr_12A',
+                                'txid': transaction,
+                                'partnerType': 'POM',
+                                'yearField': true,
+                                'yearFieldLabel': 'sheet8.tr-12a-trading-partner-modal-year-pom',
+                                'yearValue': get_tx_partner('POM', transaction).year,
+                                'nonEuCountries': codeList.FGasesCodelists.countries.concepts,
+                                'allowDuplicates': true});" >
+                            <span data-translate="common.edit"/>
+                        </button>
+                        </span>
+                    </div>
+                    <div>
+                        <label><span data-translate="sheet8.tr-12a-exp-label"></label>
+                        <button 
+                            ng-if="has_partner('Exporter', transaction) == false"
+                            ng-controller="ModalController"
+                            data-tooltip="{{'common.add' | translate}}"
+                            ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPOMEXPPartnerModalWindowCloseCallBack,
+                                        {'title': 'sheet8.tr-12a-trading-partner-modal-title-exporter',
+                                        'arrayToPush': instance.FGasesReporting.F8_S12.tr_12A_TradePartners.Partner,
+                                        'gasArray': instance.FGasesReporting.F8_S12.Gas,
+                                        'emptyInstancePath': 'FGasesReporting.F8_S12.Gas.tr_12A.Transaction.Exporter',
+                                        'fieldName': 'tr_12A',
+                                        'partnerType': 'Exporter',
+                                        'txid': transaction,
+                                        'yearField': true,
+                                        'yearFieldLabel': 'sheet8.tr-12a-trading-partner-modal-year-exporter',
+                                        'nonEuCountries': codeList.FGasesCodelists.countries.concepts,
+                                        'allowDuplicates': true});"
+                            class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-plus-sign"></span>
+                            <span data-translate="common.add"/>
+                        </button>
+                        <span ng-if="has_partner('Exporter', transaction)" ng-init="partnerID = get_tx_partner('Exporter', transaction).partner.PartnerId">
+                            <strong>{{ get_tx_partner('Exporter', transaction).partner.CompanyName }}</strong> - {{ get_tx_partner('Exporter', transaction).year }}
+                        <button ng-controller="ModalController" type="button" class="btn btn-primary btn-xs" style="margin-left: 1em;"
+                                ng-click="open('lg', 'TradePartnerDefinitionModal.html', 'TradingPartnerModalInstanceController', {}, tradingPOMEXPPartnerModalWindowCloseCallBack,
+                                {'title': 'sheet8.tr-12a-trading-partner-modal-title-exporter',
+                                'arrayToPush': instance.FGasesReporting.F8_S12.tr_12A_TradePartners.Partner,
+                                'gasArray': instance.FGasesReporting.F8_S12.Gas,
+                                'index': get_partner('Exporter', partnerID).index,
+                                'fieldName': 'tr_12A',
+                                'partnerType': 'Exporter',
+                                'txid': transaction,
+                                'yearField': true,
+                                'yearFieldLabel': 'sheet8.tr-12a-trading-partner-modal-year-exporter',
+                                'yearValue': get_tx_partner('Exporter', transaction).year,
+                                'nonEuCountries': codeList.FGasesCodelists.countries.concepts,
+                                'allowDuplicates': true});" >
+                            <span data-translate="common.edit"/>
+                        </button>
+                        </span>
+                    </div>
+            </td>
+            <td ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center" ng-if="containsHFC(reportedGas)">
+
+                <input gas-input ng-model="instance.FGasesReporting.F8_S12.Gas[$index].tr_12A.Transaction[txidx].Amount"
+                       ng-pattern="onlyNumbers"
+                       ng-if="instance.FGasesReporting.F8_S12.Gas[$index].tr_12A.Transaction[txidx].POM.TradePartnerID && instance.FGasesReporting.F8_S12.Gas[$index].tr_12A.Transaction[txidx].Exporter.TradePartnerID"
+                       ng-keyup="calculate_sums()"/>
+                <div ng-if="!instance.FGasesReporting.F8_S12.Gas[$index].tr_12A.Transaction[txidx].POM.TradePartnerID || !instance.FGasesReporting.F8_S12.Gas[$index].tr_12A.Transaction[txidx].Exporter.TradePartnerID"
+                    <input ng-disabled="true" ng-class="'disabled'"/>
+                    <span data-tooltip="{{'sheet8.tr-12a-disabled-tooltip' | translate}}" class="glyphicon glyphicon-warning-sign row-tooltip"></span>
+                </div>
+                <div ng-if="instance.FGasesReporting.F8_S12.Gas[$index].tr_12A.Transaction[txidx].POM.TradePartnerID && instance.FGasesReporting.F8_S12.Gas[$index].tr_12A.Transaction[txidx].Exporter.TradePartnerID">
+                    <button ng-controller="ModalController" data-tooltip="{{'common.add-edit-comment-tooltip' | translate}}"
+                                ng-click="open('lg', 'CommentAddEditModal.html', 'CommentAddEditModalInstanceController', transactions[reportedGas.GasId][txidx]);"
+                                class="glyphicon glyphicon-comment" ></button>
+                        <span ng-if="transactions[reportedGas.GasId][txidx].Comment"
+                              data-tooltip="{{transactions[reportedGas.GasId][txidx].Comment}}">
+                            {{transactions[reportedGas.GasId][txidx].Comment | limitTo:commentLimit}} ...
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="0">
+                <div id="tr_12B">
+                    <span class="transaction-code">12B : </span>
+                    <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet8.tr-12b-tooltip' | translate}}"></span>
+                    <span data-translate="sheet8.tr-12b-desc"></span>
+                    <span class="formula" data-translate="sheet8.tr-12b-formula"></span>
+                </div>
+            </td>
+            <td ng-if="containsHFC(reportedGas)" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">{{ instance.FGasesReporting.F8_S12.Gas[$index].Totals.tr_12B }}</td>
+        </tr>
+        <tr>
+            <td colspan="0">
+                <div id="tr_12C">
+                    <span class="transaction-code">12C : </span>
+                    <span class="glyphicon glyphicon-info-sign row-tooltip" data-tooltip-placement="right" data-tooltip="{{'sheet8.tr-12c-tooltip' | translate}}"></span>
+                    <span data-translate="sheet8.tr-12c-desc"></span>
+                    <span class="formula" data-translate="sheet8.tr-12c-formula"></span>
+                </div>
+            </td>
+            <td ng-if="containsHFC(reportedGas)" ng-repeat="reportedGas in instance.FGasesReporting.ReportedGases" align="center">{{ instance.FGasesReporting.F8_S12.Gas[$index].Totals.tr_12C }}</td>
         </tr>
     </table>
 </div>

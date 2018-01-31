@@ -1,15 +1,15 @@
 
 (function () {
-    angular.module('FGases.controllers').controller("questionnaire", 
-    
+    angular.module('FGases.controllers').controller("questionnaire",
+
     function ($scope, $rootScope, dataRepository, languageChanger, $sce, $location, $filter, $translate,
-            FormConstants, $notification, FileUploader, $timeout, $anchorScroll, tabService, focus, $http, 
+            FormConstants, $notification, FileUploader, $timeout, $anchorScroll, tabService, focus, $http,
             objectUtil, arrayUtil, numericUtil, stringUtil,
             commentModalService, transactionYearProvider, messageBox, modalAdapter,
             jsonNormalizer, reportStructureNormalizer, reportStructureHelper, dataPrefill,
-            viewModel, sheetGeneralValidator, sheetActivitiesValidator, sheetGasSelectionValidator, 
+            viewModel, sheetGeneralValidator, sheetActivitiesValidator, sheetGasSelectionValidator,
             sheet1Validator, sheet2Validator, sheet3Validator, sheet4Validator, sheet5Validator,sheet6Validator,
-            tradePartnerCompanyMatcher) {
+            sheet8Validator, sheet9Validator, tradePartnerCompanyMatcher) {
         $scope.viewModel = viewModel;
         $scope.base = $location.host() + $location.port() + getParameterByName('base_uri');
         $scope.availableLanguages = languageChanger.getAvailableLanguages();
@@ -19,7 +19,7 @@
         $scope.valMsgIndex = 0;
         $rootScope.euCountries = ['AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'EL', 'ES', 'FI', 'FR', 'GB', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK', 'UK'];
         $rootScope.currentLanguage = 'en';
-        
+
         //determine ie version, code snippet is taken from: http://msdn.microsoft.com/en-us/library/ms537509%28v=vs.85%29.aspx
         var rv = -1; // Return value assumes failure.
         if (navigator.appName == 'Microsoft Internet Explorer')
@@ -71,7 +71,7 @@
                 $scope.loadInstance();
             });
         };
-        
+
         $scope.loadInstance = function() {
             dataRepository.getInstance().error(function () {
                 $notification.error("", "Failed to load reporting data. Please close the form and try to report again later.");
@@ -123,19 +123,19 @@
             //these variables are used to store temporarily selected gas ids for 6 list
             //this is used since multiselect directive does not send new and old values
             $scope.selectedGasIds = {};
-            
+
             arrayUtil.forEach(reportStructureHelper.getGasSelectionLists(), function(gasSelectionListName) {
                 $scope.selectedGasIds[gasSelectionListName] = clone($scope.instance.FGasesReporting.GeneralReportData[gasSelectionListName].GasName);
             });
 
             $scope.filteredReportedGasesForHFCLength = 0;
-            
+
             arrayUtil.forEach($scope.instance.FGasesReporting.ReportedGases, function(reportedGas) {
                 if ($scope.containsHFC(reportedGas)) {
                     $scope.filteredReportedGasesForHFCLength++;
                 }
             });
-            
+
             // load company info, if it is a first time form loading
             if (isEmpty($scope.instance.FGasesReporting.GeneralReportData.Company['@status'])) {
                 $scope.instance.FGasesReporting.GeneralReportData.Company['@status'] = 'incomplete';
@@ -162,10 +162,10 @@
         /*
          "GasGroupId": 8,
          "GasGroupName": null,
-         
+
          "GasGroupId": 7,
          "GasGroupName": "HFC mixtures",
-         
+
          "GasGroupId": 9,
          "GasGroupName": "Non-HFC mixtures",
          */
@@ -238,13 +238,32 @@
             $scope.loadExtraCompanyData(false);
         };
 
-        $scope.loadExtraCompanyData = function(forceStockOverwrite, onSuccess, onError) {
-            var companyId = $scope.instance.FGasesReporting.GeneralReportData.Company.CompanyId;
-            
+        $scope.loadAuthorisationData = function(companyId) {
             if (objectUtil.isNull(companyId)) {
                 return;
             }
-            
+
+            dataRepository.getAuthorisationData(
+              companyId,
+              function(authorisationData) {
+                $scope.authorisationData = authorisationData;
+              },
+              function() {
+                $notification.error("", "Failed to load authorisation data required for reporting. Please try again later.");
+                objectUtil.call(onError);
+              }
+            );
+        };
+
+        $scope.loadExtraCompanyData = function(forceStockOverwrite, onSuccess, onError) {
+            var companyId = $scope.instance.FGasesReporting.GeneralReportData.Company.CompanyId;
+
+            $scope.loadAuthorisationData(companyId);
+
+            if (objectUtil.isNull(companyId)) {
+                return;
+            }
+
             dataRepository.getRegistryData(companyId, transactionYearProvider.getTransactionYear(), function(extraCompanyData) {
                 $scope.applyStocks(extraCompanyData.stocks, forceStockOverwrite);
                 $scope.applyQuota(extraCompanyData.quota);
@@ -266,7 +285,7 @@
                 $scope.tryApplyStockValues(reportedGas, forceOverwrite);
             });
         };
-        
+
         $scope.applyQuota = function(quota) {
             var section9Data = $scope.instance.FGasesReporting.F4_S9_IssuedAuthQuata;
             jsonNormalizer.normalizeObjectProperty(section9Data, 'tr_09A_Registry');
@@ -276,19 +295,19 @@
             section9Data.tr_09G.Amount = quota.availableQuota;
             section9Data.tr_09G.Comment = quota.availableQuotaDate;
             viewModel.initCompanyQuota(quota);
-            
+
             while (section9Data.tr_09A_imp_TradePartners.Partner.length > 0) {
                 var partner = section9Data.tr_09A_imp_TradePartners.Partner[0];
                 $scope.removeTradingPartner('F4_S9_IssuedAuthQuata', 'tr_09A_imp_TradePartners', 0, 'tr_09A_imp', true);
-                
+
                 arrayUtil.forEach(quota.quota9A_imp, function(quota9A_imp, loopContext) {
                     if (tradePartnerCompanyMatcher.areEqual(partner, quota9A_imp.tradePartner)) {
                         quota9A_imp.tradePartner.PartnerId = partner.PartnerId;
                         loopContext.breakLoop = true;
-                    }                    
+                    }
                 });
             }
-            
+
             arrayUtil.forEach(quota.quota9A_imp, function(quota9A_imp) {
                 $scope.autoInsertSection9TradePartner('tr_09A_imp', quota9A_imp.tradePartner, quota9A_imp.amount, true);
                 $scope.autoInsertSection9TradePartner('tr_09A_add', quota9A_imp.tradePartner, null, false);
@@ -297,11 +316,11 @@
             $scope.calculateTradingPartnerTotalAmountInteger($scope.instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09A_add);
             $scope.calculate9ADependingFields();
         };
-        
+
         $scope.applyCompanySize = function(isLarge) {
             viewModel.setLargeCompany(isLarge);
         };
-        
+
         $scope.applyNerStatus = function(isNer) {
             viewModel.setReporterInNerList(isNer);
             $scope.instance.FGasesReporting.attachedCompanyData.nerStatus = isNer;
@@ -312,7 +331,7 @@
             var index = arrayUtil.indexOf(tradePartnerArray, function(tp) {
                 return tradePartner.PartnerId === tp.PartnerId;
             });
-            
+
             if (index < 0) {
                 var dummyModalResults = {
                     tempPartnerDefinition: tradePartner,
@@ -327,9 +346,9 @@
                 $scope.tradingPartnerModalWindowCloseCallBackForNonGasForm(dummyModalResults);
                 index = tradePartnerArray.length - 1;
             }
-            
+
             var partnerAmount = $scope.instance.FGasesReporting.F4_S9_IssuedAuthQuata[transaction].TradePartner[index];
-            
+
             if (!numericUtil.isNum(partnerAmount.amount) || overwriteAmount) {
                 partnerAmount.amount = amount;
             }
@@ -369,6 +388,7 @@
         };
 
         $scope.updateActivityUpperCB = function (upperCBPath, innerCBs) {
+            // sets upperCBPath to true if any of the innerCBs are true
             var tempUpperCBValue = false;
             for (var i = 0; i < innerCBs.length && tempUpperCBValue == false; i++) {
                 var innerCBValue = $scope.instance.FGasesReporting.GeneralReportData.Activities[innerCBs[i]];
@@ -428,6 +448,9 @@
                     }
                     if ($scope.isTabVisible(FormConstants.TabIds[10])) {
                         $scope.reCalculateSheet8();
+                    }
+                    if ($scope.isTabVisible(FormConstants.TabIds[11])) {
+                        $scope.reCalculateSheet9();
                     }
                 } else {
                     //select again
@@ -507,15 +530,15 @@
                 dependents: ['P_I_E', 'P_I_E_Calculated']
             },
             P_I_E: {
-                clearStatements: [ 
+                clearStatements: [
                     {
                         condition: '!$scope.instance.FGasesReporting.GeneralReportData.Activities["P"] && !$scope.instance.FGasesReporting.GeneralReportData.Activities["I"] && !$scope.instance.FGasesReporting.GeneralReportData.Activities["E"]',
                         fields: [
-                            { 
+                            {
                                 form: 'F1_S1_4_ProdImpExp',
                                 rows: [
-                                    'tr_01F', 'tr_01G', 'tr_01H', 'tr_01I', 'tr_01J', 'tr_01K', 
-                                    'tr_02B', 
+                                    'tr_01F', 'tr_01G', 'tr_01H', 'tr_01I', 'tr_01J', 'tr_01K',
+                                    'tr_02B',
                                     'tr_04K', 'tr_04L', 'tr_04M'
                                 ]
                             }
@@ -524,11 +547,11 @@
                 ]
             },
             P_I_E_Calculated: {
-                clearStatements: [ 
+                clearStatements: [
                     {
                         condition: '!$scope.instance.FGasesReporting.GeneralReportData.Activities["P"] && !$scope.instance.FGasesReporting.GeneralReportData.Activities["I"] && !$scope.instance.FGasesReporting.GeneralReportData.Activities["E"]',
                         fields: [
-                            { 
+                            {
                                 form: 'F1_S1_4_ProdImpExp',
                                 rows: [
                                     'tr_01K', 'tr_03C', 'tr_04M'
@@ -555,17 +578,17 @@
             },
             'Eq-I-RACHP-HFC': {'clearStatements': [], 'dependents': ['Eq-I']},
             'Eq-I-other': {
-                'clearStatements': [], 
+                'clearStatements': [],
                 'dependents': ['Eq-I'],
                 onPostExecute: function() {
                     var transactionSelection = $scope.instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions;
                     var toClear = ['H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'];
-                    
+
                     arrayUtil.forEach(Object.getOwnPropertyNames(transactionSelection), function(transaction) {
                         var mustClear = arrayUtil.contains(toClear, function(toClearItem) {
                             return stringUtil.contains(transaction, toClearItem);
                         });
-                        
+
                         if (mustClear) {
                             transactionSelection[transaction] = false;
                         }
@@ -588,10 +611,10 @@
                     if ($scope.instance.FGasesReporting.GeneralReportData.Activities["Eq-I"]) {
                         return;
                     }
-                    
+
                     $scope.instance.FGasesReporting.F7_s11EquImportTable.transactionsConfirmed = false;
                     var transactionSelection = $scope.instance.FGasesReporting.F7_s11EquImportTable.UISelectedTransactions;
-                    
+
                     arrayUtil.forEach(Object.getOwnPropertyNames(transactionSelection), function(transaction) {
                         transactionSelection[transaction] = false;
                     });
@@ -613,7 +636,7 @@
                 dependents: [ 'auth-NER' ],
                 onPostExecute: function(instance) {
                     var formData = instance.FGasesReporting.F4_S9_IssuedAuthQuata;
-                    
+
                     if (angular.isDefined(formData.Verified)) {
                         formData.Verified = null;
                     }
@@ -825,9 +848,9 @@
                 //if we always keep same order, then we dont need to search for gas code, so simply slice array
                 $scope.instance.FGasesReporting[element].Gas.splice(index, 1);
             }
-            
+
             $scope.refreshValidations();
-            
+
             return true;
         };// end of function removeGasFromReportedGases
 
@@ -860,7 +883,7 @@
                         if (!accept) {
                             return;
                         }
-                        
+
                         gasIdsCopy.splice(unspecifiedMixIndex, 1);
                         $scope.instance.FGasesReporting.GeneralReportData[gasGroup].GasName.splice(unspecifiedMixIndex, 1);
                         var predefinedMixtureList = arrayUtil.select($scope.codeList.FGasesCodelists.FGases.Gas, function(item) {
@@ -869,9 +892,9 @@
                         var existingCustomMixtures = arrayUtil.select($scope.instance.FGasesReporting.ReportedGases, function(item) {
                             return item.IsCustomComposition;
                         });
-                        modalAdapter.open($scope, 'lg', 'MixtureDefinitionModalContent.html', 'MixtureDefinitionModalInstanceController', 
+                        modalAdapter.open($scope, 'lg', 'MixtureDefinitionModalContent.html', 'MixtureDefinitionModalInstanceController',
                                             null, $scope.mixtureEditModalWindowCloseCallBack, $scope.mixtureEditModalWindowCloseCallBack, {
-                            preDefinedMixtureList: predefinedMixtureList, 
+                            preDefinedMixtureList: predefinedMixtureList,
                             existingCustomMixtures: existingCustomMixtures
                         });
                     });
@@ -1035,7 +1058,7 @@
             if ($scope.containsHFC(reportedGas)) {
                 $scope.filteredReportedGasesForHFCLength++;
             }
-            
+
             $scope.tryApplyStockValues(reportedGas);
         };// end of function addGasForReporting
 
@@ -1094,23 +1117,33 @@
 
         //Callback function for transaction modal window
         $scope.tradingPOMEXPPartnerModalWindowCloseCallBack = function (results) {
+            var year = results.tempPartnerDefinition.year;
+            delete results.tempPartnerDefinition.year;
+            var tx_p_type = results.modalExtras.partnerType;
             if (results.index > -1) {
                 results.modalExtras.arrayToPush.splice(results.index, 1, results.tempPartnerDefinition);
+                for (var i = 0; i < results.modalExtras.gasArray.length; i++) {
+                    for (var j = 0; j < results.modalExtras.gasArray[i][results.modalExtras.fieldName].Transaction.length; j++) {
+                        if (results.modalExtras.gasArray[i][results.modalExtras.fieldName].Transaction[j].TransactionID == results.modalExtras.txid[results.modalExtras.gasArray[i].GasCode]) {
+                            results.modalExtras.gasArray[i][results.modalExtras.fieldName].Transaction[j][tx_p_type].Year = year;
+                        }
+                    }
+                }
             } else {
-                var tx_p_type;
                 results.modalExtras.arrayToPush.push(results.tempPartnerDefinition);
                 if (results.modalExtras.emptyInstancePath) {
-                    if (results.modalExtras.partnerType == 'POMPartners') {
-                        tx_p_type = 'POM'
-                    } else {
-                        tx_p_type = 'Exporter'
-                    }
                     var copyOfEmptyInstance = clone($scope.getInstanceByPath('emptyInstance', results.modalExtras.emptyInstancePath));
                     copyOfEmptyInstance.TradePartnerID = results.tempPartnerDefinition.PartnerId;
                     for (var i = 0; i < results.modalExtras.gasArray.length; i++) {
-                        results.modalExtras.gasArray[i][results.modalExtras.fieldName][results.modalExtras.partnerType].push(clone(copyOfEmptyInstance));
-                        results.modalExtras.gasArray[i][results.modalExtras.fieldName].Transactions[results.modalExtras.txid[results.modalExtras.gasArray[i].GasCode]][tx_p_type].TradePartnerID = results.tempPartnerDefinition.PartnerId;
-                        results.modalExtras.gasArray[i][results.modalExtras.fieldName].Transactions[results.modalExtras.txid[results.modalExtras.gasArray[i].GasCode]][tx_p_type].Year = results.tempPartnerDefinition.year;
+                        if (results.modalExtras.gasArray[i][results.modalExtras.fieldName][results.modalExtras.partnerType] === null) {
+                            results.modalExtras.gasArray[i][results.modalExtras.fieldName][results.modalExtras.partnerType] = [];
+                        }
+                        for (var j = 0; j < results.modalExtras.gasArray[i][results.modalExtras.fieldName].Transaction.length; j++) {
+                            if (results.modalExtras.gasArray[i][results.modalExtras.fieldName].Transaction[j].TransactionID == results.modalExtras.txid[results.modalExtras.gasArray[i].GasCode]) {
+                                results.modalExtras.gasArray[i][results.modalExtras.fieldName].Transaction[j][tx_p_type].TradePartnerID = results.tempPartnerDefinition.PartnerId;
+                                results.modalExtras.gasArray[i][results.modalExtras.fieldName].Transaction[j][tx_p_type].Year = year;
+                            }
+                        }
                     }
                 }
             }
@@ -1281,7 +1314,7 @@
         $scope.doCalculationForGas = function (gasIndex, destinationRow, formulaDefinition) {
             var formula = formulaDefinition.formula;
             var result = $scope.getValueForReportedGasAmountFrom(gasIndex, formula[0]);
-            
+
             if (formula.length > 2) {
                 //it is more than just assignment, so calculate value
                 var b = $scope.getValueForReportedGasAmountFrom(gasIndex, formula[2]);
@@ -1292,7 +1325,7 @@
                     result = $scope.gasCalculationOperators[formula[i]](result, b);
                 }
             }
-            
+
             if (!objectUtil.isNull(formulaDefinition.coersion)) {
                 result = formulaDefinition.coersion(result);
             }
@@ -1311,7 +1344,7 @@
             var sum = $scope.calculateTradingPartnerSum(tradingPartnerElement);
             tradingPartnerElement.SumOfPartnerAmounts = parseFloat(sum).toFixed(3);
         };// end of function calculateTradingPartnerTotalAmount
-        
+
         $scope.calculateTradingPartnerTotalAmountInteger = function (tradingPartnerElement) {
             var sum = $scope.calculateTradingPartnerSum(tradingPartnerElement);
             tradingPartnerElement.SumOfPartnerAmounts = parseFloat(sum).toFixed(0);
@@ -1319,12 +1352,12 @@
 
         $scope.calculateTradingPartnerSum = function(tradingPartnerElement) {
             var sum = 0;
-            
+
             for (var i = 0; i < tradingPartnerElement.TradePartner.length; i++) {
                 var val = (isEmpty(tradingPartnerElement.TradePartner[i].amount) || isNaN(tradingPartnerElement.TradePartner[i].amount)) ? 0.0 : parseFloat(tradingPartnerElement.TradePartner[i].amount);
                 sum += val;
             }
-            
+
             return sum;
         };// end of function calculateTradingPartnerTotalAmount
 
@@ -1341,13 +1374,13 @@
             }
             return parseFloat(sum).toFixed(3);
         };// end of function calculateSumAllGases
-        
+
         //function to sum all gases amounts with coeefficients
         $scope.calculateSumAllGasesCO2Eq = function (gasArray) {
             var sum = 0.0;
             for (var i = 0; i < gasArray.length; i++) {
                 var gasArrayItem = gasArray[i];
-                var gas = arrayUtil.selectSingle($scope.instance.FGasesReporting.ReportedGases, function(reportedGas) { 
+                var gas = arrayUtil.selectSingle($scope.instance.FGasesReporting.ReportedGases, function(reportedGas) {
                     return reportedGas.GasId === gasArrayItem.Id;
                 });
                 var weightedGWP = parseFloat(gas.GWP_AR4_AnnexIV);
@@ -1369,7 +1402,7 @@
             var sum = 0.0;
             for (var i = 0; i < gasArray.length; i++) {
                 var gasArrayItem = gasArray[i];
-                var gas = arrayUtil.selectSingle($scope.instance.FGasesReporting.ReportedGases, function(reportedGas) { 
+                var gas = arrayUtil.selectSingle($scope.instance.FGasesReporting.ReportedGases, function(reportedGas) {
                     return reportedGas.GasId === gasArrayItem.Id;
                 });
                 var weightedGWP = null; // force calculation of Full HFC GWP
@@ -1459,8 +1492,8 @@
 
         $scope.onTr07AChange = function(gasIndex) {
             $scope.doCalculationTotalForRow('F6_FUDest', 'tr_07A');
-            
-            
+
+
             if (viewModel.sheetActivities.isP() || viewModel.sheetActivities.isI() || viewModel.sheetActivities.isE()) {
                 $scope.doCalculationForFields(gasIndex, ['tr_01K']);
             }
@@ -1533,10 +1566,10 @@
                 id += '_' + $scope.instance.FGasesReporting.ReportedGases[validationMessage.gasIndex].GasId;
             }
             /*
-             * nakasnik: commented this part out as it is has no use: the html element ids created in 
+             * nakasnik: commented this part out as it is has no use: the html element ids created in
              * the markup do not contain that piece of info (trade partner id) in any case, so setting this variable is not only useless,
              * but it will additionally create miss-matches that will break message id clicking functionality.
-             * 
+             *
             if ($scope.validTradePartnerForValidationMessage(validationMessage)) {
                 id += '_' + validationMessage.tradePartnerId;
             }
@@ -2049,7 +2082,7 @@
 
         //it would be good to use same ids with tabs,
         // zykaerv: append to the end if new cat
-        $scope.valSubCat = ['general', 'activities', 'gases', 'sheet1', 'sheet2', 'sheet3', 'sheet4', 'sheet5', 'sheet6', 'form7', "sheet8"];
+        $scope.valSubCat = ['general', 'activities', 'gases', 'sheet1', 'sheet2', 'sheet3', 'sheet4', 'sheet5', 'sheet6', 'form7', 'sheet8', 'sheet9'];
         $scope.errors = {};
         $scope.validationMessages = {};
 
@@ -2084,19 +2117,19 @@
 
             for (var i = 0; i < groupErrors.length; i++) {
                 var transactionErrorInfo = groupErrors[i];
-                
+
                 if (transactionErrorInfo.errors != null && transactionErrorInfo.errors.length > 0) {
                     for (var j = 0; j < transactionErrorInfo.errors.length; j++) {
                         var errorInfo = transactionErrorInfo.errors[j];
                         var messageText;
-                        
+
                         if (objectUtil.isNull(errorInfo.message)) {
                             messageText = $translate.instant("validation_messages.qc_" + errorInfo.QCCode + ".error_text");
                         }
                         else {
                             messageText = errorInfo.message;
                         }
-                        
+
                         var message = {
                             'transaction': transactionErrorInfo.transaction,
                             'transactionLabel': transactionErrorInfo.transactionLabel,
@@ -2110,20 +2143,20 @@
                     }
                 }
             }
-            
+
             groupValidationMessages.sort(function(msg1, msg2) {
                 var cmp = msg1.transaction.localeCompare(msg2.transaction);
-                
+
                 if (cmp !== 0) return cmp;
-                
+
                 cmp = Number(msg1.qccode) - Number(msg2.qccode);
-                
+
                 if (cmp !== 0) return cmp;
-                
+
                 if (!numericUtil.isNum(msg1.gasIndex) || !numericUtil.isNum(msg2.gasIndex)) {
                     return 0;
                 }
-                
+
                 return Number(msg1.gasIndex) - Number(msg2.gasIndex);
             });
             $scope.validationMessages[group] = groupValidationMessages;
@@ -2132,7 +2165,7 @@
         $scope.refreshValidations = function() {
             arrayUtil.forEach($scope.valSubCat, function(subCat) {
                 var tabErrors = $scope.errors[subCat];
-                
+
                 if (!objectUtil.isNull(tabErrors) && tabErrors.length > 0) {
                     $scope.validateBySubCat(subCat);
                 }
@@ -2170,6 +2203,12 @@
                     break;
                 case 'form7':
                     $scope.validateForm7();
+                    break;
+                case 'sheet8':
+                    $scope.validateSheet8();
+                    break;
+                case 'sheet9':
+                    $scope.validateSheet9();
                     break;
             }
         };
@@ -2381,13 +2420,13 @@
                     $scope.errors[sheetId].push(transactionErrors);
                 }
             }
-            
+
             arrayUtil.pushMany($scope.errors[sheetId], sheet1Validator.validate(viewModel));
-            
+
             //update messages
             $scope.updateValidationMessages(sheetId);
         };// end of function validateSheet1
-        
+
         $scope.hasRequiredQuantitiesForQcs_2004_2005 = function(gasIndex , qcCode) {
             var gasQuantities = $scope.instance.FGasesReporting.F1_S1_4_ProdImpExp.Gas[gasIndex];
             var transactions = [ 'tr_02A', 'tr_04A', 'tr_04B', 'tr_04C' ];
@@ -2399,14 +2438,14 @@
                         return numericUtil.toNum(amount, 0) > 0 || ( amount == '0' && transaction !== 'tr_02A' ) ;
                     });
             }
-            
+
             return arrayUtil.contains(transactions, function(transaction) {
                 var amount = gasQuantities[transaction].Amount;
 
                 return numericUtil.toNum(amount, 0) > 0;
             });
         };
-        
+
         // Function to do validation on sheet2. This function heavily depend on sheet2ValidationRules variable.
         // Local variable names are important, some of them are used in eval expressions. See also: $scope.validateSheet
         $scope.validateSheet2 = function () {
@@ -2453,7 +2492,7 @@
             $scope.errors[sheetId] = sheet4Validator.validate(viewModel);
             $scope.updateValidationMessages(sheetId);
         };// end of function validateSheet4
-        
+
         $scope.validateSheet5 = function () {
             var sheetId = 'sheet5'; //sheet5
             $scope.updateTradePartnersOnSheet5(); // sync in case of changes in section 9, without visiting section 10
@@ -2480,7 +2519,7 @@
                     'rules': [{'condition': 'viewModel.getReportedGases().length > 0 && $scope.instance.FGasesReporting.F6_FUDest.Gas[gasIndex].tr_08D.Amount > 0', 'qccode': 2009}]
                 }
             ];
-            
+
             var sheet6ValidationRules = [];
             arrayUtil.pushMany($scope.errors[sheetId], sheet6Validator.validate(viewModel));
             var filteredRules = [];
@@ -2515,7 +2554,19 @@
             //end of qc checks 2008, 2009
             $scope.updateValidationMessages(sheetId);
         };
-        
+
+        $scope.validateSheet8 = function() {
+            var sheetId = 'sheet8'; //sheet8
+            $scope.errors[sheetId] = sheet8Validator.validate(viewModel);
+            $scope.updateValidationMessages(sheetId);
+        }
+
+        $scope.validateSheet9 = function() {
+            var sheetId = 'sheet9'; //sheet9
+            $scope.errors[sheetId] = sheet9Validator.validate(viewModel);
+            $scope.updateValidationMessages(sheetId);
+        }
+
         //  a function that iterate all the declared gases and performs validations
         // based on validation rules.
         $scope.getTransactionErrorsForGas = function(definedRules, gasIndex){
@@ -2609,7 +2660,7 @@
 
 
         $scope.QC2049Enabled = false;
-        
+
         $scope.validateForm7 = function () {
 
             $scope.calculateForm7Totals();
@@ -2670,7 +2721,7 @@
                             $scope.pushError('form7', j, 2087, null);
                         }
 
-                        if ($scope.instance.FGasesReporting.F7_s11EquImportTable.TR_11H4_Unit == null || 
+                        if ($scope.instance.FGasesReporting.F7_s11EquImportTable.TR_11H4_Unit == null ||
                                 $scope.instance.FGasesReporting.F7_s11EquImportTable.TR_11H4_Unit == '') {
                             $scope.pushError('form7', j, 2050, null);
                         }else{
@@ -2703,7 +2754,7 @@
                             $scope.pushError('form7', j, 2079, null);
                         }
 
-                        if ($scope.instance.FGasesReporting.F7_s11EquImportTable.TR_11P_Unit == null || 
+                        if ($scope.instance.FGasesReporting.F7_s11EquImportTable.TR_11P_Unit == null ||
                                 $scope.instance.FGasesReporting.F7_s11EquImportTable.TR_11P_Unit == '') {
                             $scope.pushError('form7', j, 2050, null);
                         }else {
@@ -2767,10 +2818,10 @@
                             }));
                         }
                     }
-                }                
+                }
             }
 
-            // Validating QC 2010  
+            // Validating QC 2010
             var sum11G_HFC = 0;
             var countHFC = 0;
             for (var i = 0; i < $scope.instance.FGasesReporting.ReportedGases.length; i++) {
@@ -2828,10 +2879,10 @@
 
             $scope.updateValidationMessages('form7');
         };
-        
+
         $scope.getForm7TransactionCode = function (transaction){
             return $translate.instant('form7.transcation_code.'+transaction);
-            
+
         };
         $scope.validateForm7Transaction11H04 = function(handler){
             var tr11H = '';
@@ -2845,14 +2896,14 @@
                 case 'pieces':
                     tr11H = "tr_11H04_pieces";
                     break;
-            } 
+            }
             if(tr11H.length>0) {
                 if ($scope.form7specificRanges[tr11H].Outside === true) {
                     var rangeObject = $scope.getRange('tr_11H04', $scope.instance.FGasesReporting.F7_s11EquImportTable.TR_11H4_Unit);
                     if(($scope.instance.FGasesReporting.F7_s11EquImportTable.Comment['tr_11H04'] === null ||$scope.instance.FGasesReporting.F7_s11EquImportTable.Comment['tr_11H04'].length < 2)) {
-                        handler(tr11H, rangeObject, false); // error                    
+                        handler(tr11H, rangeObject, false); // error
                     } else {
-                        handler(tr11H, rangeObject, true); // warning          
+                        handler(tr11H, rangeObject, true); // warning
                     }
                 }
             }
@@ -2869,7 +2920,7 @@
                 case 'pieces':
                     tr11P = "tr_11P_pieces";
                     break;
-            } 
+            }
             if(tr11P.length>0) {
                 if ($scope.form7specificRanges[tr11P].Outside === true) {
                     var rangeObject = $scope.getRange('tr_11P', $scope.instance.FGasesReporting.F7_s11EquImportTable.TR_11P_Unit);
@@ -2878,7 +2929,7 @@
                     } else {
                         handler(tr11P, rangeObject, true);
                     }
-                    
+
                 }
             }
         };
@@ -2913,7 +2964,9 @@
             $scope.validateSheet4,
             $scope.validateSheet5,
             $scope.validateSheet6,
-            $scope.validateForm7
+            $scope.validateForm7,
+            $scope.validateSheet8,
+            $scope.validateSheet9
         ];
 
         // This function calls validation function for given tab index.
@@ -2938,20 +2991,20 @@
             arrayUtil.forEach($scope.valSubCat, function(valSubCat, loopContext) {
                 var messages = $scope.validationMessages[valSubCat];
                 var hasBlockerErrors = arrayUtil.contains(messages, function(message) { return message.isBlocker; });
-                
+
                 if (hasBlockerErrors) {
                     $scope.formTotalValidated = false;
                     loopContext.breakLoop = true;
                 }
             });
-            
+
             $scope.instance.FGasesReporting.qcWarningFlags = {
                 flag: []
             };
-            
+
             arrayUtil.forEach(Object.getOwnPropertyNames($scope.errors), function(tabName) {
                 var tabTransactionErrorContainers = $scope.errors[tabName];
-                
+
                 arrayUtil.forEach(tabTransactionErrorContainers, function(tabTransactionErrorContainer) {
                     if (!objectUtil.isNull(tabTransactionErrorContainer.flags)) {
                         arrayUtil.pushMany($scope.instance.FGasesReporting.qcWarningFlags.flag, tabTransactionErrorContainer.flags);
@@ -2960,63 +3013,63 @@
             });
         };
 
-        $scope.unusualGasValidationsGroup1 = [ 
+        $scope.unusualGasValidationsGroup1 = [
             {
                 'form': 'F2_S5_exempted_HFCs',
                 'code': 1400,
                 'transactions': ['tr_05E'],
                 'transactionLabels': ['5E'],
                 'gases': ['id-2', 'id-3', 'id-4']
-            }, 
+            },
             {
                 'form': 'F2_S5_exempted_HFCs',
                 'code': 1400,
                 'transactions': ['tr_05F'],
                 'transactionLabels': ['5F'],
                 'gases': ['id-7', 'id-11']
-            }, 
+            },
             {
                 'form': 'F3A_S6A_IA_HFCs',
                 'code': 1400,
                 'transactions': ['tr_06D'],
                 'transactionLabels': ['6D'],
                 'gases': ['id-2', 'id-3', 'id-5', 'id-7', 'id-9', 'id-190', 'id-26', 'id-27', 'id-29', 'id-28','id-89','id-91','id-52','id-37','id-137','id-38','id-39','id-42','id-43','id-44','id-45','id-46']
-            }, 
+            },
             {
                 'form': 'F3A_S6A_IA_HFCs',
                 'code': 1400,
                 'transactions': ['tr_06E'],
                 'transactionLabels': ['6E'],
                 'gases': []
-            }, 
+            },
             {
                 'form': 'F3A_S6A_IA_HFCs',
                 'code': 1400,
                 'transactions': ['tr_06F'],
                 'transactionLabels': ['6F'],
                 'gases': ['id-7', 'id-10', 'id-192', 'id-193']
-            }, 
+            },
             {
                 'form': 'F3A_S6A_IA_HFCs',
                 'code': 1400,
                 'transactions': ['tr_06G'],
                 'transactionLabels': ['6G'],
                 'gases': []
-            }, 
+            },
             {
                 'form': 'F3A_S6A_IA_HFCs',
                 'code': 1400,
                 'transactions': ['tr_06H'],
                 'transactionLabels': ['6H'],
                 'gases': ['id-2', 'id-5', 'id-11', 'id-14']
-            }, 
+            },
             {
                 'form': 'F3A_S6A_IA_HFCs',
                 'code': 1400,
                 'transactions': ['tr_06I'],
                 'transactionLabels': ['6I'],
                 'gases': ['id-7', 'id-10', 'id-11']
-            }, 
+            },
             {
                 'form': 'F3A_S6A_IA_HFCs',
                 'code': 1400,
@@ -3051,7 +3104,7 @@
                 'transactions': ['tr_06O'],
                 'transactionLabels': ['6O'],
                 'gases': ['id-19', 'id-25','id-22', 'id-183']
-            }, 
+            },
             {
                 'form': 'F3A_S6A_IA_HFCs',
                 'code': 1400,
@@ -3065,21 +3118,21 @@
                 'transactions': ['tr_06Q'],
                 'transactionLabels': ['6Q'],
                 'gases': ['id-1']
-            }, 
+            },
             {
                 'form': 'F3A_S6A_IA_HFCs',
                 'code': 1400,
                 'transactions': ['tr_06R'],
                 'transactionLabels': ['6R'],
                 'gases': ['id-1']
-            },  
+            },
             {
                 'form': 'F3A_S6A_IA_HFCs',
                 'code': 1400,
                 'transactions': ['tr_06S'],
                 'transactionLabels': ['6S'],
                 'gases': []
-            }, 
+            },
             {
                 'form': 'F6_FUDest',
                 'code': 1400,
@@ -3271,21 +3324,21 @@
             return null;
         };
         $scope.whitelistQCRuleContainsGas = function(whitelist, transactionCode, gas) {
-            var qcRule = 
+            var qcRule =
                     $scope.getWhitelistQCRule(whitelist, transactionCode, gas);
-            return ( qcRule !== null && 
-                    Array.isArray(qcRule.gases) && 
+            return ( qcRule !== null &&
+                    Array.isArray(qcRule.gases) &&
                     qcRule.gases.length > 0);
         };
         $scope.getQC1400Translation = function(whitelist, transactionCode, gas){
-            var containsGas = 
+            var containsGas =
                     $scope.whitelistQCRuleContainsGas(whitelist, transactionCode, gas);
-            
+
             var m = "validation_messages.qc_1400_empty_gas_list.error_text";
             if(!containsGas) {
                 m =  "validation_messages.qc_1400.error_text";;
-            } 
-            
+            }
+
             return $translate.instant(m, {
                 code: transactionCode,
                 gas: gas.Name
@@ -3319,7 +3372,7 @@
                             }else {
                                 tr.Amount = null;
                             }
-                            
+
                         }
                     });
                 }
@@ -3347,18 +3400,18 @@
             }
             $scope.calculateOverallValidationStatus();
             var save = false;
-            
+
             if ($scope.formTotalValidated) {
                 $scope.instance.FGasesReporting.GeneralReportData['@status'] = "completed";
                 save = true;
             } else {
                 save = confirm("Please note that a submission of this report will be automatically rejected as not acceptable.");
             }
-            
+
             if (!save) {
                 return;
             }
-            
+
             dataRepository.saveInstanceXml($scope.instance).error(function () {
                 $notification.error("Save", "Data is not saved due to technical problems!");
             }).success(function (response) {
@@ -3366,7 +3419,7 @@
                     $notification.error("Save", "Data is not saved due to technical problems!");
                     return;
                 }
-                
+
                 $scope.submitted = true;
                 $scope.appForm.$setPristine(true);
                 $scope.$root.allowNavigation();
@@ -3833,6 +3886,8 @@
                     return subMainCondition && ($scope.instance.FGasesReporting.GeneralReportData.Activities['Eq-I']);
                 case 'Sheet8':
                     return subMainCondition && ($scope.instance.FGasesReporting.GeneralReportData.Activities['Eq-I']);
+                case 'Sheet9':
+                    return subMainCondition && ($scope.instance.FGasesReporting.GeneralReportData.Activities['Eq-I']);
                 default:
                     return true;
             }
@@ -3840,7 +3895,7 @@
 
         $scope.onTabChange = function(tabId) {
             $scope.valMsgIndex = 0;
-            
+
             switch (tabId) {
                 case 'CompanyInfo':
                     break;
@@ -3868,17 +3923,19 @@
                 case 'Sheet7':
                     $scope.calculateForm7Totals();
                     break;
+                case 'Sheet9':
+                    break;
                 default:
                     break;
             }
-            
+
             $scope.sendCdrPing();
         };
 
         $scope.getValMsgIndex = function() {
             return $scope.valMsgIndex;
         };
-        
+
         $scope.setValMsgIndex = function(value) {
             $scope.valMsgIndex = value;
         };
@@ -3936,7 +3993,7 @@
         };
 
 
-        // When a new trading partner is created on sheet5 this is called 
+        // When a new trading partner is created on sheet5 this is called
         $scope.createNewSupportingDocument = function (newPartnerId) {
             $scope.instance.FGasesReporting.F5_S10_Auth_NER.SupportingDocuments.tr_10A.push({
                 Document: [],
@@ -3953,20 +4010,20 @@
                 var sheet5Tr10APartnerIndex = arrayUtil.indexOf(sheet5Tr10ATradePartners, function(sheet5Tr10ATradePartner) {
                     return sheet5Tr10ATradePartner.PartnerId === sheet4Tr09TradePartner.PartnerId;
                 });
-                
+
                 if (sheet5Tr10APartnerIndex  > -1) {
                     if (sheet5Tr10APartnerIndex < sheet5Tr10ATradePartners.length) {
                         section10.tr_10A_TradePartners.Partner[sheet5Tr10APartnerIndex] = clone(sheet4Tr09TradePartner);
                     }
-                    
+
                     return;
                 }
-                
+
                 sheet5Tr10APartnerIndex = arrayUtil.indexOf(sheet5Tr10ATradePartners, function(sheet5Tr10ATradePartner) {
                     if (sheet5Tr10ATradePartner.isEUBased !== sheet4Tr09TradePartner.isEUBased) {
                         return false;
                     }
-                    
+
                     if (sheet5Tr10ATradePartner.isEUBased) {
                         return sheet5Tr10ATradePartner.EUVAT === sheet4Tr09TradePartner.EUVAT;
                     }
@@ -3974,11 +4031,11 @@
                         if (!stringUtil.equalsIgnoreCase(sheet5Tr10ATradePartner.CompanyName, sheet4Tr09TradePartner.CompanyName)) {
                             return false;
                         }
-                        
+
                         return sheet5Tr10ATradePartner.NonEUCountryCodeOfEstablishment === sheet4Tr09TradePartner.NonEUCountryCodeOfEstablishment;
                     }
                 });
-                
+
                 if (sheet5Tr10APartnerIndex < 0) {
                     section10.tr_10A_TradePartners.Partner.push(clone(sheet4Tr09TradePartner));
                     $scope.createSumsArrayItem(sheet4Tr09TradePartner.PartnerId);
@@ -3996,28 +4053,28 @@
                     section10.SumOfAllHFCsS1.tr_10A[sheet5Tr10APartnerIndex].TradePartnerID = sheet4Tr09TradePartner.PartnerId;
                     section10.SumOfAllHFCsS2.tr_10A[sheet5Tr10APartnerIndex].TradePartnerID = sheet4Tr09TradePartner.PartnerId;
                     section10.SupportingDocuments.tr_10A[sheet5Tr10APartnerIndex].TradePartnerID = sheet4Tr09TradePartner.PartnerId;
-                    
+
                     arrayUtil.forEach(section10.Gas, function(section10Gas) {
                         section10Gas.tr_10A.TradePartner[sheet5Tr10APartnerIndex].TradePartnerID = sheet4Tr09TradePartner.PartnerId;
                     });
                 }
             });
         };
-        
+
         $scope.isTradePartnerFrom09A_imp = function(tradePartner) {
             var tradePartners09A_imp = $scope.instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09A_imp_TradePartners.Partner;
             return arrayUtil.contains(tradePartners09A_imp, function(tradePartner09A_imp) {
                 return tradePartner09A_imp.PartnerId === tradePartner.PartnerId;
             });
         };
-        
+
         $scope.isTradePartnerFromSheet4 = function(tradePartner) {
             var sheet4Tr09ATradePartners = viewModel.sheet4.section9.getTr09ATradePartners();
             return arrayUtil.contains(sheet4Tr09ATradePartners, function(sheet4TradePartner) {
                 return sheet4TradePartner.PartnerId === tradePartner.PartnerId;
             });
         };
-        
+
         $scope.gasContainsComment = function(gasArray, propertyName) {
             for(var i=0; i<gasArray.length;i++) {
                 var gas = gasArray[i];
@@ -4027,7 +4084,7 @@
                 }
             }
             return true;
-        };        
+        };
         $scope.valueGreaterThanZero = function(inputValue) {
             return angular.isDefined(inputValue) && inputValue !== null &&
                     inputValue > 0;
@@ -4040,11 +4097,11 @@
             var inputValue = parseInt(value);
             return $scope.valueGreaterThanZero(inputValue);
         }
-        
+
         $scope.hasValue = function(data) {
             return angular.isDefined(data) && data !== null && data !== "";
         };
-        
+
         $scope.stringNotEmpty = function(data) {
             return data !== null && angular.isString(data) && data.length > 0;
         };
@@ -4070,7 +4127,7 @@
             var data = $scope.getCommentDataForTr02B(gasIndex);
             $scope.openCommentModal(data);
         };
-        
+
         $scope.mandatoryCommentForTr05B = function(gasIndex, tradePartnerIndex) {
             var data = $scope.getCommentDataForTr05B(gasIndex, tradePartnerIndex);
             var caption = $scope.getCommentModalCaptionForTr05B(gasIndex, tradePartnerIndex);
@@ -4078,23 +4135,23 @@
                 $scope.reCalculateSheet2();
             }, $translate.instant( "validation_messages.qc_1401.error_text" ));
         };
-        
+
         $scope.openCommentModalForTr05B = function(gasIndex, tradePartnerIndex) {
             var data = $scope.getCommentDataForTr05B(gasIndex, tradePartnerIndex);
             $scope.openCommentModalTradePartner(data);
         };
-        
+
         $scope.getCommentDataForTr05B = function(gasIndex, tradePartnerIndex) {
             return $scope.instance.FGasesReporting.F2_S5_exempted_HFCs.Gas[gasIndex].tr_05B.TradePartner[tradePartnerIndex];
         };
-        
+
         $scope.getCommentModalCaptionForTr05B = function(gasIndex, tradePartnerIndex) {
             var gasName = viewModel.getReportedGases()[gasIndex].Name;
             var tradePartnerName = viewModel.sheet2.section5.getTr05BTradePartners()[tradePartnerIndex].CompanyName;
-            
+
             return "[gas] supplies to [company]".replace("[gas]", gasName).replace("[company]", tradePartnerName);
         };
-        
+
         $scope.mandatoryCommentForTr06L = function(gasIndex) {
             var data = $scope.getCommentDataForTr06L(gasIndex);
             var caption = $scope.getCommentModalCaptionForTr06L(gasIndex);
@@ -4109,13 +4166,13 @@
         $scope.getCommentDataForTr06L = function(gasIndex) {
             return $scope.instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[gasIndex].tr_06L;
         };
-        
+
         $scope.getCommentModalCaptionForTr06L = function(gasIndex) {
             var gasName = viewModel.getReportedGases()[gasIndex].Name;
-            
+
             return "[gas] feedstock use".replace("[gas]", gasName);
         };
-        
+
         $scope.mandatoryCommentForTr06T = function(gasIndex) {
             var data = $scope.getCommentDataForTr06T(gasIndex);
             var gasName = viewModel.getReportedGases()[gasIndex].Name;
@@ -4126,16 +4183,16 @@
                 gasName: gasName
             }));
         };
-        
+
         $scope.openCommentModalForTr06T = function(gasIndex) {
             var data = $scope.getCommentDataForTr06T(gasIndex);
             $scope.openCommentModal(data);
         };
-        
+
         $scope.getCommentDataForTr06T = function(gasIndex) {
             return $scope.instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[gasIndex].tr_06T;
         };
-        
+
         $scope.mandatoryCommentForTr06U = function(gasIndex) {
             var data = $scope.getCommentDataForTr06U(gasIndex);
             var gasName = viewModel.getReportedGases()[gasIndex].Name;
@@ -4146,16 +4203,16 @@
                 gasName: gasName
             }));
         };
-        
+
         $scope.openCommentModalForTr06U = function(gasIndex) {
             var data = $scope.getCommentDataForTr06U(gasIndex);
             $scope.openCommentModal(data);
         };
-        
+
         $scope.getCommentDataForTr06U = function(gasIndex) {
             return $scope.instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[gasIndex].tr_06U;
         };
-        
+
         $scope.mandatoryCommentForTr06V = function(gasIndex) {
             var data = $scope.getCommentDataForTr06V(gasIndex);
             var gasName = viewModel.getReportedGases()[gasIndex].Name;
@@ -4166,16 +4223,16 @@
                 gasName: gasName
             }));
         };
-        
+
         $scope.openCommentModalForTr06V = function(gasIndex) {
             var data = $scope.getCommentDataForTr06V(gasIndex);
             $scope.openCommentModal(data);
         };
-        
+
         $scope.getCommentDataForTr06V = function(gasIndex) {
             return $scope.instance.FGasesReporting.F3A_S6A_IA_HFCs.Gas[gasIndex].tr_06V;
         };
-        
+
         $scope.mandatoryCommentForTr07A = function(gasIndex) {
             var data = $scope.getCommentDataForTr07A(gasIndex);
             var caption = $scope.getCommentModalCaptionForTr07A(gasIndex);
@@ -4183,22 +4240,22 @@
                 $scope.reCalculateSheet6();
             }, $translate.instant( "validation_messages.qc_1401.error_text" ));
         };
-        
+
         $scope.openCommentModalForTr07A = function(gasIndex) {
             var data = $scope.getCommentDataForTr07A(gasIndex);
             $scope.openCommentModal(data);
         };
-        
+
         $scope.getCommentDataForTr07A = function(gasIndex) {
             return $scope.instance.FGasesReporting.F6_FUDest.Gas[gasIndex].tr_07A;
         };
-        
+
         $scope.getCommentModalCaptionForTr07A = function(gasIndex) {
             var gasName = viewModel.getReportedGases()[gasIndex].Name;
-            
+
             return "[gas] feedstock use".replace("[gas]", gasName);
         };
-        
+
         $scope.mandatoryCommentForTr09A_add = function(tradePartnerIndex) {
             var data = $scope.getCommentDataForTr09A_add(tradePartnerIndex);
             var caption = $scope.getCommentModalCaptionForTr09A_add(tradePartnerIndex);
@@ -4206,22 +4263,22 @@
                 $scope.reCalculateSheet4();
             }, $translate.instant('sheet4.tr-09A_add-mandatory-comment'));
         };
-        
+
         $scope.openCommentModalForTr09A_add = function(tradePartnerIndex) {
             var data = $scope.getCommentDataForTr09A_add(tradePartnerIndex);
             $scope.openCommentModalTradePartner(data);
         };
-        
+
         $scope.getCommentDataForTr09A_add = function(tradePartnerIndex) {
             return $scope.instance.FGasesReporting.F4_S9_IssuedAuthQuata.tr_09A_add.TradePartner[tradePartnerIndex];
         };
-        
+
         $scope.getCommentModalCaptionForTr09A_add = function(tradePartnerIndex) {
             var tradePartnerName = viewModel.sheet4.section9.getTr09ATradePartners()[tradePartnerIndex].CompanyName;
-            
+
             return "Authorizations to [company]".replace("[company]", tradePartnerName);
         };
-        
+
         $scope.mandatoryCommentForGasAmountTradePartner = function(data, confirmationCaption, resetAmountCallback, bodyText) {
             if(numericUtil.toNum(data.amount, 0) !== 0 && stringUtil.isBlank(data.Comment)) {
                 $scope.showCommentConfirmationModalTradePartner(data, confirmationCaption, resetAmountCallback, bodyText);
@@ -4229,8 +4286,8 @@
                 $scope.resetGasCommentTradePartner(data);
             }
         };
-        
-        $scope.showCommentConfirmationModalTradePartner = function (data, confirmationCaption, resetAmountCallback, bodyText) { 
+
+        $scope.showCommentConfirmationModalTradePartner = function (data, confirmationCaption, resetAmountCallback, bodyText) {
             commentModalService.open($scope, 'lg', 'comment-confirmation-modal.html', 'ConfirmCommentDialogController', data, function(){
                 $scope.openCommentModalTradePartner(data, resetAmountCallback);
             }, function(){
@@ -4239,34 +4296,34 @@
                 title: confirmationCaption,
                 body: bodyText
             });
-            
+
         };
-        
+
         $scope.openCommentModalTradePartner = function(data, resetAmountCallback) {
             var onCommentReset = null;
-            
+
             if (!objectUtil.isNull(resetAmountCallback)) {
                 onCommentReset = function() {
                     $scope.onTradePartnerGasAmountCommentReset(data, resetAmountCallback);
                 };
             }
-            
+
             commentModalService.open($scope, 'lg', 'CommentAddEditModal.html', 'CommentAddEditModalInstanceController', data, onCommentReset, onCommentReset);
         };
-        
+
         $scope.onTradePartnerGasAmountCommentReset = function(data, callback) {
             if(stringUtil.isBlank(data.Comment)) {
                 data.amount = null;
                 objectUtil.call(callback);
             }
         };
-        
+
         $scope.resetGasCommentTradePartner = function(data) {
             if(numericUtil.toNum(data.amount, 0) === 0) {
                 data.Comment = null;
             }
         };
-        
+
         $scope.mandatoryCommentForGasAmount = function(data, confirmationCaption, resetAmountCallback, bodyText) {
             if(numericUtil.toNum(data.amount, 0) !== 0 && stringUtil.isBlank(data.Comment)) {
                 $scope.showCommentConfirmationModal(data, confirmationCaption, resetAmountCallback, bodyText);
@@ -4274,7 +4331,7 @@
                 $scope.resetGasComment(data);
             }
         };
-        
+
         $scope.showCommentConfirmationModal = function (data, confirmationCaption, resetAmountCallback, bodyText) {
             commentModalService.open($scope, 'lg', 'comment-confirmation-modal.html', 'ConfirmCommentDialogController', data, function(){
                 $scope.openCommentModal(data, resetAmountCallback);
@@ -4287,12 +4344,12 @@
                 title: confirmationCaption,
                 body: bodyText
             });
-            
+
         };
-        
+
         $scope.openCommentModal = function(data, resetAmountCallback) {
             var onCommentReset = null;
-            
+
             if (!objectUtil.isNull(resetAmountCallback)) {
                 onCommentReset = function() {
                     if(stringUtil.isBlank(data.Comment)) {
@@ -4301,10 +4358,10 @@
                     }
                 };
             }
-            
+
             commentModalService.open($scope, 'lg', 'CommentAddEditModal.html', 'CommentAddEditModalInstanceController', data, onCommentReset, onCommentReset);
         };
-        
+
         $scope.resetGasComment = function(data) {
             if(numericUtil.toNum(data.Amount, 0) === 0) {
                 data.Comment = null;
@@ -4314,10 +4371,10 @@
             var expression = parseFloat(number) > 0;
             return expression;
         }
-        
+
         $scope.start();
-        
+
     }); // end of main controller FGases "questionnaire"
-    
-    
+
+
 })();

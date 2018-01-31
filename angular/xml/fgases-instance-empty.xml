@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FGasesReporting xml:lang="en" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-                 xsi:noNamespaceSchemaLocation="http://dd.eionet.europa.eu/schemas/fgases-2015/FGasesReporting.xsd">
+<FGasesReporting xml:lang="en" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd">
   <GeneralReportData status="incomplete">
     <Company status="incomplete">
       <CompanyId></CompanyId>
@@ -1817,4 +1817,59 @@
         </Document>
     </SupportingDocuments>
   </F7_s11EquImportTable>
+  <F8_S12>
+    <Gas>
+        <GasCode></GasCode>
+        <tr_12A>
+            <Code>12A</Code>
+            <SumOfPartnersAmount></SumOfPartnersAmount>
+            <Unit></Unit>
+            <Transaction>
+                <Amount></Amount>
+                <Exporter>
+                    <TradePartnerID></TradePartnerID>
+                    <Year></Year>
+                </Exporter>
+                <POM>
+                    <TradePartnerID></TradePartnerID>
+                    <Year></Year>
+                </POM>
+                <Comment></Comment>
+                <TransactionID></TransactionID>
+            </Transaction>
+        </tr_12A>
+        <Totals>
+            <tr_12B></tr_12B>
+            <tr_12C></tr_12C>
+        </Totals>
+    </Gas>
+    <tr_12A_TradePartners>
+        <Partner></Partner>
+    </tr_12A_TradePartners>
+  </F8_S12>
+  <F9_S13>
+      <AuthBalance>
+          <Code></Code>
+          <Amount></Amount>
+          <Unit>CO2e</Unit>
+      </AuthBalance>
+      <Totals>
+          <tr_13B>
+              <Code>tr_13B</Code>
+              <Amount></Amount>
+              <Unit>CO2e</Unit>
+          </tr_13B>
+          <tr_13C>
+              <Code>tr_13C</Code>
+              <Amount></Amount>
+              <Unit>CO2e</Unit>
+          </tr_13C>
+          <tr_13D>
+              <Code>tr_13D</Code>
+              <Amount></Amount>
+              <Unit>CO2e</Unit>
+          </tr_13D>
+      </Totals>
+      <Verified></Verified>
+  </F9_S13>
 </FGasesReporting>

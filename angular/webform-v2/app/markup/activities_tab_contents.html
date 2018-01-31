@@ -9,7 +9,7 @@
         <td>
             <select name="ReportingYear" required
                     ng-model="instance.FGasesReporting.GeneralReportData.TransactionYear" ng-change="onTransactionYearChanged()"
-                    ng-options="year as year for year in reportingYears()" ng-disabled="false"></select>
+                    ng-options="year as year for year in reportingYears()" ng-disabled="true"></select>
             </td>
        <!--<div class="invalid-msg" error-mapper watch-view="ActivitiesSelection.ReportingYear" errors-to-show='["required"]'></div>-->
     </tr>
