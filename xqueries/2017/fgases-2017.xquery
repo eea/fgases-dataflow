@@ -1713,9 +1713,6 @@ as element(div)*
         let $tr_12C_amount := cutil:numberIfEmpty(data($elem/Totals/tr_12C), 0)
         let $tr_12B_amount := cutil:numberIfEmpty(data($elem/Totals/tr_12B), 0)
         let $tr_12A_amount := cutil:numberIfEmpty(data($elem/tr_12A/SumOfPartnersAmount), 0)
-        let $asd := trace($tr_12C_amount, "tr_12C_amount:")
-        let $asd := trace($tr_12B_amount, "tr_12B_amount:")
-        let $asd := trace($tr_12A_amount, "tr_12A_amount:")
         let $ok := if (
             $tr_12C_amount castable as xs:double
             and
