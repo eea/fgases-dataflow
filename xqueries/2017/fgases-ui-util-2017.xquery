@@ -2,7 +2,7 @@ xquery version "1.0" encoding "UTF-8";
 (:
  : Module Name: FGASES - UI methods. (Library module)
  :
- : Version:     $Id: fgases-ui-util-2015.xquery 20273 2016-01-27 15:26:36Z nakasnik $
+ : Version:     $Id: fgases-ui-util-2017.xquery 20273 2016-01-27 15:26:36Z nakasnik $
  : Created:     15 October 2012
  : Copyright:   European Environment Agency
  :)
