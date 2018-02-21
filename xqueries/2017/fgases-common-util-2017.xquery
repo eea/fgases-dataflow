@@ -596,3 +596,14 @@ as xs:boolean
 {
     ($str castable as xs:string and string-length($str) = 0)
 };
+
+declare function cutil:calculate-weightedGWP(
+    $GasCode as xs:integer,
+    $blendDoc as document-node()
+) as xs:double*
+{
+    for $blendComp in $blendDoc//Gas[GasId = $GasCode]/BlendComponents/Component
+    let $GWP_AR4_AnnexIV := data($blendComp/cutil:numberIfEmpty(GWP_AR4_AnnexIV, 0))
+    let $percentage := data($blendComp/cutil:numberIfEmpty(Percentage, 0))
+    return ($GWP_AR4_AnnexIV*($percentage div 100))
+};

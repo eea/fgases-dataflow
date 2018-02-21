@@ -32,6 +32,7 @@ declare variable $xmlconv:COMPLIANCE as xs:string := "COMPLIANCE";
 declare variable $xmlconv:INFO as xs:string := "INFO";
 declare variable $xmlconv:ERR_TEXT_2016 as xs:string := "You reported on own destruction in section 1B. Please accordingly select to be a destruction company in the activity selection and report subsequently in section 8.";
 
+declare variable $xmlconv:blendsDoc := "https://convertersbdr.eionet.europa.eu/xmlfile/fgases-gases.xml";
 
 declare variable $xmlconv:cssStyle as element(style) :=
 
@@ -1736,19 +1737,27 @@ as element(div)*
 declare function xmlconv:qc21303($report as element(FGasesReporting))
 as element(div)*
 {
-    let $err_text := "The amount reported in (13B)
+    let $err_text := "The amount calculated in (13B)
     should be equal with amount reported in (12B).
     Please revise your data."
+
+    let $blendDoc := doc($xmlconv:blendsDoc)
     let $tr_13B_amount := cutil:numberIfEmpty(data($report/F9_S13/Totals/tr_13B/Amount), 0)
-    let $tr_12B_total_amount := sum($report/F8_S12/Gas/Totals/cutil:numberIfEmpty(tr_12B, 0))
+    let $tr_12B_values :=
+        for $gas in $report/F8_S12/Gas
+        let $tr_12B := $gas/Totals/cutil:numberIfEmpty(tr_12B, 0)
+        let $weightedGWP := cutil:calculate-weightedGWP($gas/GasCode, $blendDoc)
+        return $tr_12B * sum($weightedGWP)
+
+    let $tr_12B_total_amount := fn:round-half-to-even(sum($tr_12B_values))
     let $ok := if (
-        $tr_13B_amount castable as xs:double
-        and
-        $tr_12B_total_amount castable as xs:double)
-        then
-            xs:double($tr_13B_amount) = xs:double($tr_12B_total_amount)
-        else
-            false()
+            $tr_13B_amount castable as xs:double
+            and
+            $tr_12B_total_amount castable as xs:double)
+            then
+                xs:double($tr_13B_amount) = xs:double($tr_12B_total_amount)
+            else
+                false()
     return uiutil:buildRuleResult("21303", "13B", $err_text,
             $xmlconv:BLOCKER, not($ok),
             ("13B = " || $tr_13B_amount || ", 12B = " || $tr_12B_total_amount),
@@ -1758,11 +1767,19 @@ as element(div)*
 declare function xmlconv:qc21301($report as element(FGasesReporting))
 as element(div)*
 {
-    let $err_text := "The amount reported in (13C)
+    let $err_text := "The amount calculated in (13C)
     should be equal with amount reported in (12A).
     Please revise your data."
+    let $blendDoc := doc($xmlconv:blendsDoc)
     let $tr_13C_amount := cutil:numberIfEmpty(data($report/F9_S13/Totals/tr_13C/Amount), 0)
-    let $tr_12A_total_amount := sum($report/F8_S12/Gas/tr_12A/cutil:numberIfEmpty(SumOfPartnersAmount, 0))
+    let $tr_12A_values :=
+        for $gas in $report/F8_S12/Gas
+        let $tr_12A := $gas/tr_12A/cutil:numberIfEmpty(SumOfPartnersAmount, 0)
+        let $weightedGWP := cutil:calculate-weightedGWP($gas/GasCode, $blendDoc)
+        return $tr_12A * sum($weightedGWP)
+
+    let $tr_12A_total_amount := fn:round-half-to-even(sum($tr_12A_values))
+
     let $ok := if (
         $tr_13C_amount castable as xs:double
         and
@@ -1780,22 +1797,29 @@ as element(div)*
 declare function xmlconv:qc21304($report as element(FGasesReporting))
 as element(div)*
 {
-    let $err_text := "The amount reported in (13D)
+    let $err_text := "The amount calculated in (13D)
     should be equal with amount reported in (12C).
     Please revise your data."
+    let $blendDoc := doc($xmlconv:blendsDoc)
+
     let $tr_13D_total_amount := cutil:numberIfEmpty(data($report/F9_S13/Totals/tr_13D/Amount), 0)
-    let $tr_12C_amount := sum($report/F8_S12/Gas/Totals/cutil:numberIfEmpty(tr_12C, 0))
+    let $tr_12C_values :=
+        for $gas in $report/F8_S12/Gas
+        let $tr_12C := $gas/Totals/cutil:numberIfEmpty(tr_12C, 0)
+        let $weightedGWP := cutil:calculate-weightedGWP($gas/GasCode, $blendDoc)
+        return $tr_12C * sum($weightedGWP)
+
+    let $tr_12C_total_amount := fn:round-half-to-even(sum($tr_12C_values))
     let $ok := if (
-        $tr_13D_total_amount castable as xs:double
-        and
-        $tr_12C_amount castable as xs:double)
-        then
-            xs:double($tr_13D_total_amount) = xs:double($tr_12C_amount)
-        else
-            false()
-    return uiutil:buildRuleResult("21304", "13D", $err_text,
+            $tr_13D_total_amount castable as xs:double
+            and
+            $tr_12C_total_amount castable as xs:double)
+            then
+                xs:double($tr_13D_total_amount) = xs:double($tr_12C_total_amount)
+            else
+                false()    return uiutil:buildRuleResult("21304", "13D", $err_text,
             $xmlconv:BLOCKER, not($ok),
-            ("13D = " || $tr_13D_total_amount || ", 12C = " || $tr_12C_amount),
+            ("13D = " || $tr_13D_total_amount || ", 12C = " || $tr_12C_total_amount),
             "Formula expected 13D=SUM(12C) "
     )
 };
