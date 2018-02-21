@@ -2,7 +2,7 @@ xquery version "1.0" encoding "UTF-8";
 (:
  : Module Name: FGases dataflow (Main module)
  :
- : Version:     $Id: fgases-2015.xquery 22084 2017-03-10 13:31:33Z katsanas $
+ : Version:     $Id: fgases-2017.xquery 22084 2017-03-10 13:31:33Z katsanas $
  : Created:     20 November 2014
  : Copyright:   European Environment Agency
  :)
@@ -24,7 +24,7 @@ declare namespace i18n = "http://namespaces.zope.org/i18n";
 import module namespace cutil = "http://converters.eionet.europa.eu/fgases/cutil" at "fgases-common-util-2017.xquery";
 (: UI utility methods for build HTML formatted QA result:)
 import module namespace uiutil = "http://converters.eionet.europa.eu/fgases/ui" at "fgases-ui-util-2017.xquery";
-import module namespace fgases = 'http://converters.eionet.europa.eu/fgases/helper' at "fgases-helper.xquery";
+import module namespace fgases = 'http://converters.eionet.europa.eu/fgases/helper' at "fgases-helper-2017.xquery";
 
 declare variable $xmlconv:BLOCKER as xs:string := "BLOCKER";
 declare variable $xmlconv:WARNING as xs:string := "WARNING";
