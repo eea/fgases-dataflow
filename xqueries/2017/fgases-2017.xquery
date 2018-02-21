@@ -1209,7 +1209,11 @@ declare function xmlconv:qc2403($doc as element()) as element(div)* {
             if(
                 $tr09F <= $tr09G
                 and
-                $tr09F >= 100
+                (
+                    $tr09F >= 100
+                    or
+                    $tr09F = 0
+                )
             )
             then
                 ()
@@ -1735,8 +1739,6 @@ as element(div)*
     Please revise your data."
     let $tr_13B_amount := data($report/F9_S13/Totals/tr_13B/Amount)
     let $tr_12B_total_amount := sum($report/F8_S12/Gas/Totals/cutil:numberIfEmpty(tr_12B, 0))
-    let $asd := trace($tr_13B_amount, "tr_13B_amount: ")
-    let $asd := trace($tr_12B_total_amount, "tr_12B_total_amount: ")
     let $ok := if (
         $tr_13B_amount castable as xs:double
         and
@@ -2009,13 +2011,23 @@ as element(div)
     let $r2015 := xmlconv:qc2015($doc)
     let $r2055 := xmlconv:qc2055($doc)
     let $r2056 := xmlconv:qc2056($doc)
+    let $disabledCheck := ()
+    let $r20101 := $disabledCheck
+    let $r21200 := $disabledCheck
+    let $r21201 := $disabledCheck
+    let $r21303 := $disabledCheck
+    let $r21301 := $disabledCheck
+    let $r21304 := $disabledCheck
+    let $r20601 := xmlconv:qc20601($doc)
+(:
     let $r20101 := xmlconv:qc20101($doc)
     let $r21200 := xmlconv:qc21200($doc)
     let $r21201 := xmlconv:qc21201($doc)
     let $r21303 := xmlconv:qc21303($doc)
     let $r21301 := xmlconv:qc21301($doc)
     let $r21304 := xmlconv:qc21304($doc)
-    let $r20601 := xmlconv:qc20601($doc)
+:)
+
 
 
 
