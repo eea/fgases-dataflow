@@ -1653,8 +1653,8 @@ as element(div)*
     Please revise your data."
     let $err_flag :=
         for $gas in $report/F1_S1_4_ProdImpExp/Gas
-            let $tr01Ca_amount := $gas/tr_01Ca/Amount
-            let $tr01A_amount := $gas/tr_01A/Amount
+            let $tr01Ca_amount := cutil:numberIfEmpty($gas/tr_01Ca/Amount, 0)
+            let $tr01A_amount := cutil:numberIfEmpty($gas/tr_01A/Amount, 0)
             let $ok := if (
                 $tr01Ca_amount castable as xs:double
                 and
@@ -1678,8 +1678,10 @@ as element(div)*
 
     let $err_flag :=
         for $elem in $report/F8_S12/Gas
-        let $tr_12B_amount := data($elem/Totals/tr_12B)
-        let $tr_11G_amount := data($report/F7_s11EquImportTable/Gas[GasCode = $elem/GasCode]/tr_11G/Amount)
+        let $tr_12B_amount := cutil:numberIfEmpty(data($elem/Totals/tr_12B), 0)
+        let $tr_11G_amount := cutil:numberIfEmpty(
+                data($report/F7_s11EquImportTable/Gas[GasCode = $elem/GasCode]/tr_11G/Amount),
+                0)
         let $ok := if (
             $tr_12B_amount castable as xs:double
             and
@@ -1708,9 +1710,12 @@ as element(div)*
 
     let $err_flag :=
         for $elem in $report/F8_S12/Gas
-        let $tr_12C_amount := data($elem/Totals/tr_12C)
-        let $tr_12B_amount := data($elem/Totals/tr_12B)
-        let $tr_12A_amount := data($elem/tr_12A/SumOfPartnersAmount)
+        let $tr_12C_amount := cutil:numberIfEmpty(data($elem/Totals/tr_12C), 0)
+        let $tr_12B_amount := cutil:numberIfEmpty(data($elem/Totals/tr_12B), 0)
+        let $tr_12A_amount := cutil:numberIfEmpty(data($elem/tr_12A/SumOfPartnersAmount), 0)
+        let $asd := trace($tr_12C_amount, "tr_12C_amount:")
+        let $asd := trace($tr_12B_amount, "tr_12B_amount:")
+        let $asd := trace($tr_12A_amount, "tr_12A_amount:")
         let $ok := if (
             $tr_12C_amount castable as xs:double
             and
@@ -1737,7 +1742,7 @@ as element(div)*
     let $err_text := "The amount reported in (13B)
     should be equal with amount reported in (12B).
     Please revise your data."
-    let $tr_13B_amount := data($report/F9_S13/Totals/tr_13B/Amount)
+    let $tr_13B_amount := cutil:numberIfEmpty(data($report/F9_S13/Totals/tr_13B/Amount), 0)
     let $tr_12B_total_amount := sum($report/F8_S12/Gas/Totals/cutil:numberIfEmpty(tr_12B, 0))
     let $ok := if (
         $tr_13B_amount castable as xs:double
@@ -1759,7 +1764,7 @@ as element(div)*
     let $err_text := "The amount reported in (13C)
     should be equal with amount reported in (12A).
     Please revise your data."
-    let $tr_13C_amount := data($report/F9_S13/Totals/tr_13C/Amount)
+    let $tr_13C_amount := cutil:numberIfEmpty(data($report/F9_S13/Totals/tr_13C/Amount), 0)
     let $tr_12A_total_amount := sum($report/F8_S12/Gas/tr_12A/cutil:numberIfEmpty(SumOfPartnersAmount, 0))
     let $ok := if (
         $tr_13C_amount castable as xs:double
@@ -1781,7 +1786,7 @@ as element(div)*
     let $err_text := "The amount reported in (13D)
     should be equal with amount reported in (12C).
     Please revise your data."
-    let $tr_13D_total_amount := data($report/F9_S13/Totals/tr_13D/Amount)
+    let $tr_13D_total_amount := cutil:numberIfEmpty(data($report/F9_S13/Totals/tr_13D/Amount), 0)
     let $tr_12C_amount := sum($report/F8_S12/Gas/Totals/cutil:numberIfEmpty(tr_12C, 0))
     let $ok := if (
         $tr_13D_total_amount castable as xs:double
@@ -2011,22 +2016,15 @@ as element(div)
     let $r2015 := xmlconv:qc2015($doc)
     let $r2055 := xmlconv:qc2055($doc)
     let $r2056 := xmlconv:qc2056($doc)
-    let $disabledCheck := ()
-    let $r20101 := $disabledCheck
-    let $r21200 := $disabledCheck
-    let $r21201 := $disabledCheck
-    let $r21303 := $disabledCheck
-    let $r21301 := $disabledCheck
-    let $r21304 := $disabledCheck
     let $r20601 := xmlconv:qc20601($doc)
-(:
-    let $r20101 := xmlconv:qc20101($doc)
-    let $r21200 := xmlconv:qc21200($doc)
-    let $r21201 := xmlconv:qc21201($doc)
-    let $r21303 := xmlconv:qc21303($doc)
-    let $r21301 := xmlconv:qc21301($doc)
-    let $r21304 := xmlconv:qc21304($doc)
-:)
+    (: for NIL reports disable the following checks :)
+    let $nilReport := fgases:is-NIL-Report($doc)
+    let $r20101 := if(not($nilReport)) then xmlconv:qc20101($doc) else ()
+    let $r21200 := if(not($nilReport)) then xmlconv:qc21200($doc) else ()
+    let $r21201 := if(not($nilReport)) then xmlconv:qc21201($doc) else ()
+    let $r21303 := if(not($nilReport)) then xmlconv:qc21303($doc) else ()
+    let $r21301 := if(not($nilReport)) then xmlconv:qc21301($doc) else ()
+    let $r21304 := if(not($nilReport)) then xmlconv:qc21304($doc) else ()
 
 
 
