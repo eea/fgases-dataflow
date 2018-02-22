@@ -2039,6 +2039,17 @@ as element(div)
             let $r2015 := xmlconv:qc2015($doc)
             let $r2055 := xmlconv:qc2055($doc)
             let $r2056 := xmlconv:qc2056($doc)
+            
+            (: The following checks were disabled, it is not clear if these are needed :)
+            let $disabled := ()
+            let $r20601 := $disabled
+            let $r20101 := $disabled
+            let $r21200 := $disabled
+            let $r21201 := $disabled
+            let $r21303 := $disabled
+            let $r21301 := $disabled
+            let $r21304 := $disabled
+(:
             let $r20601 := xmlconv:qc20601($doc)
             let $r20101 := xmlconv:qc20101($doc)
             let $r21200 := xmlconv:qc21200($doc)
@@ -2046,6 +2057,7 @@ as element(div)
             let $r21303 := xmlconv:qc21303($doc)
             let $r21301 := xmlconv:qc21301($doc)
             let $r21304 := xmlconv:qc21304($doc)
+:)
 
             return
                 <div class="errors">
