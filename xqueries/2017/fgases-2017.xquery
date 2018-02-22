@@ -1873,312 +1873,315 @@ as element(div)
     let $doc := fn:doc($url)/FGasesReporting
 
     let $rStatus := xmlconv:rule_ReportStatus($doc)
-
-
-    let $r2002 := xmlconv:qc2002($doc)
-    let $r2003 := xmlconv:qc2003($doc)
-    let $r2004 := xmlconv:qc2004($doc)
-    let $r2005 := xmlconv:qc2005($doc)
-    let $r2006 := xmlconv:qc2006($doc)
-    (:let $r2007 := xmlconv:qc2007($doc):)
-    let $r2008 := xmlconv:qc2008($doc)
-    let $r2009 := xmlconv:qc2009($doc)
-    let $r2010 := xmlconv:qc2010($doc)
-    (:let $r2011 := xmlconv:qc2011($doc):)
-    let $r2016 := xmlconv:qc2016($doc)
-    let $r2017 :=
-        for $tran in ('3C', '4D', '4E', '4I', '4J')
-            return xmlconv:qc2017($doc, $tran)
-    let $r2018 := xmlconv:qc2018($doc)
-    let $r2020 := xmlconv:qc2020($doc)
-    let $r2023 := xmlconv:qc2023($doc)
-    let $r2024 := xmlconv:qc2024($doc)
-    let $r2025 := xmlconv:qc2025($doc)
-    let $r2026 := xmlconv:qc2026($doc)
-    let $r2028 := xmlconv:qc2028($doc)
-    let $r2029 := xmlconv:qc2029($doc)
-    let $r2031 := xmlconv:qc2031($doc)
-    let $r2039 := xmlconv:qc2039($doc)
-    let $r2040 := xmlconv:qc2040($doc)
-    let $r2041 := xmlconv:qc2041($doc)
-    let $r2042 := xmlconv:qc2042($doc)
-    let $r2043 := xmlconv:qc2043($doc)
-    let $r2048 := xmlconv:qc2048($doc)
-
-    let $r2050 :=
-        xmlconv:qc2050($doc, '11P', '11P') | xmlconv:qc2050($doc, '11H04', '11H4')
-
-    let $r2051 :=
-        for $tran in ('11A01', '11A02', '11A03', '11A04', '11A05', '11A06', '11A07',
-                      '11A08', '11A09', '11A10', '11A11', '11A12', '11A13', '11A14',
-                      '11B01', '11B02', '11B03', '11B04', '11B05', '11B06', '11B07',
-                      '11B08', '11B09', '11B10', '11B11', '11B12', '11B13', '11B14',
-                      '11C', '11D01', '11D02', '11D03', '11E01', '11E02', '11E03',
-                      '11E04', '11F01', '11F02', '11F03', '11F04', '11F05', '11F06',
-                      '11F07', '11F08', '11F09', '11H01', '11H02', '11H03', '11H04',
-                      '11I', '11J', '11K', '11L', '11M', '11N', '11O', '11P')
-            return xmlconv:qc2051($doc, $tran)
-
-    let $r2065 :=
-        for $tran in ('11A01', '11A02', '11A03', '11A04', '11A05', '11A06', '11A07',
-                      '11A08', '11A09', '11A10', '11A11', '11A12', '11A13', '11A14',
-                      '11B01', '11B02', '11B03', '11B04', '11B05', '11B06', '11B07',
-                      '11B08', '11B09', '11B10', '11B11', '11B12', '11B13', '11B14',
-                      '11C', '11D01', '11D02', '11D03', '11E01', '11E02', '11E03',
-                      '11E04', '11F01', '11F02', '11F03', '11F04', '11F05', '11F06',
-                      '11F07', '11F08', '11F09', '11H01', '11H02', '11H03', '11H04',
-                      '11I', '11J', '11K', '11L', '11M', '11N', '11O', '11P')
-            return xmlconv:qc2065($doc, $tran)
-
-
-    let $r2071 := xmlconv:qc2071($doc)
-    let $r2072 := xmlconv:qc2072($doc)
-    let $r2073 := xmlconv:qc2073($doc)
-    let $r2078 := xmlconv:qc2078($doc)
-    let $r2079 := xmlconv:qc2079($doc)
-    let $r2087 := xmlconv:qc2087($doc)
-    let $r2091 := xmlconv:rule_09($doc, "6A", "5C", "2091")
-    let $r2092 := xmlconv:rule_09($doc, "6B", "5A", "2092")
-    let $r2093 := xmlconv:rule_09($doc, "6C", "5D", "2093")
-    let $r2094 := xmlconv:rule_09($doc, "6I", "5F", "2094")
-    let $r2095 := xmlconv:rule_09($doc, "6L", "5B", "2095")
-    let $r2096 := xmlconv:rule_09($doc, "6M", "5E", "2096")
-    let $r2098 := xmlconv:qc2098($doc)
-    let $r2099 := xmlconv:qc2099($doc)
-    let $r2301_11A1 := xmlconv:validateTransactionAmountRange($doc, "11A01", 0.15, 10.0, "kg/piece", "2300")
-    let $r2301_11A2 := xmlconv:validateTransactionAmountRange($doc, "11A02", 1, 100.0, "kg/piece", "2300")
-    let $r2301_11A3 := xmlconv:validateTransactionAmountRange($doc, "11A03", 0.15, 10.0, "kg/piece", "2300")
-    let $r2301_11A4 := xmlconv:validateTransactionAmountRange($doc, "11A04", 3, 100.0, "kg/piece", "2300")
-    let $r2301_11A5 := xmlconv:validateTransactionAmountRange($doc, "11A05", 0.5, 3.0, "kg/piece", "2300")
-    let $r2301_11A6 := xmlconv:validateTransactionAmountRange($doc, "11A06", 1.5, 100.0, "kg/piece", "2300")
-    let $r2301_11A7 := xmlconv:validateTransactionAmountRange($doc, "11A07", 0.2, 10.0, "kg/piece", "2300")
-    let $r2301_11A8 := xmlconv:validateTransactionAmountRange($doc, "11A08", 0.2, 300.0, "kg/piece", "2300")
-    let $r2301_11A9 := xmlconv:validateTransactionAmountRange($doc, "11A09", 0.2, 300.0, "kg/piece", "2300")
-    let $r2301_11A10 := xmlconv:validateTransactionAmountRange($doc, "11A10", 0.5, 10.0, "kg/piece", "2300")
-    let $r2301_11A11 := xmlconv:validateTransactionAmountRange($doc, "11A11", 0.2, 300.0, "kg/piece", "2300")
-    let $r2301_11A12 := xmlconv:validateTransactionAmountRange($doc, "11A12", 0.2, 300.0, "kg/piece", "2300")
-    let $r2301_11A13 := xmlconv:validateTransactionAmountRange($doc, "11A13", 0.2, 100.0, "kg/piece", "2300")
-    let $r2301_11A14 := xmlconv:validateTransactionAmountRange($doc, "11A14", 0.2, 1000.0, "kg/piece", "2300")
-    let $r2301_11B1 := xmlconv:validateTransactionAmountRange($doc, "11B01", 0.04, 2.0, "kg/piece", "2300")
-    let $r2301_11B2 := xmlconv:validateTransactionAmountRange($doc, "11B02", 0.04, 10.0, "kg/piece", "2300")
-    let $r2301_11B3 := xmlconv:validateTransactionAmountRange($doc, "11B03", 0.04, 10.0, "kg/piece", "2300")
-    let $r2301_11B4 := xmlconv:validateTransactionAmountRange($doc, "11B04", 1, 1000.0, "kg/piece", "2300")
-    let $r2301_11B5 := xmlconv:validateTransactionAmountRange($doc, "11B05", 1, 1000.0, "kg/piece", "2300")
-    let $r2301_11B6 := xmlconv:validateTransactionAmountRange($doc, "11B06", 1, 1000.0, "kg/piece", "2300")
-    let $r2301_11B7 := xmlconv:validateTransactionAmountRange($doc, "11B07", 1, 1000.0, "kg/piece", "2300")
-    let $r2301_11B8 := xmlconv:validateTransactionAmountRange($doc, "11B08", 1, 1000.0, "kg/piece", "2300")
-    let $r2301_11B9 := xmlconv:validateTransactionAmountRange($doc, "11B09", 1, 1000.0, "kg/piece", "2300")
-    let $r2301_11B10 := xmlconv:validateTransactionAmountRange($doc, "11B10", 1, 1000.0, "kg/piece", "2300")
-    let $r2301_11B11 := xmlconv:validateTransactionAmountRange($doc, "11B11", 1, 1000.0, "kg/piece", "2300")
-    let $r2301_11B12 := xmlconv:validateTransactionAmountRange($doc, "11B12", 1, 800.0, "kg/piece", "2300")
-    let $r2301_11B13 := xmlconv:validateTransactionAmountRange($doc, "11B13", 1, 400.0, "kg/piece", "2300")
-    let $r2301_11B14 := xmlconv:validateTransactionAmountRange($doc, "11B14", 1, 800.0, "kg/piece", "2300")
-    let $r2301_11C := xmlconv:validateTransactionAmountRange($doc, "11C", 0.15, 0.5, "kg/piece", "2300")
-    let $r2301_11D1 := xmlconv:validateTransactionAmountRange($doc, "11D01", 0.1, 100.0, "kg/piece", "2300")
-    let $r2301_11D2 := xmlconv:validateTransactionAmountRange($doc, "11D02", 0.1, 100.0, "kg/piece", "2300")
-    let $r2301_11D3 := xmlconv:validateTransactionAmountRange($doc, "11D03", 0.1, 100.0, "kg/piece", "2300")
-    let $r2301_11E1 := xmlconv:validateTransactionAmountRange($doc, "11E01", 0.7, 13.0, "kg/piece", "2300")
-    let $r2301_11E2 := xmlconv:validateTransactionAmountRange($doc, "11E02", 0.8, 1.6, "kg/piece", "2300")
-    let $r2301_11E3 := xmlconv:validateTransactionAmountRange($doc, "11E03", 10.0, 5000.0, "kg/piece", "2300")
-    let $r2301_11E4 := xmlconv:validateTransactionAmountRange($doc, "11E04", 0.035, 1.0, "kg/piece", "2300")
-    let $r2301_11F1 := xmlconv:validateTransactionAmountRange($doc, "11F01", 0.3, 1.5, "kg/piece", "2300")
-    let $r2301_11F2 := xmlconv:validateTransactionAmountRange($doc, "11F02", 7.0, 20.0, "kg/piece", "2300")
-    let $r2301_11F3 := xmlconv:validateTransactionAmountRange($doc, "11F03", 0.45, 1.5, "kg/piece", "2300")
-    let $r2301_11F4 := xmlconv:validateTransactionAmountRange($doc, "11F04", 0.7, 1.5, "kg/piece", "2300")
-    let $r2301_11F5 := xmlconv:validateTransactionAmountRange($doc, "11F05", 0.7, 2.5, "kg/piece", "2300")
-    let $r2301_11F6 := xmlconv:validateTransactionAmountRange($doc, "11F06", 5.0, 35.0, "kg/piece", "2300")
-    let $r2301_11F7 := xmlconv:validateTransactionAmountRange($doc, "11F07", 0.3, 100.0, "kg/piece", "2300")
-    let $r2301_11F8 := xmlconv:validateTransactionAmountRange($doc, "11F08", 2.0, 10.0, "kg/piece", "2300")
-    let $r2301_11F9 := xmlconv:validateTransactionAmountRange($doc, "11F09", 0.1, 100.0, "kg/piece", "2300")
-    let $r2301_11H1 := xmlconv:validateTransactionAmountRange($doc, "11H01", 10.0, 100.0, "kg/t", "2300")
-    let $r2301_11H2 := xmlconv:validateTransactionAmountRange($doc, "11H02", 1.0, 10.0, "kg/m3", "2300")
-    let $r2301_11H3 := xmlconv:validateTransactionAmountRange($doc, "11H03", 1.0, 10.0, "kg/piece", "2300")
-    let $r2301_11H4 :=
-        if($doc/F7_s11EquImportTable/TR_11H4_Unit="metrictonnes") then
-            xmlconv:validateTransactionAmountRange($doc, "11H04", 10.0, 100.0, "kg/t", "2300")
-        else if($doc/F7_s11EquImportTable/TR_11H4_Unit="cubicmetres") then
-            xmlconv:validateTransactionAmountRange($doc, "11H04", 1.0, 100.0, "kg/m3", "2300")
-        else if($doc/F7_s11EquImportTable/TR_11H4_Unit="pieces") then
-                xmlconv:validateTransactionAmountRange($doc, "11H04", 1.0, 100.0, "kg/pieces", "2300")
-            else
-                ()
-    let $r2301_11I := xmlconv:validateTransactionAmountRange($doc, "11I", 3.0, 500.0, "kg/piece", "2300")
-    let $r2301_11J := xmlconv:validateTransactionAmountRange($doc, "11J", 0.007, 0.02, "kg/container", "2300")
-    let $r2301_11K := xmlconv:validateTransactionAmountRange($doc, "11K", 0.05, 0.5, "kg/container", "2300")
-    let $r2301_11L := xmlconv:validateTransactionAmountRange($doc, "11L", 0.01, 100.0, "kg/piece", "2300")
-    let $r2301_11M := xmlconv:validateTransactionAmountRange($doc, "11M", 1.0, 100.0, "kg/piece", "2300")
-    let $r2301_11N := xmlconv:validateTransactionAmountRange($doc, "11N", 0.5, 500.0, "kg/piece", "2300")
-    let $r2301_11O := xmlconv:validateTransactionAmountRange($doc, "11O", 0.2, 1000.0, "kg/piece", "2300")
-    let $r2301_11P :=
-        if($doc/F7_s11EquImportTable/TR_11P_Unit="metrictonnes") then
-            xmlconv:validateTransactionAmountRange($doc, "11P", 0.2, 1000.0, "kg/t", "2300")
-        else if($doc/F7_s11EquImportTable/TR_11P_Unit="cubicmetres") then
-            xmlconv:validateTransactionAmountRange($doc, "11P", 0.2, 1000.0, "kg/m3", "2300")
-        else if($doc/F7_s11EquImportTable/TR_11P_Unit="pieces") then
-                xmlconv:validateTransactionAmountRange($doc, "11P", 0.2, 1000.0, "kg/pieces", "2300")
-            else
-                ()
-    let $r2044 := xmlconv:qc2044($doc)
-    let $r2403 := xmlconv:qc2403($doc)
-    let $r24031 := xmlconv:qc24031($doc)
-    let $r2404 := xmlconv:qc2404($doc)
-    let $r24041 := xmlconv:qc24041($doc)
-    let $r24042 := xmlconv:qc24042($doc)
-    let $r24043 := xmlconv:qc24043($doc)
-    let $r2405 := xmlconv:qc2405($doc)
-    let $r2406 := xmlconv:qc2406($doc)
-    let $r2407 := xmlconv:qc2407($doc)
-    (:let $r2408 := xmlconv:qc2408($doc):)
-    let $r2409_05B := xmlconv:qc2409TradePartner($doc,$doc/F2_S5_exempted_HFCs/tr_05B_TradePartners/Partner,"05B", $doc/F2_S5_exempted_HFCs/Gas, "5B")
-    let $r2409_07A := xmlconv:qc2409($doc, "07A", $doc/F6_FUDest/Gas, "7A")
-    let $r2409_06L := xmlconv:qc2409($doc, "06L", $doc/F3A_S6A_IA_HFCs/Gas, "6L")
-    let $r2410_02B := xmlconv:qc2410("02B", $doc/F1_S1_4_ProdImpExp)
-    let $r2411 := xmlconv:qc2411($doc)
-    let $r2015 := xmlconv:qc2015($doc)
-    let $r2055 := xmlconv:qc2055($doc)
-    let $r2056 := xmlconv:qc2056($doc)
-    let $r20601 := xmlconv:qc20601($doc)
-    (: for NIL reports disable the following checks :)
+    (: for NIL reports only return the status check :)
     let $nilReport := fgases:is-NIL-Report($doc)
-    let $r20101 := if(not($nilReport)) then xmlconv:qc20101($doc) else ()
-    let $r21200 := if(not($nilReport)) then xmlconv:qc21200($doc) else ()
-    let $r21201 := if(not($nilReport)) then xmlconv:qc21201($doc) else ()
-    let $r21303 := if(not($nilReport)) then xmlconv:qc21303($doc) else ()
-    let $r21301 := if(not($nilReport)) then xmlconv:qc21301($doc) else ()
-    let $r21304 := if(not($nilReport)) then xmlconv:qc21304($doc) else ()
+    let $resultDiv :=
+        if(not($nilReport))
+        then
+            let $r2002 := xmlconv:qc2002($doc)
+            let $r2003 := xmlconv:qc2003($doc)
+            let $r2004 := xmlconv:qc2004($doc)
+            let $r2005 := xmlconv:qc2005($doc)
+            let $r2006 := xmlconv:qc2006($doc)
+            (:let $r2007 := xmlconv:qc2007($doc):)
+            let $r2008 := xmlconv:qc2008($doc)
+            let $r2009 := xmlconv:qc2009($doc)
+            let $r2010 := xmlconv:qc2010($doc)
+            (:let $r2011 := xmlconv:qc2011($doc):)
+            let $r2016 := xmlconv:qc2016($doc)
+            let $r2017 :=
+                for $tran in ('3C', '4D', '4E', '4I', '4J')
+                    return xmlconv:qc2017($doc, $tran)
+            let $r2018 := xmlconv:qc2018($doc)
+            let $r2020 := xmlconv:qc2020($doc)
+            let $r2023 := xmlconv:qc2023($doc)
+            let $r2024 := xmlconv:qc2024($doc)
+            let $r2025 := xmlconv:qc2025($doc)
+            let $r2026 := xmlconv:qc2026($doc)
+            let $r2028 := xmlconv:qc2028($doc)
+            let $r2029 := xmlconv:qc2029($doc)
+            let $r2031 := xmlconv:qc2031($doc)
+            let $r2039 := xmlconv:qc2039($doc)
+            let $r2040 := xmlconv:qc2040($doc)
+            let $r2041 := xmlconv:qc2041($doc)
+            let $r2042 := xmlconv:qc2042($doc)
+            let $r2043 := xmlconv:qc2043($doc)
+            let $r2048 := xmlconv:qc2048($doc)
 
+            let $r2050 :=
+                xmlconv:qc2050($doc, '11P', '11P') | xmlconv:qc2050($doc, '11H04', '11H4')
 
+            let $r2051 :=
+                for $tran in ('11A01', '11A02', '11A03', '11A04', '11A05', '11A06', '11A07',
+                              '11A08', '11A09', '11A10', '11A11', '11A12', '11A13', '11A14',
+                              '11B01', '11B02', '11B03', '11B04', '11B05', '11B06', '11B07',
+                              '11B08', '11B09', '11B10', '11B11', '11B12', '11B13', '11B14',
+                              '11C', '11D01', '11D02', '11D03', '11E01', '11E02', '11E03',
+                              '11E04', '11F01', '11F02', '11F03', '11F04', '11F05', '11F06',
+                              '11F07', '11F08', '11F09', '11H01', '11H02', '11H03', '11H04',
+                              '11I', '11J', '11K', '11L', '11M', '11N', '11O', '11P')
+                    return xmlconv:qc2051($doc, $tran)
 
+            let $r2065 :=
+                for $tran in ('11A01', '11A02', '11A03', '11A04', '11A05', '11A06', '11A07',
+                              '11A08', '11A09', '11A10', '11A11', '11A12', '11A13', '11A14',
+                              '11B01', '11B02', '11B03', '11B04', '11B05', '11B06', '11B07',
+                              '11B08', '11B09', '11B10', '11B11', '11B12', '11B13', '11B14',
+                              '11C', '11D01', '11D02', '11D03', '11E01', '11E02', '11E03',
+                              '11E04', '11F01', '11F02', '11F03', '11F04', '11F05', '11F06',
+                              '11F07', '11F08', '11F09', '11H01', '11H02', '11H03', '11H04',
+                              '11I', '11J', '11K', '11L', '11M', '11N', '11O', '11P')
+                    return xmlconv:qc2065($doc, $tran)
 
-    return
-    <div class="errors">
-        {$rStatus}
-        {$r2002}
-        {$r2003}
-        {$r2004}
-        {$r2005}
-        {$r2006}
-        {$r2008}
-        {$r2009}
-        {$r2010}
-        {$r2016}
-        {$r2017}
-        {$r2018}
-        {$r2020}
-        {$r2023}
-        {$r2024}
-        {$r2025}
-        {$r2026}
-        {$r2028}
-        {$r2029}
-        {$r2031}
-        {$r2039}
-        {$r2040}
-        {$r2041}
-        {$r2042}
-        {$r2043}
-        {$r2044}
-        {$r2048}
-        {$r2050}
-        {$r2051}
-        {$r2065}
-        {$r2071}
-        {$r2072}
-        {$r2073}
-        {$r2078}
-        {$r2079}
-        {$r2087}
-        {$r2091}
-        {$r2092}
-        {$r2093}
-        {$r2094}
-        {$r2095}
-        {$r2096}
-        {$r2098}
-        {$r2099}
-        {$r2301_11A1}
-        {$r2301_11A2}
-        {$r2301_11A3}
-        {$r2301_11A4}
-        {$r2301_11A5}
-        {$r2301_11A6}
-        {$r2301_11A7}
-        {$r2301_11A8}
-        {$r2301_11A9}
-        {$r2301_11A10}
-        {$r2301_11A11}
-        {$r2301_11A12}
-        {$r2301_11A13}
-        {$r2301_11A14}
-        {$r2301_11B1}
-        {$r2301_11B2}
-        {$r2301_11B3}
-        {$r2301_11B4}
-        {$r2301_11B5}
-        {$r2301_11B6}
-        {$r2301_11B7}
-        {$r2301_11B8}
-        {$r2301_11B9}
-        {$r2301_11B10}
-        {$r2301_11B11}
-        {$r2301_11B12}
-        {$r2301_11B13}
-        {$r2301_11B14}
-        {$r2301_11C}
-        {$r2301_11D1}
-        {$r2301_11D2}
-        {$r2301_11D3}
-        {$r2301_11E1}
-        {$r2301_11E2}
-        {$r2301_11E3}
-        {$r2301_11E4}
-        {$r2301_11F1}
-        {$r2301_11F2}
-        {$r2301_11F3}
-        {$r2301_11F4}
-        {$r2301_11F5}
-        {$r2301_11F6}
-        {$r2301_11F7}
-        {$r2301_11F8}
-        {$r2301_11F9}
-        {$r2301_11H1}
-        {$r2301_11H2}
-        {$r2301_11H3}
-        {$r2301_11H4}
-        {$r2301_11I}
-        {$r2301_11J}
-        {$r2301_11K}
-        {$r2301_11L}
-        {$r2301_11M}
-        {$r2301_11N}
-        {$r2301_11O}
-        {$r2301_11P}
-        {$r2044}
-        {$r2403}
-        {$r24031}
-        {$r2404}
-        {$r24041}
-        {$r24042}
-        {$r24043}
-        {$r2405}
-        {$r2406}
-        {$r2407}
-        {$r2409_05B}
-        {$r2409_07A}
-        {$r2409_06L}
-        {$r2410_02B}
-        {$r2411}
-        {$r2015}
-        {$r2055}
-        {$r2056}
-        {$r20101}
-        {$r21200}
-        {$r21201}
-        {$r21303}
-        {$r21301}
-        {$r21304}
-        {$r20601}
-    </div>
+            let $r2071 := xmlconv:qc2071($doc)
+            let $r2072 := xmlconv:qc2072($doc)
+            let $r2073 := xmlconv:qc2073($doc)
+            let $r2078 := xmlconv:qc2078($doc)
+            let $r2079 := xmlconv:qc2079($doc)
+            let $r2087 := xmlconv:qc2087($doc)
+            let $r2091 := xmlconv:rule_09($doc, "6A", "5C", "2091")
+            let $r2092 := xmlconv:rule_09($doc, "6B", "5A", "2092")
+            let $r2093 := xmlconv:rule_09($doc, "6C", "5D", "2093")
+            let $r2094 := xmlconv:rule_09($doc, "6I", "5F", "2094")
+            let $r2095 := xmlconv:rule_09($doc, "6L", "5B", "2095")
+            let $r2096 := xmlconv:rule_09($doc, "6M", "5E", "2096")
+            let $r2098 := xmlconv:qc2098($doc)
+            let $r2099 := xmlconv:qc2099($doc)
+            let $r2301_11A1 := xmlconv:validateTransactionAmountRange($doc, "11A01", 0.15, 10.0, "kg/piece", "2300")
+            let $r2301_11A2 := xmlconv:validateTransactionAmountRange($doc, "11A02", 1, 100.0, "kg/piece", "2300")
+            let $r2301_11A3 := xmlconv:validateTransactionAmountRange($doc, "11A03", 0.15, 10.0, "kg/piece", "2300")
+            let $r2301_11A4 := xmlconv:validateTransactionAmountRange($doc, "11A04", 3, 100.0, "kg/piece", "2300")
+            let $r2301_11A5 := xmlconv:validateTransactionAmountRange($doc, "11A05", 0.5, 3.0, "kg/piece", "2300")
+            let $r2301_11A6 := xmlconv:validateTransactionAmountRange($doc, "11A06", 1.5, 100.0, "kg/piece", "2300")
+            let $r2301_11A7 := xmlconv:validateTransactionAmountRange($doc, "11A07", 0.2, 10.0, "kg/piece", "2300")
+            let $r2301_11A8 := xmlconv:validateTransactionAmountRange($doc, "11A08", 0.2, 300.0, "kg/piece", "2300")
+            let $r2301_11A9 := xmlconv:validateTransactionAmountRange($doc, "11A09", 0.2, 300.0, "kg/piece", "2300")
+            let $r2301_11A10 := xmlconv:validateTransactionAmountRange($doc, "11A10", 0.5, 10.0, "kg/piece", "2300")
+            let $r2301_11A11 := xmlconv:validateTransactionAmountRange($doc, "11A11", 0.2, 300.0, "kg/piece", "2300")
+            let $r2301_11A12 := xmlconv:validateTransactionAmountRange($doc, "11A12", 0.2, 300.0, "kg/piece", "2300")
+            let $r2301_11A13 := xmlconv:validateTransactionAmountRange($doc, "11A13", 0.2, 100.0, "kg/piece", "2300")
+            let $r2301_11A14 := xmlconv:validateTransactionAmountRange($doc, "11A14", 0.2, 1000.0, "kg/piece", "2300")
+            let $r2301_11B1 := xmlconv:validateTransactionAmountRange($doc, "11B01", 0.04, 2.0, "kg/piece", "2300")
+            let $r2301_11B2 := xmlconv:validateTransactionAmountRange($doc, "11B02", 0.04, 10.0, "kg/piece", "2300")
+            let $r2301_11B3 := xmlconv:validateTransactionAmountRange($doc, "11B03", 0.04, 10.0, "kg/piece", "2300")
+            let $r2301_11B4 := xmlconv:validateTransactionAmountRange($doc, "11B04", 1, 1000.0, "kg/piece", "2300")
+            let $r2301_11B5 := xmlconv:validateTransactionAmountRange($doc, "11B05", 1, 1000.0, "kg/piece", "2300")
+            let $r2301_11B6 := xmlconv:validateTransactionAmountRange($doc, "11B06", 1, 1000.0, "kg/piece", "2300")
+            let $r2301_11B7 := xmlconv:validateTransactionAmountRange($doc, "11B07", 1, 1000.0, "kg/piece", "2300")
+            let $r2301_11B8 := xmlconv:validateTransactionAmountRange($doc, "11B08", 1, 1000.0, "kg/piece", "2300")
+            let $r2301_11B9 := xmlconv:validateTransactionAmountRange($doc, "11B09", 1, 1000.0, "kg/piece", "2300")
+            let $r2301_11B10 := xmlconv:validateTransactionAmountRange($doc, "11B10", 1, 1000.0, "kg/piece", "2300")
+            let $r2301_11B11 := xmlconv:validateTransactionAmountRange($doc, "11B11", 1, 1000.0, "kg/piece", "2300")
+            let $r2301_11B12 := xmlconv:validateTransactionAmountRange($doc, "11B12", 1, 800.0, "kg/piece", "2300")
+            let $r2301_11B13 := xmlconv:validateTransactionAmountRange($doc, "11B13", 1, 400.0, "kg/piece", "2300")
+            let $r2301_11B14 := xmlconv:validateTransactionAmountRange($doc, "11B14", 1, 800.0, "kg/piece", "2300")
+            let $r2301_11C := xmlconv:validateTransactionAmountRange($doc, "11C", 0.15, 0.5, "kg/piece", "2300")
+            let $r2301_11D1 := xmlconv:validateTransactionAmountRange($doc, "11D01", 0.1, 100.0, "kg/piece", "2300")
+            let $r2301_11D2 := xmlconv:validateTransactionAmountRange($doc, "11D02", 0.1, 100.0, "kg/piece", "2300")
+            let $r2301_11D3 := xmlconv:validateTransactionAmountRange($doc, "11D03", 0.1, 100.0, "kg/piece", "2300")
+            let $r2301_11E1 := xmlconv:validateTransactionAmountRange($doc, "11E01", 0.7, 13.0, "kg/piece", "2300")
+            let $r2301_11E2 := xmlconv:validateTransactionAmountRange($doc, "11E02", 0.8, 1.6, "kg/piece", "2300")
+            let $r2301_11E3 := xmlconv:validateTransactionAmountRange($doc, "11E03", 10.0, 5000.0, "kg/piece", "2300")
+            let $r2301_11E4 := xmlconv:validateTransactionAmountRange($doc, "11E04", 0.035, 1.0, "kg/piece", "2300")
+            let $r2301_11F1 := xmlconv:validateTransactionAmountRange($doc, "11F01", 0.3, 1.5, "kg/piece", "2300")
+            let $r2301_11F2 := xmlconv:validateTransactionAmountRange($doc, "11F02", 7.0, 20.0, "kg/piece", "2300")
+            let $r2301_11F3 := xmlconv:validateTransactionAmountRange($doc, "11F03", 0.45, 1.5, "kg/piece", "2300")
+            let $r2301_11F4 := xmlconv:validateTransactionAmountRange($doc, "11F04", 0.7, 1.5, "kg/piece", "2300")
+            let $r2301_11F5 := xmlconv:validateTransactionAmountRange($doc, "11F05", 0.7, 2.5, "kg/piece", "2300")
+            let $r2301_11F6 := xmlconv:validateTransactionAmountRange($doc, "11F06", 5.0, 35.0, "kg/piece", "2300")
+            let $r2301_11F7 := xmlconv:validateTransactionAmountRange($doc, "11F07", 0.3, 100.0, "kg/piece", "2300")
+            let $r2301_11F8 := xmlconv:validateTransactionAmountRange($doc, "11F08", 2.0, 10.0, "kg/piece", "2300")
+            let $r2301_11F9 := xmlconv:validateTransactionAmountRange($doc, "11F09", 0.1, 100.0, "kg/piece", "2300")
+            let $r2301_11H1 := xmlconv:validateTransactionAmountRange($doc, "11H01", 10.0, 100.0, "kg/t", "2300")
+            let $r2301_11H2 := xmlconv:validateTransactionAmountRange($doc, "11H02", 1.0, 10.0, "kg/m3", "2300")
+            let $r2301_11H3 := xmlconv:validateTransactionAmountRange($doc, "11H03", 1.0, 10.0, "kg/piece", "2300")
+            let $r2301_11H4 :=
+                if($doc/F7_s11EquImportTable/TR_11H4_Unit="metrictonnes") then
+                    xmlconv:validateTransactionAmountRange($doc, "11H04", 10.0, 100.0, "kg/t", "2300")
+                else if($doc/F7_s11EquImportTable/TR_11H4_Unit="cubicmetres") then
+                    xmlconv:validateTransactionAmountRange($doc, "11H04", 1.0, 100.0, "kg/m3", "2300")
+                else if($doc/F7_s11EquImportTable/TR_11H4_Unit="pieces") then
+                        xmlconv:validateTransactionAmountRange($doc, "11H04", 1.0, 100.0, "kg/pieces", "2300")
+                    else
+                        ()
+            let $r2301_11I := xmlconv:validateTransactionAmountRange($doc, "11I", 3.0, 500.0, "kg/piece", "2300")
+            let $r2301_11J := xmlconv:validateTransactionAmountRange($doc, "11J", 0.007, 0.02, "kg/container", "2300")
+            let $r2301_11K := xmlconv:validateTransactionAmountRange($doc, "11K", 0.05, 0.5, "kg/container", "2300")
+            let $r2301_11L := xmlconv:validateTransactionAmountRange($doc, "11L", 0.01, 100.0, "kg/piece", "2300")
+            let $r2301_11M := xmlconv:validateTransactionAmountRange($doc, "11M", 1.0, 100.0, "kg/piece", "2300")
+            let $r2301_11N := xmlconv:validateTransactionAmountRange($doc, "11N", 0.5, 500.0, "kg/piece", "2300")
+            let $r2301_11O := xmlconv:validateTransactionAmountRange($doc, "11O", 0.2, 1000.0, "kg/piece", "2300")
+            let $r2301_11P :=
+                if($doc/F7_s11EquImportTable/TR_11P_Unit="metrictonnes") then
+                    xmlconv:validateTransactionAmountRange($doc, "11P", 0.2, 1000.0, "kg/t", "2300")
+                else if($doc/F7_s11EquImportTable/TR_11P_Unit="cubicmetres") then
+                    xmlconv:validateTransactionAmountRange($doc, "11P", 0.2, 1000.0, "kg/m3", "2300")
+                else if($doc/F7_s11EquImportTable/TR_11P_Unit="pieces") then
+                        xmlconv:validateTransactionAmountRange($doc, "11P", 0.2, 1000.0, "kg/pieces", "2300")
+                    else
+                        ()
+            let $r2044 := xmlconv:qc2044($doc)
+            let $r2403 := xmlconv:qc2403($doc)
+            let $r24031 := xmlconv:qc24031($doc)
+            let $r2404 := xmlconv:qc2404($doc)
+            let $r24041 := xmlconv:qc24041($doc)
+            let $r24042 := xmlconv:qc24042($doc)
+            let $r24043 := xmlconv:qc24043($doc)
+            let $r2405 := xmlconv:qc2405($doc)
+            let $r2406 := xmlconv:qc2406($doc)
+            let $r2407 := xmlconv:qc2407($doc)
+            (:let $r2408 := xmlconv:qc2408($doc):)
+            let $r2409_05B := xmlconv:qc2409TradePartner($doc,$doc/F2_S5_exempted_HFCs/tr_05B_TradePartners/Partner,"05B", $doc/F2_S5_exempted_HFCs/Gas, "5B")
+            let $r2409_07A := xmlconv:qc2409($doc, "07A", $doc/F6_FUDest/Gas, "7A")
+            let $r2409_06L := xmlconv:qc2409($doc, "06L", $doc/F3A_S6A_IA_HFCs/Gas, "6L")
+            let $r2410_02B := xmlconv:qc2410("02B", $doc/F1_S1_4_ProdImpExp)
+            let $r2411 := xmlconv:qc2411($doc)
+            let $r2015 := xmlconv:qc2015($doc)
+            let $r2055 := xmlconv:qc2055($doc)
+            let $r2056 := xmlconv:qc2056($doc)
+            let $r20601 := xmlconv:qc20601($doc)
+            let $r20101 := xmlconv:qc20101($doc)
+            let $r21200 := xmlconv:qc21200($doc)
+            let $r21201 := xmlconv:qc21201($doc)
+            let $r21303 := xmlconv:qc21303($doc)
+            let $r21301 := xmlconv:qc21301($doc)
+            let $r21304 := xmlconv:qc21304($doc)
+
+            return
+                <div class="errors">
+                    {$rStatus}
+                    {$r2002}
+                    {$r2003}
+                    {$r2004}
+                    {$r2005}
+                    {$r2006}
+                    {$r2008}
+                    {$r2009}
+                    {$r2010}
+                    {$r2016}
+                    {$r2017}
+                    {$r2018}
+                    {$r2020}
+                    {$r2023}
+                    {$r2024}
+                    {$r2025}
+                    {$r2026}
+                    {$r2028}
+                    {$r2029}
+                    {$r2031}
+                    {$r2039}
+                    {$r2040}
+                    {$r2041}
+                    {$r2042}
+                    {$r2043}
+                    {$r2044}
+                    {$r2048}
+                    {$r2050}
+                    {$r2051}
+                    {$r2065}
+                    {$r2071}
+                    {$r2072}
+                    {$r2073}
+                    {$r2078}
+                    {$r2079}
+                    {$r2087}
+                    {$r2091}
+                    {$r2092}
+                    {$r2093}
+                    {$r2094}
+                    {$r2095}
+                    {$r2096}
+                    {$r2098}
+                    {$r2099}
+                    {$r2301_11A1}
+                    {$r2301_11A2}
+                    {$r2301_11A3}
+                    {$r2301_11A4}
+                    {$r2301_11A5}
+                    {$r2301_11A6}
+                    {$r2301_11A7}
+                    {$r2301_11A8}
+                    {$r2301_11A9}
+                    {$r2301_11A10}
+                    {$r2301_11A11}
+                    {$r2301_11A12}
+                    {$r2301_11A13}
+                    {$r2301_11A14}
+                    {$r2301_11B1}
+                    {$r2301_11B2}
+                    {$r2301_11B3}
+                    {$r2301_11B4}
+                    {$r2301_11B5}
+                    {$r2301_11B6}
+                    {$r2301_11B7}
+                    {$r2301_11B8}
+                    {$r2301_11B9}
+                    {$r2301_11B10}
+                    {$r2301_11B11}
+                    {$r2301_11B12}
+                    {$r2301_11B13}
+                    {$r2301_11B14}
+                    {$r2301_11C}
+                    {$r2301_11D1}
+                    {$r2301_11D2}
+                    {$r2301_11D3}
+                    {$r2301_11E1}
+                    {$r2301_11E2}
+                    {$r2301_11E3}
+                    {$r2301_11E4}
+                    {$r2301_11F1}
+                    {$r2301_11F2}
+                    {$r2301_11F3}
+                    {$r2301_11F4}
+                    {$r2301_11F5}
+                    {$r2301_11F6}
+                    {$r2301_11F7}
+                    {$r2301_11F8}
+                    {$r2301_11F9}
+                    {$r2301_11H1}
+                    {$r2301_11H2}
+                    {$r2301_11H3}
+                    {$r2301_11H4}
+                    {$r2301_11I}
+                    {$r2301_11J}
+                    {$r2301_11K}
+                    {$r2301_11L}
+                    {$r2301_11M}
+                    {$r2301_11N}
+                    {$r2301_11O}
+                    {$r2301_11P}
+                    {$r2044}
+                    {$r2403}
+                    {$r24031}
+                    {$r2404}
+                    {$r24041}
+                    {$r24042}
+                    {$r24043}
+                    {$r2405}
+                    {$r2406}
+                    {$r2407}
+                    {$r2409_05B}
+                    {$r2409_07A}
+                    {$r2409_06L}
+                    {$r2410_02B}
+                    {$r2411}
+                    {$r2015}
+                    {$r2055}
+                    {$r2056}
+                    {$r20101}
+                    {$r21200}
+                    {$r21201}
+                    {$r21303}
+                    {$r21301}
+                    {$r21304}
+                    {$r20601}
+                </div>
+        else
+            <div>
+                {$rStatus}
+            </div>
+
+    return $resultDiv
 
 };
 
