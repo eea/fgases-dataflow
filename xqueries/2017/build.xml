@@ -11,7 +11,7 @@
         </delete>
         
         <copy todir="${build}">
-            <!--<fileset file="fgases-2017.xquery" />-->
+            <fileset file="fgases-2017.xquery" />
             <fileset file="fgases-2017-additional.xquery" />
             <fileset file="fgases-report-acknowledgement-2017.xquery" />
             <fileset file="fgases-feedback-title-2017.xquery" />
