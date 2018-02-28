@@ -11,7 +11,7 @@
         </delete>
         
         <copy todir="${build}">
-            <fileset file="fgases-2017.xquery" />
+            <!--<fileset file="fgases-2017.xquery" />-->
             <fileset file="fgases-2017-additional.xquery" />
             <fileset file="fgases-report-acknowledgement-2017.xquery" />
             <fileset file="fgases-feedback-title-2017.xquery" />
@@ -22,7 +22,7 @@
         
         <concat destfile="${build}/fgases-helper-2017.xquery">
             <filterchain>
-                <replaceregex pattern="'../../angular/xml/fgases-gases-2015.xml'" replace="'${fgases-list-uri}'" />
+                <replaceregex pattern="'../../angular/xml/fgases-gases.xml'" replace="'${fgases-list-uri}'" />
             </filterchain>
             
             <fileset file="fgases-helper-2017.xquery" />
@@ -37,7 +37,7 @@
     
     <target name="prod">
         <antcall target="base">
-            <param name="fgases-list-uri" value="https://convertersbdr.eionet.europa.eu/xmlfile/fgases-gases-2015.xml" />
+            <param name="fgases-list-uri" value="https://convertersbdr.eionet.europa.eu/xmlfile/fgases-gases.xml" />
         </antcall>
     </target>
 

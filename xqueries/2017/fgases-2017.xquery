@@ -32,8 +32,6 @@ declare variable $xmlconv:COMPLIANCE as xs:string := "COMPLIANCE";
 declare variable $xmlconv:INFO as xs:string := "INFO";
 declare variable $xmlconv:ERR_TEXT_2016 as xs:string := "You reported on own destruction in section 1B. Please accordingly select to be a destruction company in the activity selection and report subsequently in section 8.";
 
-declare variable $xmlconv:blendsDoc := "https://convertersbdr.eionet.europa.eu/xmlfile/fgases-gases.xml";
-
 declare variable $xmlconv:cssStyle as element(style) :=
 
 <style type="text/css">
@@ -1741,7 +1739,7 @@ as element(div)*
     should be equal with amount reported in (12B).
     Please revise your data."
 
-    let $blendDoc := doc($xmlconv:blendsDoc)
+    let $blendDoc := doc($fgases:gas-list)
     let $tr_13B_amount := cutil:numberIfEmpty(data($report/F9_S13/Totals/tr_13B/Amount), 0)
     let $tr_12B_values :=
         for $gas in $report/F8_S12/Gas
@@ -1770,7 +1768,7 @@ as element(div)*
     let $err_text := "The amount calculated in (13C)
     should be equal with amount reported in (12A).
     Please revise your data."
-    let $blendDoc := doc($xmlconv:blendsDoc)
+    let $blendDoc := doc($fgases:gas-list)
     let $tr_13C_amount := cutil:numberIfEmpty(data($report/F9_S13/Totals/tr_13C/Amount), 0)
     let $tr_12A_values :=
         for $gas in $report/F8_S12/Gas
@@ -1800,7 +1798,7 @@ as element(div)*
     let $err_text := "The amount calculated in (13D)
     should be equal with amount reported in (12C).
     Please revise your data."
-    let $blendDoc := doc($xmlconv:blendsDoc)
+    let $blendDoc := doc($fgases:gas-list)
 
     let $tr_13D_total_amount := cutil:numberIfEmpty(data($report/F9_S13/Totals/tr_13D/Amount), 0)
     let $tr_12C_values :=
