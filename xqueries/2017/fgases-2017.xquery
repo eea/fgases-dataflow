@@ -1237,7 +1237,7 @@ declare function xmlconv:qc24031($doc as element()) as element(div)* {
 declare function xmlconv:qc2404($doc as element()) as element(div)* {
 (: QC-2404 :)
     let $errorText := "According to the HFC Registry, authorisations have been issued to equipment importers by your undertaking (see section 9), but not included in this report. Please select the Auth activity (Supplier of Authorisations) on the Activities page and review the values in section 9. Keep in mind that incomplete reporting on authorisations may distort the preliminary quota assessment based on this report."
-    let $tr09ARegistry := cutil:if-number($doc/F4_S9_IssuedAuthQuata/tr_09A_Registry/Amount,0)
+    let $tr09ARegistry := cutil:if-number($doc/F4_S9_IssuedAuthQuata/tr_09A_imp/SumOfPartnerAmounts,0)
     let $isAuth := cutil:is-activity-selected($doc/GeneralReportData/Activities/auth)
     return
         if($tr09ARegistry > 0) then
