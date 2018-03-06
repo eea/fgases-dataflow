@@ -85,6 +85,7 @@
                     <xsl:apply-templates select="EV_3.2_c" mode="EV_3_row"/>
                     <xsl:apply-templates select="EV_3.2_d" mode="EV_3_row"/>
                 </table>
+                <xsl:apply-templates select="ReportFiles"/>
             </body>
         </html>
     </xsl:template>
@@ -208,4 +209,20 @@
     </xsl:template>
     <xsl:template match="*">
     </xsl:template>
+    <xsl:template match="ReportFiles">
+        <h2>(3) Verification report files</h2>
+        <ul>
+            <xsl:for-each select="./ReportFile">
+                <li>
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:value-of select="concat(normalize-space(.), '/manage_document')"/>
+                        </xsl:attribute>
+                        <xsl:value-of select="."/>
+                    </a>
+                </li>
+            </xsl:for-each>
+        </ul>
+    </xsl:template>
+
 </xsl:stylesheet>

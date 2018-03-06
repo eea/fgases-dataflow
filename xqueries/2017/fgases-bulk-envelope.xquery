@@ -8,7 +8,7 @@ xquery version "3.1";
 
 declare namespace xmlconv = "http://converters.eionet.europa.eu/fgases";
 (: namespace for BDR localisations :)
-declare namespace i18n = "http://namespaces.zope.org/i18n";
+(:declare namespace i18n = "http://namespaces.zope.org/i18n";:)
 
 (:===================================================================:)
 (: Variable given as an external parameter by the QA service         :)
@@ -23,7 +23,7 @@ declare variable $source_report as xs:string external;
 
 declare variable $SCHEMA as xs:string := "http://dd.eionet.europa.eu/schemas/fgases-2017/f-gases-bulk-verification-2018.xsd";
 declare variable $xmlconv:SOURCE_URL_PARAM := "source_url=";
-declare variable $xmlconv:OBLIGATION := "764";
+declare variable $xmlconv:OBLIGATION := "713";
 
 (:==================================================================:)
 (:==================================================================:)
@@ -36,7 +36,7 @@ declare variable $xmlconv:OBLIGATION := "764";
 declare function xmlconv:getCleanUrl($url)
 as xs:string
 {
-    if ( contains($url, $xmlconv:SOURCE_URL_PARAM)) then
+    if ( fn:contains($url, $xmlconv:SOURCE_URL_PARAM)) then
         fn:substring-after($url, $xmlconv:SOURCE_URL_PARAM)
     else
         $url
@@ -45,35 +45,32 @@ as xs:string
 declare function xmlconv:validateEnvelope($url-env as xs:string, $url-report as xs:string)
 as element(div)
 {
-    let $files := fn:doc($url-env)//file[string-length(@link)>0]
-    let $report := doc($url-report)//Verification
+    let $files := fn:doc($url-env)//file[fn:string-length(@link)>0]
+    let $report := fn:doc($url-report)//Verification
 
-    let $obligation := concat('http://rod.eionet.europa.eu/obligations/', $xmlconv:OBLIGATION)
-    let $envelopeObligation := fn:doc($url-env)//obligation/data()
+    let $obligation := fn:concat('http://rod.eionet.europa.eu/obligations/', $xmlconv:OBLIGATION)
+    let $envelopeObligation := fn:doc($url-env)//obligation/fn:data()
 
-    let $filesCountReport := count($report/ReportFiles/ReportFile)
-    let $filesCountAll := count($files)
-    let $filesCountCorrectSchema := count($files[@schema = $SCHEMA])
-    let $filesCountXml := count($files[@type="text/xml"])
+    let $filesCountReport := fn:count($report/ReportFiles/ReportFile)
+    let $filesCountCorrectSchema := fn:count($files[@schema = $SCHEMA])
+    let $filesCountXml := fn:count($files[@type="text/xml"])
 
     let $fileNames := $files/@link
     let $okFiles :=
         for $file in $report//ReportFiles/ReportFile
-        (:let $asd := trace($file, "file: "):)
-        return if($file/data() = $fileNames)
-            then $file/data()
+        return if($file/fn:data() = $fileNames)
+            then $file/fn:data()
             else ()
 
     let $errorLevel := if (
-        count($okFiles) = $filesCountReport
+        fn:count($okFiles) = $filesCountReport
                 and $filesCountCorrectSchema = 1 and $filesCountXml = 1
-                and $obligation = $envelopeObligation
-    )
+                and $obligation = $envelopeObligation)
     then "INFO"
     else "BLOCKER"
 
     let $description :=
-        if (count($okFiles) != $filesCountReport) then
+        if (fn:count($okFiles) != $filesCountReport) then
             <span>
                 <span i18n:translate="">
                     Your delivery cannot be accepted as you have not provided all the Report Files.
@@ -114,7 +111,7 @@ as element(div)
 
 declare function xmlconv:proceed($source_url as xs:string, $source_report as xs:string) {
 
-    let $sourceDocAvailable := doc-available($source_url)
+    let $sourceDocAvailable := fn:doc-available($source_url)
     let $results := if ($sourceDocAvailable) then xmlconv:validateEnvelope($source_url, $source_report) else ()
 
     return

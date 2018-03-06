@@ -177,6 +177,19 @@ as given in <span>section 10A</span> of the Art. 19 data report identified above
                         </td>
                     </tr>
                 </table>
+                <h2>(3) Verification report files</h2>
+                <ul>
+                    <xsl:for-each select="ReportFiles/ReportFile">
+                        <li>
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="concat(normalize-space(.), '/manage_document')"/>
+                                </xsl:attribute>
+                                <xsl:value-of select="."/>
+                            </a>
+                        </li>
+                    </xsl:for-each>
+                </ul>
             </body>
         </html>
     </xsl:template>
