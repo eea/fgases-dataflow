@@ -18,8 +18,6 @@ declare variable $source_url as xs:string :='http://cdrtest.eionet.europa.eu/de/
 declare variable $source_url as xs:string external;
 :)
 declare variable $source_url as xs:string external;
-declare variable $source_report as xs:string := "";
-
 
 declare variable $SCHEMA as xs:string := "http://dd.eionet.europa.eu/schemas/fgases-2017/f-gases-equipment-verification-2018.xsd";
 declare variable $xmlconv:SOURCE_URL_PARAM := "source_url=";
@@ -42,34 +40,25 @@ as xs:string
         $url
 };
 
-declare function xmlconv:validateEnvelope($url-env as xs:string, $url-report as xs:string)
+declare function xmlconv:validateEnvelope($source_url as xs:string)
 as element(div)
 {
-    let $files := fn:doc($url-env)//file[fn:string-length(@link)>0]
-    (:let $report := fn:doc($url-report)//Verification:)
+    let $envelope-url := string(fn:concat(
+                fn:doc($source_url)//URL/data(),
+                '/xml'
+        ))
+    let $report-available := fn:doc-available($source_url)
+    let $envelope-available := fn:doc-available($envelope-url)
+    let $report := fn:doc($source_url)//Verification
 
+    let $files := fn:doc($envelope-url)//file[fn:string-length(@link)>0]
 
     let $obligation := fn:concat('http://rod.eionet.europa.eu/obligations/', $xmlconv:OBLIGATION)
-    let $envelopeObligation := fn:doc($url-env)//obligation/fn:data()
+    let $envelopeObligation := fn:doc($envelope-url)//obligation/fn:data()
 
     let $filesCountCorrectSchema := fn:count($files[@schema = $SCHEMA])
     let $filesCountXml := fn:count($files[@type="text/xml"])
     let $filesCountAll := fn:count($files)
-    let $fileXML := if($filesCountCorrectSchema = 1 and $filesCountXml = 1)
-        then
-            fn:concat(
-                fn:doc($url-env)//link,
-                '/',
-                $files[@type="text/xml"]/@name
-            )
-        else
-        ()
-    let $report-available := fn:doc-available($fileXML)
-    let $report := if($report-available)
-        then
-            fn:doc($fileXML)//Verification
-        else
-            ()
 
     let $filesCountReport := if($report-available)
         then
@@ -95,10 +84,10 @@ as element(div)
     else "BLOCKER"
 
     let $description :=
-        if (fn:empty($report)) then
+        if (not($envelope-available)) then
             <span>
                 <span i18n:translate="">
-                    Report file is not available.
+                    Envelope info is not available.
                 </span>
             </span>
         else if (fn:count($okFiles) != $filesCountReport) then
@@ -146,10 +135,10 @@ as element(div)
 (: Main function calls the different get function and returns the result:)
 (:===================================================================:)
 
-declare function xmlconv:proceed($source_url as xs:string, $source_report as xs:string) {
+declare function xmlconv:proceed($source_url as xs:string) {
 
     let $sourceDocAvailable := fn:doc-available($source_url)
-    let $results := if ($sourceDocAvailable) then xmlconv:validateEnvelope($source_url, $source_report) else ()
+    let $results := if ($sourceDocAvailable) then xmlconv:validateEnvelope($source_url) else ()
 
     return
         if ($sourceDocAvailable) then
@@ -161,4 +150,4 @@ declare function xmlconv:proceed($source_url as xs:string, $source_report as xs:
 }
 ;
 
-xmlconv:proceed($source_url, $source_report)
+xmlconv:proceed($source_url)
