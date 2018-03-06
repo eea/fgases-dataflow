@@ -8,7 +8,7 @@ xquery version "3.1";
 
 declare namespace xmlconv = "http://converters.eionet.europa.eu/fgases";
 (: namespace for BDR localisations :)
-(:declare namespace i18n = "http://namespaces.zope.org/i18n";:)
+declare namespace i18n = "http://namespaces.zope.org/i18n";
 
 (:===================================================================:)
 (: Variable given as an external parameter by the QA service         :)
@@ -18,7 +18,7 @@ declare variable $source_url as xs:string :='http://cdrtest.eionet.europa.eu/de/
 declare variable $source_url as xs:string external;
 :)
 declare variable $source_url as xs:string external;
-declare variable $source_report as xs:string external;
+declare variable $source_report as xs:string := "";
 
 
 declare variable $SCHEMA as xs:string := "http://dd.eionet.europa.eu/schemas/fgases-2017/f-gases-bulk-verification-2018.xsd";
@@ -46,31 +46,62 @@ declare function xmlconv:validateEnvelope($url-env as xs:string, $url-report as 
 as element(div)
 {
     let $files := fn:doc($url-env)//file[fn:string-length(@link)>0]
-    let $report := fn:doc($url-report)//Verification
+    (:let $report := fn:doc($url-report)//Verification:)
+
 
     let $obligation := fn:concat('http://rod.eionet.europa.eu/obligations/', $xmlconv:OBLIGATION)
     let $envelopeObligation := fn:doc($url-env)//obligation/fn:data()
 
-    let $filesCountReport := fn:count($report/ReportFiles/ReportFile)
     let $filesCountCorrectSchema := fn:count($files[@schema = $SCHEMA])
     let $filesCountXml := fn:count($files[@type="text/xml"])
+    let $filesCountAll := fn:count($files)
+    let $fileXML := if($filesCountCorrectSchema = 1 and $filesCountXml = 1)
+        then
+            fn:concat(
+                fn:doc($url-env)//link,
+                '/',
+                $files[@type="text/xml"]/@name
+            )
+        else
+        ()
+    let $report-available := fn:doc-available($fileXML)
+    let $report := if($report-available)
+        then
+            fn:doc($fileXML)//Verification
+        else
+            ()
+
+    let $filesCountReport := if($report-available)
+        then
+            fn:count($report/ReportFiles/ReportFile)
+        else 0
 
     let $fileNames := $files/@link
-    let $okFiles :=
-        for $file in $report//ReportFiles/ReportFile
-        return if($file/fn:data() = $fileNames)
-            then $file/fn:data()
-            else ()
+    let $okFiles := if($report-available)
+        then
+            for $file in $report//ReportFiles/ReportFile
+            return if($file/fn:data() = $fileNames)
+                then $file/fn:data()
+                else ()
+        else -1
 
     let $errorLevel := if (
         fn:count($okFiles) = $filesCountReport
                 and $filesCountCorrectSchema = 1 and $filesCountXml = 1
-                and $obligation = $envelopeObligation)
+                and $obligation = $envelopeObligation
+                and $filesCountAll > 1
+    )
     then "INFO"
     else "BLOCKER"
 
     let $description :=
-        if (fn:count($okFiles) != $filesCountReport) then
+        if (fn:empty($report)) then
+            <span>
+                <span i18n:translate="">
+                    Report file is not available.
+                </span>
+            </span>
+        else if (fn:count($okFiles) != $filesCountReport) then
             <span>
                 <span i18n:translate="">
                     Your delivery cannot be accepted as you have not provided all the Report Files.
@@ -79,13 +110,19 @@ as element(div)
         else if ($filesCountCorrectSchema != 1 or $filesCountXml != 1) then
             <span>
                 <span i18n:translate="">
-                    Your delivery cannot be accepted as you have not provided an XML file with correct scheme.
+                    Your delivery cannot be accepted because your envelope must contain only one XML file with correct scheme.
                 </span>
             </span>
         else if ($obligation != $envelopeObligation) then
             <span>
                 <span i18n:translate="">
                     Your delivery cannot be accepted as you have not provided the correct obligation.
+                </span>
+            </span>
+        else if ($filesCountAll < 2) then
+            <span>
+                <span i18n:translate="">
+                    Your delivery cannot be accepted as you need at least one additional file in the envelope.
                 </span>
             </span>
         else
