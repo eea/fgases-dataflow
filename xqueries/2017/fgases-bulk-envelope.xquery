@@ -109,7 +109,7 @@ as element(div)
         if (fn:empty($report)) then
             <span>
                 <span i18n:translate="">
-                    Verification report file is not available.
+                    Your delivery cannot be accepted because no XML file was created using the online questionnaire.
                 </span>
             </span>
         else if (fn:count($okFiles) != $filesCountReport) then
@@ -137,7 +137,7 @@ as element(div)
                             </span>
                         </span>
                     else
-                        <span i18n:translate="">Your data report been successfully completed using the online questionnaire.</span>
+                        <span i18n:translate="">Your delivery has been successfully completed using the online questionnaire.</span>
     return
         <div class="feedbacktext">
             <h2 i18n:translate="">Check contents of delivery</h2>
