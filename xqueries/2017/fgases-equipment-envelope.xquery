@@ -93,12 +93,14 @@ as element(div)
     else -1
 
     let $xml-url-available := if($report-available) then fn:concat(xmlconv:getProxyUrl($url-env), fn:doc($fileXML)//URL/data(), '/xml') else ""
+    let $xml-url-option := fn:doc($fileXML)//EV_3.1/data()
+    let $xml-url-value := fn:doc($fileXML)//URL/data()
     let $envelopeObligation := if(fn:doc-available($xml-url-available)) then fn:doc($xml-url-available)//obligation/data() else ""
 
     let $errorLevel := if (
         fn:count($okFiles) = $filesCountReport
                 and $filesCountCorrectSchema = 1 and $filesCountXml = 1
-                and $obligation = $envelopeObligation
+                and ($obligation = $envelopeObligation or ($xml-url-option = "EV_3.1_2" and $xml-url-value = ""))
                 and $filesCountAll > 1
     )
     then "INFO"
@@ -108,7 +110,7 @@ as element(div)
         if (fn:empty($report)) then
             <span>
                 <span i18n:translate="">
-                    Verification report file is not available.
+                    Your delivery cannot be accepted because no XML file was created using the online questionnaire.
                 </span>
             </span>
         else if (fn:count($okFiles) != $filesCountReport) then
@@ -123,7 +125,7 @@ as element(div)
                         Your delivery cannot be accepted because your envelope must contain exactly one XML file with correct schema.
                     </span>
                 </span>
-            else if ($obligation != $envelopeObligation) then
+            else if ($obligation != $envelopeObligation and $xml-url-value = "" and $xml-url-option = "EV_3.1_1") then
                     <span>
                         <span i18n:translate="">
                             Your delivery cannot be accepted because you did not reference a valid report envelope for the reporting obligation Fluorinated gases (F-gases) reporting by undertakings (Regulation 2014).
@@ -136,7 +138,7 @@ as element(div)
                             </span>
                         </span>
                     else
-                        <span i18n:translate="">Your data report been successfully completed using the online questionnaire.</span>
+                        <span i18n:translate="">Your delivery has been successfully completed using the online questionnaire.</span>
     return
         <div class="feedbacktext">
             <h2 i18n:translate="">Check contents of delivery</h2>
