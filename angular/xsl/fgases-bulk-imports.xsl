@@ -2,18 +2,20 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fn="http://www.w3.org/2005/xpath-functions"
                 version="2.0">
 
-    <xsl:variable name="base-uri" select="base-uri(.)"/>
-    <xsl:variable name="document-uri" select="document-uri(.)"/>
+    <xsl:variable name="base-uri" select="fn:base-uri(.)"/>
+    <xsl:variable name="document-uri" select="fn:document-uri(.)"/>
     <xsl:variable name="proxy-uri" select="substring-before($base-uri, 'source_url=')"/>
 
     <xsl:template match="Verification">
 
-        <xsl:variable name="envelope-url"
-                      select="concat($proxy-uri,'source_url=', normalize-space(URL), '/xml')"/>
+        <xsl:variable name="envelope-url-from-file"
+                      select="normalize-space(replace(ReportFiles/ReportFile[1]/text(), '[^\\/]+$', ''))"/>
+        <xsl:variable name="envelope-url-complete"
+                      select="concat($proxy-uri,'source_url=', normalize-space($envelope-url-from-file), 'xml')"/>
         <!--<xsl:variable name="envelope-url"-->
                       <!--select="'bulk_v2.xml'"/>-->
-        <xsl:variable name="envelope" select="document($envelope-url)/envelope"/>
-
+        <xsl:variable name="envelope" select="document($envelope-url-complete)/envelope"/>
+        <xsl:variable name="current-date" select="current-dateTime()"/>
         <html>
             <head>
                 <title>Factsheet</title>
@@ -77,22 +79,20 @@
             </head>
             <body>
                 <h1>F-Gas Regulation - Verification and submission of the verification document for bulk importers and producers</h1>
+                <p>File converted at
+                    <span>
+                        <xsl:value-of select="concat(substring(string($current-date), 1, 10), ' ', substring(string($current-date), 12, 5))"/>
+                    </span>
+                </p>
+                <p>Converted from
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:value-of select="$envelope-url-from-file"/>
+                        </xsl:attribute>
+                        <xsl:value-of select="$envelope-url-from-file"/>
+                    </a>
+                </p>
                 <h2>(1) Identification of company, year and relevant Article 19 report</h2>
-                <p>base-uri:
-                    <span>
-                        <xsl:value-of select="$base-uri"/>
-                    </span>
-                </p>
-                <p>document-uri:
-                    <span>
-                        <xsl:value-of select="$document-uri"/>
-                    </span>
-                </p>
-                <p>envelope-url:
-                    <span>
-                        <xsl:value-of select="$envelope-url"/>
-                    </span>
-                </p>
                 <p>The verified report was drawn up for the following undertaking:</p>
                 <div>
                     <p>CompanyName:
@@ -149,26 +149,16 @@
                     (report URL in the EEA’s business data repository, submission date and time):
                 </p>
                 <div>
-                    <p>Acceptance status:
-                        <xsl:choose>
-                            <xsl:when test="$envelope/@released = 'true'">
-                                <span class="accepted">Data delivery is acceptable</span>
-                            </xsl:when>
-                            <xsl:when test="$envelope/@released = 'false'">
-                                <span class="denied">Data delivery is acceptable</span>
-                            </xsl:when>
-                        </xsl:choose>
-                    </p>
                     <p>URL:
                         <a>
                             <xsl:attribute name="href">
-                                <xsl:value-of select="$envelope/link"/>
+                                <xsl:value-of select="URL"/>
                             </xsl:attribute>
-                            <xsl:value-of select="$envelope/link"/>
+                            <xsl:value-of select="URL"/>
                         </a>
                     </p>
                     <p>Reported:
-                        <span><xsl:value-of select="concat(substring($envelope/date, 1, 10), ' ', substring($envelope/date, 12, 5))"/></span>
+                        <span><xsl:value-of select="concat(substring(ReportedDate, 1, 10), ' ', substring(ReportedDate, 12, 5))"/></span>
                     </p>
                 </div>
                 <h2>(2) Substance of Verification</h2>
