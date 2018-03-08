@@ -77,6 +77,16 @@
             <body>
                 <h1>F-Gas Regulation - Verification and submission of the verification document for bulk importers and producers</h1>
                 <h2>(1) Identification of company, year and relevant Article 19 report</h2>
+                <p>base-uri:
+                    <span>
+                        <xsl:value-of select="$base-uri"/>
+                    </span>
+                </p>
+                <p>envelope-url:
+                    <span>
+                        <xsl:value-of select="$envelope-url"/>
+                    </span>
+                </p>
                 <p>The verified report was drawn up for the following undertaking:</p>
                 <div>
                     <p>CompanyName:
@@ -173,6 +183,7 @@ as given in <span>section 9F</span> of the Art. 19 data report identified above<
                                 <xsl:when test="BV_9F='BV_9F_2'">The verification report concludes in a <span>higher</span> quota need than given in 9F.</xsl:when>
                                 <xsl:when test="BV_9F='BV_9F_3'">The verification report concludes in a <span>lower</span> quota need than given in 9F.</xsl:when>
                                 <xsl:when test="BV_9F='BV_9F_4'">The verification report does not make any statement as regards the quota need.</xsl:when>
+                                <xsl:otherwise>No statement</xsl:otherwise>
                             </xsl:choose>
                         </td>
                     </tr>
@@ -186,6 +197,7 @@ as given in <span>section 9F</span> of the Art. 19 data report identified above<
                                 <xsl:when test="BV_5C='BV_5C_2'">The verification report fully confirms the amounts reported in section 5C_exempted.</xsl:when>
                                 <xsl:when test="BV_5C='BV_5C_3'">The verification report does NOT fully confirm the amounts reported in section 5C_exempted.</xsl:when>
                                 <xsl:when test="BV_5C='BV_5C_4'">The verification report does not make a statement as regards the amounts reported in section 5C_exempted.</xsl:when>
+                                <xsl:otherwise>No statement</xsl:otherwise>
                             </xsl:choose>
                         </td>
                     </tr>
@@ -199,6 +211,7 @@ as given in <span>section 10A</span> of the Art. 19 data report identified above
                                 <xsl:when test="BV_10A='BV_10A_2'">The verification report fully confirms the amounts reported in section 10A.</xsl:when>
                                 <xsl:when test="BV_10A='BV_10A_3'">The verification report does NOT fully confirm the amounts reported in section 10A. </xsl:when>
                                 <xsl:when test="BV_10A='BV_10A_4'">The verification report does not make a statement as regards the amounts reported in section 10A.</xsl:when>
+                                <xsl:otherwise>No statement</xsl:otherwise>
                             </xsl:choose>
                         </td>
                     </tr>
