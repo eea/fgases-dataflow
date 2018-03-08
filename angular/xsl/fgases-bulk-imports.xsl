@@ -77,16 +77,6 @@
             <body>
                 <h1>F-Gas Regulation - Verification and submission of the verification document for bulk importers and producers</h1>
                 <h2>(1) Identification of company, year and relevant Article 19 report</h2>
-                <p>base-uri:
-                    <span>
-                        <xsl:value-of select="$base-uri"/>
-                    </span>
-                </p>
-                <p>envelope-url:
-                    <span>
-                        <xsl:value-of select="$envelope-url"/>
-                    </span>
-                </p>
                 <p>The verified report was drawn up for the following undertaking:</p>
                 <div>
                     <p>CompanyName:
