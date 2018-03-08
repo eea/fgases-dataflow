@@ -3,6 +3,7 @@
                 version="2.0">
 
     <xsl:variable name="base-uri" select="base-uri(.)"/>
+    <xsl:variable name="document-uri" select="document-uri(.)"/>
     <xsl:variable name="proxy-uri" select="substring-before($base-uri, 'source_url=')"/>
 
     <xsl:template match="Verification">
@@ -80,6 +81,11 @@
                 <p>base-uri:
                     <span>
                         <xsl:value-of select="$base-uri"/>
+                    </span>
+                </p>
+                <p>document-uri:
+                    <span>
+                        <xsl:value-of select="$document-uri"/>
                     </span>
                 </p>
                 <p>envelope-url:
