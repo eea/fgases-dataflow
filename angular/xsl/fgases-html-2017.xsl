@@ -2,6 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 				xmlns:xs="http://www.w3.org/2001/XMLSchema"
 				xmlns:fgas="http://eionet.europa.eu/dataflows/fgas"
+				xmlns:functx="http://www.functx.com"
 				version="2.0">
 	<xsl:output method="xhtml" indent="yes"
 				doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -144,6 +145,33 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
+	<xsl:function name="functx:reverse-string" as="xs:string">
+		<xsl:param name="arg" as="xs:string?"/>
+		<xsl:sequence select="codepoints-to-string(reverse(string-to-codepoints($arg)))"/>
+	</xsl:function>
+
+	<xsl:function name="fgas:format-number-with-space">
+		<xsl:param name="num"/>
+		<xsl:value-of select="functx:reverse-string(replace(functx:reverse-string($num), '(\d{3})(\d{1,3})', '$1 $2'))"/>
+	</xsl:function>
+
+	<xsl:function name="fgas:format-number-with-space-multi">
+		<xsl:param name="num"/>
+		<xsl:variable name="formatted-value" select="fgas:format-number-with-space($num)"/>
+		<!--<xsl:message>
+			num: <xsl:value-of select="$num"/>
+			format: <xsl:value-of select="$formatted-value"/>
+		</xsl:message>-->
+		<xsl:choose>
+			<xsl:when test="$formatted-value != $num">
+				<xsl:value-of select="fgas:format-number-with-space-multi($formatted-value)"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$formatted-value"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:function>
 
 	<xsl:function name="fgas:isHfcBased" as="xs:boolean">
 		<xsl:param name="gasId" />
@@ -8233,11 +8261,11 @@
 		<xsl:choose>
 			<xsl:when test="string-length($num) &gt; 0 and (number($num) &gt; 0 or number($num) &lt;= 0)">
 				<xsl:choose>
-					<xsl:when test="contains($num, '.') = false()"><xsl:value-of select="$num"/><span style="visibility:hidden">.000</span></xsl:when>
-					<xsl:when test="string-length(substring-after($num, '.')) = 0"><xsl:value-of select="$num"/><span style="visibility:hidden">000</span></xsl:when>
-					<xsl:when test="string-length(substring-after($num, '.')) = 1"><xsl:value-of select="$num"/><span style="visibility:hidden">00</span></xsl:when>
-					<xsl:when test="string-length(substring-after($num, '.')) = 2"><xsl:value-of select="$num"/><span style="visibility:hidden">0</span></xsl:when>
-					<xsl:when test="contains($num, '.') = true()"><xsl:value-of select="substring-before($num, '.')"/>.<xsl:value-of select="substring-after($num, '.')"/></xsl:when>
+					<xsl:when test="contains($num, '.') = false()"><xsl:value-of select="fgas:format-number-with-space-multi($num)"/><span style="visibility:hidden">.000</span></xsl:when>
+					<xsl:when test="string-length(substring-after($num, '.')) = 0"><xsl:value-of select="fgas:format-number-with-space-multi($num)"/><span style="visibility:hidden">000</span></xsl:when>
+					<xsl:when test="string-length(substring-after($num, '.')) = 1"><xsl:value-of select="fgas:format-number-with-space-multi($num)"/><span style="visibility:hidden">00</span></xsl:when>
+					<xsl:when test="string-length(substring-after($num, '.')) = 2"><xsl:value-of select="fgas:format-number-with-space-multi($num)"/><span style="visibility:hidden">0</span></xsl:when>
+					<xsl:when test="contains($num, '.') = true()"><xsl:value-of select="fgas:format-number-with-space-multi(substring-before($num, '.'))"/>.<xsl:value-of select="substring-after($num, '.')"/></xsl:when>
 					<xsl:otherwise><xsl:value-of select="$num"/></xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
