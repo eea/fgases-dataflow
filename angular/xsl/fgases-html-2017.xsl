@@ -7,22 +7,13 @@
 				doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 				doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
 				omit-xml-declaration="yes"/>
-	<!--<xsl:variable name="schema" select="document('https://svn.eionet.europa.eu/repositories/Reportnet/Dataflows/FGases/angular/schema/FGasesReporting2015.xsd')/xs:schema"/>-->
-	<!--<xsl:variable name="labels" select="document('http://converters.eionet.europa.eu/xmlfile/article17-labels.xml')/labels"/>-->
-	<!--<xsl:variable name="codelists" select="document('http://converters.eionet.europa.eu/xmlfile/fgases-codelists-en.xml')/Article17Codelists"/>-->
 
-	<!--<xsl:variable name="codelistsUrl">
-        <xsl:choose>
-            <xsl:when test="doc-available(concat($xmlPath, 'fgases-codelists-', $labelsLanguage ,'.xml'))">
-                <xsl:value-of select="concat($xmlPath, 'fgases-codelists-', $labelsLanguage ,'.xml')"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="concat($xmlPath, 'fgases-codelists-en.xml')"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
-    <xsl:variable name="codelists" select="document($codelistsUrl)/LCPCodelists"/>
-   -->
+	<xsl:param name="envelopeurl" />
+	<xsl:param name="filename" />
+	<xsl:param name="envelopepath" />
+
+	<xsl:variable name="current-date" select="current-dateTime()"/>
+
 	<xsl:variable name="labelsLanguage" select="FGasesReporting/@xml:lang"/>
 	<xsl:variable name="xmlPath" select="'../xmlfile/'"/>
 	<xsl:variable name="labelsUrl">
@@ -41,7 +32,6 @@
 	<xsl:template name="getLabel" >
 		<xsl:param name="labelName"/>
 		<xsl:param name="labelPath" select="''"/>
-		<!--<xsl:param name="lang" select="'en'"/>-->
 
 		<xsl:variable name="labelValue" select="$labels/descendant-or-self::*[local-name() = $labelName]"/>
 
@@ -154,31 +144,6 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-
-	<!--<xsl:template name="getLabelInCodelist" >
-        <xsl:param name="labelName"/>
-
-        <xsl:param name="schemaElementName" select="''"/>
-        <xsl:param name="codelistElementName"  select="substring($schemaElementName,1,number(string-length($schemaElementName)-4))"/>
-        --><!--<xsl:param name="lang" select="'en'"/>--><!--
-        <xsl:variable name="codelistValue" select="$codelists/*[local-name() = $codelistElementName]/*/label[../code = $labelName]"/>
-        <xsl:choose>
-            <xsl:when test="string-length($codelistValue) &gt; 0">
-                <xsl:value-of select="$codelistValue"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:variable name="labelValue" select="$schema/xs:simpleType[@name = $schemaElementName]//xs:enumeration[@value = $labelName]/xs:annotation/xs:documentation"/>
-                <xsl:choose>
-                    <xsl:when test="string-length($labelValue[1]) &gt; 0">
-                        <xsl:value-of select="$labelValue"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="$labelName"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>-->
 
 	<xsl:function name="fgas:isHfcBased" as="xs:boolean">
 		<xsl:param name="gasId" />
@@ -692,7 +657,22 @@
 						<xsl:with-param name="labelName" select="'Questionnaire-title'"/>
 					</xsl:call-template>
 				</h1>
-
+				<div>
+					<p><span>XML file: </span><a><xsl:attribute name="href"><xsl:value-of select="concat($envelopeurl,'/',$filename)"/></xsl:attribute>
+						<xsl:attribute name="target"><xsl:value-of select="'blank_'"/></xsl:attribute>
+						<xsl:value-of select="$filename"/></a></p>
+					<p><span>XML file converted at: </span>
+						<xsl:value-of select="concat(substring(string($current-date), 1, 10), ' ', substring(string($current-date), 12, 5))"/>
+					</p>
+					<p><span>Converted from: </span>
+						<a>
+							<xsl:attribute name="href">
+								<xsl:value-of select="$envelopeurl"/>
+							</xsl:attribute>
+							<xsl:value-of select="$envelopeurl"/>
+						</a>
+					</p>
+				</div>
 				<xsl:apply-templates />
 				<div class="padding-bottom"/>
 			</body>

@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fn="http://www.w3.org/2005/xpath-functions"
                 version="2.0">
+    <xsl:param name="envelopeurl" />
+    <xsl:param name="filename" />
+    <xsl:param name="envelopepath" />
 
-    <xsl:variable name="base-uri" select="fn:base-uri(.)"/>
-    <xsl:variable name="document-uri" select="fn:document-uri(.)"/>
-    <xsl:variable name="proxy-uri" select="substring-before($base-uri, 'source_url=')"/>
+    <xsl:variable name="current-date" select="current-dateTime()"/>
 
     <xsl:template match="Verification">
-
-        <xsl:variable name="envelope-url-from-file"
-                      select="normalize-space(replace(ReportFiles/ReportFile[1]/text(), '[^\\/]+$', ''))"/>
-        <xsl:variable name="envelope-url-complete"
-                      select="concat($proxy-uri,'source_url=', normalize-space($envelope-url-from-file), 'xml')"/>
-        <!--<xsl:variable name="envelope-url"-->
-                      <!--select="'bulk_v2.xml'"/>-->
-        <xsl:variable name="envelope" select="document($envelope-url-complete)/envelope"/>
-        <xsl:variable name="current-date" select="current-dateTime()"/>
         <html>
             <head>
                 <title>Factsheet</title>
@@ -79,19 +71,22 @@
             </head>
             <body>
                 <h1>F-Gas Regulation - Verification and submission of the verification document for bulk importers and producers</h1>
-                <p>File converted at
-                    <span>
-                        <xsl:value-of select="concat(substring(string($current-date), 1, 10), ' ', substring(string($current-date), 12, 5))"/>
-                    </span>
-                </p>
-                <p>Converted from
-                    <a>
-                        <xsl:attribute name="href">
-                            <xsl:value-of select="$envelope-url-from-file"/>
-                        </xsl:attribute>
-                        <xsl:value-of select="$envelope-url-from-file"/>
-                    </a>
-                </p>
+                <div>
+                    <p><span>XML file: </span><a><xsl:attribute name="href"><xsl:value-of select="concat($envelopeurl,'/',$filename)"/></xsl:attribute>
+                        <xsl:attribute name="target"><xsl:value-of select="'blank_'"/></xsl:attribute>
+                        <xsl:value-of select="$filename"/></a></p>
+                    <p><span>XML file converted at: </span>
+                            <xsl:value-of select="concat(substring(string($current-date), 1, 10), ' ', substring(string($current-date), 12, 5))"/>
+                    </p>
+                    <p><span>Converted from: </span>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:value-of select="$envelopeurl"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="$envelopeurl"/>
+                        </a>
+                    </p>
+                </div>
                 <h2>(1) Identification of company, year and relevant Article 19 report</h2>
                 <p>The verified report was drawn up for the following undertaking:</p>
                 <div>
