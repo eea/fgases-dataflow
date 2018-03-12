@@ -4,7 +4,7 @@ module namespace fgases = 'http://converters.eionet.europa.eu/fgases/helper';
 
 import module namespace cutil = "http://converters.eionet.europa.eu/fgases/cutil" at "fgases-common-util-2017.xquery";
 
-declare variable $fgases:gas-list := doc('../../angular/xml/fgases-gases.xml');
+declare variable $fgases:gas-list := doc('http://converterstest.eionet.europa.eu/xmlfile/fgases-gases.xml');
 
 declare function fgases:get-gas-by-id($gasId as xs:string)
 as element(Gas)
