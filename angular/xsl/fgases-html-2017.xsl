@@ -12,6 +12,7 @@
 	<xsl:param name="envelopeurl" />
 	<xsl:param name="filename" />
 	<xsl:param name="envelopepath" />
+	<xsl:param name="acceptable" />
 
 	<xsl:variable name="current-date" select="current-dateTime()"/>
 
@@ -699,6 +700,19 @@
 							</xsl:attribute>
 							<xsl:value-of select="$envelopeurl"/>
 						</a>
+					</p>
+					<p><span>Envelope status: </span>
+						<xsl:choose>
+							<xsl:when test="$acceptable = 'true'">
+								Accepted
+							</xsl:when>
+							<xsl:when test="$acceptable = 'false'">
+								Not Accepted
+							</xsl:when>
+							<xsl:otherwise>
+								Unknown
+							</xsl:otherwise>
+						</xsl:choose>
 					</p>
 				</div>
 				<xsl:apply-templates />
