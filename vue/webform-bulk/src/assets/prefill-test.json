@@ -1,0 +1,24 @@
+{
+		 "Verification" :{
+		 "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+		 "@xsi:schemaLocation": "http://dd.eionet.europa.eu/namespace.jsp?ns_id=802 http://dd.eionet.europa.eu/schemas/fgases-2017/f-gases-bulk-verification-2018.xsd",
+		   "Company": {
+		      "@status": "confirmed",
+		      "CompanyId": null,
+		      "CompanyName": null,
+		      "Country": {
+		      	"Code": null,
+		       	"Type": null,
+		       	"Name": null
+		   		},
+		      "VATNumber": null
+		    },
+		   "Year": null,
+		   "URL": "https://bdr-test.eionet.europa.eu/fgases/be/10086/envwnmkfg",
+		   "ReportedDate": "2002-05-30T09:00:00",
+		   "BV_9F": "BV_9F_3",
+		   "BV_5C": "BV_5C_1",
+		   "BV_10A": "BV_10A_2",
+		   "ReportFile": null
+		 }
+		}

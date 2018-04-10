@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Verification xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dd.eionet.europa.eu/namespace.jsp?ns_id=802 http://dd.eionet.europa.eu/schemas/fgases-2017/f-gases-bulk-verification-2018.xsd">
+	<Company status="confirmed">
+		<CompanyId></CompanyId>
+		<CompanyName></CompanyName>
+		<Country>
+			<Code></Code>
+			<Type></Type>
+			<Name></Name>
+		</Country>
+		<VATNumber></VATNumber>
+		 <EuLegalRepresentativeCompany>
+	      <CompanyId></CompanyId>
+	      <CompanyName></CompanyName>
+	      <VATNumber></VATNumber>
+	    </EuLegalRepresentativeCompany>
+	</Company>
+	<Year></Year>
+	<URL></URL>
+	<ReportedDate></ReportedDate>
+	<BV_9F>BV_9F_5</BV_9F>
+	<BV_5C>BV_5C_5</BV_5C>
+	<BV_10A>BV_10A_5</BV_10A>
+	<ReportFile></ReportFile>
+</Verification>

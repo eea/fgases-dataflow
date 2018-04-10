@@ -1,0 +1,53 @@
+{
+  "website": null, 
+  "domain": "FGAS", 
+  "oldcompany_id": null, 
+  "euLegalRepresentativeCompany": {
+    "name": "NM1621", 
+    "vatNumber": "EUVAT1621", 
+    "contactPersonFirstName": "fname--27337", 
+    "address": {
+      "city": "Roosendaal", 
+      "country": {
+        "code": "NL", 
+        "type": "EU_TYPE", 
+        "name": "Netherlands"
+      }, 
+      "number": "1", 
+      "zipCode": "cp20827", 
+      "street": "str--20827"
+    }, 
+    "contactPersonEmailAddress": "27337email@climaOds2010.yyy", 
+    "contactPersonLastName": "lname--27337"
+  }, 
+  "id": 28302, 
+  "Former_Company_no_2007-2010": null, 
+  "portal_registration_date": "2017-06-22T00:00:00", 
+  "vat": null, 
+  "status": "VALID", 
+  "phone": "+123456789", 
+  "businessProfile": "fgas.importer.of.refrigeration.ac..and.heatpump.equipment.containing.hfcs", 
+  "address": {
+    "city": "Denver", 
+    "country": {
+      "code": "US", 
+      "type": "NONEU_TYPE", 
+      "name": "United States of America"
+    }, 
+    "number": "1", 
+    "zipCode": "cp20826", 
+    "street": "str--20826"
+  }, 
+  "types": "FGAS_IMPORTER_OF_EQUIPMENT_HFCS,FGAS_FEEDSTOCK_USER_HFCS", 
+  "name": "NMORGANIZATION--28302", 
+  "country_code_orig": "US", 
+  "contactPersons": [
+    {
+      "userName": "USER28244", 
+      "firstName": "fname--27279", 
+      "lastName": "lname--27279", 
+      "emailAddress": "27279email@climaOds2010.yyy"
+    }
+  ], 
+  "@type": "FGASUndertaking"
+}

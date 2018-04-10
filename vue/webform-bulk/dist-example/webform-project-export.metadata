@@ -1,0 +1,72 @@
+{
+  "projectFiles": [
+  {
+    "title": "app.css",
+    "file":
+    {
+      "name": "app.css"
+    },
+    "active": false,
+    "localForm": false,
+    "remoteForm": false,
+    "fileType": "FILE"
+  },
+  {
+    "title": "app.js",
+    "file":
+    {
+      "name": "app.js"
+    },
+    "active": false,
+    "localForm": false,
+    "remoteForm": false,
+    "fileType": "FILE"
+  },
+  {
+    "title": "manifest.js",
+    "file":
+    {
+      "name": "manifest.js"
+    },
+    "active": false,
+    "localForm": false,
+    "remoteForm": false,
+    "fileType": "FILE"
+  },
+  {
+    "title": "Bulk import",
+    "file":
+    {
+      "name": "index.html"
+    },
+    "newXmlFileName": "fgases.xml",
+    "emptyInstanceUrl": "https://webformsbdr.eionet.europa.eu/download/project/fgases-bulk-verification-2018/file/fgases-bulk-instance-empty.xml",
+    "xmlSchema": "http://dd.eionet.europa.eu/schemas/fgases-2017/f-gases-bulk-verification-2018.xsd",
+    "active": true,
+    "localForm": true,
+    "remoteForm": true,
+    "fileType": "WEBFORM"
+  },
+  {
+    "title": "vendor.js",
+    "file":
+    {
+      "name": "vendor.js"
+    },
+    "active": false,
+    "localForm": false,
+    "remoteForm": false,
+    "fileType": "FILE"
+  },
+  {
+    "title": "fgases-bulk-instance-empty.xml",
+    "file":
+    {
+      "name": "fgases-bulk-instance-empty.xml"
+    },
+    "active": false,
+    "localForm": false,
+    "remoteForm": false,
+    "fileType": "FILE"
+  }]
+}

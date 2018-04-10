@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Verification>
+	<Company status="confirmed">
+		<CompanyId>9000</CompanyId>
+		<CompanyName>Eau de Web</CompanyName>
+		<Country>
+			<Code></Code>
+			<Type></Type>
+			<Name>Romania</Name>
+		</Country>
+		<VATNumber>9001</VATNumber>
+		<EuLegalRepresentativeCompany>
+			<CompanyId></CompanyId>
+			<CompanyName></CompanyName>
+			<VATNumber></VATNumber>
+		</EuLegalRepresentativeCompany>
+	</Company>
+	<Year>2018</Year>
+	<EV_3.1>EV_3.1_1</EV_3.1>
+	<URL>https://bdr.eionet.europa.eu/fgases/test</URL>
+	<ReportedDate>2002-05-30T09:00:00</ReportedDate>
+	<EV_3.2_a>EV_3.2_a_1</EV_3.2_a>
+	<EV_3.2_b>EV_3.2_b_2</EV_3.2_b>
+	<EV_3.2_c>EV_3.2_c_1</EV_3.2_c>
+	<EV_3.2_d>EV_3.2_d_2</EV_3.2_d>
+	<ReportFile>Some file</ReportFile>
+</Verification>
