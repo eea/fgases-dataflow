@@ -13,6 +13,7 @@
 	<xsl:param name="filename" />
 	<xsl:param name="envelopepath" />
 	<xsl:param name="acceptable" />
+	<xsl:param name="submissionDate" />
 
 	<xsl:variable name="current-date" select="current-dateTime()"/>
 
@@ -693,6 +694,11 @@
 					<p><span>XML file converted at: </span>
 						<xsl:value-of select="concat(substring(string($current-date), 1, 10), ' ', substring(string($current-date), 12, 5))"/>
 					</p>
+					<xsl:if test="$submissionDate != ''">
+						<p><span>Envelope submission date: </span>
+							<xsl:value-of select="concat(substring(string($submissionDate), 1, 10), ' ', substring(string($submissionDate), 12, 5))"/>
+						</p>
+					</xsl:if>
 					<p><span>Converted from: </span>
 						<a>
 							<xsl:attribute name="href">
@@ -704,13 +710,13 @@
 					<p><span>Envelope status: </span>
 						<xsl:choose>
 							<xsl:when test="$acceptable = 'true'">
-								Accepted
+								Accepted by automated quality control
 							</xsl:when>
 							<xsl:when test="$acceptable = 'false'">
-								Not Accepted
+								Rejected by automated quality control
 							</xsl:when>
 							<xsl:otherwise>
-								Unknown
+								Draft envelope (not yet submitted)
 							</xsl:otherwise>
 						</xsl:choose>
 					</p>
