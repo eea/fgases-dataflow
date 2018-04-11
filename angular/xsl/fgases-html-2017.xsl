@@ -694,7 +694,7 @@
 					<p><span>XML file converted at: </span>
 						<xsl:value-of select="concat(substring(string($current-date), 1, 10), ' ', substring(string($current-date), 12, 5))"/>
 					</p>
-					<xsl:if test="$submissionDate != ''">
+					<xsl:if test="$acceptable = 'true' or $acceptable = 'false'">
 						<p><span>Envelope submission date: </span>
 							<xsl:value-of select="concat(substring(string($submissionDate), 1, 10), ' ', substring(string($submissionDate), 12, 5))"/>
 						</p>
