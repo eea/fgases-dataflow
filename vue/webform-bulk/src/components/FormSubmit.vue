@@ -146,12 +146,10 @@ export default {
 		  		this.formSubmited = true;
 		  		console.log(this.EU_type)
 		  		saveInstance(this.EU_type)
-		  		// console.log(saveInstance(this.EU_type))
 		  	} else {
 		  		this.formSubmited = true;
 		  		console.log(this.NONEU_type)
 		  		saveInstance(this.NONEU_type)
-		  		// console.log(saveInstance(this.NONEU_type))
 		  	}
 	  	}else {
 	  		alert('THE URL IS INVALID')

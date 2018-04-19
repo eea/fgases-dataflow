@@ -4,13 +4,11 @@
     <div id="circlesLoader">
     <div class="circle">
         <div class="innerRing">
-            
         </div>
     </div>
     <div id="firstCircle">
         <div id="secondCircle">
             <div id="thirdCircle">
-                
             </div>
         </div>
     </div>
@@ -175,9 +173,6 @@
 
 import {isTestSession, getCompanyData, companyId,getInstance, getEnvelopeXML, envelope, getURLlist, uploadFile, getSupportingFiles} from '../api.js';
 import formSubmit from './FormSubmit'
-import {envelopexml} from '../assets/envelopexml.js';
-
-
 const xml = require("xml-parse");
 
 export default {
@@ -249,51 +244,34 @@ export default {
     }
   },
 created(){
-
-this.checkforIe();
-
- if(!isTestSession){
-     getCompanyData(companyId)
-          .then((response) => {
-            this.form.company = response.data;
-            this.type = response.data.address.country.type
-            this.isCompany = true;
-              getURLlist()
-                  .then((response) => {
-                    if(response.data){
-                      this.form.url.options = response.data
-                      getInstance().then((response) => {
-                        this.prefillForm(response.data)
-                        this.isLoading = false;
-                      })
-                    } else {
-                      getInstance().then((response) => {
-                        this.prefillForm(response.data)
-                        this.isLoading = false;
-                      })
-                    }
-                  });
-            });
-    }else {
-      this.form.url.options = getURLlist()
-      this.isCompany = true;
-      this.form.company = getCompanyData(companyId)
-      this.type = this.form.company.address.country.type
-      this.prefillForm(getInstance())
-      this.isLoading = false;
-    }
+   this.checkforIe();
+   getCompanyData(companyId)
+        .then((response) => {
+          this.form.company = response.data;
+          this.type = response.data.address.country.type
+          this.isCompany = true;
+            getURLlist()
+                .then((response) => {
+                  if(response.data){
+                    this.form.url.options = response.data
+                    getInstance().then((response) => {
+                      this.prefillForm(response.data)
+                      this.isLoading = false;
+                    })
+                  } else {
+                    getInstance().then((response) => {
+                      this.prefillForm(response.data)
+                      this.isLoading = false;
+                    })
+                  }
+                });
+          });
     const date = new Date()
     const year = date.getFullYear();
     this.form.year = [year - 1];
   },
 
   methods: {
-  isLast(object, index){
-      if(Object.keys(object).length -1 === index) {
-        return true
-      }
-  },
-
   removeEnvelopeFromFiles(file){
     let returnFile = file.split('/')
     return returnFile[returnFile.length -1]
@@ -355,8 +333,7 @@ this.checkforIe();
       const link = validationXML[1].childNodes[6].childNodes[0].text
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
-      const validatedLink = this.validateLink(link)
-      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd'){
+      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd'){
         this.isValidUrl = true;
         console.log('isvalid', this.isValidUrl)
       }else {
@@ -372,8 +349,7 @@ this.checkforIe();
       const link = validationXML[1].childNodes[6].childNodes[0].text
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
-      const validatedLink = this.validateLink(link)
-      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd'){
+      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd'){
         this.isValidUrl = true;
       }
     }
@@ -400,21 +376,7 @@ this.checkforIe();
         this.validateURL(data.Verification.URL)
   },
 
-  validateLink(link){
-    // if link validation is necessarry, place it here
-
-    // let link_arr = link.split('/')
-    // if(link_arr[3] === 'fgases' && link_arr[5]/1 == link_arr[5]){
-    //   return true
-    // }else {
-    //   return false
-    // }
-    return true
-  },
   closeReport(){
-    console.log('-------------------CLOSE REPORT -----------------')
-    console.log('validurl', this.isValidUrl)
-    console.log('hasfiles', this.hasFiles)
       if(this.formSaved === false) {
        let r = confirm('You did not save your last modifications. Are you sure you want to leave without saving ?')
            if (r == true) {
@@ -438,22 +400,14 @@ this.checkforIe();
                   } else {
                     return
                   }
-            }
+      }
     }
 
   },
 
   printForm(){
     window.print()
-  },
-
-
-  onSubmit(){
-      console.log('submit')
-    },
-    onReset(){
-      console.log('reset')
-    },
+  }
   },
   watch: {
     'form.substances.BV_9F.selected': {
@@ -482,7 +436,6 @@ this.checkforIe();
     },
     'from.url.selected': {
       handler: function(after, before){
-          console.log('after',after)
       },
       deep: true,
     }
@@ -495,20 +448,6 @@ this.checkforIe();
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.tab-navigation {
-/*  position: absolute;
-    top: 0;
-    right: 2rem;
-    z-index: 1;*/
-        /*position: fixed;*/
-    /*bottom: 0;*/
-    /*left: 0;*/
-    /*z-index: 1;*/
-    /* width: 100%; */
-    /*right: 0;*/
-    /*background: white;*/
-    /*box-shadow: 2px -1px 3px #aaa;*/
-}
 .bold {
   font-weight: bold;
   text-align: right;
