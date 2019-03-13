@@ -20,7 +20,8 @@
 		   "EV_3.2_a": null,
 		   "EV_3.2_b": null,
 		   "EV_3.2_c": null,
-		   "EV_3.2_d": null,
+			 "EV_3.2_d": null,
+			 "EV_3.2_CO2e" : null,
 		   "ReportFile": null
 		 }
 		}

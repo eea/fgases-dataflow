@@ -116,6 +116,16 @@
                 </b-form-radio-group>
                 <div v-if="substance.notes" v-html="substance.notes"></div>
               </b-form-group>
+              <div>
+                  <p><strong>Only for companies below the 500t CO2e threshold for the reporting obligation under Art 19 of the F-gas Regulation:</strong> Please enter the amount of quota authorisations (in t CO2e, rounded to the closest full tonne), as confirmed in the independent auditor’s report, and required to cover the HFCs you placed on the market contained in imported refrigeration, air conditioning or heat pump equipment, in the calendar year this submission refers to.</p>                
+                  <b-form-input v-model="form['EV_3.2_CO2e']"
+                      type="number" step="1" min="0" oninput="this.value = this.value.replace('.', '');"
+                      v-on:blur.native="showModal"
+                      placeholder="Enter value"></b-form-input>
+                  <b-modal v-model="modalShow" hide-header="true" ok-only >
+                      You entered an authorisation demand of 500 t CO2e or above. In this case, please make sure to submit a report pursuant to Article 19 of Regulation (EU) No 517/2014 covering Sections 11, 12, and 13 of the reporting forms.”
+                  </b-modal>                      
+              </div>
 
               <!-- <b-button type="reset" @click="onReset" variant="danger">Reset</b-button> -->
             </b-form>
@@ -192,6 +202,7 @@
 import {isTestSession, getCompanyData, companyId,getInstance, getEnvelopeXML, envelope, getURLlist, uploadFile, getSupportingFiles} from '../api.js';
 import formSubmit from './FormSubmit'
 import {envelopexml} from '../assets/envelopexml.js';
+import {ConstantValues} from '../assets/consts.js';
 
 
 
@@ -221,6 +232,7 @@ export default {
       formSaved: false,
       isValidUrl: true,
       isCompany: false,
+      modalShow : false,
       type: null,
       art19_pursuant: '',
       form: {
@@ -241,7 +253,7 @@ export default {
           options: [
             {text: 'yes', value:'EV_3.1_1'}, {text:'no', value: 'EV_3.1_2'}
           ],
-          description: 'A report pursuant to Article 19 of Regulation (EU) No 517/2014 covering Sections 11, 12, and 13 of the Annex to Implementing Regulation (EU) No 1191/2014 for the calendar year specified above was submitted by the importer of equipment:'
+          description: 'A report pursuant to Article 19 of Regulation (EU) No 517/2014 covering Sections 11, 12, and 13 of the reporting forms for the calendar year specified above was submitted by the importer of equipment:'
         },
 
         substances: {
@@ -264,22 +276,25 @@ export default {
           description:"(b) The information contained in the declaration(s) of conformity and the related <span class='letooltip' title='The related documents are specified in Article 2(2) of Implementing Regulation (EU) No 879/2016 and do for example include customs documentation.'>documents</span> is accurate and complete on the basis of the undertaking's records of relevant transactions, with a reasonable level of assurance:",
         },
           "EV_3.2_c":{
-            description: '(c) In the HFC registry, there was by 31 December of the calendar year specified above sufficient availability of authorisations for all cases where <span class="letooltip" title="According to Annex of Commission Implementing Regulation No 2016/879">option A</span> was chosen in the declaration(s) of conformity: <div class="smaller">In cases where option A has not been used in any declaration of conformity for the calendar year in question it is appropriate to tick “Yes”.</div> ',
+            description: '(c) In the HFC registry, by 31 December of the calendar year specified above there was sufficient availability of authorisations for all cases where <span class="letooltip" title="According to Annex of Commission Implementing Regulation No 2016/879">option A</span> was chosen in the declaration(s) of conformity: ',
           options: [
               {text: 'Yes.', value:'EV_3.2_c_1'},
-              {text: 'No',value: 'EV_3.2_c_2'}
+              {text: 'No',value: 'EV_3.2_c_2'},
+              {text: 'Option A has not been used in any declaration of conformity for the specified year',value: 'EV_3.2_c_3'}
           ],
           selected: null,
           },
           "EV_3.2_d":{
-            description: '(d) There is a declaration by the undertaking placing the hydrofluorocarbons on the market in accordance with Article 2(2)(d) of Commission Implementing Regulation (EU) No 879/2016 for all cases where option B  was chosen in the declaration(s) of conformity, covering the relevant quantities. <div class="smaller">In cases where option B has not been used in any declaration of conformity for the calendar year in question it is appropriate to tick “Yes”.</div>',
+            description: '(d) There is a declaration by the undertaking placing the hydrofluorocarbons on the market in accordance with Article 2(2)(d) of Commission Implementing Regulation (EU) No 879/2016 for all cases where <span class="letooltip" title="According to Annex of Commission Implementing Regulation No 2016/879">option B</span>  was chosen in the declaration(s) of conformity, covering the relevant quantities. ',
           options: [
               {text: 'Yes.', value:'EV_3.2_d_1'},
-              {text: 'No',value: 'EV_3.2_d_2'}
+              {text: 'No',value: 'EV_3.2_d_2'},
+              {text: 'Option B has not been used in any declaration of conformity for the specified year',value: 'EV_3.2_d_3'}
           ],
           selected: null,
-          } 
-        }
+          }     
+        },
+        "EV_3.2_CO2e" : null             
       },
     }
   },
@@ -315,16 +330,19 @@ export default {
     form31towatch() {
       return this.form["EV_3.1"].selected
     },
-
-
   },
 
 
   methods: {
-  isLast(object, index){
-      if(Object.keys(object).length -1 === index) {
-        return true
-      }
+  function(object, index){
+    if(Object.keys(object).length -1 === index) {
+      return true
+    }
+  },
+  showModal (event) {
+    if(event.target.value >= ConstantValues.MAX_AMOUNT) {
+      this.modalShow = true;
+    }
   },
 
   handleFormChange(e) {
@@ -386,7 +404,7 @@ export default {
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
       const validatedLink = this.validateLink(link)
-      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd'){
+      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd'){
         this.isValidUrl = true;
       }else {
         this.isValidUrl = false;
@@ -402,7 +420,7 @@ export default {
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
       const validatedLink = this.validateLink(link)
-      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd'){
+      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd'){
         this.isValidUrl = true;
       }
     }
@@ -423,7 +441,8 @@ export default {
         this.validation["EV_3.2_a"] = data.Verification["EV_3.2_a"] 
         this.validation["EV_3.2_b"] = data.Verification["EV_3.2_b"] 
         this.validation["EV_3.2_c"] = data.Verification["EV_3.2_c"] 
-        this.validation["EV_3.2_d"] = data.Verification["EV_3.2_d"] 
+        this.validation["EV_3.2_d"] = data.Verification["EV_3.2_d"]
+        this.form["EV_3.2_CO2e"] = data.Verification["EV_3.2_CO2e"]
 
         this.form.url.selected = data.Verification.URL
 

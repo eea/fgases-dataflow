@@ -40,8 +40,8 @@
       "name": "index.html"
     },
     "newXmlFileName": "fgases.xml",
-    "emptyInstanceUrl": "https://webformsbdr.eionet.europa.eu/download/project/fgases-equipment-verification-2018/file/fgases-equipment-instance-empty.xml",
-    "xmlSchema": "http://dd.eionet.europa.eu/schemas/fgases-2017/f-gases-equipment-verification-2018.xsd",
+    "emptyInstanceUrl": "https://webformsbdr.eionet.europa.eu/download/project/fgases-equipment-verification-2019/file/fgases-equipment-instance-empty.xml",
+    "xmlSchema": "http://dd.eionet.europa.eu/schemas/fgases-2018/f-gases-equipment-verification-2019.xsd",
     "active": true,
     "localForm": true,
     "remoteForm": true,

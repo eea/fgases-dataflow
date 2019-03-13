@@ -61,6 +61,7 @@ export default {
 		   "EV_3.2_b": "EV_3.2_b_2",
 		   "EV_3.2_c": "EV_3.2_c_1",
 		   "EV_3.2_d": "EV_3.2_d_2",
+		   "EV_3.2_CO2e" : null,
 		   		   "ReportFiles": {
 		   	"ReportFile": null
 		   }
@@ -94,6 +95,7 @@ export default {
 			   "EV_3.2_b": "EV_3.2_b_2",
 			   "EV_3.2_c": "EV_3.2_c_1",
 			   "EV_3.2_d": "EV_3.2_d_2",
+				"EV_3.2_CO2e" : null,			   
 				"ReportFiles": {
 			   	"ReportFile": null
 			   }
@@ -121,7 +123,8 @@ export default {
 	  		this.EU_type.Verification["EV_3.2_a"] = this.completedform.substances["EV_3.2_a"].selected
 	  		this.EU_type.Verification["EV_3.2_b"] = this.completedform.substances["EV_3.2_b"].selected
 	  		this.EU_type.Verification["EV_3.2_c"] = this.completedform.substances["EV_3.2_c"].selected
-	  		this.EU_type.Verification["EV_3.2_d"] = this.completedform.substances["EV_3.2_d"].selected
+			this.EU_type.Verification["EV_3.2_d"] = this.completedform.substances["EV_3.2_d"].selected
+			this.EU_type.Verification["EV_3.2_CO2e"] = this.completedform["EV_3.2_CO2e"]
 	  		this.EU_type.Verification.ReportFiles.ReportFile =  this.escapeSpaces(this.completedform.fileUploaded)
 
 
@@ -138,7 +141,8 @@ export default {
 	  		this.NONEU_type.Verification["EV_3.2_a"] = this.completedform.substances["EV_3.2_a"].selected
 	  		this.NONEU_type.Verification["EV_3.2_b"] = this.completedform.substances["EV_3.2_b"].selected
 	  		this.NONEU_type.Verification["EV_3.2_c"] = this.completedform.substances["EV_3.2_c"].selected
-	  		this.NONEU_type.Verification["EV_3.2_d"] = this.completedform.substances["EV_3.2_d"].selected
+			this.NONEU_type.Verification["EV_3.2_d"] = this.completedform.substances["EV_3.2_d"].selected
+			this.EU_type.Verification["EV_3.2_CO2e"] = this.completedform["EV_3.2_CO2e"]			  
 	  		this.NONEU_type.Verification.ReportFiles.ReportFile =  this.escapeSpaces(this.completedform.fileUploaded)
 	  		
 	  	}
