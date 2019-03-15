@@ -41,7 +41,7 @@ export default {
 		 EU_type: {
 		 "Verification" :{
 		 "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-		 "@xsi:schemaLocation": "http://dd.eionet.europa.eu/namespace.jsp?ns_id=802 http://dd.eionet.europa.eu/schemas/fgases-2017/f-gases-equipment-verification-2018.xsd",
+		 "@xsi:schemaLocation": "http://dd.eionet.europa.eu/namespace.jsp?ns_id=802 http://dd.eionet.europa.eu/schemas/fgases-2018/f-gases-equipment-verification-2019.xsd",
 		   "Company": {
 		      "@status": "confirmed",
 		      "CompanyId": null,
@@ -70,7 +70,7 @@ export default {
 		NONEU_type: {
 		"Verification" :{
 		 "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-		 "@xsi:schemaLocation": "http://dd.eionet.europa.eu/namespace.jsp?ns_id=802 http://dd.eionet.europa.eu/schemas/fgases-2017/f-gases-equipment-verification-2018.xsd",
+		 "@xsi:schemaLocation": "http://dd.eionet.europa.eu/namespace.jsp?ns_id=802 http://dd.eionet.europa.eu/schemas/fgases-2018/f-gases-equipment-verification-2019.xsd",
 			   "Company": {
 			      "@status": "confirmed",
 			      "CompanyId": null,
@@ -142,7 +142,7 @@ export default {
 	  		this.NONEU_type.Verification["EV_3.2_b"] = this.completedform.substances["EV_3.2_b"].selected
 	  		this.NONEU_type.Verification["EV_3.2_c"] = this.completedform.substances["EV_3.2_c"].selected
 			this.NONEU_type.Verification["EV_3.2_d"] = this.completedform.substances["EV_3.2_d"].selected
-			this.EU_type.Verification["EV_3.2_CO2e"] = this.completedform["EV_3.2_CO2e"]			  
+			this.NONEU_type.Verification["EV_3.2_CO2e"] = this.completedform["EV_3.2_CO2e"]			  
 	  		this.NONEU_type.Verification.ReportFiles.ReportFile =  this.escapeSpaces(this.completedform.fileUploaded)
 	  		
 	  	}

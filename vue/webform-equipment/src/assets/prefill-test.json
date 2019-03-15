@@ -1,7 +1,7 @@
 		{
 		 "Verification" :{
 		 "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-		 "@xsi:schemaLocation": "http://dd.eionet.europa.eu/namespace.jsp?ns_id=802 http://dd.eionet.europa.eu/schemas/fgases-2017/f-gases-equipment-verification-2018.xsd",
+		 "@xsi:schemaLocation": "http://dd.eionet.europa.eu/namespace.jsp?ns_id=802 http://dd.eionet.europa.eu/schemas/fgases-2018/f-gases-equipment-verification-2019.xsd",
 		   "Company": {
 		      "@status": "confirmed",
 		      "CompanyId": null,
