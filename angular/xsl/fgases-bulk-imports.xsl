@@ -70,7 +70,7 @@
                 </style>
             </head>
             <body>
-                <h1>F-Gas Regulation - Verification and submission of the verification document for bulk importers and producers</h1>
+                <h1>F-Gas Regulation - Verification and submission of the verification document for HFC producers and bulk importers</h1>
                 <div>
                     <p><span>XML file: </span><a><xsl:attribute name="href"><xsl:value-of select="concat($envelopeurl,'/',$filename)"/></xsl:attribute>
                         <xsl:attribute name="target"><xsl:value-of select="'blank_'"/></xsl:attribute>
