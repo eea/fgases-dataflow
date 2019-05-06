@@ -333,7 +333,7 @@ created(){
       const link = validationXML[1].childNodes[6].childNodes[0].text
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
-      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd'){
+      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd'){
         this.isValidUrl = true;
         console.log('isvalid', this.isValidUrl)
       }else {
@@ -349,7 +349,7 @@ created(){
       const link = validationXML[1].childNodes[6].childNodes[0].text
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
-      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd'){
+      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd'){
         this.isValidUrl = true;
       }
     }
