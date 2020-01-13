@@ -173,7 +173,9 @@
 
 import {isTestSession, getCompanyData, companyId,getInstance, getEnvelopeXML, envelope, getURLlist, uploadFile, getSupportingFiles} from '../api.js';
 import formSubmit from './FormSubmit'
-const xml = require("xml-parse");
+  const xml = require("xml-parse");
+  
+  import {envelopexml} from '../assets/envelopexml.js';
 
 export default {
   name: 'webform',
@@ -243,7 +245,7 @@ export default {
       },
     }
   },
-created(){
+/*created(){
    this.checkforIe();
    getCompanyData(companyId)
         .then((response) => {
@@ -269,8 +271,32 @@ created(){
     const date = new Date()
     const year = date.getFullYear();
     this.form.year = [year - 1];
+  },*/
+  created(){
+   this.checkforIe();
+   let companyData = getCompanyData(companyId);
+    this.form.company = companyData;
+    this.type = companyData.address.country.type;
+    this.isCompany = true;
+      let urlList = getURLlist();
+          if(urlList){
+              this.form.url.options = urlList;
+              let getInstances = getInstance();
+              
+                this.prefillForm(getInstances);
+                this.isLoading = false;
+            } else {
+              let getInstances = getInstance();
+                this.prefillForm(getInstances);
+                this.isLoading = false;
+              
+            }
+                
+          
+    const date = new Date()
+    const year = date.getFullYear();
+    this.form.year = [year - 1];
   },
-
   methods: {
   removeEnvelopeFromFiles(file){
     let returnFile = file.split('/')
