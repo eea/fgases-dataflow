@@ -58,9 +58,25 @@
             </div>
             <b-row>
                 <b-col class="bold" lg="5">Year</b-col>
-                <b-col lg="2"><b-form-select :value="form.year[0]" :options="form.year" disabled /></b-col>
+                <b-col lg="2"><b-form-select v-model="form.yearValue.selected" :value="form.year[0]" :options="form.year" /></b-col>
             </b-row>
 
+              
+                <b-row>
+              <b-col class="bold" lg="5">NIL-report</b-col>
+              <b-col lg="5">
+                <b-form-checkbox id="checkbox-1"
+                                 v-model="status"
+                                 name="checkbox-1"
+                                  @change="validatenotNILReportField()">
+                  We are not obliged to provide verification as we were below the threshold of 10 000 tCO2e of HFCs placed on the Union market AND did not make use at all of the quota exemption for HFCs for export according Art 15(2)c of the EU F-gas Regulation 749/2014.
+                </b-form-checkbox>
+              </b-col>
+            </b-row>
+              
+                
+                  
+                    
             <b-form v-if="form">
               <b-form-group style="position: relative">
               <b-row>
@@ -95,7 +111,7 @@
 
 
           </b-tab>
-          <b-tab title="Form" >
+          <b-tab title="Form" v-if="form.notNILReport">
             <h2>
               Substance of Verification
             </h2>
@@ -131,7 +147,7 @@
             </b-form>
 
           </b-tab>
-          <b-tab title="Upload">
+          <b-tab title="Upload" v-if="form.notNILReport">
             <h2>Upload of verification report</h2>
             <p>Click here to upload the verification report that was provided by your auditor:</p>
             <div style="position: relative;">
@@ -178,10 +194,10 @@
         <div class="tab-navigation">
           <b-button-group class="mt-3 mb-3" style="width: 100%; justify-content: flex-end; padding-right: 2rem;">
             <b-btn @click="printForm()" variant="default">Print</b-btn>
-            <b-btn @click="closeReport()" variant="danger"> Close report and proceed to BDR </b-btn>
+            <b-btn @click="closeReport()" variant="danger"> Close questionnaire and proceed to BDR </b-btn>
               <submit v-on:formchanged="handleFormChange($event)" :tabIndex="tabIndex" :triggerSave="triggerSave" :completedform="form" :type="type"></submit>
           </b-button-group>
-            <b-button-group class="tabs-control">
+          <b-button-group class="tabs-control" v-if="form.notNILReport">
             <b-btn :disabled="tabIndex === 0" @click="tabIndex--">Previous</b-btn>
             <b-btn :disabled="tabIndex === 2" @click="tabIndex++">Next</b-btn>
           </b-button-group>
@@ -234,6 +250,7 @@ export default {
       isCompany: false,
       modalShow : false,
       type: null,
+      status: false,
       art19_pursuant: '',
       form: {
         file: null,
@@ -241,6 +258,11 @@ export default {
         fileUploaded: [],
         company: {},
         year: [],
+        yearValue: {
+          selected: null,
+          options: []
+        },
+        notNILReport: true,
         url: {
           selected: null,
           options: []
@@ -322,8 +344,13 @@ export default {
       this.isLoading = false;
     }
     const date = new Date()
-    const year = date.getFullYear();
-    this.form.year = [year - 1];
+    const currentYear = date.getFullYear();
+    var year;
+    for (year = currentYear-1; year >= 2017; year--){
+        this.form.year.push(year);
+      }
+     this.form.yearValue.selected = this.form.year[0]
+  
   },
 
   computed: {
@@ -404,7 +431,7 @@ export default {
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
       const validatedLink = this.validateLink(link)
-      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd'){
+      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd'){
         this.isValidUrl = true;
       }else {
         this.isValidUrl = false;
@@ -420,7 +447,7 @@ export default {
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
       const validatedLink = this.validateLink(link)
-      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd'){
+      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd'){
         this.isValidUrl = true;
       }
     }
@@ -429,7 +456,17 @@ export default {
   validateField(key) {
     this.validation[key] = true;
   },
-
+  
+  
+  validatenotNILReportField() {
+     if (this.status) {
+       this.form.notNILReport = true;
+     } else {
+       this.form.notNILReport = false;
+     }
+     var dd = "";
+    
+    },
 
   prefillForm(data){
         this.form["EV_3.1"].selected =  data.Verification["EV_3.1"] 

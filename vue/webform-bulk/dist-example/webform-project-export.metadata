@@ -41,7 +41,7 @@
     },
     "newXmlFileName": "fgases.xml",
     "emptyInstanceUrl": "https://webformsbdr.eionet.europa.eu/download/project/fgases-bulk-verification-2018/file/fgases-bulk-instance-empty.xml",
-    "xmlSchema": "http://dd.eionet.europa.eu/schemas/fgases-2017/f-gases-bulk-verification-2018.xsd",
+    "xmlSchema": "http://dd.eionet.europa.eu/schemas/fgases-2019/f-gases-bulk-verification-2018.xsd",
     "active": true,
     "localForm": true,
     "remoteForm": true,

@@ -5,7 +5,7 @@
 	     variant="success"
 	     @dismissed="dismissCountDown=0"
 	     @dismiss-count-down="countDownChanged">
-	      <h1 style="color: black; font-weight: bold;">The report is saved</h1>
+	      <h1 style="color: black; font-weight: bold;">Questionnaire is saved</h1>
 	    </b-alert>
 	</span>
 </template>
@@ -35,7 +35,7 @@ export default {
 		 EU_type: {
 		 "Verification" :{
 		 "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-		 "@xsi:schemaLocation": "http://dd.eionet.europa.eu/namespace.jsp?ns_id=802 http://dd.eionet.europa.eu/schemas/fgases-2017/f-gases-bulk-verification-2018.xsd",
+		 "@xsi:schemaLocation": "http://dd.eionet.europa.eu/namespace.jsp?ns_id=802 http://dd.eionet.europa.eu/schemas/fgases-2019/f-gases-bulk-verification-2018.xsd",
 		   "Company": {
 		      "@status": "confirmed",
 		      "CompanyId": null,
@@ -47,7 +47,8 @@ export default {
 		   		},
 		      "VATNumber": null
 		    },
-		   "Year": null,
+			"Year": null,
+			"NILReport": null,
 		   "URL": null,
 		   "ReportedDate": "2002-05-30T09:00:00",
 		   "BV_9F": null,
@@ -61,7 +62,7 @@ export default {
 		NONEU_type: {
 		"Verification" :{
 		 "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-		 "@xsi:schemaLocation": "http://dd.eionet.europa.eu/namespace.jsp?ns_id=802 http://dd.eionet.europa.eu/schemas/fgases-2017/f-gases-bulk-verification-2018.xsd",
+		 "@xsi:schemaLocation": "http://dd.eionet.europa.eu/namespace.jsp?ns_id=802 http://dd.eionet.europa.eu/schemas/fgases-2019/f-gases-bulk-verification-2018.xsd",
 			   "Company": {
 			      "@status": "confirmed",
 			      "CompanyId": null,
@@ -78,7 +79,8 @@ export default {
 			         "VATNumber": null
 			      }
 			   },
-			   "Year": null,
+				"Year": null,
+				"NILReport": null,
 			   "URL": null,
 			   "ReportedDate": null,
 			   "BV_9F": null,
@@ -99,32 +101,49 @@ export default {
 
   methods: {
   	updateXMLdata(){
-	if(this.type == 'EU_TYPE'){
+	    if(this.type == 'EU_TYPE'){
 	  		this.EU_type.Verification.Company.CompanyId = this.completedform.company.id
 	  		this.EU_type.Verification.Company.CompanyName = this.completedform.company.name
 	  		this.EU_type.Verification.Company.VATNumber = this.completedform.company.vat
 	  		this.EU_type.Verification.Company.Country.Name = this.completedform.company.address.country.name
-	  		this.EU_type.Verification.Year = this.completedform.year[0]
+        this.EU_type.Verification.Year = this.completedform.yearValue.selected
+        this.EU_type.Verification.NILReport = !this.completedform.notNILReport
 	  		this.EU_type.Verification.URL = this.completedform.url.selected
-	  		this.EU_type.Verification.ReportedDate = this.completedform.reported
-	  		this.EU_type.Verification.BV_9F = this.completedform.substances.BV_9F.selected
-	  		this.EU_type.Verification.BV_5C = this.completedform.substances.BV_5C.selected
-	  		this.EU_type.Verification.BV_10A = this.completedform.substances.BV_10A.selected
-	  		this.EU_type.Verification.ReportFiles.ReportFile = this.escapeSpaces(this.completedform.fileUploaded)
-	  	}else {
+        this.EU_type.Verification.ReportedDate = this.completedform.reported
+        if (!this.completedform.notNILReport) {
+          this.EU_type.Verification.BV_9F = ""
+	  		  this.EU_type.Verification.BV_5C = ""
+	  		  this.EU_type.Verification.BV_10A = ""
+	  		  this.EU_type.Verification.ReportFiles.ReportFile = ""
+        } else {
+          this.EU_type.Verification.BV_9F = this.completedform.substances.BV_9F.selected
+	  		  this.EU_type.Verification.BV_5C = this.completedform.substances.BV_5C.selected
+	  		  this.EU_type.Verification.BV_10A = this.completedform.substances.BV_10A.selected
+	  		  this.EU_type.Verification.ReportFiles.ReportFile = this.escapeSpaces(this.completedform.fileUploaded)
+        }
+	  	} else {
 	  		this.NONEU_type.Verification.Company.CompanyId = this.completedform.company.id
 	  		this.NONEU_type.Verification.Company.CompanyName = this.completedform.company.name
 	  		this.NONEU_type.Verification.Company.Country.Name = this.completedform.company.address.country.name
 	  		this.NONEU_type.Verification.Company.EuLegalRepresentativeCompany.VATNumber = this.completedform.company.euLegalRepresentativeCompany.vatNumber
-	  		 this.NONEU_type.Verification.Company.EuLegalRepresentativeCompany.CompanyName = this.completedform.company.euLegalRepresentativeCompany.name
-	  		this.NONEU_type.Verification.Year = this.completedform.year[0]
+        this.NONEU_type.Verification.Company.EuLegalRepresentativeCompany.CompanyName = this.completedform.company.euLegalRepresentativeCompany.name
+        this.NONEU_type.Verification.NILReport = !this.completedform.notNILReport
+	  		this.NONEU_type.Verification.Year = this.completedform.yearValue.selected
 	  		this.NONEU_type.Verification.URL = this.completedform.url.selected
 	  		this.NONEU_type.Verification.ReportedDate = this.completedform.reported
-	  		this.NONEU_type.Verification.BV_9F = this.completedform.substances.BV_9F.selected
-	  		this.NONEU_type.Verification.BV_5C = this.completedform.substances.BV_5C.selected
-	  		this.NONEU_type.Verification.BV_10A = this.completedform.substances.BV_10A.selected
-	  		this.NONEU_type.Verification.ReportFiles.ReportFile = this.escapeSpaces(this.completedform.fileUploaded)
-	  	}
+        if (!this.completedform.notNILReport) {
+          this.NONEU_type.Verification.BV_9F = ""
+	  		  this.NONEU_type.Verification.BV_5C = ""
+	  		  this.NONEU_type.Verification.BV_10A = ""
+	  		  this.NONEU_type.Verification.ReportFiles.ReportFile = ""
+        } else {
+          this.NONEU_type.Verification.BV_9F = this.completedform.substances.BV_9F.selected
+	  		  this.NONEU_type.Verification.BV_5C = this.completedform.substances.BV_5C.selected
+	  		  this.NONEU_type.Verification.BV_10A = this.completedform.substances.BV_10A.selected
+	  		  this.NONEU_type.Verification.ReportFiles.ReportFile = this.escapeSpaces(this.completedform.fileUploaded)
+        }
+      }
+      
 	  },
 
 	  escapeSpaces(filesArray){

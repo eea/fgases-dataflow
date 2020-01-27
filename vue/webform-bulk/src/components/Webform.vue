@@ -22,7 +22,7 @@
             <p>
               The verified report was drawn up for the following undertaking:
             </p>
-            
+
             <br>
             <b-row>
               <b-col class="bold" lg="5">Company name</b-col>
@@ -32,7 +32,7 @@
               <b-col class="bold" lg="5">Registration ID in the HFC Registry</b-col>
               <b-col>{{form.company.id}}</b-col>
             </b-row>
-            <div v-if='type === "EU_TYPE"'class="text-left">
+            <div v-if='type === "EU_TYPE"' class="text-left">
               <b-row>
                 <b-col class="bold" lg="5">VAT-No.: </b-col>
                 <b-col>{{form.company.vat}}</b-col>
@@ -53,32 +53,46 @@
               </b-row>
             </div>
             <b-row>
-                <b-col class="bold" lg="5">Year</b-col>
-                <b-col lg="2"><b-form-select :value="form.year[0]" :options="form.year" disabled /></b-col>
+              <b-col class="bold" lg="5">Year</b-col>
+              <b-col lg="2"><b-form-select v-model="form.yearValue.selected" :value="form.year[0]" :options="form.year" /></b-col>
             </b-row>
-   
+
+            <b-row>
+              <b-col class="bold" lg="5">NIL-report</b-col>
+              <b-col lg="5">
+                <b-form-checkbox id="checkbox-1"
+                                 v-model="status"
+                                 name="checkbox-1"
+                                 @change="validatenotNILReportField('EV_3.1')">
+                  We are not obliged to provide verification as we were below the threshold of 10 000 tCO2e of HFCs placed on the Union market AND did not make use at all of the quota exemption for HFCs for export according Art 15(2)c of the EU F-gas Regulation 749/2014.
+                </b-form-checkbox>
+              </b-col>
+            </b-row>
+
 
             <b-row style="margin-top: 2rem;">
               <p>
               </p>
-              <b-col class="bold" lg="5">Please specify the data report pursuant to Article 19 of Regulation (EU) No 517/2014 to which the verification report <span class="letooltip" title="Please make sure that the correct Art. 19 data report is identified to which the verification report refers because it is possible to have a number of submissions (updates) of the Art. 19 data report in the BDR.">refers</span>.
-                (report URL in the EEA’s business data repository, submission date and time):</b-col>
+              <b-col class="bold" lg="5">
+                Please specify the data report pursuant to Article 19 of Regulation (EU) No 517/2014 to which the verification report <span class="letooltip" title="Please make sure that the correct Art. 19 data report is identified to which the verification report refers because it is possible to have a number of submissions (updates) of the Art. 19 data report in the BDR.">refers</span>.
+                (report URL in the EEA’s business data repository, submission date and time):
+              </b-col>
               <b-col lg="5">
                 <b-input-group class="mt-2">
-                  <b-form-select v-model="form.url.selected" @change="validateURL($event)" :options="form.url.options" placeholder="Enter URL"/> 
+                  <b-form-select v-model="form.url.selected" @change="validateURL($event)" :options="form.url.options" placeholder="Enter URL" />
                 </b-input-group>
                 <b-badge class="url-badge" v-if="isValidUrl" variant="success">Submission is valid</b-badge>
-                <b-badge class="url-badge"  v-else variant="danger">Please choose a valid submission</b-badge>
+                <b-badge class="url-badge" v-else variant="danger">Please choose a valid submission</b-badge>
                 <div>Chosen submission: </div> <strong><a target="_blank" :href="form.url.selected">{{form.url.selected}}</a></strong>
               </b-col>
             </b-row>
 
-             <b-row>
+            <b-row>
               <b-col class="bold" lg="5">Date and time reported </b-col>
               <b-col v-html="form.reported"></b-col>
             </b-row>
           </b-tab>
-          <b-tab title="Form" >
+          <b-tab title="Form" v-if="form.notNILReport" >
             <h2>Substance of Verification</h2>
             <p>Please specify below the independent auditor’s conclusions in the verification <span class="letooltip" title="Please make sure that the correct BDR data report is identified to which the verification report refers, in case of repeated submissions (updates) of the BDR data report">report</span> :</p>
             <b-form v-if="form">
@@ -103,7 +117,7 @@
             <!-- <b-button type="reset" @click="onReset" variant="danger">Reset</b-button> -->
           </b-form>
           </b-tab>
-          <b-tab title="Upload">
+          <b-tab title="Upload" v-if="form.notNILReport" >
             <h2>Upload of verification report</h2>
             <p>Click here to upload the verification report that was provided by your auditor:</p>
             <div style="position: relative">
@@ -150,10 +164,10 @@
         <div class="tab-navigation">
         <b-button-group class="mt-3 mb-3" style="width: 100%; justify-content: flex-end; padding-right: 2rem;">
           <b-btn @click="printForm()" variant="default">Print</b-btn>
-          <b-btn @click="closeReport()" variant="danger"> Close report and proceed to BDR </b-btn>
+          <b-btn @click="closeReport()" variant="danger"> Close questionnaire and proceed to BDR </b-btn>
             <submit v-on:formchanged="handleFormChange($event)" :triggerSave="triggerSave" :tabIndex="tabIndex" :completedform="form" :type="type"></submit>
         </b-button-group>
-          <b-button-group class="tabs-control">
+        <b-button-group class="tabs-control" v-if="form.notNILReport">
           <b-btn :disabled="tabIndex === 0" @click="tabIndex--">Previous</b-btn>
           <b-btn :disabled="tabIndex === 2" @click="tabIndex++">Next</b-btn>
         </b-button-group>
@@ -194,9 +208,15 @@ export default {
       hasFiles: false,
       formSaved: false,
       type: null,
+      status: false,
       form: {
         file: null,
         fileUploadedState: false,
+        notNILReport: true,
+        yearValue: {
+          selected: null,
+          options: []
+        },
         fileUploaded: [],
         company: {},
         year: [],
@@ -272,9 +292,12 @@ export default {
     const year = date.getFullYear();
     this.form.year = [year - 1];
   },*/
-  created(){
+
+
+  /*created(){
    this.checkforIe();
-   let companyData = getCompanyData(companyId);
+    let companyData = null;
+     companyData = getCompanyData(companyId);
     this.form.company = companyData;
     this.type = companyData.address.country.type;
     this.isCompany = true;
@@ -290,12 +313,39 @@ export default {
                 this.prefillForm(getInstances);
                 this.isLoading = false;
               
-            }
+            }*/
+
+    created(){
+    this.checkforIe();
+     if(!isTestSession){
+         getCompanyData(companyId)
+              .then((response) => {
+                this.form.company = response.data;
+                this.type = response.data.address.country.type
+                this.isCompany = true;
+                getInstance().then((response) => {
+                    this.prefillForm(response.data)
+                    this.isLoading = false;
+                })
+            });
+        }else {
+          this.isCompany = true;
+          let urlArray = getURLlist();
+          this.form.url.options = urlArray
+          this.form.company = getCompanyData(companyId)
+          this.type = this.form.company.address.country.type
+          this.prefillForm(getInstance())
+          this.isLoading = false;
+        }
                 
           
     const date = new Date()
-    const year = date.getFullYear();
-    this.form.year = [year - 1];
+    const currentYear = date.getFullYear();
+    var year;
+    for (year = currentYear-1; year >= 2014; year--) {
+      this.form.year.push(year);
+    }
+    this.form.yearValue.selected = this.form.year[0]
   },
   methods: {
   removeEnvelopeFromFiles(file){
@@ -359,7 +409,7 @@ export default {
       const link = validationXML[1].childNodes[6].childNodes[0].text
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
-      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd'){
+      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd'){
         this.isValidUrl = true;
         console.log('isvalid', this.isValidUrl)
       }else {
@@ -375,11 +425,21 @@ export default {
       const link = validationXML[1].childNodes[6].childNodes[0].text
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
-      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd'){
+      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd'){
         this.isValidUrl = true;
       }
     }
-  },
+   },
+
+   validatenotNILReportField(key) {
+     if (this.status) {
+       this.form.notNILReport = true;
+     } else {
+       this.form.notNILReport = false;
+     }
+     var dd = "";
+    
+    },
 
   prefillForm(data){
         this.form.substances.BV_9F.selected =  data.Verification.BV_9F 
