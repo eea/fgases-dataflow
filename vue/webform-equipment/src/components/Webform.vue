@@ -68,8 +68,8 @@
                 <b-form-checkbox id="checkbox-1"
                                  v-model="status"
                                  name="checkbox-1"
-                                  @change="validatenotNILReportField()">
-                  We are not obliged to provide verification as we were below the threshold of 10 000 tCO2e of HFCs placed on the Union market AND did not make use at all of the quota exemption for HFCs for export according Art 15(2)c of the EU F-gas Regulation 749/2014.
+                                 @change="validatenotNILReportField()">
+                  We are not obliged to provide verification as we were below the threshold of 100 t CO2e of HFCs placed on the Union market, contained in imported refrigeration, air conditioning and heat pump equipment.
                 </b-form-checkbox>
               </b-col>
             </b-row>

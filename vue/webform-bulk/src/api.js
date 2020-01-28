@@ -9,7 +9,7 @@ import prefill from './assets/prefill-test.json'
 const logRequests = process.env.NODE_ENV === 'production';
 
 // request parameters
-export let isTestSession = false;
+export let isTestSession = true;
 let baseUri = getParameterByName('base_uri');
 let fileId = getParameterByName('fileId');
 export let companyId = getParameterByName('companyId');
