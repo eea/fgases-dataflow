@@ -323,15 +323,20 @@ export default {
                 this.form.company = response.data;
                 this.type = response.data.address.country.type
                 this.isCompany = true;
-                getInstance().then((response) => {
-                    this.prefillForm(response.data)
-                    this.isLoading = false;
-                })
+                getURLlist()
+                  .then((response) => {
+                    let urlList = response.data;
+                    this.form.url.options = urlList;
+                    getInstance().then((response) => {
+                      this.prefillForm(response.data)
+                      this.isLoading = false;
+                    });
+                  });
             });
         }else {
           this.isCompany = true;
-          let urlArray = getURLlist();
-          this.form.url.options = urlArray
+          let urlList = getURLlist();
+       this.form.url.options = urlList;
           this.form.company = getCompanyData(companyId)
           this.type = this.form.company.address.country.type
           this.prefillForm(getInstance())
