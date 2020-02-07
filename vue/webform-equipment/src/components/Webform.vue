@@ -36,7 +36,7 @@
               <b-col class="bold" lg="5">Registration ID in the HFC Registry</b-col>
               <b-col>{{form.company.id}}</b-col>
             </b-row>
-            <div v-if='type === "EU_TYPE"'class="text-left">
+            <div v-if='type === "EU_TYPE"' class="text-left">
               <b-row>
                 <b-col class="bold" lg="5">VAT-No.: </b-col>
                 <b-col>{{form.company.vat}}</b-col>
@@ -58,7 +58,7 @@
             </div>
             <b-row>
                 <b-col class="bold" lg="5">Year</b-col>
-                <b-col lg="2"><b-form-select v-model="form.yearValue.selected" :value="form.year[0]" :options="form.year" /></b-col>
+                <b-col lg="2"><b-form-select v-model="form.yearValue.selected" :value="form.year[0]" :options="form.year" @change="updateUrlList($event)" /></b-col>
             </b-row>
 
               
@@ -263,6 +263,7 @@ export default {
           options: []
         },
         notNILReport: true,
+        urlAllList: [],
         url: {
           selected: null,
           options: []
@@ -422,7 +423,12 @@ export default {
       }
     },
 
-  validateURL(url){
+  validateURL(url) {
+    const squemaUrl_array = ['http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd',
+          'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd',
+          'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd',
+          'http://dd.eionet.europa.eu/schemas/fgases-2015/FGasesReporting.xsd',
+          'http://dd.eionet.europa.eu/schemas/fgases/FGasesReporting.xsd'];
     if(!isTestSession){ 
       getEnvelopeXML(url).then((response) => {
       const validationXML = xml.parse(response.data)
@@ -431,7 +437,7 @@ export default {
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
       const validatedLink = this.validateLink(link)
-      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd'){
+      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && squemaUrl_array.indexOf(file_schema) > -1){
         this.isValidUrl = true;
       }else {
         this.isValidUrl = false;
@@ -447,7 +453,7 @@ export default {
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
       const validatedLink = this.validateLink(link)
-      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd'){
+      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && squemaUrl_array.indexOf(file_schema) > -1){
         this.isValidUrl = true;
       }
     }
@@ -464,31 +470,84 @@ export default {
      } else {
        this.form.notNILReport = false;
      }
-     var dd = "";
-    
     },
 
+  updateUrlList(event) {
+     this.form.url.options = this.form.urlAllList.filter(urlL => urlL.year == event);
+  },
+
   prefillForm(data){
-        this.form["EV_3.1"].selected =  data.Verification["EV_3.1"] 
-        this.form.substances["EV_3.2_a"].selected =  data.Verification["EV_3.2_a"] 
-        this.form.substances["EV_3.2_b"].selected = data.Verification["EV_3.2_b"] 
-        this.form.substances["EV_3.2_c"].selected = data.Verification["EV_3.2_c"]
-        this.form.substances["EV_3.2_d"].selected = data.Verification["EV_3.2_d"] 
-        this.validation["EV_3.1"] = data.Verification["EV_3.1"] 
-        this.validation["EV_3.2_a"] = data.Verification["EV_3.2_a"] 
-        this.validation["EV_3.2_b"] = data.Verification["EV_3.2_b"] 
-        this.validation["EV_3.2_c"] = data.Verification["EV_3.2_c"] 
-        this.validation["EV_3.2_d"] = data.Verification["EV_3.2_d"]
+        if (data.Verification["EV_3.1"] != null && data.Verification["EV_3.1"] != "") {
+          this.form["EV_3.1"].selected =  data.Verification["EV_3.1"]
+        } else {
+          this.form["EV_3.1"].selected =  'EV_3.1_1'
+        }
+
+        if (data.Verification["EV_3.2_a"] != null && data.Verification["EV_3.2_a"] != "") {
+          this.form.substances["EV_3.2_a"].selected =  data.Verification["EV_3.2_a"]
+        } else {
+          this.form.substances["EV_3.2_a"].selected =  'EV_3.2_a_2' 
+        }
+        if (data.Verification["EV_3.2_b"] != null && data.Verification["EV_3.2_b"] != "") {
+          this.form.substances["EV_3.2_b"].selected = data.Verification["EV_3.2_b"]
+        } else {
+          this.form.substances["EV_3.2_b"].selected =  'EV_3.2_b_2'
+        }
+        if (data.Verification["EV_3.2_c"] != null && data.Verification["EV_3.2_c"] != "") { 
+          this.form.substances["EV_3.2_c"].selected = data.Verification["EV_3.2_c"]
+        } else {
+          this.form.substances["EV_3.2_c"].selected =  'EV_3.2_c_3'
+        }
+        if (data.Verification["EV_3.2_d"] != null && data.Verification["EV_3.2_d"] != "") {
+          this.form.substances["EV_3.2_d"].selected = data.Verification["EV_3.2_d"]
+        } else {
+          this.form.substances["EV_3.2_d"].selected =  'EV_3.2_d_3'
+        }
+
+
+        if (data.Verification["EV_3.1"] != null && data.Verification["EV_3.1"] != "") {
+          this.validation["EV_3.1"] = data.Verification["EV_3.1"]
+        } else {
+          this.validation["EV_3.1"] =  'EV_3.1_1'
+        }
+        if (data.Verification["EV_3.2_a"] != null && data.Verification["EV_3.2_a"] != "") {
+          this.validation["EV_3.2_a"] = data.Verification["EV_3.2_a"]
+        } else {
+          this.validation["EV_3.2_a"] = 'EV_3.2_a_2'
+        }
+        if (data.Verification["EV_3.2_b"] != null && data.Verification["EV_3.2_b"] != "") {
+          this.validation["EV_3.2_b"] = data.Verification["EV_3.2_b"]
+        } else {
+          this.validation["EV_3.2_b"] = 'EV_3.2_b_2'
+        }
+        if (data.Verification["EV_3.2_c"] != null && data.Verification["EV_3.2_c"] != "") {
+          this.validation["EV_3.2_c"] = data.Verification["EV_3.2_c"]
+        } else {
+          this.validation["EV_3.2_c"] = 'EV_3.2_c_3'
+        }
+        if (data.Verification["EV_3.2_d"] != null && data.Verification["EV_3.2_d"] != "") {
+          this.validation["EV_3.2_d"] = data.Verification["EV_3.2_d"]
+        } else {
+          this.validation["EV_3.2_d"] = 'EV_3.2_d_3'
+        }
         this.form["EV_3.2_CO2e"] = data.Verification["EV_3.2_CO2e"]
 
         this.form.url.selected = data.Verification.URL
+        if (data.Verification.Year != null && data.Verification.Year != "") {
+          this.form.yearValue.selected = data.Verification.Year
+        } else {
+          this.form.yearValue.selected = this.form.year[0]
+        }
+        this.status = data.Verification.NILReport
+
 
         if(!isTestSession) {
           if(this.form['EV_3.1'].selected === 'EV_3.1_1'){
              getURLlist()
               .then((response) => {
                 if(response.data){
-                  this.form.url.options = response.data
+                  this.form.urlAllList = response.data;
+                  this.updateUrlList(this.form.yearValue.selected);
                   this.validateURL(this.form.url.selected)
                 } else {
                   this.isValidUrl = false;

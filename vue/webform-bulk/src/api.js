@@ -129,7 +129,8 @@ export function getURLlist() {
   let testlist = [{
    // value: 'https://bdr-test.eionet.europa.eu/fgases/be/10022/envworfzg',
     value: 'https://bdr-test.eionet.europa.eu/fgases/be/11729/colwpmkngbi/envxhhv5g',
-    text: 'test miruna'
+    text: 'test miruna',
+    year: '2017'
   }]
   if (!isTestSession) {
     return fetch(envelope + '/get_fgas_deliveries')

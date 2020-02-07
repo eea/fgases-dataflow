@@ -54,7 +54,7 @@
             </div>
             <b-row>
               <b-col class="bold" lg="5">Year</b-col>
-              <b-col lg="2"><b-form-select v-model="form.yearValue.selected" :value="form.year[0]" :options="form.year" /></b-col>
+              <b-col lg="2"><b-form-select v-model="form.yearValue.selected" :value="form.year[0]" :options="form.year" @change="updateUrlList($event)" /></b-col>
             </b-row>
 
             <b-row>
@@ -209,10 +209,12 @@ export default {
       formSaved: false,
       type: null,
       status: false,
+      initYear: 2014,
       form: {
         file: null,
         fileUploadedState: false,
         notNILReport: true,
+        urlAllList: [],
         yearValue: {
           selected: null,
           options: []
@@ -325,8 +327,8 @@ export default {
                 this.isCompany = true;
                 getURLlist()
                   .then((response) => {
-                    let urlList = response.data;
-                    this.form.url.options = urlList;
+                    this.form.urlAllList = response.data;
+                    this.updateUrlList(this.form.yearValue.selected);
                     getInstance().then((response) => {
                       this.prefillForm(response.data)
                       this.isLoading = false;
@@ -347,7 +349,7 @@ export default {
     const date = new Date()
     const currentYear = date.getFullYear();
     var year;
-    for (year = currentYear-1; year >= 2014; year--) {
+    for (year = currentYear-1; year >= this.initYear; year--) {
       this.form.year.push(year);
     }
     this.form.yearValue.selected = this.form.year[0]
@@ -406,7 +408,12 @@ export default {
       }
     },
 
-  validateURL(url){
+    validateURL(url) {
+      const squemaUrl_array = ['http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd',
+        'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd',
+        'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd',
+        'http://dd.eionet.europa.eu/schemas/fgases-2015/FGasesReporting.xsd',
+        'http://dd.eionet.europa.eu/schemas/fgases/FGasesReporting.xsd'];
     if(!isTestSession){ 
       getEnvelopeXML(url).then((response) => {
       const validationXML = xml.parse(response.data)
@@ -414,7 +421,7 @@ export default {
       const link = validationXML[1].childNodes[6].childNodes[0].text
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
-      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd'){
+      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && squemaUrl_array.indexOf(file_schema) > -1){
         this.isValidUrl = true;
         console.log('isvalid', this.isValidUrl)
       }else {
@@ -430,7 +437,7 @@ export default {
       const link = validationXML[1].childNodes[6].childNodes[0].text
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
-      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && file_schema === 'http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd'){
+      if (obligation === 'http://rod.eionet.europa.eu/obligations/713' && squemaUrl_array.indexOf(file_schema) > -1) {
         this.isValidUrl = true;
       }
     }
@@ -442,8 +449,11 @@ export default {
      } else {
        this.form.notNILReport = false;
      }
-     var dd = "";
+    },
+
     
+   updateUrlList(event) {
+     this.form.url.options = this.form.urlAllList.filter(urlL => urlL.year == event);
     },
 
   prefillForm(data){
@@ -451,6 +461,13 @@ export default {
         this.form.substances.BV_5C.selected = data.Verification.BV_5C 
         this.form.substances.BV_10A.selected = data.Verification.BV_10A 
         this.form.url.selected = data.Verification.URL
+        if (data.Verification.Year != null && data.Verification.Year != "") {
+          this.form.yearValue.selected = data.Verification.Year
+        } else {
+          this.form.yearValue.selected = this.form.year[0]
+        }
+        this.status = data.Verification.NILReport
+        //this.form.notNILReport = data.Verification.NILReport
         this.form.fileUploaded = [];
         getSupportingFiles().then((response) => {
           if(response.data.length){            
