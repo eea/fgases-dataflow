@@ -99,13 +99,14 @@
                 <table>
                     <tr>
                         <th>Code</th>
-                        <th>Auditor’s statement on the level of accuracy</th>
-                        <th/>
+                        <th>Question</th>
+                        <th>Auditor's statement</th>
                     </tr>
                     <xsl:apply-templates select="EV_3.2_a" mode="EV_3_row"/>
                     <xsl:apply-templates select="EV_3.2_b" mode="EV_3_row"/>
                     <xsl:apply-templates select="EV_3.2_c" mode="EV_3_row"/>
                     <xsl:apply-templates select="EV_3.2_d" mode="EV_3_row"/>
+                    <xsl:apply-templates select="EV_3.2_CO2e" mode="EV_3_row"/>
                 </table>
                 <xsl:apply-templates select="ReportFiles"/>
             </body>
@@ -214,10 +215,13 @@
                         (b) The information contained in the declaration(s) of conformity and the related documents is accurate and complete on the basis of the undertaking's records of relevant transactions, with a reasonable level of assurance
                     </xsl:when>
                     <xsl:when test="name(.) = 'EV_3.2_c'">
-                        (c) In the HFC registry, there was by 31 December of the calendar year specified above sufficient availability of authorisations for all cases where option A was chosen in the declaration(s) of conformity
+                        (c) In the HFC registry, by 31 December of the calendar year specified above there was sufficient availability of authorisations for all cases where option A was chosen in the declaration(s) of conformity
                     </xsl:when>
                     <xsl:when test="name(.) = 'EV_3.2_d'">
                         (d) There is a declaration by the undertaking placing the hydrofluorocarbons on the market in accordance with Article 2(2)(d) of Commission Implementing Regulation (EU) No 879/2016 for all cases where option B was chosen in the declaration(s) of conformity, covering the relevant quantities
+                    </xsl:when>
+                    <xsl:when test="name(.) = 'EV_3.2_CO2e'">
+                        Amount of quota authorisations (in t CO2e, rounded to the closest full tonne), as confirmed in the independent auditor’s report, and required to cover the HFCs you placed on the market contained in imported refrigeration, air conditioning or heat pump equipment, in the calendar year this submission refers to
                     </xsl:when>
                 </xsl:choose>
             </td>
@@ -225,6 +229,9 @@
                 <xsl:choose>
                     <xsl:when test=". = concat(name(.), '_1')">Yes</xsl:when>
                     <xsl:when test=". = concat(name(.), '_2')">No</xsl:when>
+                    <xsl:when test=". = 'EV_3.2_c_3'">Option A has not been used in any declaration of conformity for the specified year</xsl:when>
+                    <xsl:when test=". = 'EV_3.2_d_3'">Option B has not been used in any declaration of conformity for the specified year</xsl:when>
+                    <xsl:when test="name(.) = 'EV_3.2_CO2e'" ><xsl:value-of select="."/></xsl:when>
                 </xsl:choose>
             </td>
         </tr>
