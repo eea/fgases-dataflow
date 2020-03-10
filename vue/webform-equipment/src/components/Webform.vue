@@ -68,7 +68,7 @@
                 <b-form-checkbox id="checkbox-1"
                                  v-model="status"
                                  name="checkbox-1"
-                                 @change="validatenotNILReportField()">
+                                 @change="validatenotNILReportField(false)">
                   We are not obliged to provide verification as we were below the threshold of 100 t CO2e of HFCs placed on the Union market, contained in imported refrigeration, air conditioning and heat pump equipment.
                 </b-form-checkbox>
               </b-col>
@@ -464,8 +464,13 @@ export default {
   },
   
   
-  validatenotNILReportField() {
-     if (this.status) {
+  validatenotNILReportField(key) {
+      if (key) {
+        var statusNilReport = !this.status;
+      } else {
+        var statusNilReport = this.status;
+      }
+     if (statusNilReport) {
        this.form.notNILReport = true;
      } else {
        this.form.notNILReport = false;
@@ -539,7 +544,7 @@ export default {
           this.form.yearValue.selected = this.form.year[0]
         }
         this.status = data.Verification.NILReport
-
+        this.validatenotNILReportField(true);
 
         if(!isTestSession) {
           if(this.form['EV_3.1'].selected === 'EV_3.1_1'){

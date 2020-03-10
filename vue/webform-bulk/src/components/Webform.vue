@@ -63,7 +63,7 @@
                 <b-form-checkbox id="checkbox-1"
                                  v-model="status"
                                  name="checkbox-1"
-                                 @change="validatenotNILReportField('EV_3.1')">
+                                 @change="validatenotNILReportField(false)">
                   We are not obliged to provide verification as we were below the threshold of 10 000 tCO2e of HFCs placed on the Union market AND did not make use at all of the quota exemption for HFCs for export according Art 15(2)c of the EU F-gas Regulation 749/2014.
                 </b-form-checkbox>
               </b-col>
@@ -444,7 +444,12 @@ export default {
    },
 
    validatenotNILReportField(key) {
-     if (this.status) {
+      if (key) {
+        var statusNilReport = !this.status;
+      } else {
+        var statusNilReport = this.status;
+      }
+     if (statusNilReport) {
        this.form.notNILReport = true;
      } else {
        this.form.notNILReport = false;
@@ -467,6 +472,7 @@ export default {
           this.form.yearValue.selected = this.form.year[0]
         }
         this.status = data.Verification.NILReport
+        this.validatenotNILReportField(true);
         //this.form.notNILReport = data.Verification.NILReport
         this.form.fileUploaded = [];
         getSupportingFiles().then((response) => {
