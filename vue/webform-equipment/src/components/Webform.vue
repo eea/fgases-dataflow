@@ -591,7 +591,7 @@ export default {
     return true
   },
   closeReport(){
-
+    if (!this.form.notNILReport || (this.form.fileUploaded.length > 1 && this.form.notNILReport) || (this.form.fileUploaded.length == 1 && this.form.notNILReport && this.form.fileUploaded[0].indexOf('.xml') <= 0)) {
     if(this.formSaved === false) {
        let r = confirm('You did not save your last modifications. Are you sure you want to leave without saving ?')
            if (r == true) {
@@ -635,6 +635,10 @@ export default {
                   }
             }
          })
+    }
+    } else {
+      alert('You need to upload a verification document before closing this questionnaire. Please go to the Upload tab, choose the correct file on your computer and click upload. Please refer to the manual or helpdesk if you need assistance.')
+      return
     }
 
   },
