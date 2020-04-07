@@ -619,7 +619,7 @@ export default {
           console.log('validurl', this.isValidUrl)
           console.log('hasfiles', this.hasFiles)
           console.log('VALIDATIOn', this.validation)
-            if(this.isValidUrl && this.hasFiles && this.formIsValid) {
+            if((this.isValidUrl && this.hasFiles && this.formIsValid) || !this.form.notNILReport) {
               let r = confirm('The questionnaire is valid. This action will take you back to the envelope. Are you sure you want to leave ?')
                  if (r == true) {
                     window.location.href = envelope
