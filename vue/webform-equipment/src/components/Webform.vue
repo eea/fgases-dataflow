@@ -36,7 +36,7 @@
               <b-col class="bold" lg="5">Registration ID in the HFC Registry</b-col>
               <b-col>{{form.company.id}}</b-col>
             </b-row>
-            <div v-if='type === "EU_TYPE"' class="text-left">
+            <div v-if='type === "EU_TYPE" 'class="text-left">
               <b-row>
                 <b-col class="bold" lg="5">VAT-No.: </b-col>
                 <b-col>{{form.company.vat}}</b-col>
@@ -140,7 +140,8 @@
                       placeholder="Enter value"></b-form-input>
                   <b-modal v-model="modalShow" hide-header="true" ok-only >
                       You entered an authorisation demand of 500 t CO2e or above. In this case, please make sure to submit a report pursuant to Article 19 of Regulation (EU) No 517/2014 covering Sections 11, 12, and 13 of the reporting forms.”
-                  </b-modal>                      
+                  </b-modal>
+                <small style="padding-left: 1rem; color: red" v-if="isie">Please note: Only numbers can be entered in this field. Do not enter units or other text otherwise your submission can not be processed. Thank you.</small>
               </div>
 
               <!-- <b-button type="reset" @click="onReset" variant="danger">Reset</b-button> -->
@@ -263,7 +264,7 @@ export default {
           options: []
         },
         notNILReport: true,
-        urlAllList: [],
+		urlAllList: [],			   
         url: {
           selected: null,
           options: []
@@ -423,12 +424,12 @@ export default {
       }
     },
 
-  validateURL(url) {
+  validateURL(url){
     const squemaUrl_array = ['http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd',
           'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd',
           'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd',
           'http://dd.eionet.europa.eu/schemas/fgases-2015/FGasesReporting.xsd',
-          'http://dd.eionet.europa.eu/schemas/fgases/FGasesReporting.xsd'];
+          'http://dd.eionet.europa.eu/schemas/fgases/FGasesReporting.xsd']; 
     if(!isTestSession){ 
       getEnvelopeXML(url).then((response) => {
       const validationXML = xml.parse(response.data)
@@ -475,19 +476,19 @@ export default {
      } else {
        this.form.notNILReport = false;
      }
+
+
     },
 
   updateUrlList(event) {
      this.form.url.options = this.form.urlAllList.filter(urlL => urlL.year == event);
   },
-
   prefillForm(data){
         if (data.Verification["EV_3.1"] != null && data.Verification["EV_3.1"] != "") {
           this.form["EV_3.1"].selected =  data.Verification["EV_3.1"]
         } else {
           this.form["EV_3.1"].selected =  'EV_3.1_1'
         }
-
         if (data.Verification["EV_3.2_a"] != null && data.Verification["EV_3.2_a"] != "") {
           this.form.substances["EV_3.2_a"].selected =  data.Verification["EV_3.2_a"]
         } else {
@@ -508,10 +509,9 @@ export default {
         } else {
           this.form.substances["EV_3.2_d"].selected =  'EV_3.2_d_3'
         }
-
-
+        
         if (data.Verification["EV_3.1"] != null && data.Verification["EV_3.1"] != "") {
-          this.validation["EV_3.1"] = data.Verification["EV_3.1"]
+			this.validation["EV_3.1"] = data.Verification["EV_3.1"]
         } else {
           this.validation["EV_3.1"] =  'EV_3.1_1'
         }
@@ -552,7 +552,7 @@ export default {
               .then((response) => {
                 if(response.data){
                   this.form.urlAllList = response.data;
-                  this.updateUrlList(this.form.yearValue.selected);
+                  this.updateUrlList(this.form.yearValue.selected);   
                   this.validateURL(this.form.url.selected)
                 } else {
                   this.isValidUrl = false;
