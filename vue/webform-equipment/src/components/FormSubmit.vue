@@ -120,10 +120,10 @@
   this.EU_type.Verification.Company.Country.Name = this.completedform.company.address.country.name
   this.EU_type.Verification.NILReport = !this.completedform.notNILReport
   this.EU_type.Verification.Year = this.completedform.yearValue.selected
+  this.EU_type.Verification["EV_3.1"] = this.completedform["EV_3.1"].selected
   this.EU_type.Verification.URL = this.completedform.url.selected
   this.EU_type.Verification.ReportedDate = (this.completedform.reported === 'This will be filled automatically') ? null : this.completedform.reported
   if (!this.completedform.notNILReport) {
-  this.EU_type.Verification["EV_3.1"] = ""
   this.EU_type.Verification["EV_3.2_a"] = ""
   this.EU_type.Verification["EV_3.2_b"] = ""
   this.EU_type.Verification["EV_3.2_c"] = ""
@@ -131,7 +131,6 @@
   this.EU_type.Verification["EV_3.2_CO2e"] = ""
   this.EU_type.Verification.ReportFiles.ReportFile =  ""
   } else {
-  this.EU_type.Verification["EV_3.1"] = this.completedform["EV_3.1"].selected
   this.EU_type.Verification["EV_3.2_a"] = this.completedform.substances["EV_3.2_a"].selected
   this.EU_type.Verification["EV_3.2_b"] = this.completedform.substances["EV_3.2_b"].selected
   this.EU_type.Verification["EV_3.2_c"] = this.completedform.substances["EV_3.2_c"].selected
@@ -148,10 +147,10 @@
   this.NONEU_type.Verification.Company.EuLegalRepresentativeCompany.CompanyName = this.completedform.company.euLegalRepresentativeCompany.name
   this.NONEU_type.Verification.NILReport = !this.completedform.notNILReport
   this.NONEU_type.Verification.Year = this.completedform.yearValue.selected
+  this.NONEU_type.Verification["EV_3.1"] = this.completedform["EV_3.1"].selected
   this.NONEU_type.Verification.URL = this.completedform.url.selected
   this.NONEU_type.Verification.ReportedDate =  (this.completedform.reported === 'This will be filled automatically') ? null : this.completedform.reported
   if (!this.completedform.notNILReport) {
-  this.NONEU_type.Verification["EV_3.1"] = ""
   this.NONEU_type.Verification["EV_3.2_a"] = ""
   this.NONEU_type.Verification["EV_3.2_b"] = ""
   this.NONEU_type.Verification["EV_3.2_c"] = ""
@@ -159,7 +158,6 @@
   this.NONEU_type.Verification["EV_3.2_CO2e"] = ""
   this.NONEU_type.Verification.ReportFiles.ReportFile =  ""
   } else {
-  this.NONEU_type.Verification["EV_3.1"] = this.completedform["EV_3.1"].selected
   this.NONEU_type.Verification["EV_3.2_a"] = this.completedform.substances["EV_3.2_a"].selected
   this.NONEU_type.Verification["EV_3.2_b"] = this.completedform.substances["EV_3.2_b"].selected
   this.NONEU_type.Verification["EV_3.2_c"] = this.completedform.substances["EV_3.2_c"].selected

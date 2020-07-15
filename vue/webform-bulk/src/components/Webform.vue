@@ -367,29 +367,34 @@ export default {
   },
 
   uploadFormFile(){
-    this.fileIsUploading = true;
-    let file = new FormData()
-    file.append('userfile', this.form.file)
-    uploadFile(file).then((response) => {
-      console.log(response)
-      this.form.fileUploaded = [];
-      getSupportingFiles().then((response) => {
-        let files = []
-        for(let file of response.data) {
-          this.pushUnique(files, envelope + '/' + file)
-        }
-        this.hasFiles = true;
-        this.form.fileUploaded =  files
-        this.form.fileUploadedState = true;
-        this.form.file = null;
-        this.fileIsUploading = false;
-        this.triggerSave += 1;
-      })
-    }).catch((error) => {
-      console.log(error)
-      this.form.fileUploadedState = false;
+    if (this.form.file.name.indexOf('.xml') <= 0) {
       this.fileIsUploading = true;
-    })
+      let file = new FormData()
+      file.append('userfile', this.form.file)
+      uploadFile(file).then((response) => {
+        console.log(response)
+        this.form.fileUploaded = [];
+        getSupportingFiles().then((response) => {
+          let files = []
+          for(let file of response.data) {
+            this.pushUnique(files, envelope + '/' + file)
+          }
+          this.hasFiles = true;
+          this.form.fileUploaded =  files
+          this.form.fileUploadedState = true;
+          this.form.file = null;
+          this.fileIsUploading = false;
+          this.triggerSave += 1;
+        })
+      }).catch((error) => {
+        console.log(error)
+        this.form.fileUploadedState = false;
+        this.fileIsUploading = true;
+      })
+    } else {
+      alert('You can not upload an xml file.')
+      return
+    }
   },
 
 
@@ -501,7 +506,7 @@ export default {
             }
 
         } else {
-            if((this.isValidUrl && this.hasFiles) || !this.form.notNILReport) {
+            if((this.isValidUrl && this.hasFiles) || (!this.form.notNILReport && this.isValidUrl)) {
               let r = confirm('The questionnaire is valid. This action will take you back to the envelope. Are you sure you want to leave ?')
                  if (r == true) {
                     window.location.href = envelope
