@@ -21,7 +21,7 @@ declare variable $source_url as xs:string external;
 declare variable $source_report as xs:string := "";
 
 
-declare variable $SCHEMA as xs:string := "http://dd.eionet.europa.eu/schemas/fgases-2017/f-gases-bulk-verification-2018.xsd";
+declare variable $SCHEMA as xs:string := "http://dd.eionet.europa.eu/schemas/fgases-2019/f-gases-bulk-verification-2019.xsd";
 declare variable $xmlconv:SOURCE_URL_PARAM := "source_url=";
 declare variable $xmlconv:OBLIGATION := "713";
 
