@@ -21,7 +21,7 @@ declare variable $source_url as xs:string external;
 declare variable $source_report as xs:string := "";
 
 
-declare variable $SCHEMA as xs:string := "http://dd.eionet.europa.eu/schemas/fgases-2017/f-gases-equipment-verification-2018.xsd";
+declare variable $SCHEMA as xs:string := "http://dd.eionet.europa.eu/schemas/fgases-2019/f-gases-equipment-verification-2019.xsd";
 declare variable $xmlconv:SOURCE_URL_PARAM := "source_url=";
 declare variable $xmlconv:OBLIGATION := "713";
 
@@ -111,12 +111,14 @@ as element(div)
             <span>
                 <span i18n:translate="">
                     Your delivery cannot be accepted because no XML file was created using the online questionnaire.
+                   
                 </span>
             </span>
         else if (fn:count($okFiles) != $filesCountReport) then
             <span>
                 <span i18n:translate="">
                     Your delivery cannot be accepted because you have not provided at least one verification report file.
+                    
                 </span>
             </span>
         else if ($filesCountCorrectSchema != 1 or $filesCountXml != 1) then
