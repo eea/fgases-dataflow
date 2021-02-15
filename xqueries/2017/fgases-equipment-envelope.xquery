@@ -59,7 +59,7 @@ as element(div)
     let $obligation := fn:concat('http://rod.eionet.europa.eu/obligations/', $xmlconv:OBLIGATION)
 
     let $filesCountCorrectSchema := fn:count($files[@schema = $SCHEMA])
-    let $filesCountXml := fn:count($files[@type="text/xml"])
+    let $filesCountXml := fn:count($files[@type="text/xml" and @schema = $SCHEMA])
     let $filesCountAll := fn:count($files)
     let $fileXML := if($filesCountCorrectSchema = 1 and $filesCountXml = 1)
     then
@@ -67,7 +67,7 @@ as element(div)
                 xmlconv:getProxyUrl($url-env),
                 fn:doc($url-env)//link,
                 '/',
-                $files[@type="text/xml"]/@name
+                $files[@type="text/xml" and @schema = $SCHEMA]/@name
         )
     else
         ()
@@ -96,12 +96,14 @@ as element(div)
     let $xml-url-option := fn:doc($fileXML)//EV_3.1/data()
     let $xml-url-value := fn:doc($fileXML)//URL/data()
     let $envelopeObligation := if(fn:doc-available($xml-url-available)) then fn:doc($xml-url-available)//obligation/data() else ""
+    let $xml-nilreport-value := fn:doc($fileXML)//NILReport/data()
 
     let $errorLevel := if (
-        fn:count($okFiles) = $filesCountReport
+        (fn:count($okFiles) = $filesCountReport
                 and $filesCountCorrectSchema = 1 and $filesCountXml = 1
                 and ($obligation = $envelopeObligation or ($xml-url-option = "EV_3.1_2" and $xml-url-value = ""))
-                and $filesCountAll > 1
+                and $filesCountAll > 1)
+        or ($xml-nilreport-value = "true" and $filesCountCorrectSchema = 1 and $filesCountXml = 1)
     )
     then "INFO"
     else "BLOCKER"
@@ -111,14 +113,12 @@ as element(div)
             <span>
                 <span i18n:translate="">
                     Your delivery cannot be accepted because no XML file was created using the online questionnaire.
-                   
                 </span>
             </span>
-        else if (fn:count($okFiles) != $filesCountReport) then
+        else if (fn:count($okFiles) != $filesCountReport and $xml-nilreport-value != "true") then
             <span>
                 <span i18n:translate="">
                     Your delivery cannot be accepted because you have not provided at least one verification report file.
-                    
                 </span>
             </span>
         else if ($filesCountCorrectSchema != 1 or $filesCountXml != 1) then
@@ -127,13 +127,13 @@ as element(div)
                         Your delivery cannot be accepted because your envelope must contain exactly one XML file with correct schema.
                     </span>
                 </span>
-            else if ($obligation != $envelopeObligation and $xml-url-value = "" and $xml-url-option = "EV_3.1_1") then
+            else if ($obligation != $envelopeObligation and $xml-url-value = "" and $xml-url-option = "EV_3.1_1" and $xml-nilreport-value != "true") then
                     <span>
                         <span i18n:translate="">
                             Your delivery cannot be accepted because you did not reference a valid report envelope for the reporting obligation Fluorinated gases (F-gases) reporting by undertakings (Regulation 2014).
                         </span>
                     </span>
-                else if ($filesCountAll < 2) then
+                else if ($filesCountAll < 2 and $xml-nilreport-value != "true") then
                         <span>
                             <span i18n:translate="">
                                 Your delivery cannot be accepted because you need at least one additional file in the envelope.
