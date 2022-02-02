@@ -434,7 +434,8 @@ export default {
         console.log('isValidUrl', this.isValidUrl)
       }
       }).catch((error) => {
-            console.log(error);
+        console.log(error);
+        this.isValidUrl = false;
       });
     } else{
       const validationXML = xml.parse(envelopexml())
@@ -464,6 +465,8 @@ export default {
     
    updateUrlList(event) {
      this.form.url.options = this.form.urlAllList.filter(urlL => urlL.year == event);
+     this.form.url.selected = "";
+     this.isValidUrl = false
     },
 
   prefillForm(data){
@@ -492,7 +495,9 @@ export default {
             this.hasFiles = false;
           }
         })
-        this.validateURL(data.Verification.URL)
+    if (data.Verification.URL != null) {
+      this.validateURL(data.Verification.URL)
+    }
   },
 
   closeReport(){

@@ -127,7 +127,7 @@ as element(div)
                         Your delivery cannot be accepted because your envelope must contain exactly one XML file with correct schema.
                     </span>
                 </span>
-            else if ($obligation != $envelopeObligation and $xml-url-value = "" and $xml-url-option = "EV_3.1_1" and $xml-nilreport-value != "true") then
+            else if (($obligation != $envelopeObligation and $xml-url-option = "EV_3.1_1" and $xml-nilreport-value != "true" )or $xml-url-value = "") then
                     <span>
                         <span i18n:translate="">
                             Your delivery cannot be accepted because you did not reference a valid report envelope for the reporting obligation Fluorinated gases (F-gases) reporting by undertakings (Regulation 2014).

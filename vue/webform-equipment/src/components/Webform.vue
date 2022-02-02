@@ -486,7 +486,9 @@ export default {
     },
 
   updateUrlList(event) {
-     this.form.url.options = this.form.urlAllList.filter(urlL => urlL.year == event);
+    this.form.url.options = this.form.urlAllList.filter(urlL => urlL.year == event);
+    this.form.url.selected = "";
+    this.isValidUrl = false;
   },
   prefillForm(data){
         if (data.Verification["EV_3.1"] != null && data.Verification["EV_3.1"] != "") {
