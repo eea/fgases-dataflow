@@ -430,7 +430,9 @@ export default {
     },
 
   validateURL(url){
-    const squemaUrl_array = ['http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd',
+    const squemaUrl_array = ['http://dd.eionet.europa.eu/schemas/fgases-2021/FGasesReporting.xsd',
+          'http://dd.eionet.europa.eu/schemas/fgases-2020/FGasesReporting.xsd',
+          'http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd',
           'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd',
           'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd',
           'http://dd.eionet.europa.eu/schemas/fgases-2015/FGasesReporting.xsd',
