@@ -36,7 +36,7 @@
               <b-col class="bold" lg="5">Registration ID in the HFC Registry</b-col>
               <b-col>{{form.company.id}}</b-col>
             </b-row>
-            <div v-if='type === "EU_TYPE" 'class="text-left">
+            <div v-if='type === "EU_TYPE"' class="text-left">
               <b-row>
                 <b-col class="bold" lg="5">VAT-No.: </b-col>
                 <b-col>{{form.company.vat}}</b-col>
@@ -47,11 +47,11 @@
                 <b-col class="bold" lg="5">Country of establishment</b-col>
                 <b-col>{{form.company.address.country.name}}</b-col>
               </b-row>
-              <b-row>
+              <b-row v-if='this.form.company.euLegalRepresentativeCompany !== null'>
                 <b-col class="bold" lg="5">Name of mandated only representative established within the EU for the purpose of compliance with the requirements of Regulation (EU) No 517/2014:  </b-col>
                 <b-col>{{form.company.euLegalRepresentativeCompany.address.country.name}}</b-col>
               </b-row>
-              <b-row>
+              <b-row v-if='this.form.company.euLegalRepresentativeCompany !== null'>
                 <b-col class="bold" lg="5">VAT-No. of only representative: </b-col>
                 <b-col>{{form.company.euLegalRepresentativeCompany.vatNumber}}</b-col>
               </b-row>
@@ -430,7 +430,9 @@ export default {
     },
 
   validateURL(url){
-    const squemaUrl_array = ['http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd',
+    const squemaUrl_array = ['http://dd.eionet.europa.eu/schemas/fgases-2021/FGasesReporting.xsd',
+          'http://dd.eionet.europa.eu/schemas/fgases-2020/FGasesReporting.xsd',
+          'http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd',
           'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd',
           'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd',
           'http://dd.eionet.europa.eu/schemas/fgases-2015/FGasesReporting.xsd',
@@ -487,6 +489,8 @@ export default {
 
   updateUrlList(event) {
      this.form.url.options = this.form.urlAllList.filter(urlL => urlL.year == event);
+     this.form.url.selected = "";
+     this.isValidUrl = false
   },
   prefillForm(data){
         if (data.Verification["EV_3.1"] != null && data.Verification["EV_3.1"] != "") {
@@ -497,48 +501,48 @@ export default {
         if (data.Verification["EV_3.2_a"] != null && data.Verification["EV_3.2_a"] != "") {
           this.form.substances["EV_3.2_a"].selected =  data.Verification["EV_3.2_a"]
         } else {
-          this.form.substances["EV_3.2_a"].selected =  'EV_3.2_a_2' 
+          this.form.substances["EV_3.2_a"].selected =  null
         }
         if (data.Verification["EV_3.2_b"] != null && data.Verification["EV_3.2_b"] != "") {
           this.form.substances["EV_3.2_b"].selected = data.Verification["EV_3.2_b"]
         } else {
-          this.form.substances["EV_3.2_b"].selected =  'EV_3.2_b_2'
+          this.form.substances["EV_3.2_b"].selected =  null
         }
         if (data.Verification["EV_3.2_c"] != null && data.Verification["EV_3.2_c"] != "") { 
           this.form.substances["EV_3.2_c"].selected = data.Verification["EV_3.2_c"]
         } else {
-          this.form.substances["EV_3.2_c"].selected =  'EV_3.2_c_3'
+          this.form.substances["EV_3.2_c"].selected =  null
         }
         if (data.Verification["EV_3.2_d"] != null && data.Verification["EV_3.2_d"] != "") {
           this.form.substances["EV_3.2_d"].selected = data.Verification["EV_3.2_d"]
         } else {
-          this.form.substances["EV_3.2_d"].selected =  'EV_3.2_d_3'
+          this.form.substances["EV_3.2_d"].selected =  null
         }
         
         if (data.Verification["EV_3.1"] != null && data.Verification["EV_3.1"] != "") {
-			this.validation["EV_3.1"] = data.Verification["EV_3.1"]
+			    this.validation["EV_3.1"] = data.Verification["EV_3.1"]
         } else {
           this.validation["EV_3.1"] =  'EV_3.1_1'
         }
         if (data.Verification["EV_3.2_a"] != null && data.Verification["EV_3.2_a"] != "") {
           this.validation["EV_3.2_a"] = data.Verification["EV_3.2_a"]
         } else {
-          this.validation["EV_3.2_a"] = 'EV_3.2_a_2'
+          this.validation["EV_3.2_a"] = null
         }
         if (data.Verification["EV_3.2_b"] != null && data.Verification["EV_3.2_b"] != "") {
           this.validation["EV_3.2_b"] = data.Verification["EV_3.2_b"]
         } else {
-          this.validation["EV_3.2_b"] = 'EV_3.2_b_2'
+          this.validation["EV_3.2_b"] = null
         }
         if (data.Verification["EV_3.2_c"] != null && data.Verification["EV_3.2_c"] != "") {
           this.validation["EV_3.2_c"] = data.Verification["EV_3.2_c"]
         } else {
-          this.validation["EV_3.2_c"] = 'EV_3.2_c_3'
+          this.validation["EV_3.2_c"] = null
         }
         if (data.Verification["EV_3.2_d"] != null && data.Verification["EV_3.2_d"] != "") {
           this.validation["EV_3.2_d"] = data.Verification["EV_3.2_d"]
         } else {
-          this.validation["EV_3.2_d"] = 'EV_3.2_d_3'
+          this.validation["EV_3.2_d"] = null
         }
         this.form["EV_3.2_CO2e"] = data.Verification["EV_3.2_CO2e"]
 
@@ -597,15 +601,18 @@ export default {
   },
   closeReport(){
     if (!this.form.notNILReport || (this.form.fileUploaded.length > 1 && this.form.notNILReport) || (this.form.fileUploaded.length == 1 && this.form.notNILReport && this.form.fileUploaded[0].indexOf('.xml') <= 0)) {
-    if(this.formSaved === false) {
-       let r = confirm('You did not save your last modifications. Are you sure you want to leave without saving ?')
-           if (r == true) {
-              window.location.href = envelope
-            } else {
-              return
-        }
-    } else {
-
+      if (!this.form.notNILReport && this.form["EV_3.1"].selected==="EV_3.1_1" && this.form.url.selected===null) {
+        alert('You need to select an Art19 report from the list before closing this questionnaire. Please refer to the helpdesk if you need assistance.')
+        return
+      } else {
+        if(this.formSaved === false) {
+          let r = confirm('You did not save your last modifications. Are you sure you want to leave without saving ?')
+          if (r == true) {
+            window.location.href = envelope
+          } else {
+            return
+          }
+        } else {
           var p = new Promise((resolve, reject) => {
             for(let field in this.validation) {
               if(this.validation[field] === null) {
@@ -617,32 +624,31 @@ export default {
             }
             resolve();
           });
-
-       
-         p.then((resolve) => {
-          console.log('-------------------CLOSE REPORT -----------------')
-          console.log('validurl', this.isValidUrl)
-          console.log('hasfiles', this.hasFiles)
-          console.log('VALIDATIOn', this.validation)
-            if((this.isValidUrl && this.hasFiles && this.formIsValid) || (!this.form.notNILReport && this.isValidUrl)) {
-              let r = confirm('The questionnaire is valid. This action will take you back to the envelope. Are you sure you want to leave ?')
-                 if (r == true) {
-                    window.location.href = envelope
-                  } else {
-                    return
-                  }
-            } else {
-              let r = confirm('Please note that the questionnaire has not yet been completed or the verification document has not yet been uploaded. In its present state, the envelope is not yet fit for submission. Are you sure you want to leave ?')
-                  if (r == true) {
-                    window.location.href = envelope
-                  } else {
-                    return
-                  }
-            }
-         })
-    }
+          p.then((resolve) => {
+            console.log('-------------------CLOSE REPORT -----------------')
+            console.log('validurl', this.isValidUrl)
+            console.log('hasfiles', this.hasFiles)
+            console.log('VALIDATIOn', this.validation)
+              if((this.isValidUrl && this.hasFiles && this.formIsValid) || (!this.form.notNILReport)) {
+                let r = confirm('The questionnaire is valid. This action will take you back to the envelope. Are you sure you want to leave ?')
+                if (r == true) {
+                  window.location.href = envelope
+                } else {
+                  return
+                }
+              } else {
+                let r = confirm('Please note that the questionnaire has not yet been completed or the verification document has not yet been uploaded. In its present state, the envelope is not yet fit for submission. Are you sure you want to leave ?\r\nPlease refer to the helpdesk (bdr.helpdesk@eea.europa.eu) if you need assistance.')
+                if (r == true) {
+                  window.location.href = envelope
+                } else {
+                  return
+                }
+              }
+          })
+        }
+      }
     } else {
-      alert('You need to upload a verification document before closing this questionnaire. Please go to the Upload tab, choose the correct file on your computer and click upload. Please refer to the manual or helpdesk if you need assistance.')
+      alert('You need to upload a verification document before closing this questionnaire. Please go to the Upload tab, choose the correct file on your computer and click upload.\r\nPlease refer to the helpdesk (bdr.helpdesk@eea.europa.eu) if you need assistance.')
       return
     }
 

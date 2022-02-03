@@ -125,8 +125,10 @@ export default {
 	  		this.NONEU_type.Verification.Company.CompanyId = this.completedform.company.id
 	  		this.NONEU_type.Verification.Company.CompanyName = this.completedform.company.name
 	  		this.NONEU_type.Verification.Company.Country.Name = this.completedform.company.address.country.name
-	  		this.NONEU_type.Verification.Company.EuLegalRepresentativeCompany.VATNumber = this.completedform.company.euLegalRepresentativeCompany.vatNumber
-        this.NONEU_type.Verification.Company.EuLegalRepresentativeCompany.CompanyName = this.completedform.company.euLegalRepresentativeCompany.name
+			if (this.completedform.company.euLegalRepresentativeCompany !== null) {
+				this.NONEU_type.Verification.Company.EuLegalRepresentativeCompany.VATNumber = this.completedform.company.euLegalRepresentativeCompany.vatNumber
+				this.NONEU_type.Verification.Company.EuLegalRepresentativeCompany.CompanyName = this.completedform.company.euLegalRepresentativeCompany.name
+			}
         this.NONEU_type.Verification.NILReport = !this.completedform.notNILReport
 	  		this.NONEU_type.Verification.Year = this.completedform.yearValue.selected
 	  		this.NONEU_type.Verification.URL = this.completedform.url.selected

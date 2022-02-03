@@ -58,10 +58,10 @@
   "EV_3.1": null,
   "URL": null,
   "ReportedDate": "2002-05-30T09:00:00",
-  "EV_3.2_a": "EV_3.2_a_1",
-  "EV_3.2_b": "EV_3.2_b_2",
-  "EV_3.2_c": "EV_3.2_c_1",
-  "EV_3.2_d": "EV_3.2_d_2",
+  "EV_3.2_a": null,
+  "EV_3.2_b": null,
+  "EV_3.2_c": null,
+  "EV_3.2_d": null,
   "EV_3.2_CO2e" : null,
   "ReportFiles": {
   "ReportFile": null
@@ -93,10 +93,10 @@
   "EV_3.1": null,
   "URL": null,
   "ReportedDate": "2002-05-30T09:00:00",
-  "EV_3.2_a": "EV_3.2_a_1",
-  "EV_3.2_b": "EV_3.2_b_2",
-  "EV_3.2_c": "EV_3.2_c_1",
-  "EV_3.2_d": "EV_3.2_d_2",
+  "EV_3.2_a": null,
+  "EV_3.2_b": null,
+  "EV_3.2_c": null,
+  "EV_3.2_d": null,
   "EV_3.2_CO2e" : null,
   "ReportFiles": {
   "ReportFile": null
@@ -143,8 +143,10 @@
   this.NONEU_type.Verification.Company.CompanyId = this.completedform.company.id
   this.NONEU_type.Verification.Company.CompanyName = this.completedform.company.name
   this.NONEU_type.Verification.Company.Country.Name = this.completedform.company.address.country.name
+  if (this.completedform.company.euLegalRepresentativeCompany !== null) {
   this.NONEU_type.Verification.Company.EuLegalRepresentativeCompany.VATNumber = this.completedform.company.euLegalRepresentativeCompany.vatNumber
   this.NONEU_type.Verification.Company.EuLegalRepresentativeCompany.CompanyName = this.completedform.company.euLegalRepresentativeCompany.name
+  }
   this.NONEU_type.Verification.NILReport = !this.completedform.notNILReport
   this.NONEU_type.Verification.Year = this.completedform.yearValue.selected
   this.NONEU_type.Verification["EV_3.1"] = this.completedform["EV_3.1"].selected
