@@ -10,7 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.17.1",
+    "axios": "^0.21.2",
     "bootstrap-vue": "^2.0.0-rc.1",
     "node-sass": "^6.0.0",
     "sass-loader": "^6.0.6",
