@@ -133,7 +133,7 @@
                 <div v-if="substance.notes" v-html="substance.notes"></div>
               </b-form-group>
               <div>
-                  <p><strong>Only for companies below the 500t CO2e threshold for the reporting obligation under Art 19 of the F-gas Regulation:</strong> Please enter the amount of quota authorisations (in t CO2e, rounded to the closest full tonne), as confirmed in the independent auditor’s report, and required to cover the HFCs you placed on the market contained in imported refrigeration, air conditioning or heat pump equipment, in the calendar year this submission refers to.</p>                
+                  <p><strong>Only for companies below the 500t CO2e threshold for the reporting obligation under Art 19 of the F-gas Regulation:</strong><br>Please enter the <strong>amount of quota authorisations needed</strong> (in t CO2e, rounded to the closest full tonne) to cover the HFCs you placed on the market contained in imported refrigeration, air conditioning or heat pump equipment, in the calendar year this submission refers to. as confirmed in the independent auditor’s report.</p>                
                   <b-form-input v-model="form['EV_3.2_CO2e']"
                       type="number" step="1" min="0" oninput="this.value = this.value.replace('.', '');"
                       v-on:blur.native="showModal"
@@ -142,6 +142,7 @@
                       You entered an authorisation demand of 500 t CO2e or above. In this case, please make sure to submit a report pursuant to Article 19 of Regulation (EU) No 517/2014 covering Sections 11, 12, and 13 of the reporting forms.”
                   </b-modal>
                 <small style="padding-left: 1rem; color: red" v-if="isie">Please note: Only numbers can be entered in this field. Do not enter units or other text otherwise your submission can not be processed. Thank you.</small>
+                <p>Please note that you should not enter the amount of quota authorisations <strong><i>available</i></strong> to your company (= section 13A of your report on imported products/equipment) but the amount <strong><i>needed</i></strong> to cover your imports as described above.</p>
               </div>
 
               <!-- <b-button type="reset" @click="onReset" variant="danger">Reset</b-button> -->
