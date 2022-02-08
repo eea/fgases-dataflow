@@ -1,2 +1,2 @@
 #!/bin/sh
-~/work/basex/bin/basex -bsource_url=Fluorinated_gases__F-Gases__reporting__2.xml fgases-2017.xquery > out.html && google-chrome-stable out.html
+basex/bin/basex -bsource_url=missingART19.xml fgases-equipment-envelope.xquery > out.html && google-chrome-stable out.html

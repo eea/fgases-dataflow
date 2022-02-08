@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Verification xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dd.eionet.europa.eu/namespace.jsp?ns_id=802 http://dd.eionet.europa.eu/schemas/fgases-2019/f-gases-equipment-verification-2019.xsd">
+	<Company status="confirmed">
+		<CompanyId>29633</CompanyId>
+		<CompanyName>Fresh new Test in Fgas</CompanyName>
+		<Country>
+			<Code></Code>
+			<Type></Type>
+			<Name>Andorra</Name>
+		</Country>
+		<VATNumber></VATNumber>
+		<EuLegalRepresentativeCompany>
+			<CompanyId></CompanyId>
+			<CompanyName>Test OR</CompanyName>
+			<VATNumber>TESTVAT123</VATNumber>
+		</EuLegalRepresentativeCompany>
+	</Company>
+	<Year>2021</Year>
+	<NILReport>false</NILReport>
+	<EV_3.1>EV_3.1_1</EV_3.1>
+	<URL></URL>
+	<ReportedDate></ReportedDate>
+	<EV_3.2_a>EV_3.2_a_1</EV_3.2_a>
+	<EV_3.2_b>EV_3.2_b_2</EV_3.2_b>
+	<EV_3.2_c>EV_3.2_c_3</EV_3.2_c>
+	<EV_3.2_d>EV_3.2_d_3</EV_3.2_d>
+	<EV_3.2_CO2e></EV_3.2_CO2e>
+	<ReportFiles>
+		<ReportFile>https://bdr-test.eionet.europa.eu/fgases/be/29633/colwpmkmaei/envyfepsw/Fluorinated_gases__F-Gases__verification_reporting__Equipment_imports___1.xml</ReportFile>
+		<ReportFile>https://bdr-test.eionet.europa.eu/fgases/be/29633/colwpmkmaei/envyfepsw/ontology.rdf</ReportFile>
+	</ReportFiles>
+</Verification>
