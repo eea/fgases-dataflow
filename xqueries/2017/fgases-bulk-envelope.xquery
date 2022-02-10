@@ -108,7 +108,7 @@ as element(div)
     else "BLOCKER"
 
     let $description :=
-        if (fn:empty($report)) then
+        if ((fn:empty($report))and ($filesCountXml < 1 or $filesCountCorrectSchema<1)) then
             <span>
                 <span i18n:translate="">
                     Your delivery cannot be accepted because no XML file was created using the online questionnaire.

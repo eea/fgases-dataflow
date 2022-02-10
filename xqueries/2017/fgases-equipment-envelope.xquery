@@ -104,13 +104,14 @@ as element(div)
                 and $filesCountCorrectSchema = 1 and $filesCountXml2 = 1
                 and ($obligation = $envelopeObligation or ($xml-url-option = "EV_3.1_2" and $xml-url-value = ""))
                 and $filesCountAll > 1)
-        or ($xml-nilreport-value = "true" and $filesCountCorrectSchema = 1 and $filesCountXml2 = 1)
+        or ($xml-nilreport-value = "true" and $filesCountCorrectSchema = 1 and $filesCountXml2 = 1 and $xml-url-option != "EV_3.1_1")
+        or ($xml-nilreport-value = "true" and $filesCountCorrectSchema = 1 and $filesCountXml2 = 1 and $xml-url-option = "EV_3.1_1" and $xml-url-value != "")
     )
     then "INFO"
     else "BLOCKER"
-
+(:<!--(($obligation != $envelopeObligation and $xml-url-option = "EV_3.1_1" and $xml-nilreport-value = "true" and  $xml-url-value = "") or ($obligation != $envelopeObligation  and $xml-nilreport-value != "true" and  $xml-url-value = ""))then-->:)
     let $description :=
-        if (fn:empty($report)) then
+        if ((fn:empty($report))and ($filesCountXml2 < 1 or $filesCountCorrectSchema<1)) then
             <span>
                 <span i18n:translate="">
                     Your delivery cannot be accepted because no XML file was created using the online questionnaire.
@@ -128,10 +129,12 @@ as element(div)
                         Your delivery cannot be accepted because your envelope must contain exactly one XML file with correct schema.
                     </span>
                 </span>
-            else if (($obligation != $envelopeObligation and $xml-url-option = "EV_3.1_1" and $xml-nilreport-value != "true" )or $xml-url-value = "") then
+            
+            else if (($obligation != $envelopeObligation and $xml-url-option = "EV_3.1_1" and $xml-nilreport-value = "true" and  $xml-url-value = "") or ($obligation != $envelopeObligation  and $xml-nilreport-value != "true" and  $xml-url-value = "")) then
                     <span>
                         <span i18n:translate="">
-                            Your delivery cannot be accepted because you did not reference a valid report envelope for the reporting obligation Fluorinated gases (F-gases) reporting by undertakings (Regulation 2014).
+                            Your delivery cannot be accepted because you did not reference a valid report envelope for the reporting obligation Fluorinated gases (F-gases) reporting by undertakings (Regulation 2014).                        
+
                         </span>
                     </span>
                 else if ($filesCountAll < 2 and $xml-nilreport-value != "true") then
