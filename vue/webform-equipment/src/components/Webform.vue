@@ -332,7 +332,7 @@
       } else {
         this.isCompany = true;
         let urlArray = getURLlist();
-        this.form.url.options = urlArray
+        this.form.url.options = urlArray.filter(urlL => urlL.year == this.form.yearValue.selected)
         this.form.company = getCompanyData(companyId)
         this.type = this.form.company.address.country.type
         this.prefillForm(getInstance())
@@ -472,6 +472,9 @@
         this.form.url.selected = "";
         this.isValidUrl = false
       },
+      updateUrlListFirst(event) {
+        this.form.url.options = this.form.urlAllList.filter(urlL => urlL.year == event);
+      },
       prefillForm(data) {
         if (data.Verification["EV_3.1"] != null && data.Verification["EV_3.1"] != "") {
           this.form["EV_3.1"].selected = data.Verification["EV_3.1"]
@@ -539,7 +542,7 @@
               .then((response) => {
                 if (response.data) {
                   this.form.urlAllList = response.data;
-                  this.updateUrlList(this.form.yearValue.selected);
+                  this.updateUrlListFirst(this.form.yearValue.selected);
                   this.validateURL(this.form.url.selected)
                 } else {
                   this.isValidUrl = false;
@@ -576,7 +579,7 @@
       },
       closeReport() {
         if (!this.form.notNILReport || (this.form.fileUploaded.length > 1 && this.form.notNILReport) || (this.form.fileUploaded.length == 1 && this.form.notNILReport && this.form.fileUploaded[0].indexOf('.xml') <= 0)) {
-          if (!this.form.notNILReport && this.form["EV_3.1"].selected === "EV_3.1_1" && this.form.url.selected === null) {
+          if (!this.form.notNILReport && this.form["EV_3.1"].selected === "EV_3.1_1" && this.form.url.selected == null) {
             alert('You need to select an Art19 report from the list before closing this questionnaire. Please refer to the helpdesk if you need assistance.')
             return
           } else {

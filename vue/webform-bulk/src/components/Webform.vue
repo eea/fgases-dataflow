@@ -486,7 +486,7 @@ export default {
   },
   closeReport(){
     if (!this.form.notNILReport || (this.form.fileUploaded.length > 1 && this.form.notNILReport) || (this.form.fileUploaded.length == 1 && this.form.notNILReport && this.form.fileUploaded[0].indexOf('.xml') <= 0)) {
-      if (!this.form.notNILReport && this.form.url.selected===null) {
+      if (!this.form.notNILReport && this.form.url.selected==null) {
         alert('You need to select an Art19 report from the list before closing this questionnaire. Please refer to the helpdesk if you need assistance.')
         return
       } else {
