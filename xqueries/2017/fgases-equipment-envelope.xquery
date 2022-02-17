@@ -98,12 +98,17 @@ as element(div)
     let $xml-url-value := fn:doc($fileXML)//URL/data()
     let $envelopeObligation := if(fn:doc-available($xml-url-available)) then fn:doc($xml-url-available)//obligation/data() else ""
     let $xml-nilreport-value := fn:doc($fileXML)//NILReport/data()
+    let $xml-EV_3_2_a-value := fn:doc($fileXML)//EV_3.2_a/data()
+    let $xml-EV_3_2_b-value := fn:doc($fileXML)//EV_3.2_b/data()
+    let $xml-EV_3_2_c-value := fn:doc($fileXML)//EV_3.2_c/data()
+    let $xml-EV_3_2_d-value := fn:doc($fileXML)//EV_3.2_d/data()
 
     let $errorLevel := if (
         (fn:count($okFiles) = $filesCountReport
                 and $filesCountCorrectSchema = 1 and $filesCountXml2 = 1
                 and ($obligation = $envelopeObligation or ($xml-url-option = "EV_3.1_2" and $xml-url-value = ""))
-                and $filesCountAll > 1)
+                and $filesCountAll > 1
+                and ($xml-EV_3_2_a-value != "" and $xml-EV_3_2_b-value != "" and $xml-EV_3_2_c-value != "" and $xml-EV_3_2_d-value != "" and $xml-nilreport-value != "true"))
         or ($xml-nilreport-value = "true" and $filesCountCorrectSchema = 1 and $filesCountXml2 = 1 and $xml-url-option != "EV_3.1_1")
         or ($xml-nilreport-value = "true" and $filesCountCorrectSchema = 1 and $filesCountXml2 = 1 and $xml-url-option = "EV_3.1_1" and $xml-url-value != "")
     )
@@ -141,6 +146,12 @@ as element(div)
                         <span>
                             <span i18n:translate="">
                                 Your delivery cannot be accepted because you need at least one additional file in the envelope.
+                            </span>
+                        </span>
+                else if (($xml-EV_3_2_a-value = "" or $xml-EV_3_2_b-value = "" or $xml-EV_3_2_c-value = "" or $xml-EV_3_2_d-value = "") and $xml-nilreport-value != "true") then
+                        <span>
+                            <span i18n:translate="">
+                                Your submission was not acceptable because the form was not fully completed. Please note that you need to enter information on the auditor&apos;s report on the second tab of the webform and check fields EV_3.2_a, EV_3.2_b, EV_3.2_c and EV_3.2_d.
                             </span>
                         </span>
                     else
