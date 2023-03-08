@@ -385,51 +385,52 @@
           let file = new FormData()
           file.append('userfile', this.form.file)
           uploadFile(file).then((response) => {
-            this.form.fileUploaded = [];
-            getSupportingFiles().then((response) => {
-              let files = []
-              for (let file of response.data) {
-                this.pushUnique(files, envelope + '/' + file)
-              }
-              this.form.fileUploaded = files
-              this.form.fileUploadedState = true;
-              this.hasFiles = true;
-              this.form.file = null;
-              this.fileIsUploading = false;
-              this.triggerSave += 1;
-            })
-          }).catch((error) => {
-            this.form.fileUploadedState = false;
-            this.fileIsUploading = false;
-            console.log(error)
+          this.form.fileUploaded = [];
+          getSupportingFiles().then((response) => {
+          let files = []
+          for (let file of response.data) {
+          this.pushUnique(files, envelope + '/' + file)
+          }
+          this.form.fileUploaded = files
+          this.form.fileUploadedState = true;
+          this.hasFiles = true;
+          this.form.file = null;
+          this.fileIsUploading = false;
+          this.triggerSave += 1;
           })
-        } else {
+          }).catch((error) => {
+          this.form.fileUploadedState = false;
+          this.fileIsUploading = false;
+          console.log(error)
+          })
+          } else {
           alert('You can not upload an xml file.')
           return
-        }
-      },
-      pushUnique(array, item) {
-        if (array.indexOf(item) === -1) {
+          }
+          },
+          pushUnique(array, item) {
+          if (array.indexOf(item) === -1) {
           array.push(item);
-        }
-      },
-      validateURL(url) {
-        const squemaUrl_array = ['http://dd.eionet.europa.eu/schemas/fgases-2021/FGasesReporting.xsd',
+          }
+          },
+          validateURL(url) {
+          const squemaUrl_array = ['http://dd.eionet.europa.eu/schemas/fgases-2022/FGasesReporting.xsd',
+          'http://dd.eionet.europa.eu/schemas/fgases-2021/FGasesReporting.xsd',
           'http://dd.eionet.europa.eu/schemas/fgases-2020/FGasesReporting.xsd',
           'http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd',
           'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd',
           'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd',
           'http://dd.eionet.europa.eu/schemas/fgases-2015/FGasesReporting.xsd',
           'http://dd.eionet.europa.eu/schemas/fgases/FGasesReporting.xsd'];
-        if (!isTestSession) {
+          if (!isTestSession) {
           getEnvelopeXML(url).then((response) => {
-            const validationXML = xml.parse(response.data)
-            const obligation = validationXML[1].childNodes[5].childNodes[0].text
-            const link = validationXML[1].childNodes[6].childNodes[0].text
-            const file_schema = validationXML[1].childNodes[10].attributes.schema
-            this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
-            const validatedLink = this.validateLink(link)
-            if (obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && squemaUrl_array.indexOf(file_schema) > -1) {
+          const validationXML = xml.parse(response.data)
+          const obligation = validationXML[1].childNodes[5].childNodes[0].text
+          const link = validationXML[1].childNodes[6].childNodes[0].text
+          const file_schema = validationXML[1].childNodes[10].attributes.schema
+          this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
+          const validatedLink = this.validateLink(link)
+          if (obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && squemaUrl_array.indexOf(file_schema) > -1) {
               this.isValidUrl = true;
             } else {
               this.isValidUrl = false;
