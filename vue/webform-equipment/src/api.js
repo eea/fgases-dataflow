@@ -27,9 +27,20 @@ console.log('seesionId',sessionId)
 
 // if companyId parameter is missing, then run the form in test mode.
 // it is possible to set test company id with testCopmanyId parameter
-// if (!sessionId) {
-  // isTestSession = true;
-// }
+if (!sessionId) {
+  isTestSession = true;
+  baseUri = getParameterByName('base_uri');
+  fileId = getParameterByName('fileId');
+  companyId = getParameterByName('companyId');
+  envelope = getParameterByName('envelope');
+  sessionId = getParameterByName('sessionid');
+
+  console.log('baseUri', baseUri)
+  console.log('fileId', fileId)
+  console.log('companyId', companyId)
+  console.log('envelope', envelope)
+  console.log('seesionId',sessionId)
+}
 
 
 const api = axios.create({
