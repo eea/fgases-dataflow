@@ -400,7 +400,8 @@ export default {
       }
       },
       validateURL(url) {
-      const squemaUrl_array = ['http://dd.eionet.europa.eu/schemas/fgases-2022/FGasesReporting.xsd',
+      const squemaUrl_array = ['http://dd.eionet.europa.eu/schemas/fgases-2023/FGasesReporting.xsd',
+      'http://dd.eionet.europa.eu/schemas/fgases-2022/FGasesReporting.xsd',
       'http://dd.eionet.europa.eu/schemas/fgases-2021/FGasesReporting.xsd',
       'http://dd.eionet.europa.eu/schemas/fgases-2020/FGasesReporting.xsd',
       'http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd',
