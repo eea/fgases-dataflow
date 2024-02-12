@@ -657,7 +657,7 @@
             getURLlist()
               .then((response) => {
                 if (response.data) {
-                  this.form.url.options = response.data
+                  this.form.url.options = response.data.filter(urlL => urlL.year == this.form.yearValue.selected);
                   // this.form.url.options = c
                   this.validateURL(this.form.url.selected)
                 } else {
