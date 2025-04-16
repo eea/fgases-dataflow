@@ -172,7 +172,7 @@ export default {
 		  		console.log(this.NONEU_type)
 		  		saveInstance(this.NONEU_type)
 		  	}
-	  	}else {
+	  	} else {
 	  		alert('THE URL IS INVALID')
 	  	}
 	  },

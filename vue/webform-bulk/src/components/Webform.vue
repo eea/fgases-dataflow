@@ -18,7 +18,7 @@
       <b-card no-body>
         <b-tabs card v-model="tabIndex" v-if="form.company != null">
           <b-tab title="Company Details" active>
-            <h2>Identification of company, year and relevant Article 19 report</h2>
+            <h2>Identification of company, year and relevant Article 26 report</h2>
             <p>
               The verified report was drawn up for the following undertaking:
             </p>
@@ -44,7 +44,7 @@
                 <b-col>{{form.company.address.country.name}}</b-col>
               </b-row>
               <b-row v-if='this.form.company.euLegalRepresentativeCompany !== null'>
-                <b-col class="bold" lg="5">Name of mandated only representative established within the EU for the purpose of compliance with the requirements of Regulation (EU) No 517/2014:  </b-col>
+                <b-col class="bold" lg="5">Name of mandated only representative established within the EU for the purpose of compliance with the requirements of Regulation (EU) No 2024/573:  </b-col>
                 <b-col>{{form.company.euLegalRepresentativeCompany.address.country.name}}</b-col>
               </b-row>
               <b-row v-if='this.form.company.euLegalRepresentativeCompany !== null'>
@@ -64,7 +64,7 @@
                                  v-model="status"
                                  name="checkbox-1"
                                  @change="validatenotNILReportField(false)">
-                  We are not obliged to provide verification as we were below the threshold of 10 000 tCO2e of HFCs placed on the Union market AND did not make use at all of the quota exemption for HFCs for export according Art 15(2)c of the EU F-gas Regulation 749/2014.
+                  We are not obliged to provide verification as we were below the threshold of 1000 tCO2e of HFCs placed on the Union market AND did not make use at all of the quota exemption for HFCs for export according Art. 16(2)c of the EU F-gas Regulation 2024/573.
                 </b-form-checkbox>
               </b-col>
             </b-row>
@@ -74,7 +74,7 @@
               <p>
               </p>
               <b-col class="bold" lg="5">
-                Please specify the data report pursuant to Article 19 of Regulation (EU) No 517/2014 to which the verification report <span class="letooltip" title="Please make sure that the correct Art. 19 data report is identified to which the verification report refers because it is possible to have a number of submissions (updates) of the Art. 19 data report in the BDR.">refers</span>.
+                Please specify the data report pursuant to Article 26 of Regulation (EU) No 2024/573 to which the verification report <span class="letooltip" title="Please make sure that the correct Art. 26 data report is identified to which the verification report refers because it is possible to have a number of submissions (updates) of the Art. 26 data report in the BDR.">refers</span>.
                 (report URL in the EEA’s business data repository, submission date and time):
               </b-col>
               <b-col lg="5">
@@ -97,7 +97,7 @@
             <p>Please specify below the independent auditor’s conclusions in the verification <span class="letooltip" title="Please make sure that the correct BDR data report is identified to which the verification report refers, in case of repeated submissions (updates) of the BDR data report">report</span> :</p>
             <b-form v-if="form">
 
-              <b-form-group v-for="(substance,key) in form.substances" :key="key">
+              <b-form-group v-for="(substance,key) in form.substances" :key="key" v-show="substance.show">
                 <label>
                   <span style="background: rgb(238, 238, 238);
                                   border: 1px solid rgb(170, 170, 170);
@@ -205,7 +205,7 @@ export default {
       formSaved: false,
       type: null,
       status: false,
-      initYear: 2014,
+      initYear: 2024,
       form: {
         file: null,
         fileUploadedState: false,
@@ -226,6 +226,7 @@ export default {
         file: null,
         substances: {
           BV_9F: {
+            show: true,
             selected: 'BV_9F_5',
             options: [
              {text: 'The quota need as given in section 9F is fully confirmed.', value: 'BV_9F_1'},
@@ -234,11 +235,12 @@ export default {
              {text: 'The verification report does not make any statement as regards the quota need.', value:'BV_9F_4'},
              {text: null, value:'BV_9F_5'}
             ],
-            description:'Total calculated need of quota for hydrofluorocarbons placed on the market,as given in section 9F of the Art. 19 data report identified above '
+            description:'Total calculated need of quota for hydrofluorocarbons placed on the market,as given in section 9F of the Art. 26 data report identified above '
           }
             ,
           BV_5C: {
-          selected: 'BV_5C_5',
+            show: true,
+            selected: 'BV_5C_5',
             options: [
             {text: 'No amounts were reported in section 5C_exempted.', value:'BV_5C_1'},
             {text: 'The verification report fully confirms the amounts reported in section 5C_exempted.',value: 'BV_5C_2'},
@@ -246,18 +248,19 @@ export default {
             {text:  'The verification report does not make a statement as regards the amounts reported in section 5C_exempted.', value: 'BV_5C_4'},
             {text: null, value: 'BV_5C_5'},
           ],
-          description:'Quantity supplied directly to undertakings for export out of the Union, where those quantities were not subsequently made available to another party within the Union prior to export, as given in section 5C_exempted of the Art. 19 data report identified above',
+          description:'Quantity supplied directly to undertakings for export out of the Union, where those quantities were not subsequently made available to another party within the Union prior to export, as given in section 5C_exempted of the Art. 26 data report identified above',
         },
           BV_10A:{
-            description: 'Amounts of gas physically supplied by a new entrant quota holder which are linked to authorisations given to importers of refrigeration, air conditioning and heat pump equipment charged with hydrofluorocarbons,as given in section 10A of the Art. 19 data report identified above ',
-          options: [
-            {text: 'No amounts were reported in section 10A.', value: 'BV_10A_1'},
-            {text: 'The verification report fully confirms the amounts reported in section 10A.', value:'BV_10A_2'},
-            {text: 'The verification report does NOT fully confirm the amounts reported in section 10A. ',value: 'BV_10A_3'},
-            {text: 'The verification report does not make a statement as regards the amounts reported in section 10A.', value: 'BV_10A_4'},
-            {text: null, value: 'BV_10A_5'},
-          ],
-          selected: 'BV_10A_5',
+            show: false,
+            selected: 'BV_10A_1',
+            options: [
+              {text: 'No amounts were reported in section 10A.', value: 'BV_10A_1'},
+              {text: 'The verification report fully confirms the amounts reported in section 10A.', value:'BV_10A_2'},
+              {text: 'The verification report does NOT fully confirm the amounts reported in section 10A. ',value: 'BV_10A_3'},
+              {text: 'The verification report does not make a statement as regards the amounts reported in section 10A.', value: 'BV_10A_4'},
+              {text: null, value: 'BV_10A_5'},
+            ],
+            description: 'Amounts of gas physically supplied by a new entrant quota holder which are linked to authorisations given to importers of refrigeration, air conditioning and heat pump equipment charged with hydrofluorocarbons,as given in section 10A of the Art. 26 data report identified above ',
           }
         }
       },
@@ -400,15 +403,9 @@ export default {
       }
       },
       validateURL(url) {
-      const squemaUrl_array = ['http://dd.eionet.europa.eu/schemas/fgases-2023/FGasesReporting.xsd',
-      'http://dd.eionet.europa.eu/schemas/fgases-2022/FGasesReporting.xsd',
-      'http://dd.eionet.europa.eu/schemas/fgases-2021/FGasesReporting.xsd',
-      'http://dd.eionet.europa.eu/schemas/fgases-2020/FGasesReporting.xsd',
-      'http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd',
-      'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd',
-      'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd',
-      'http://dd.eionet.europa.eu/schemas/fgases-2015/FGasesReporting.xsd',
-      'http://dd.eionet.europa.eu/schemas/fgases/FGasesReporting.xsd'];
+      const squemaUrl_array = [
+        'http://dd.eionet.europa.eu/schemas/fgases-2024/FGasesReporting.xsd'
+      ];
       if(!isTestSession){
       getEnvelopeXML(url).then((response) => {
       const validationXML = xml.parse(response.data)
@@ -416,7 +413,7 @@ export default {
       const link = validationXML[1].childNodes[6].childNodes[0].text
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
-      if(obligation === 'http://rod.eionet.europa.eu/obligations/713' && squemaUrl_array.indexOf(file_schema) > -1){
+      if(obligation === 'http://rod.eionet.europa.eu/obligations/868' && squemaUrl_array.indexOf(file_schema) > -1){
         this.isValidUrl = true;
         console.log('isvalid', this.isValidUrl)
       }else {
@@ -433,7 +430,7 @@ export default {
       const link = validationXML[1].childNodes[6].childNodes[0].text
       const file_schema = validationXML[1].childNodes[10].attributes.schema
       this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
-      if (obligation === 'http://rod.eionet.europa.eu/obligations/713' && squemaUrl_array.indexOf(file_schema) > -1) {
+      if (obligation === 'http://rod.eionet.europa.eu/obligations/868' && squemaUrl_array.indexOf(file_schema) > -1) {
         this.isValidUrl = true;
       }
     }
@@ -546,7 +543,7 @@ export default {
     'form.substances.BV_10A.selected': {
       handler: function(after, before){
         if(after === false) {
-          this.form.substances.BV_10A.selected = 'BV_10A_5'
+          this.form.substances.BV_10A.selected = 'BV_10A_1'
         }
       },
       deep: true,
