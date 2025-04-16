@@ -107,7 +107,7 @@
 						</xsl:choose>
 					</p>
                 </div>
-                <h2>(1) Identification of company, year and relevant Article 19 report</h2>
+                <h2>(1) Identification of company, year and relevant Article 26 report</h2>
                 <p>The verified report was drawn up for the following undertaking:</p>
                 <div>
                     <p>CompanyName:
@@ -133,7 +133,7 @@
                         </span>
                     </p>
                     <p>Name of mandated only representative established within the EU for the
-                    purpose of compliance with the requirements of Regulation (EU) No 517/2014:
+                    purpose of compliance with the requirements of Regulation (EU) No 2024/573:
                         <span>
                             <xsl:choose>
                                 <xsl:when test="Company/EuLegalRepresentativeCompany/VATNumber[text()]">
@@ -167,7 +167,7 @@
                         <span><xsl:value-of select="NILReport"/></span>
                     </p>
                 </div>
-                <p>The data report pursuant to Article 19 of Regulation (EU) No 517/2014 to which the verification report refers.<br/>
+                <p>The data report pursuant to Article 26 of Regulation (EU) No 2024/573 to which the verification report refers.<br/>
                     (report URL in the EEA’s business data repository, submission date and time):
                 </p>
                 <div>
@@ -195,7 +195,7 @@
                         <tr>
                             <td>BV_9F</td>
                             <td>Total calculated need of quota for hydrofluorocarbons placed on the market,
-    as given in <span>section 9F</span> of the Art. 19 data report identified above</td>
+    as given in <span>section 9F</span> of the Art. 26 data report identified above</td>
                             <td>
                                 <xsl:choose>
                                     <xsl:when test="BV_9F='BV_9F_1'">The quota need as given in section 9F is fully confirmed.</xsl:when>
@@ -209,27 +209,13 @@
                         <tr>
                             <td>BV_5C</td>
                             <td>Quantity supplied directly to undertakings <span>for export out of the Union</span>, where those quantities were not subsequently made available to another party within the Union prior to export,
-    as given in <span>section 5C_exempted</span> of the Art. 19 data report identified above</td>
+    as given in <span>section 5C_exempted</span> of the Art. 26 data report identified above</td>
                             <td>
                                 <xsl:choose>
                                     <xsl:when test="BV_5C='BV_5C_1'">No amounts were reported in section 5C_exempted.</xsl:when>
                                     <xsl:when test="BV_5C='BV_5C_2'">The verification report fully confirms the amounts reported in section 5C_exempted.</xsl:when>
                                     <xsl:when test="BV_5C='BV_5C_3'">The verification report does NOT fully confirm the amounts reported in section 5C_exempted.</xsl:when>
                                     <xsl:when test="BV_5C='BV_5C_4'">The verification report does not make a statement as regards the amounts reported in section 5C_exempted.</xsl:when>
-                                    <xsl:otherwise>No statement</xsl:otherwise>
-                                </xsl:choose>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>BV_10A</td>
-                            <td>Amounts of <span>gas physically supplied</span> by a new entrant quota holder which are <span>linked to authorisations</span> given to importers of refrigeration, air conditioning and heat pump equipment charged with hydrofluorocarbons,
-    as given in <span>section 10A</span> of the Art. 19 data report identified above</td>
-                            <td>
-                                <xsl:choose>
-                                    <xsl:when test="BV_10A='BV_10A_1'">No amounts were reported in section 10A.</xsl:when>
-                                    <xsl:when test="BV_10A='BV_10A_2'">The verification report fully confirms the amounts reported in section 10A.</xsl:when>
-                                    <xsl:when test="BV_10A='BV_10A_3'">The verification report does NOT fully confirm the amounts reported in section 10A. </xsl:when>
-                                    <xsl:when test="BV_10A='BV_10A_4'">The verification report does not make a statement as regards the amounts reported in section 10A.</xsl:when>
                                     <xsl:otherwise>No statement</xsl:otherwise>
                                 </xsl:choose>
                             </td>
