@@ -75,8 +75,8 @@ function getWebQUrl(path) {
 function getParameterByName(name) {
   let searchArr;
   if (isTestSession == true) {
-    //searchArr = 'http://webq2test.eionet.europa.eu//webform/project/fgases-bulk-verification-2018/file/index.html?fileId=14401&base_uri=&envelope=https://bdr-test.eionet.europa.eu/fgases/be/10022/envwnwlua&base_uri=https://bdr-test.eionet.europa.eu/webq/&language=En&obligation=http://rod.eionet.europa.eu/obligations/764&companyId=10022&sessionid=fc14846908a47e91db1d1994436cc841'.split('?');
-    searchArr = 'https://bdr-test.eionet.europa.eu/webq/WebQMenu?language=En&envelope=https://bdr-test.eionet.europa.eu/fgases/be/11729/colwpmkngbi/envxhhv5g&obligation=http://rod.eionet.europa.eu/obligations/764&schema=http://dd.eionet.europa.eu/schemas/fgases-2019/f-gases-bulk-verification-2018.xsd&add=true&file_id=F-gases_verification_reporting__bulk_imports___1.xml&companyId=11729'.split('?');
+    //searchArr = 'http://webq2test.eionet.europa.eu//webform/project/fgases-bulk-verification-2018/file/index.html?fileId=14401&base_uri=&envelope=https://bdr-test.eionet.europa.eu/fgases/be/10022/envwnwlua&base_uri=https://bdr-test.eionet.europa.eu/webq/&language=En&obligation=http://rod.eionet.europa.eu/obligations/868&companyId=10022&sessionid=fc14846908a47e91db1d1994436cc841'.split('?');
+    searchArr = 'https://bdr-test.eionet.europa.eu/webq/WebQMenu?language=En&envelope=https://bdr-test.eionet.europa.eu/fgases/be/11729/colwpmkngbi/envxhhv5g&obligation=http://rod.eionet.europa.eu/obligations/868&schema=http://dd.eionet.europa.eu/schemas/fgases-2019/f-gases-bulk-verification-2018.xsd&add=true&file_id=F-gases_verification_reporting__bulk_imports___1.xml&companyId=11729'.split('?');
   } else {
     searchArr = window.location.search.split('?');
   }
