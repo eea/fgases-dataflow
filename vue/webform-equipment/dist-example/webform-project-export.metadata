@@ -34,13 +34,13 @@
     "fileType": "FILE"
   },
   {
-    "title": "Bulk import",
+    "title": "F-gases equipment import verification",
     "file":
     {
       "name": "index.html"
     },
     "newXmlFileName": "fgases.xml",
-    "emptyInstanceUrl": "https://webformsbdr.eionet.europa.eu/download/project/fgases-equipment-verification-2019/file/fgases-equipment-instance-empty.xml",
+    "emptyInstanceUrl": "https://webformsbdr.eionet.europa.eu/download/project/fgases-equipment-verification-2020/file/fgases-equipment-instance-empty.xml",
     "xmlSchema": "http://dd.eionet.europa.eu/schemas/fgases-2019/f-gases-equipment-verification-2019.xsd",
     "active": true,
     "localForm": true,

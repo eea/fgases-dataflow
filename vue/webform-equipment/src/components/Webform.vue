@@ -21,7 +21,7 @@
       <b-card no-body>
         <b-tabs card v-model="tabIndex" v-if="form.company != null">
           <b-tab title="Company Details" active>
-            <h2>Identification of company, year and relevant Article 19 report</h2>
+            <h2>Identification of company, year and relevant Article 26 report</h2>
             <p>
               The verified declaration(s) of conformity were drawn up by the following <span class="letooltip" title="In case the undertaking is both a manufacturer of equipment addressed by Article 2(1) of Commission Implementing Regulation (EU) No 879/2016 and an importer addressed by Article 2(2) of that Regulation, this statement applies only to the undertaking’s activities and obligations as an importer.">importer</span> of equipment:
             </p>
@@ -48,7 +48,7 @@
                 <b-col>{{form.company.address.country.name}}</b-col>
               </b-row>
               <b-row v-if='this.form.company.euLegalRepresentativeCompany !== null'>
-                <b-col class="bold" lg="5">Name of mandated only representative established within the EU for the purpose of compliance with the requirements of Regulation (EU) No 517/2014:  </b-col>
+                <b-col class="bold" lg="5">Name of mandated only representative established within the EU for the purpose of compliance with the requirements of Regulation (EU) No 2024/573:  </b-col>
                 <b-col>{{form.company.euLegalRepresentativeCompany.address.country.name}}</b-col>
               </b-row>
               <b-row v-if='this.form.company.euLegalRepresentativeCompany !== null'>
@@ -69,7 +69,7 @@
                                  v-model="status"
                                  name="checkbox-1"
                                  @change="validatenotNILReportField(false)">
-                  We are not obliged to provide verification as we were below the threshold of 100 t CO2e of HFCs placed on the Union market, contained in imported refrigeration, air conditioning and heat pump equipment.
+                  We are not obliged to provide verification as we were below the threshold of 1000 tCO2e of HFCs placed on the Union market, contained in imported refrigeration, air conditioning and heat pump equipment.
                 </b-form-checkbox>
               </b-col>
             </b-row>
@@ -78,8 +78,8 @@
 
 
             <b-form v-if="form">
-              <b-form-group style="position: relative">
-                <b-row>
+              <b-form-group style="position: relative;">
+                <b-row style="display: none;">
                   <b-col class="bold" lg="5"><label v-html='form["EV_3.1"].description'></label></b-col>
                   <b-col lg="4">
                     <b-form-radio-group inline @change="validateField('EV_3.1')" :options="form['EV_3.1'].options" v-model="form['EV_3.1'].selected">
@@ -93,7 +93,7 @@
 
               <b-row v-if="form['EV_3.1'].selected === 'EV_3.1_1'">
                 <b-col class="bold" lg="5">
-                  Please specify the data report pursuant to Article 19 of Regulation (EU) No 517/2014 to which the verification report <span class="letooltip" title="Please make sure that the correct Art. 19 data report is identified to which the verification report refers because it is possible to have a number of submissions (updates) of the Art. 19 data report in the BDR.">refers</span>.
+                  Please specify the data report pursuant to Article 26 of Regulation (EU) No 2024/573 to which the verification report <span class="letooltip" title="Please make sure that the correct Art. 26 data report is identified to which the verification report refers because it is possible to have a number of submissions (updates) of the Art. 19 data report in the BDR.">refers</span>.
                   (report URL in the EEA’s business data repository, submission date and time):
                 </b-col>
                 <b-col lg="5">
@@ -134,14 +134,14 @@
                 </b-form-radio-group>
                 <div v-if="substance.notes" v-html="substance.notes"></div>
               </b-form-group>
-              <div>
-                <p><strong>Only for companies below the 500t CO2e threshold for the reporting obligation under Art 19 of the F-gas Regulation:</strong><br>Please enter the <strong>amount of quota authorisations needed</strong> (in t CO2e, rounded to the closest full tonne) to cover the HFCs you placed on the market contained in imported refrigeration, air conditioning or heat pump equipment, in the calendar year this submission refers to. as confirmed in the independent auditor’s report.</p>
+              <div style="display: none;">
+                <p><strong>Only for companies below the 500t CO2e threshold for the reporting obligation under Art 26 of the F-gas Regulation:</strong><br>Please enter the <strong>amount of quota authorisations needed</strong> (in t CO2e, rounded to the closest full tonne) to cover the HFCs you placed on the market contained in imported refrigeration, air conditioning or heat pump equipment, in the calendar year this submission refers to. as confirmed in the independent auditor’s report.</p>
                 <b-form-input v-model="form['EV_3.2_CO2e']"
                               type="number" step="1" min="0" oninput="this.value = this.value.replace('.', '');"
                               v-on:blur.native="showModal"
                               placeholder="Enter value"></b-form-input>
                 <b-modal v-model="modalShow" hide-header="true" ok-only>
-                  You entered an authorisation demand of 500 t CO2e or above. In this case, please make sure to submit a report pursuant to Article 19 of Regulation (EU) No 517/2014 covering Sections 11, 12, and 13 of the reporting forms.”
+                  You entered an authorisation demand of 500 t CO2e or above. In this case, please make sure to submit a report pursuant to Article 26 of Regulation (EU) No 2024/573 covering Sections 11, 12, and 13 of the reporting forms.”
                 </b-modal>
                 <small style="padding-left: 1rem; color: red" v-if="isie">Please note: Only numbers can be entered in this field. Do not enter units or other text otherwise your submission can not be processed. Thank you.</small>
                 <p>Please note that you should not enter the amount of quota authorisations <strong><i>available</i></strong> to your company (= section 13A of your report on imported products/equipment) but the amount <strong><i>needed</i></strong> to cover your imports as described above.</p>
@@ -268,11 +268,11 @@
           reported: 'This will be filled automatically',
           file: null,
           "EV_3.1": {
-            selected: null,
+            selected: 'EV_3.1_1',
             options: [
               { text: 'yes', value: 'EV_3.1_1' }, { text: 'no', value: 'EV_3.1_2' }
             ],
-            description: 'A report pursuant to Article 19 of Regulation (EU) No 517/2014 covering Sections 11, 12, and 13 of the reporting forms for the calendar year specified above was submitted by the importer of equipment:'
+            description: 'A report pursuant to Article 26 of Regulation (EU) No 2024/573 covering Sections 11, 12, and 13 of the reporting forms for the calendar year specified above was submitted by the importer of equipment:'
           },
           substances: {
             "EV_3.2_a": {
@@ -281,7 +281,7 @@
                 { text: 'Yes', value: 'EV_3.2_a_1' },
                 { text: 'No', value: 'EV_3.2_a_2' }
               ],
-              description: '(a) The information contained in the declaration(s) of conformity and the related documents is consistent with the report pursuant to Article 19 of Regulation (EU) No 517/2014 :',
+              description: '(a) The information contained in the declaration(s) of conformity and the related documents is consistent with the report pursuant to Article 26 of Regulation (EU) No 2024/573 :',
               notes: null
             }
             ,
@@ -340,10 +340,8 @@
       }
       const date = new Date()
       const currentYear = date.getFullYear();
-      var year;
-      for (year = currentYear - 1; year >= 2017; year--) {
-        this.form.year.push(year);
-      }
+      var year = 2024;
+      this.form.year.push(year);
       this.form.yearValue.selected = this.form.year[0]
 
     },
@@ -414,15 +412,9 @@
           }
           },
           validateURL(url) {
-          const squemaUrl_array = ['http://dd.eionet.europa.eu/schemas/fgases-2023/FGasesReporting.xsd',
-          'http://dd.eionet.europa.eu/schemas/fgases-2022/FGasesReporting.xsd',
-          'http://dd.eionet.europa.eu/schemas/fgases-2021/FGasesReporting.xsd',
-          'http://dd.eionet.europa.eu/schemas/fgases-2020/FGasesReporting.xsd',
-          'http://dd.eionet.europa.eu/schemas/fgases-2019/FGasesReporting.xsd',
-          'http://dd.eionet.europa.eu/schemas/fgases-2018/FGasesReporting.xsd',
-          'http://dd.eionet.europa.eu/schemas/fgases-2017/FGasesReporting.xsd',
-          'http://dd.eionet.europa.eu/schemas/fgases-2015/FGasesReporting.xsd',
-          'http://dd.eionet.europa.eu/schemas/fgases/FGasesReporting.xsd'];
+          const squemaUrl_array = [
+            'http://dd.eionet.europa.eu/schemas/fgases-2024/FGasesReporting.xsd'
+          ];
           if (!isTestSession) {
           getEnvelopeXML(url).then((response) => {
           const validationXML = xml.parse(response.data)
@@ -431,7 +423,7 @@
           const file_schema = validationXML[1].childNodes[10].attributes.schema
           this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
           const validatedLink = this.validateLink(link)
-          if (obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && squemaUrl_array.indexOf(file_schema) > -1) {
+          if (obligation === 'http://rod.eionet.europa.eu/obligations/868' && validatedLink && squemaUrl_array.indexOf(file_schema) > -1) {
               this.isValidUrl = true;
             } else {
               this.isValidUrl = false;
@@ -447,7 +439,7 @@
           const file_schema = validationXML[1].childNodes[10].attributes.schema
           this.form.reported = validationXML[1].childNodes[2].childNodes[0].text
           const validatedLink = this.validateLink(link)
-          if (obligation === 'http://rod.eionet.europa.eu/obligations/713' && validatedLink && squemaUrl_array.indexOf(file_schema) > -1) {
+          if (obligation === 'http://rod.eionet.europa.eu/obligations/868' && validatedLink && squemaUrl_array.indexOf(file_schema) > -1) {
             this.isValidUrl = true;
           }
         }
@@ -647,12 +639,12 @@
       form31towatch: {
         handler: function (after, before) {
           if (after === 'EV_3.1_2') {
-            this.form.substances["EV_3.2_a"].description = `(a) The information contained in the declaration(s) of conformity and the related documents is consistent with the report pursuant to Article 19 of Regulation (EU) No 517/2014 :`
-            this.form.substances["EV_3.2_a"].notes = `<div class="smaller" style="margin-bottom: 4rem">In cases where no report pursuant to Article 19 of Regulation (EU) No 517/2014 covering Sections 11, 12, and 13 of the Annex to Implementing Regulation (EU) No 1191/2014 was submitted and in cases where the undertaking has submitted a NIL report stating that the undertaking had not been obliged to submit a report pursuant to Article 19 of Regulation (EU) No 517/2014: <br>• It is appropriate to tick “Yes” where the total amount of HFCs placed on the market during the calendar year in question in imported pre-charged RAC (refrigeration, air conditioning and heat pump) equipment was less than 500 t CO2e according to the declarations of conformity and the related documents. <br>• It is appropriate to tick “No” where the total amount of HFCs placed on the market in imported pre-charged RAC equipment was 500 t CO2e or more for the calendar year in question according to the declarations of conformity and the related documents. </div>`
+            this.form.substances["EV_3.2_a"].description = `(a) The information contained in the declaration(s) of conformity and the related documents is consistent with the report pursuant to Article 26 of Regulation (EU) No 2024/573 :`
+            this.form.substances["EV_3.2_a"].notes = `<div class="smaller" style="margin-bottom: 4rem">In cases where no report pursuant to Article 26 of Regulation (EU) No 2024/573 covering Sections 11, 12, and 13 of the Annex to Implementing Regulation (EU) No 1191/2014 was submitted and in cases where the undertaking has submitted a NIL report stating that the undertaking had not been obliged to submit a report pursuant to Article 26 of Regulation (EU) No 2024/573 : <br>• It is appropriate to tick “Yes” where the total amount of HFCs placed on the market during the calendar year in question in imported pre-charged RAC (refrigeration, air conditioning and heat pump) equipment was less than 500 t CO2e according to the declarations of conformity and the related documents. <br>• It is appropriate to tick “No” where the total amount of HFCs placed on the market in imported pre-charged RAC equipment was 500 t CO2e or more for the calendar year in question according to the declarations of conformity and the related documents. </div>`
             this.form.url.selected = null
             this.isValidUrl = true;
           } else {
-            this.form.substances["EV_3.2_a"].description = `(a) The information contained in the declaration(s) of conformity and the related documents is consistent with the report pursuant to Article 19 of Regulation (EU) No 517/2014 :`
+            this.form.substances["EV_3.2_a"].description = `(a) The information contained in the declaration(s) of conformity and the related documents is consistent with the report pursuant to Article 26 of Regulation (EU) No 2024/573 :`
             this.form.substances["EV_3.2_a"].notes = null
             getURLlist()
               .then((response) => {

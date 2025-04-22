@@ -75,7 +75,7 @@ function getWebQUrl(path) {
 function getParameterByName(name) {
     let searchArr;
     if(isTestSession == true){
-        searchArr = 'http://webq2test.eionet.europa.eu//webform/project/fgases-bulk-verification-2018/file/index.html?fileId=14401&base_uri=&envelope=https://bdr-test.eionet.europa.eu/fgases/be/10086/colwpktjgei/envxeoyea/&base_uri=https://bdr-test.eionet.europa.eu/webq/&language=En&obligation=http://rod.eionet.europa.eu/obligations/764&companyId=10086&sessionid=fc14846908a47e91db1d1994436cc841'.split('?');
+        searchArr = 'http://webq2test.eionet.europa.eu//webform/project/fgases-bulk-verification-2018/file/index.html?fileId=14401&base_uri=&envelope=https://bdr-test.eionet.europa.eu/fgases/be/10086/colwpktjgei/envxeoyea/&base_uri=https://bdr-test.eionet.europa.eu/webq/&language=En&obligation=http://rod.eionet.europa.eu/obligations/868&companyId=10086&sessionid=fc14846908a47e91db1d1994436cc841'.split('?');
     }
     else {
         searchArr = window.location.search.split('?');
